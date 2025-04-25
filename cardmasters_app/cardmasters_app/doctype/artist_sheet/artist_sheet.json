@@ -1,0 +1,81 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2025-04-25 11:09:29.485161",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "sales_order",
+  "artist",
+  "column_break_eojj",
+  "sbu",
+  "naming_series",
+  "section_break_mwjg",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "sales_order",
+   "fieldtype": "Link",
+   "label": "Sales Order",
+   "options": "Sales Order"
+  },
+  {
+   "fieldname": "artist",
+   "fieldtype": "Link",
+   "label": "Artist",
+   "options": "User"
+  },
+  {
+   "fieldname": "column_break_eojj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sbu",
+   "fieldtype": "Select",
+   "label": "SBU",
+   "options": "\nGarments\nSignages\nAwards and Crafts\nPicture Frames and Prints\nPackaging and Labels\nWood Carving and Engraving"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series"
+  },
+  {
+   "fieldname": "section_break_mwjg",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Text",
+   "label": "Remarks"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-04-25 11:12:16.544313",
+ "modified_by": "Administrator",
+ "module": "Cardmasters App",
+ "name": "Artist Sheet",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
