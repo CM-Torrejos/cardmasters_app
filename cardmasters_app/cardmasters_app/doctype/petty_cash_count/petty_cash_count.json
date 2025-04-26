@@ -11,10 +11,13 @@
   "column_break_yriw",
   "starting_petty_cash_fund",
   "section_break_ceyq",
+  "petty_cash_count_table",
   "total_petty_cash_count",
   "section_break_mdeo",
+  "unliquidated_transactions_table",
   "total_unliquidated",
   "section_break_nzio",
+  "liquidated_transactions_table",
   "total_liquidated",
   "section_break_ybtw",
   "balance",
@@ -102,13 +105,31 @@
    "fieldname": "petty_cash_transactions",
    "fieldtype": "HTML",
    "label": "Petty Cash Transactions"
+  },
+  {
+   "fieldname": "petty_cash_count_table",
+   "fieldtype": "Table",
+   "label": "Cash Count",
+   "options": "Petty Cash Count Table"
+  },
+  {
+   "fieldname": "unliquidated_transactions_table",
+   "fieldtype": "Table",
+   "label": "Unliquidated Transactions",
+   "options": "Petty Cash Unliquidated Table"
+  },
+  {
+   "fieldname": "liquidated_transactions_table",
+   "fieldtype": "Table",
+   "label": "Liquidated Transactions",
+   "options": "Petty Cash Liquidated Table"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-26 10:01:39.305078",
+ "modified": "2025-04-26 14:23:02.838480",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Petty Cash Count",
