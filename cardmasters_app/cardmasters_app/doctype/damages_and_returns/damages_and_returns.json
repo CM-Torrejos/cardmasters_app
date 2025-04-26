@@ -5,8 +5,9 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "sales_order",
+  "type",
   "job_card",
+  "sales_order",
   "column_break_pgtg",
   "date",
   "date_of_damage_or_return",
@@ -39,12 +40,14 @@
    "search_index": 1
   },
   {
+   "depends_on": "eval:doc.type == 'Return'",
    "fieldname": "sales_order",
    "fieldtype": "Link",
    "label": "Sales Order",
    "options": "Sales Order"
   },
   {
+   "depends_on": "eval:doc.type == 'Damage'",
    "fieldname": "job_card",
    "fieldtype": "Link",
    "label": "Job Card",
@@ -57,12 +60,14 @@
   {
    "fieldname": "date",
    "fieldtype": "Date",
-   "label": "Date"
+   "label": "Date",
+   "reqd": 1
   },
   {
    "fieldname": "date_of_damage_or_return",
    "fieldtype": "Date",
-   "label": "Date of Damage / Return"
+   "label": "Date of Damage / Return",
+   "reqd": 1
   },
   {
    "fieldname": "column_break_esmj",
@@ -71,13 +76,19 @@
   {
    "fieldname": "error_type",
    "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Error Type",
-   "options": "Human\nMachine"
+   "options": "Human\nMachine",
+   "reqd": 1
   },
   {
    "fieldname": "blame",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Blame",
+   "mandatory_depends_on": "eval:doc.error_type == \"Human\"",
    "options": "User"
   },
   {
@@ -113,14 +124,22 @@
    "fieldname": "damaged_or_returned_item",
    "fieldtype": "Table",
    "label": "Damaged / Returned Item",
-   "options": "Damages and Returns Item Table"
+   "options": "Damages and Returns Item Table",
+   "reqd": 1
+  },
+  {
+   "fieldname": "type",
+   "fieldtype": "Select",
+   "label": "Type",
+   "options": "\nDamage\nReturn",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-26 09:27:54.472725",
+ "modified": "2025-04-26 09:37:26.072174",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damages and Returns",
