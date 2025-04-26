@@ -16,6 +16,8 @@ fixtures = [
                 "Stock Entry",
                 "Sales Invoice",
                 "Payment Entry",
+                "Purchase Receipt",
+
                 ]]
         ]
     },]
