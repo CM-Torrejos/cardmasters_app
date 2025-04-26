@@ -11,6 +11,9 @@
   "column_break_eojj",
   "sbu",
   "naming_series",
+  "section_break_ingn",
+  "timesheet",
+  "total_time_in_minutes",
   "section_break_mwjg",
   "remarks"
  ],
@@ -50,15 +53,31 @@
    "fieldname": "remarks",
    "fieldtype": "Text",
    "label": "Remarks"
+  },
+  {
+   "fieldname": "section_break_ingn",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "timesheet",
+   "fieldtype": "Table",
+   "label": "Timesheet",
+   "options": "Artist Timesheet"
+  },
+  {
+   "fieldname": "total_time_in_minutes",
+   "fieldtype": "Float",
+   "label": "Total Time in Minutes"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-04-25 11:12:16.544313",
+ "modified": "2025-04-26 09:03:02.114599",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Sheet",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
