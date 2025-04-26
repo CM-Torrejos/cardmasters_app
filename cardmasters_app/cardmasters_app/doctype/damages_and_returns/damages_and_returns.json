@@ -1,0 +1,135 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-04-26 09:10:24.897133",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "sales_order",
+  "job_card",
+  "column_break_pgtg",
+  "date",
+  "date_of_damage_or_return",
+  "column_break_esmj",
+  "error_type",
+  "blame",
+  "section_break_pmib",
+  "correction_work_order",
+  "stock_entry",
+  "section_break_kydy",
+  "remarks",
+  "section_break_6ovu",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_6ovu",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Damages and Returns",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "sales_order",
+   "fieldtype": "Link",
+   "label": "Sales Order",
+   "options": "Sales Order"
+  },
+  {
+   "fieldname": "job_card",
+   "fieldtype": "Link",
+   "label": "Job Card",
+   "options": "Job Card"
+  },
+  {
+   "fieldname": "column_break_pgtg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "date_of_damage_or_return",
+   "fieldtype": "Date",
+   "label": "Date of Damage / Return"
+  },
+  {
+   "fieldname": "column_break_esmj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "error_type",
+   "fieldtype": "Select",
+   "label": "Error Type",
+   "options": "Human\nMachine"
+  },
+  {
+   "fieldname": "blame",
+   "fieldtype": "Link",
+   "label": "Blame",
+   "options": "User"
+  },
+  {
+   "fieldname": "section_break_pmib",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "correction_work_order",
+   "fieldtype": "Link",
+   "label": "Correction Work Order",
+   "options": "Work Order"
+  },
+  {
+   "fieldname": "stock_entry",
+   "fieldtype": "Link",
+   "label": "Stock Entry",
+   "options": "Stock Entry"
+  },
+  {
+   "fieldname": "section_break_kydy",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Text",
+   "label": "Remarks"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-04-26 09:17:15.292796",
+ "modified_by": "Administrator",
+ "module": "Cardmasters App",
+ "name": "Damages and Returns",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
