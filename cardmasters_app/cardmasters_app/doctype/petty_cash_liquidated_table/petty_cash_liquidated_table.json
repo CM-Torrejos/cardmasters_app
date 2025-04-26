@@ -15,24 +15,28 @@
   {
    "fieldname": "petty_cash_request",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Petty Cash Request",
    "options": "Petty Cash Request"
   },
   {
    "fieldname": "petty_cash_voucher",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Petty Cash Voucher",
    "options": "Petty Cash Voucher"
   },
   {
    "fieldname": "purchase_invoice",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Purchase Invoice",
    "options": "Purchase Invoice"
   },
   {
    "fieldname": "amount",
    "fieldtype": "Currency",
+   "in_list_view": 1,
    "label": "Amount"
   }
  ],
@@ -40,7 +44,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-04-26 14:11:30.631451",
+ "modified": "2025-04-26 14:24:10.362777",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Petty Cash Liquidated Table",
