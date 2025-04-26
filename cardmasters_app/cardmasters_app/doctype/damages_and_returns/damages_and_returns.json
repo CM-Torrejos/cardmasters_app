@@ -16,6 +16,8 @@
   "section_break_pmib",
   "correction_work_order",
   "stock_entry",
+  "section_break_cxwc",
+  "damaged_or_returned_item",
   "section_break_kydy",
   "remarks",
   "section_break_6ovu",
@@ -102,13 +104,23 @@
    "fieldname": "remarks",
    "fieldtype": "Text",
    "label": "Remarks"
+  },
+  {
+   "fieldname": "section_break_cxwc",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "damaged_or_returned_item",
+   "fieldtype": "Table",
+   "label": "Damaged / Returned Item",
+   "options": "Damages and Returns Item Table"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-26 09:17:15.292796",
+ "modified": "2025-04-26 09:27:54.472725",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damages and Returns",
