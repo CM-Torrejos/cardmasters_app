@@ -38,7 +38,7 @@
   "name": "Sales Order-custom_sales_channel",
   "no_copy": 0,
   "non_negative": 0,
-  "options": "Sales 1\nSales 2",
+  "options": "Sales 1\nSales 2\nSales 3",
   "permlevel": 0,
   "placeholder": null,
   "precision": "",
