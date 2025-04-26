@@ -5,6 +5,9 @@ app_description = "Contains custom DocTypes and customizations for native DocTyp
 app_email = "storrejos@cardmastersph.com"
 app_license = "mit"
 
+fixtures = ["Custom Field"]
+
+
 # Apps
 # ------------------
 
