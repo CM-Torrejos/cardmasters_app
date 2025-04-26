@@ -1,0 +1,155 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2025-04-26 10:14:07.747920",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "receiving_type",
+  "sales_order",
+  "job_card",
+  "column_break_wloz",
+  "date",
+  "requested_by",
+  "petty_cash_count",
+  "section_break_baew",
+  "remarks",
+  "section_break_rwxw",
+  "column_break_whfh",
+  "column_break_jaaa",
+  "checked_signature",
+  "checked_by",
+  "section_break_kfqs",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_kfqs",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Petty Cash Request",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series"
+  },
+  {
+   "fieldname": "receiving_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Receiving Type",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sales_order",
+   "fieldtype": "Link",
+   "label": "Sales Order",
+   "options": "Sales Order"
+  },
+  {
+   "fieldname": "job_card",
+   "fieldtype": "Link",
+   "label": "Job Card",
+   "options": "Job Card"
+  },
+  {
+   "fieldname": "column_break_wloz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "requested_by",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Requested By",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "petty_cash_count",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Petty Cash Count",
+   "options": "Petty Cash Count",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_baew",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "section_break_rwxw",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_whfh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_jaaa",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "checked_signature",
+   "fieldtype": "Signature",
+   "label": "Checked Signature"
+  },
+  {
+   "fieldname": "checked_by",
+   "fieldtype": "Link",
+   "label": "Checked By",
+   "options": "User"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-04-26 10:22:38.922785",
+ "modified_by": "Administrator",
+ "module": "Cardmasters App",
+ "name": "Petty Cash Request",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
