@@ -14,7 +14,9 @@ fixtures = [
                 "Work Order", 
                 "Sales Order Item", 
                 "Stock Entry",
-                "Sales Invoice"]]
+                "Sales Invoice",
+                "Payment Entry",
+                ]]
         ]
     },]
 
