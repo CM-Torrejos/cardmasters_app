@@ -1,0 +1,132 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2025-04-26 10:38:40.963914",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "petty_cash_request",
+  "total_amount_released",
+  "column_break_igft",
+  "date",
+  "section_break_gwxz",
+  "approved_signature",
+  "approved_by",
+  "column_break_fxrm",
+  "received_signature",
+  "received_by",
+  "section_break_idxn",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_idxn",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Petty Cash Voucher",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series"
+  },
+  {
+   "fieldname": "petty_cash_request",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Petty Cash Request",
+   "options": "Petty Cash Request",
+   "reqd": 1
+  },
+  {
+   "fieldname": "total_amount_released",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Total Amount Released",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_igft",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_gwxz",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "approved_signature",
+   "fieldtype": "Signature",
+   "label": "Approved Signature"
+  },
+  {
+   "fieldname": "approved_by",
+   "fieldtype": "Link",
+   "label": "Approved By",
+   "options": "User"
+  },
+  {
+   "fieldname": "column_break_fxrm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "received_signature",
+   "fieldtype": "Signature",
+   "in_list_view": 1,
+   "label": "Received Signature",
+   "reqd": 1
+  },
+  {
+   "fieldname": "received_by",
+   "fieldtype": "Link",
+   "label": "Received By",
+   "options": "User",
+   "reqd": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-04-26 11:40:30.225562",
+ "modified_by": "Administrator",
+ "module": "Cardmasters App",
+ "name": "Petty Cash Voucher",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
