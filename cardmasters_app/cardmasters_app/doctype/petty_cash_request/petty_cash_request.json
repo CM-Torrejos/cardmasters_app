@@ -14,6 +14,9 @@
   "date",
   "requested_by",
   "petty_cash_count",
+  "petty_cash_voucher",
+  "section_break_goug",
+  "item",
   "section_break_baew",
   "remarks",
   "section_break_rwxw",
@@ -121,13 +124,30 @@
    "fieldtype": "Link",
    "label": "Checked By",
    "options": "User"
+  },
+  {
+   "fieldname": "petty_cash_voucher",
+   "fieldtype": "Link",
+   "label": "Petty Cash Voucher",
+   "options": "Petty Cash Voucher",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_goug",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "item",
+   "fieldtype": "Table",
+   "label": "Item",
+   "options": "Petty Cash Request Item Table"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-26 10:22:38.922785",
+ "modified": "2025-04-26 11:46:43.970696",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Petty Cash Request",
