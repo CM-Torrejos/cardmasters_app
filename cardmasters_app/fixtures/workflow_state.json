@@ -97,5 +97,32 @@
   "name": "Invoiced and Received",
   "style": "",
   "workflow_state_name": "Invoiced and Received"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-28 05:41:02.598889",
+  "name": "Layouting",
+  "style": "",
+  "workflow_state_name": "Layouting"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-28 05:41:13.884843",
+  "name": "Pending Client Approval",
+  "style": "",
+  "workflow_state_name": "Pending Client Approval"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-28 05:41:22.819852",
+  "name": "Client Approved",
+  "style": "",
+  "workflow_state_name": "Client Approved"
  }
 ]
