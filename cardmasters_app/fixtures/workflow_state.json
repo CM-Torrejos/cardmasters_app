@@ -11,47 +11,11 @@
  {
   "docstatus": 0,
   "doctype": "Workflow State",
-  "icon": "ok-sign",
-  "modified": "2025-04-24 12:11:30.784826",
-  "name": "Approved",
-  "style": "Success",
-  "workflow_state_name": "Approved"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
   "icon": "remove",
   "modified": "2025-04-24 12:11:30.786757",
   "name": "Rejected",
   "style": "Danger",
   "workflow_state_name": "Rejected"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-04-28 05:15:12.134310",
-  "name": "Draft",
-  "style": "",
-  "workflow_state_name": "Draft"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-04-28 05:15:24.755572",
-  "name": "Pending Approval",
-  "style": "",
-  "workflow_state_name": "Pending Approval"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-04-28 05:15:42.107100",
-  "name": "Cash Released",
-  "style": "",
-  "workflow_state_name": "Cash Released"
  },
  {
   "docstatus": 0,
@@ -66,10 +30,28 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-04-28 05:16:10.311362",
-  "name": "Item Received",
+  "modified": "2025-04-28 05:16:46.347916",
+  "name": "Invoiced and Received",
   "style": "",
-  "workflow_state_name": "Item Received"
+  "workflow_state_name": "Invoiced and Received"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-28 05:41:22.819852",
+  "name": "Client Approved",
+  "style": "",
+  "workflow_state_name": "Client Approved"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-28 05:15:24.755572",
+  "name": "Pending Approval",
+  "style": "",
+  "workflow_state_name": "Pending Approval"
  },
  {
   "docstatus": 0,
@@ -92,11 +74,38 @@
  {
   "docstatus": 0,
   "doctype": "Workflow State",
+  "icon": "ok-sign",
+  "modified": "2025-04-24 12:11:30.784826",
+  "name": "Approved",
+  "style": "Success",
+  "workflow_state_name": "Approved"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-04-28 05:16:46.347916",
-  "name": "Invoiced and Received",
+  "modified": "2025-04-28 05:15:12.134310",
+  "name": "Draft",
   "style": "",
-  "workflow_state_name": "Invoiced and Received"
+  "workflow_state_name": "Draft"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-28 05:15:42.107100",
+  "name": "Cash Released",
+  "style": "",
+  "workflow_state_name": "Cash Released"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-28 05:16:10.311362",
+  "name": "Item Received",
+  "style": "",
+  "workflow_state_name": "Item Received"
  },
  {
   "docstatus": 0,
@@ -115,14 +124,5 @@
   "name": "Pending Client Approval",
   "style": "",
   "workflow_state_name": "Pending Client Approval"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-04-28 05:41:22.819852",
-  "name": "Client Approved",
-  "style": "",
-  "workflow_state_name": "Client Approved"
  }
 ]
