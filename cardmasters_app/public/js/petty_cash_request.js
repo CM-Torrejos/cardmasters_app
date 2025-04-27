@@ -43,3 +43,28 @@ frappe.ui.form.on('Petty Cash Request', {
 	}
 });
 
+// Add cancel button
+frappe.ui.form.on("Petty Cash Request", {
+	refresh(frm) {
+	  // only show if not already cancelled and user can write
+	  if (frm.doc.workflow_state !== "Cancelled" && frm.perm.has_perm("write")) {
+		frm.add_custom_button("Cancel", () => {
+		  frappe.confirm(
+			"Are you sure you want to cancel this request?",
+			() => {
+			  frappe.call({
+				method: "cardmasters_app.cardmasters_app.api.petty_cash_request.cancel_request",
+				args: { docname: frm.doc.name },
+				callback(r) {
+				  if (!r.exc) {
+					frm.reload_doc();
+					frappe.show_alert({ message: "Request cancelled", indicator: "green" });
+				  }
+				}
+			  });
+			}
+		  );
+		});
+	  }
+	}
+  });
