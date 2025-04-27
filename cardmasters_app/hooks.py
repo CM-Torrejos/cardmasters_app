@@ -24,7 +24,8 @@ fixtures = [
 
 
 doctype_js = {
-    "Sales Order": "public/js/sales_order.js"
+    "Sales Order": "public/js/sales_order.js",
+    "Job Card": "public/js/job_card.js",
 }
 
 # Apps
