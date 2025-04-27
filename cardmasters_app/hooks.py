@@ -7,7 +7,7 @@ app_license = "mit"
 
 fixtures = [ 
     {
-        "dt": "Custom Field",
+        "doctype": "Custom Field",
         "filters": [
             ["dt", "in", [
                 "Sales Order", 
@@ -17,10 +17,15 @@ fixtures = [
                 "Sales Invoice",
                 "Payment Entry",
                 "Purchase Receipt",
-
                 ]]
         ]
-    },]
+    },
+    
+    {"doctype": "Workflow"},
+    {"doctype": "Workflow State"},
+    {"doctype": "Workflow Action Master"},
+       
+    ]
 
 
 doctype_js = {
