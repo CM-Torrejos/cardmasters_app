@@ -93,16 +93,16 @@ frappe.ui.form.on('Petty Cash Count', {
   // 4) Fetch and populate unliquidated transactions
   async function fetchUnliquidatedTransactions(frm) {
     console.log('[Unliq] Fetching…');
-    frm.clear_table('unliquidated_transactions');
+    frm.clear_table('unliquidated_transactions_table');
   
     const { message: transactions = [] } = await frappe.call({
-      method: 'your_app.petty_cash_count.api.get_unliquidated_transactions',
+      method: 'cardmasters_app.cardmasters_app.api.petty_cash_count.get_unliquidated_transactions',
       args: { petty_cash_count: frm.doc.name }
     });
   
     let total = 0;
     transactions.forEach(tx => {
-      const row = frm.add_child('unliquidated_transactions');
+      const row = frm.add_child('unliquidated_transactions_table');
       row.petty_cash_request = tx.request;
       row.petty_cash_voucher = tx.voucher_name;
       row.amount = tx.total_amount_released;
@@ -110,23 +110,23 @@ frappe.ui.form.on('Petty Cash Count', {
     });
   
     frm.set_value('total_unliquidated', total);
-    frm.refresh_field('unliquidated_transactions');
+    frm.refresh_field('unliquidated_transactions_table');
     console.log(`[Unliq] Added ${transactions.length} rows. Total = ${total}`);
   }
   
   // 5) Fetch and populate liquidated transactions
   async function fetchLiquidatedTransactions(frm) {
     console.log('[Liq] Fetching…');
-    frm.clear_table('liquidated_transactions');
+    frm.clear_table('liquidated_transactions_table');
   
     const { message: transactions = [] } = await frappe.call({
-      method: 'your_app.petty_cash_count.api.get_liquidated_transactions',
+      method: 'cardmasters_app.cardmasters_app.api.petty_cash_count.get_liquidated_transactions',
       args: { petty_cash_count: frm.doc.name }
     });
   
     let total = 0;
     transactions.forEach(tx => {
-      const row = frm.add_child('liquidated_transactions');
+      const row = frm.add_child('liquidated_transactions_table');
       row.petty_cash_request = tx.request;
       row.petty_cash_voucher = tx.voucher_name;
       row.petty_cash_invoice = tx.invoice_name;
@@ -146,7 +146,7 @@ frappe.ui.form.on('Petty Cash Count', {
     const f = flt(frm.doc.total_fund);
     const balance = u + l + f;
   
-    frm.set_value('cash_count_balance', balance);
+    frm.set_value('balance', balance);
     console.log(`[Balance] ${u} + ${l} + ${f} = ${balance}`);
   }
   
