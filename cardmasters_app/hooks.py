@@ -23,6 +23,10 @@ fixtures = [
     },]
 
 
+doctype_js = {
+    "Sales Order": "public/js/sales_order.js"
+}
+
 # Apps
 # ------------------
 
