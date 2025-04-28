@@ -5,28 +5,58 @@ app_description = "Contains custom DocTypes and customizations for native DocTyp
 app_email = "storrejos@cardmastersph.com"
 app_license = "mit"
 
-fixtures = [ 
+
+fixtures = [
+    # 1) Custom Fields (unchanged from your setup)
     {
         "doctype": "Custom Field",
         "filters": [
             ["dt", "in", [
-                "Sales Order", 
-                "Work Order", 
-                "Sales Order Item", 
-                "Stock Entry",
-                "Sales Invoice",
-                "Payment Entry",
-                "Purchase Receipt",
-                ]]
+                "Sales Order", "Work Order", "Sales Order Item",
+                "Stock Entry", "Sales Invoice", "Payment Entry",
+                "Purchase Receipt"
+            ]]
         ]
     },
-    
-    {"doctype": "Workflow"},
-    {"doctype": "Workflow State"},
-    {"doctype": "Workflow Action Master"},
-       
-    ]
 
+    # 2) Workflows on custom doctypes OR overridden core workflows
+    {
+        "doctype": "Workflow",
+        "or_filters": [
+            # auto-capture your custom-doctype workflows
+            ["document_type", "in", [
+                "Petty Cash Request Submission Flow",
+                "Artist Sheet Workflow"
+            ]],
+            # capture any core workflows you’ve overridden
+            ["name", "in", [
+                # fill in here (empty template)
+            ]]
+        ]
+    },
+
+    # 3) All States for those workflows
+    {
+        "doctype": "Workflow State",
+        "filters": [
+            ["parent", "in", [
+                "Petty Cash Request Submission Flow",
+                "Artist Sheet Workflow"
+            ]]
+        ]
+    },
+
+    # 4) All Actions (transitions) for those workflows
+    {
+        "doctype": "Workflow Action",
+        "filters": [
+            ["parent", "in", [
+                "Petty Cash Request Submission Flow",
+                "Artist Sheet Workflow"
+            ]]
+        ]
+    }
+]
 
 doctype_js = {
     "Sales Order": "public/js/sales_order.js",
