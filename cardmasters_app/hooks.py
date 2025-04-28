@@ -18,7 +18,15 @@ fixtures = [
             ]]
         ]
     },
-
+    # 2) Property Setters (overrides to native fields)
+    {
+        "doctype": "Property Setter",
+        "filters": [
+            ["doc_type", "in", [
+                # empty template
+            ]]
+        ]
+    },
     # 2) Workflows on custom doctypes OR overridden core workflows
     {
         "doctype": "Workflow",
