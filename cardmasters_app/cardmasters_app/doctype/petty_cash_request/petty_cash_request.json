@@ -154,9 +154,17 @@
   {
    "link_doctype": "Petty Cash Voucher",
    "link_fieldname": "petty_cash_request"
+  },
+  {
+   "link_doctype": "Purchase Invoice",
+   "link_fieldname": "custom_petty_cash_request"
+  },
+  {
+   "link_doctype": "Purchase Receipt",
+   "link_fieldname": "custom_petty_cash_request"
   }
  ],
- "modified": "2025-04-29 11:30:46.582309",
+ "modified": "2025-04-29 11:54:58.823289",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Petty Cash Request",
