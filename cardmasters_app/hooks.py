@@ -58,6 +58,8 @@ fixtures = [
                  # Empty template
                  "Damages and Returns",
                  "Sales Order",
+                 "Job Card",
+                 
             ]]
         ]
     },
