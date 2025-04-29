@@ -46,12 +46,12 @@ frappe.ui.form.on('Sales Order', {
                 	console.log(response.message);
 
                 	if (response.message.length > 0) {
-                    	let html = '<table class="table table-bordered"><tr><th>Work Order</th><th>Item</th><th>Production Type</th><th>Progress</th></tr>';
+                    	let html = '<table class="table table-bordered"><tr><th>Work Order</th><th>Item</th><th>Progress</th></tr>';
                     	response.message.forEach(wo => {
                         	html += `<tr>
                                     	<td><a href="/app/work-order/${wo.name}" target="_blank">${wo.name}</a></td>
                                     	<td>${wo.production_item}</td>
-                                    	<td>${wo.custom_production_type || 'N/A'}</td>
+                                    	
                                     	<td>${wo.status}</td>
                                 	</tr>`;
                     	});
