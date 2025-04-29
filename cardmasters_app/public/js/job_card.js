@@ -15,11 +15,16 @@ frappe.ui.form.on('Job Card', {
     	// Remove ONLY the "Material Request" button from the "Create" menu
     	frm.remove_custom_button('Material Request');
 
-    	// Add a standalone button (not inside the dropdown)
     	frm.add_custom_button('Create Petty Cash Request', () => {
         	frappe.new_doc('Petty Cash Request', {
             	job_card: frm.doc.name
-        	});
+        	}, 'Create');
+    	});
+
+		frm.add_custom_button('Create Damages and Returns', () => {
+        	frappe.new_doc('Damages and Returns', {
+            	job_card: frm.doc.name
+        	}, 'Create');
     	});
 	}
 });
