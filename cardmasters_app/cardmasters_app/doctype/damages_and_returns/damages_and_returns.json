@@ -138,8 +138,13 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
- "links": [],
- "modified": "2025-04-26 09:37:26.072174",
+ "links": [
+  {
+   "link_doctype": "Stock Entry",
+   "link_fieldname": "custom_damages_and_returns"
+  }
+ ],
+ "modified": "2025-04-29 10:02:23.620078",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damages and Returns",
