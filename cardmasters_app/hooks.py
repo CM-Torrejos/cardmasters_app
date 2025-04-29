@@ -64,7 +64,7 @@ fixtures = [
                 "Artist Sheet Workflow"
             ]]
         ]
-    }
+    },
 
     {
         "doctype": "DocType Link",
@@ -73,7 +73,7 @@ fixtures = [
                  # Empty template
             ]]
         ]
-    }
+    },
 
     {
         "doctype": "DocType Action",
