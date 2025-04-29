@@ -14,7 +14,7 @@ fixtures = [
             ["dt", "in", [
                 "Sales Order", "Work Order", "Sales Order Item",
                 "Stock Entry", "Sales Invoice", "Payment Entry",
-                "Purchase Receipt"
+                "Purchase Receipt", 'Purchase Invoice',
             ]]
         ]
     },
@@ -59,7 +59,7 @@ fixtures = [
                  "Damages and Returns",
                  "Sales Order",
                  "Job Card",
-                 
+
             ]]
         ]
     },
