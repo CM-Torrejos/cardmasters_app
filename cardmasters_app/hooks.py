@@ -33,8 +33,9 @@ fixtures = [
         "or_filters": [
             # auto-capture your custom-doctype workflows
             ["document_type", "in", [
-                "Petty Cash Request Submission Flow",
-                "Artist Sheet Workflow"
+                "Petty Cash Request",
+                "Artist Sheet",
+                "Damages and Returns"
             ]],
             # capture any core workflows you’ve overridden
             ["name", "in", [
