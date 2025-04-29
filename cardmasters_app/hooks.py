@@ -71,6 +71,7 @@ fixtures = [
         "filters": [
             ["parent", "in", [
                  # Empty template
+                 "Damages and Returns"
             ]]
         ]
     },
