@@ -45,27 +45,12 @@ fixtures = [
     },
 
     # 3) All States for those workflows
-    {
-        "doctype": "Workflow State",
-        "filters": [
-            ["parent", "in", [
-                "Petty Cash Request Submission Flow",
-                "Artist Sheet Workflow"
-            ]]
-        ]
-    },
+    {"doctype": "Workflow State"},
 
     # 4) All Actions (transitions) for those workflows
-    {
-        "doctype": "Workflow Action",
-        "filters": [
-            ["parent", "in", [
-                "Petty Cash Request Submission Flow",
-                "Artist Sheet Workflow"
-            ]]
-        ]
-    },
+    {"doctype": "Workflow Action"},
 
+    # 5) DocType Links
     {
         "doctype": "DocType Link",
         "filters": [
