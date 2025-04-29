@@ -8,7 +8,7 @@
   "is_child_table": 0,
   "link_doctype": "Petty Cash Request",
   "link_fieldname": "sales_order",
-  "modified": "2025-04-29 10:31:57.445867",
+  "modified": "2025-04-29 11:09:08.469253",
   "name": "h96en6p25d",
   "parent": "Sales Order",
   "parent_doctype": null,
@@ -31,6 +31,23 @@
   "parent_doctype": null,
   "parentfield": "links",
   "parenttype": "DocType",
+  "table_fieldname": null
+ },
+ {
+  "custom": 1,
+  "docstatus": 0,
+  "doctype": "DocType Link",
+  "group": null,
+  "hidden": 0,
+  "is_child_table": 0,
+  "link_doctype": "Damages and Returns",
+  "link_fieldname": "sales_order",
+  "modified": "2025-04-29 11:09:08.486280",
+  "name": "70ibot3j2a",
+  "parent": "Sales Order",
+  "parent_doctype": null,
+  "parentfield": "links",
+  "parenttype": "Customize Form",
   "table_fieldname": null
  }
 ]
