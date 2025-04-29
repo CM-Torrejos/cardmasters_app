@@ -58,13 +58,15 @@
    "fieldname": "sales_order",
    "fieldtype": "Link",
    "label": "Sales Order",
-   "options": "Sales Order"
+   "options": "Sales Order",
+   "search_index": 1
   },
   {
    "fieldname": "job_card",
    "fieldtype": "Link",
    "label": "Job Card",
-   "options": "Job Card"
+   "options": "Job Card",
+   "search_index": 1
   },
   {
    "fieldname": "column_break_wloz",
@@ -91,7 +93,8 @@
    "in_list_view": 1,
    "label": "Petty Cash Count",
    "options": "Petty Cash Count",
-   "reqd": 1
+   "reqd": 1,
+   "search_index": 1
   },
   {
    "fieldname": "section_break_baew",
@@ -130,7 +133,8 @@
    "fieldtype": "Link",
    "label": "Petty Cash Voucher",
    "options": "Petty Cash Voucher",
-   "reqd": 1
+   "reqd": 1,
+   "search_index": 1
   },
   {
    "fieldname": "section_break_goug",
@@ -146,8 +150,13 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
- "links": [],
- "modified": "2025-04-26 11:46:43.970696",
+ "links": [
+  {
+   "link_doctype": "Petty Cash Voucher",
+   "link_fieldname": "petty_cash_request"
+  }
+ ],
+ "modified": "2025-04-29 11:30:46.582309",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Petty Cash Request",
