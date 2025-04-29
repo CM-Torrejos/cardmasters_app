@@ -64,6 +64,25 @@ fixtures = [
             ]]
         ]
     }
+
+    {
+        "doctype": "DocType Link",
+        "filters": [
+            ["parent", "in", [
+                 # Empty template
+            ]]
+        ]
+    }
+
+    {
+        "doctype": "DocType Action",
+        "filters": [
+            ["parent", "in", [
+                # Empty template
+            ]]
+        ]
+    }
+    
 ]
 
 doctype_js = {
