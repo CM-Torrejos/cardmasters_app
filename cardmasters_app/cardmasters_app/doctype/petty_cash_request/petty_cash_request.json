@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "naming_series:",
+ "autoname": "format:PCR:{MM}-{DD}-{YY}-{####}",
  "creation": "2025-04-26 10:14:07.747920",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -25,7 +25,8 @@
   "checked_signature",
   "checked_by",
   "section_break_kfqs",
-  "amended_from"
+  "amended_from",
+  "connections_tab"
  ],
  "fields": [
   {
@@ -52,6 +53,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Receiving Type",
+   "options": "Inventory Receiving\nDirect Receiving",
    "reqd": 1
   },
   {
@@ -84,7 +86,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Requested By",
-   "options": "User",
+   "options": "Employee",
    "reqd": 1
   },
   {
@@ -118,11 +120,13 @@
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "checked_signature",
    "fieldtype": "Signature",
    "label": "Checked Signature"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "checked_by",
    "fieldtype": "Link",
    "label": "Checked By",
@@ -133,7 +137,6 @@
    "fieldtype": "Link",
    "label": "Petty Cash Voucher",
    "options": "Petty Cash Voucher",
-   "reqd": 1,
    "search_index": 1
   },
   {
@@ -145,6 +148,12 @@
    "fieldtype": "Table",
    "label": "Item",
    "options": "Petty Cash Request Item Table"
+  },
+  {
+   "fieldname": "connections_tab",
+   "fieldtype": "Tab Break",
+   "label": "Connections",
+   "show_dashboard": 1
   }
  ],
  "grid_page_length": 50,
@@ -164,11 +173,11 @@
    "link_fieldname": "custom_petty_cash_request"
   }
  ],
- "modified": "2025-04-29 11:54:58.823289",
+ "modified": "2025-05-02 02:11:01.670750",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Petty Cash Request",
- "naming_rule": "By \"Naming Series\" field",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

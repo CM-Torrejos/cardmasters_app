@@ -7,7 +7,7 @@ app_license = "mit"
 
 
 fixtures = [
-    # 1) Custom Fields (unchanged from your setup)
+    # 1) Custom Fields 
     {
         "doctype": "Custom Field",
         "filters": [
