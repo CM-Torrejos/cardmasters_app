@@ -28,13 +28,13 @@ frappe.ui.form.on('Petty Cash Request', {
                 	// Otherwise, show Purchase Invoice and Purchase Receipt buttons
                 	frm.add_custom_button(__('Purchase Invoice'), function() {
                     	frappe.new_doc('Purchase Invoice', {
-                        	'petty_cash_request': frm.doc.name
+                        	'custom_petty_cash_request': frm.doc.name
                     	});
                 	}, 'Create');
 
                 	frm.add_custom_button(__('Purchase Receipt'), function() {
                     	frappe.new_doc('Purchase Receipt', {
-                        	'petty_cash_request': frm.doc.name
+                        	'custom_petty_cash_request': frm.doc.name
                     	});
                 	}, 'Create');
             	}
