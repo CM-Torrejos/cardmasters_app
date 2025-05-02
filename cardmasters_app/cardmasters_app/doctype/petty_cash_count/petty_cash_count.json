@@ -59,7 +59,8 @@
    "default": "150000",
    "fieldname": "starting_petty_cash_fund",
    "fieldtype": "Currency",
-   "label": "Starting Petty Cash Fund"
+   "label": "Starting Petty Cash Fund",
+   "read_only": 1
   },
   {
    "fieldname": "section_break_ceyq",
@@ -143,7 +144,7 @@
    "link_fieldname": "petty_cash_count"
   }
  ],
- "modified": "2025-05-02 01:44:53.481052",
+ "modified": "2025-05-02 09:19:42.002622",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Petty Cash Count",
