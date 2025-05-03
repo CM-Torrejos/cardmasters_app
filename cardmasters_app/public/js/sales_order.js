@@ -39,7 +39,7 @@ frappe.ui.form.on('Sales Order', {
             	args: {
                 	doctype: 'Work Order',
                 	filters: { sales_order: frm.doc.name },
-                	fields: ['name', 'status', 'production_item', 'custom_production_type']
+                	fields: ['name', 'status', 'production_item']
             	},
             	callback: function(response) {
                 	// frappe.show_alert("Work Orders fetched: " + response.message.length); // Debug message
