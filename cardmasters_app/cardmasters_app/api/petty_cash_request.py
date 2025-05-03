@@ -24,4 +24,3 @@ def cancel_request(docname):
     apply_workflow(doc.as_dict(), "Cancel")
     frappe.db.commit()
     return True
-

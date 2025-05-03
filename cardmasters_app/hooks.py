@@ -84,6 +84,15 @@ doctype_js = {
     "Petty Cash Request": "public/js/petty_cash_request.js",
 }
 
+doc_events = {
+	"Petty Cash Voucher": {
+    	"after_submit": "cardmasters_app.cardmasters_app.event_handlers.petty_cash_voucher.update_pcr_onpcv"},
+    "Purchase Receipt": {
+        "after_submit": "cardmasters_app.cardmasters_app.event_handlers.purchase_receipt.update_pcr_onpr"},
+    "Purchase Invoice": {
+        "after_submit": "cardmasters_app.cardmasters_app.event_handlers.sales_invoice.update_pcr_onpi"
+    },
+}
 # Apps
 # ------------------
 
