@@ -30,8 +30,7 @@ frappe.ui.form.on('Petty Cash Count', {
     if (!frm.is_new()) {
       frm.add_custom_button(
         __('Sync Petty Cash Transactions'),
-        () => syncPettyCashTransactions(frm),
-        __('Actions')
+        () => syncPettyCashTransactions(frm)
       );
       // Disable for drafts (docstatus 0), enable for submitted (docstatus 1)
       frm.page.set_button_disabled(
@@ -123,20 +122,46 @@ async function fetchLiquidatedTransactions(frm) {
   });
 
   let total = 0;
-  transactions.forEach(tx => {
+
+  // Create an array of promises for the async frappe.call inside the loop
+  const promises = transactions.map(async (tx) => {
     const row = frm.add_child('liquidated_transactions_table');
     row.petty_cash_request = tx.request;
     row.petty_cash_voucher = tx.voucher_name;
-    row.petty_cash_invoice = tx.invoice_name;
-    row.amount = tx.total_amount_released;
-    total += tx.total_amount_released || 0;
+    row.purchase_invoice = tx.invoice_name;
+
+    // Fetch the grand_total of the Purchase Invoice asynchronously
+    try {
+      const response = await frappe.call({
+        method: 'frappe.client.get',
+        args: {
+          doctype: 'Purchase Invoice',
+          name: tx.invoice_name
+        }
+      });
+
+      const invoice = response.message;
+      if (invoice && invoice.grand_total) {
+        row.amount = invoice.grand_total;
+        total += invoice.grand_total || 0;
+      } else {
+        console.log(`Grand Total not found for Invoice: ${tx.invoice_name}`);
+      }
+    } catch (error) {
+      console.error(`[Sync] Error fetching grand_total for Purchase Invoice ${tx.invoice_name}:`, error);
+    }
   });
 
+  // Wait for all promises to resolve before continuing
+  await Promise.all(promises);
+
+  // Now that all the data has been fetched, update the form fields
   frm.set_value('total_liquidated', total);
-  // ← Correct fieldname here
   frm.refresh_field('liquidated_transactions_table');
   console.log(`[Liq] Added ${transactions.length} rows. Total = ${total}`);
+  console.log('out' + total);
 }
+
 
 function updateCashCountBalance(frm) {
   const u = flt(frm.doc.total_unliquidated);
@@ -147,3 +172,5 @@ function updateCashCountBalance(frm) {
   frm.set_value('balance', balance);
   console.log(`[Balance] ${s} - ${u} + ${l} + ${f} = ${balance}`);
 }
+
+
