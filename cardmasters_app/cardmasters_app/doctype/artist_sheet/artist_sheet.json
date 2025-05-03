@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "naming_series:",
+ "autoname": "format:LAYOUT-{artist}-{sales_order}-{###}",
  "creation": "2025-04-25 11:09:29.485161",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -77,11 +77,11 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-04-26 09:07:28.074777",
+ "modified": "2025-05-03 14:32:52.088775",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Sheet",
- "naming_rule": "By \"Naming Series\" field",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

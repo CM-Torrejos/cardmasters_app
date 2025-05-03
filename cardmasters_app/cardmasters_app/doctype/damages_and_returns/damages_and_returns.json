@@ -14,9 +14,6 @@
   "column_break_esmj",
   "error_type",
   "blame",
-  "section_break_pmib",
-  "correction_work_order",
-  "stock_entry",
   "section_break_cxwc",
   "damaged_or_returned_item",
   "section_break_kydy",
@@ -44,14 +41,16 @@
    "fieldname": "sales_order",
    "fieldtype": "Link",
    "label": "Sales Order",
-   "options": "Sales Order"
+   "options": "Sales Order",
+   "search_index": 1
   },
   {
    "depends_on": "eval:doc.type == 'Damage'",
    "fieldname": "job_card",
    "fieldtype": "Link",
    "label": "Job Card",
-   "options": "Job Card"
+   "options": "Job Card",
+   "search_index": 1
   },
   {
    "fieldname": "column_break_pgtg",
@@ -92,22 +91,6 @@
    "options": "User"
   },
   {
-   "fieldname": "section_break_pmib",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "correction_work_order",
-   "fieldtype": "Link",
-   "label": "Correction Work Order",
-   "options": "Work Order"
-  },
-  {
-   "fieldname": "stock_entry",
-   "fieldtype": "Link",
-   "label": "Stock Entry",
-   "options": "Stock Entry"
-  },
-  {
    "fieldname": "section_break_kydy",
    "fieldtype": "Section Break"
   },
@@ -131,7 +114,7 @@
    "fieldname": "type",
    "fieldtype": "Select",
    "label": "Type",
-   "options": "\nDamage\nReturn",
+   "options": "Damage\nReturn",
    "reqd": 1
   }
  ],
@@ -142,9 +125,13 @@
   {
    "link_doctype": "Stock Entry",
    "link_fieldname": "custom_damages_and_returns"
+  },
+  {
+   "link_doctype": "Stock Entry",
+   "link_fieldname": "custom_damages_and_returns"
   }
  ],
- "modified": "2025-04-29 10:02:23.620078",
+ "modified": "2025-05-03 13:16:43.826447",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damages and Returns",
