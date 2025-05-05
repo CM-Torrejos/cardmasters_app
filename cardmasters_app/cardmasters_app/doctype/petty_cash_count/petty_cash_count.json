@@ -10,6 +10,7 @@
   "date",
   "column_break_yriw",
   "starting_petty_cash_fund",
+  "company",
   "section_break_ceyq",
   "petty_cash_count_table",
   "total_petty_cash_count",
@@ -133,6 +134,12 @@
    "fieldtype": "Table",
    "label": "Liquidated Transactions",
    "options": "Petty Cash Liquidated Table"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
   }
  ],
  "grid_page_length": 50,
@@ -144,7 +151,7 @@
    "link_fieldname": "petty_cash_count"
   }
  ],
- "modified": "2025-05-03 11:47:03.877363",
+ "modified": "2025-05-06 02:40:42.318802",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Petty Cash Count",
