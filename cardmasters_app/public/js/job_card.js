@@ -12,19 +12,20 @@ frappe.ui.form.on("Job Card", {
 // Create Petty Cash Request
 frappe.ui.form.on('Job Card', {
 	refresh: function(frm) {
-    	// Remove ONLY the "Material Request" button from the "Create" menu
-    	frm.remove_custom_button('Material Request');
+	  // Petty Cash Request under the Create menu
+	  frm.add_custom_button(__('Petty Cash Request'), () => {
+		frappe.new_doc('Petty Cash Request', {
+		  job_card: frm.doc.name
+		});
+	  }, __('Create'));
+  
+	  // Damages and Returns under the Create menu
+	  frm.add_custom_button(__('Damages and Returns'), () => {
+		frappe.new_doc('Damages and Returns', {
+		  job_card: frm.doc.name
+		});
+	  }, __('Create'));
 
-    	frm.add_custom_button('Create Petty Cash Request', () => {
-        	frappe.new_doc('Petty Cash Request', {
-            	job_card: frm.doc.name
-        	}, 'Create');
-    	});
-
-		frm.add_custom_button('Create Damages and Returns', () => {
-        	frappe.new_doc('Damages and Returns', {
-            	job_card: frm.doc.name
-        	}, 'Create');
-    	});
 	}
-});
+  });
+  
