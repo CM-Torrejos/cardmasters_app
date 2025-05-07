@@ -57,15 +57,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-04-28 05:41:13.884843",
-  "name": "Pending Client Approval",
-  "style": "",
-  "workflow_state_name": "Pending Client Approval"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-04-28 05:16:22.085866",
   "name": "Invoiced",
   "style": "",
@@ -101,6 +92,15 @@
  {
   "docstatus": 0,
   "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-28 05:41:13.884843",
+  "name": "Pending Client Approval",
+  "style": "",
+  "workflow_state_name": "Pending Client Approval"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
   "icon": "ok-sign",
   "modified": "2025-04-24 12:11:30.784826",
   "name": "Approved",
@@ -111,19 +111,19 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-04-28 05:15:12.134310",
-  "name": "Draft",
+  "modified": "2025-04-28 05:15:24.755572",
+  "name": "Pending Approval",
   "style": "",
-  "workflow_state_name": "Draft"
+  "workflow_state_name": "Pending Approval"
  },
  {
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-04-28 05:15:24.755572",
-  "name": "Pending Approval",
+  "modified": "2025-04-28 05:15:12.134310",
+  "name": "Draft",
   "style": "",
-  "workflow_state_name": "Pending Approval"
+  "workflow_state_name": "Draft"
  },
  {
   "docstatus": 0,

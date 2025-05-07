@@ -271,5 +271,68 @@
   "status": "Open",
   "user": null,
   "workflow_state": "Layouting"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "System Manager",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-05-07 09:28:08.211400",
+  "name": "9sir9f8s52",
+  "permitted_roles": [
+   {
+    "parent": "9sir9f8s52",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "System Manager"
+   }
+  ],
+  "reference_doctype": "Artist Sheet",
+  "reference_name": "LAYOUT-Guest-SAL-ORD-2025-00004-017",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "System Manager",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-05-07 09:28:10.097947",
+  "name": "9t5tgk701h",
+  "permitted_roles": [
+   {
+    "parent": "9t5tgk701h",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "System Manager"
+   }
+  ],
+  "reference_doctype": "Artist Sheet",
+  "reference_name": "LAYOUT-Guest-SAL-ORD-2025-00004-017",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Layouting"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "System Manager",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-05-07 09:28:24.480478",
+  "name": "a1kq070m1r",
+  "permitted_roles": [
+   {
+    "parent": "a1kq070m1r",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "System Manager"
+   }
+  ],
+  "reference_doctype": "Artist Sheet",
+  "reference_name": "LAYOUT-Guest-SAL-ORD-2025-00004-017",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Pending Client Approval"
  }
 ]
