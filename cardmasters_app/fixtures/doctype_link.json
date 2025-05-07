@@ -34,23 +34,6 @@
   "table_fieldname": null
  },
  {
-  "custom": 0,
-  "docstatus": 0,
-  "doctype": "DocType Link",
-  "group": null,
-  "hidden": 0,
-  "is_child_table": 0,
-  "link_doctype": "Stock Entry",
-  "link_fieldname": "custom_damages_and_returns",
-  "modified": "2025-04-29 10:02:23.620078",
-  "name": "vusc87sti3",
-  "parent": "Damages and Returns",
-  "parent_doctype": null,
-  "parentfield": "links",
-  "parenttype": "DocType",
-  "table_fieldname": null
- },
- {
   "custom": 1,
   "docstatus": 0,
   "doctype": "DocType Link",
@@ -82,6 +65,40 @@
   "parent_doctype": null,
   "parentfield": "links",
   "parenttype": "Customize Form",
+  "table_fieldname": null
+ },
+ {
+  "custom": 0,
+  "docstatus": 0,
+  "doctype": "DocType Link",
+  "group": null,
+  "hidden": 0,
+  "is_child_table": 0,
+  "link_doctype": "Stock Entry",
+  "link_fieldname": "custom_damages_and_returns",
+  "modified": "2025-05-03 13:16:43.826447",
+  "name": "07ennj4g50",
+  "parent": "Damages and Returns",
+  "parent_doctype": null,
+  "parentfield": "links",
+  "parenttype": "DocType",
+  "table_fieldname": null
+ },
+ {
+  "custom": 0,
+  "docstatus": 0,
+  "doctype": "DocType Link",
+  "group": null,
+  "hidden": 0,
+  "is_child_table": 0,
+  "link_doctype": "Stock Entry",
+  "link_fieldname": "custom_damages_and_returns",
+  "modified": "2025-05-03 13:16:43.826447",
+  "name": "vusc87sti3",
+  "parent": "Damages and Returns",
+  "parent_doctype": null,
+  "parentfield": "links",
+  "parenttype": "DocType",
   "table_fieldname": null
  }
 ]

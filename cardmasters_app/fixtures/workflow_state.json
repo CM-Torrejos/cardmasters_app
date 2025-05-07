@@ -57,10 +57,10 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-04-28 05:15:24.755572",
-  "name": "Pending Approval",
+  "modified": "2025-04-28 05:41:13.884843",
+  "name": "Pending Client Approval",
   "style": "",
-  "workflow_state_name": "Pending Approval"
+  "workflow_state_name": "Pending Client Approval"
  },
  {
   "docstatus": 0,
@@ -79,6 +79,24 @@
   "name": "Received and Invoiced",
   "style": "",
   "workflow_state_name": "Received and Invoiced"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-28 05:15:42.107100",
+  "name": "Cash Released",
+  "style": "",
+  "workflow_state_name": "Cash Released"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-28 05:16:10.311362",
+  "name": "Item Received",
+  "style": "",
+  "workflow_state_name": "Item Received"
  },
  {
   "docstatus": 0,
@@ -102,19 +120,10 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-04-28 05:15:42.107100",
-  "name": "Cash Released",
+  "modified": "2025-04-28 05:15:24.755572",
+  "name": "Pending Approval",
   "style": "",
-  "workflow_state_name": "Cash Released"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-04-28 05:16:10.311362",
-  "name": "Item Received",
-  "style": "",
-  "workflow_state_name": "Item Received"
+  "workflow_state_name": "Pending Approval"
  },
  {
   "docstatus": 0,
@@ -124,14 +133,5 @@
   "name": "Layouting",
   "style": "",
   "workflow_state_name": "Layouting"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-04-28 05:41:13.884843",
-  "name": "Pending Client Approval",
-  "style": "",
-  "workflow_state_name": "Pending Client Approval"
  }
 ]

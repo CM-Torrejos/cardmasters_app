@@ -23,7 +23,7 @@ fixtures = [
         "doctype": "Property Setter",
         "filters": [
             ["doc_type", "in", [
-                # empty template
+                "Sales Order Item"
             ]]
         ]
     },
