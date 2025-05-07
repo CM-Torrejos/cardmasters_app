@@ -92,6 +92,9 @@ doc_events = {
     "Purchase Invoice": {
         "after_submit": "cardmasters_app.cardmasters_app.event_handlers.sales_invoice.update_pcr_onpi"
     },
+    "Work Order": {
+        "after_insert" : "cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars"
+    },
 }
 # Apps
 # ------------------
