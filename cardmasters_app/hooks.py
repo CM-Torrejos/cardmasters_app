@@ -14,7 +14,8 @@ fixtures = [
             ["dt", "in", [
                 "Sales Order", "Work Order", "Sales Order Item",
                 "Stock Entry", "Sales Invoice", "Payment Entry",
-                "Purchase Receipt", 'Purchase Invoice',
+                "Purchase Receipt", 'Purchase Invoice','Material Request Item',
+                'Stock Entry Detail', 'Stock Entry'
             ]]
         ]
     },
@@ -47,8 +48,6 @@ fixtures = [
     # 3) All States for those workflows
     {"doctype": "Workflow State"},
 
-    # 4) All Actions (transitions) for those workflows
-    {"doctype": "Workflow Action"},
 
     # 5) DocType Links
     {
@@ -86,15 +85,20 @@ doctype_js = {
 
 doc_events = {
 	"Petty Cash Voucher": {
-    	"after_submit": "cardmasters_app.cardmasters_app.event_handlers.petty_cash_voucher.update_pcr_onpcv"},
+    	"after_submit": "cardmasters_app.cardmasters_app.event_handlers.petty_cash_voucher.update_pcr_onpcv"
+    },
     "Purchase Receipt": {
-        "after_submit": "cardmasters_app.cardmasters_app.event_handlers.purchase_receipt.update_pcr_onpr"},
+        "after_submit": "cardmasters_app.cardmasters_app.event_handlers.purchase_receipt.update_pcr_onpr"
+    },
     "Purchase Invoice": {
         "after_submit": "cardmasters_app.cardmasters_app.event_handlers.sales_invoice.update_pcr_onpi"
     },
     "Work Order": {
         "after_insert" : "cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars"
     },
+    "Stock Entry": {
+        "before_submit": "cardmasters_app.cardmasters_app.event_handlers.stock_entry.create_batches_on_update"
+    }
 }
 # Apps
 # ------------------
