@@ -1,0 +1,41 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-05-10 11:34:02.175292",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "subclass_options",
+  "price_allocation"
+ ],
+ "fields": [
+  {
+   "fieldname": "subclass_options",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Subclass Options",
+   "options": "EMBROIDERY\nDIRECT TO FILM\nUV DIRECT TO FILM\nFOIL STAMP\nSUBLIMATION PRINTING\nSILKSCREEN PRINTING\nTAILORING\nRETAIL"
+  },
+  {
+   "fieldname": "price_allocation",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Price Allocation"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-05-10 13:25:29.763642",
+ "modified_by": "Administrator",
+ "module": "Cardmasters App",
+ "name": "Subclass Breakdown",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
