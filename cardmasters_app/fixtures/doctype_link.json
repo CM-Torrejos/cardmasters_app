@@ -100,5 +100,39 @@
   "parentfield": "links",
   "parenttype": "DocType",
   "table_fieldname": null
+ },
+ {
+  "custom": 0,
+  "docstatus": 0,
+  "doctype": "DocType Link",
+  "group": null,
+  "hidden": 0,
+  "is_child_table": 0,
+  "link_doctype": "Stock Entry",
+  "link_fieldname": "custom_damages_and_returns",
+  "modified": "2025-05-07 11:38:46.190835",
+  "name": "mdt83s3skl",
+  "parent": "Damages and Returns",
+  "parent_doctype": null,
+  "parentfield": "links",
+  "parenttype": "DocType",
+  "table_fieldname": null
+ },
+ {
+  "custom": 0,
+  "docstatus": 0,
+  "doctype": "DocType Link",
+  "group": null,
+  "hidden": 0,
+  "is_child_table": 0,
+  "link_doctype": "Stock Entry",
+  "link_fieldname": "custom_damages_and_returns",
+  "modified": "2025-05-07 11:38:46.190835",
+  "name": "mdtsk1kmdi",
+  "parent": "Damages and Returns",
+  "parent_doctype": null,
+  "parentfield": "links",
+  "parenttype": "DocType",
+  "table_fieldname": null
  }
 ]

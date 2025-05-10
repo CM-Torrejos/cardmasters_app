@@ -120,18 +120,18 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-04-28 05:15:12.134310",
-  "name": "Draft",
+  "modified": "2025-04-28 05:41:02.598889",
+  "name": "Layouting",
   "style": "",
-  "workflow_state_name": "Draft"
+  "workflow_state_name": "Layouting"
  },
  {
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-04-28 05:41:02.598889",
-  "name": "Layouting",
+  "modified": "2025-04-28 05:15:12.134310",
+  "name": "Draft",
   "style": "",
-  "workflow_state_name": "Layouting"
+  "workflow_state_name": "Draft"
  }
 ]

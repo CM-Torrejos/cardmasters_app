@@ -15,7 +15,7 @@ fixtures = [
                 "Sales Order", "Work Order", "Sales Order Item",
                 "Stock Entry", "Sales Invoice", "Payment Entry",
                 "Purchase Receipt", 'Purchase Invoice','Material Request Item',
-                'Stock Entry Detail', 'Stock Entry'
+                'Stock Entry Detail', 'Purchase Order Item'
             ]]
         ]
     },
