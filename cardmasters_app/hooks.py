@@ -21,12 +21,13 @@ fixtures = [
     },
     # 2) Property Setters (overrides to native fields)
     {
-        "doctype": "Property Setter",
-        "filters": [
-            ["doc_type", "in", [
-                "Sales Order Item"
-            ]]
-        ]
+        "doctype": "Property Setter"
+        # ,
+        # "filters": [
+        #     ["doc_type", "in", [
+        #         "Sales Order Item", "Sales Order"
+        #     ]]
+        # ]
     },
     # 2) Workflows on custom doctypes OR overridden core workflows
     {
