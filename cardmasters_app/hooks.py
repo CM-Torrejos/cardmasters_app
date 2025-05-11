@@ -97,9 +97,9 @@ doc_events = {
     "Work Order": {
         "after_insert" : "cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars"
     },
-    "Stock Entry": {
-        "before_submit": "cardmasters_app.cardmasters_app.event_handlers.stock_entry.create_batches_on_update"
-    }
+    # "Stock Entry": {
+    #     "before_submit": "cardmasters_app.cardmasters_app.event_handlers.stock_entry.create_batches_on_update"
+    # }
 }
 # Apps
 # ------------------
