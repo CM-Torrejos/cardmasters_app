@@ -12,22 +12,23 @@ fixtures = [
         "doctype": "Custom Field",
         "filters": [
             ["dt", "in", [
-                "Sales Order", "Work Order", "Sales Order Item",
-                "Stock Entry", "Sales Invoice", "Payment Entry",
-                "Purchase Receipt", 'Purchase Invoice','Material Request Item',
-                'Stock Entry Detail', 'Purchase Order Item'
+                'Artist Sheet', 'Item', 'Material Request Item'
+                'Payment Entry', 'Petty Cash Request', 'Purchase Invoice', 
+                'Purchase Order', 'Purchase Order Item', 'Purchase Receipt', 
+                'Purchase Receipt Item',
+                'Sales Invoice', 'Sales Order', 'Sales Order Item', 'Stock Entry',
+                'Stock Entry Detail', 
+                'Work Order', 'Work Order Item' 
             ]]
         ]
     },
+
     # 2) Property Setters (overrides to native fields)
     {
-        "doctype": "Property Setter"
-        # ,
-        # "filters": [
-        #     ["doc_type", "in", [
-        #         "Sales Order Item", "Sales Order"
-        #     ]]
-        # ]
+        "doctype": "Property Setter",
+        "filters": [
+            ["is_system_generated", "=", 0]
+        ]
     },
     # 2) Workflows on custom doctypes OR overridden core workflows
     {
