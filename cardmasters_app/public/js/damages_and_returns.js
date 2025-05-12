@@ -7,7 +7,7 @@ frappe.ui.form.on('Damages and Returns', {
             custom_damages_and_returns: frm.doc.name,
             purpose: 'Material Issue'
           });
-        }, 'Create'); // Group it under 'Create' if you like
+        }, 'Create'); 
       }
     }
   });
@@ -21,7 +21,7 @@ frappe.ui.form.on('Damages and Returns', {
           frappe.new_doc('Work Order', {
             custom_damages_and_returns: frm.doc.name,
           });
-        }, 'Create'); // Group it under 'Create' if you like
+        }, 'Create'); 
       }
     }
   });

@@ -1,13 +1,11 @@
 import frappe
 from frappe import _
 
-# This module assumes you've added two custom fields:
 # 1. On Stock Entry and Purchase Receipt: "custom_batched" (Check)
 # 2. On each item row: "custom_item_specifics" (Data)
 # 3. On Item master: "custom_requires_custom_batch" (Check)
 
 # Helper to build or fetch batch
-
 def _get_or_create_batch(batch_name, item_code, posting_date):
     # enforce 100-char limit
     name = batch_name[:100]

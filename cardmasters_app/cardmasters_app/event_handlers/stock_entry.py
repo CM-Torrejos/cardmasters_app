@@ -1,12 +1,7 @@
 # this is to strictly update stock entry on item manufacture
-
-# batch_insert_handlers.py
 import frappe
 from frappe import _
 
-# This handler populates `custom_item_details` on Stock Entry items
-# for "Material Transfer for Manufacture" on insert, so that
-# the validate hook can then pick up the correct details.
 
 def inherit_item_details_on_insert(doc, method):
     # Only for Transfer for Manufacture with batching

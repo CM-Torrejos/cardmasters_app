@@ -6,7 +6,7 @@ frappe.ui.form.on('Sales Order', {
             	frappe.new_doc('Petty Cash Request', {
                 	sales_order: frm.doc.name
             	});
-        	}, 'Create'); // This adds it under the 'Create' dropdown
+        	}, 'Create'); 
     	}
 	}
 });
@@ -21,7 +21,7 @@ frappe.ui.form.on('Sales Order', {
                 	sales_order: frm.doc.name,
                 	artist: frm.doc.custom_artist
             	});
-        	}, __('Create')); // The third parameter places it in the "Create" dropdown
+        	}, __('Create')); 
     	}
 	}
 });
