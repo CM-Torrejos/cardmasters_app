@@ -3,8 +3,8 @@ from frappe import _
 
 # This module assumes you've added two custom fields:
 # 1. On Stock Entry and Purchase Receipt: "custom_batched" (Check)
-# 2. On each item row: "custom_item_details" (Data)
-# 3. On Item master: "requires_custom_batch" (Check)
+# 2. On each item row: "custom_item_specifics" (Data)
+# 3. On Item master: "custom_requires_custom_batch" (Check)
 
 # Helper to build or fetch batch
 
@@ -28,7 +28,7 @@ def _process_batched_rows(doc, fetch_so, method):
     errors = []
     for d in doc.items:
         # only process items flagged on the Item master
-        requires_batch = frappe.get_cached_value("Item", d.item_code, "requires_custom_batch")
+        requires_batch = frappe.get_cached_value("Item", d.item_code, "custom_requires_custom_batch")
         if not requires_batch:
             continue
 
@@ -37,7 +37,7 @@ def _process_batched_rows(doc, fetch_so, method):
         if not so_name:
             frappe.throw(_("Row {idx}: Unable to determine linked Sales Order").format(idx=d.idx))
 
-        details = (d.get("custom_item_details") or "").strip()
+        details = (d.get("custom_item_specifics") or "").strip()
         if not details:
             errors.append(_("Row {idx}: Missing Item Details").format(idx=d.idx))
             continue
@@ -79,6 +79,6 @@ def create_batches_on_purchase_receipt(doc, method):
     if not doc.custom_batched:
         return
 
-    # derive sales order from linked Material Request
-    fetch_so = lambda d: frappe.db.get_value("Material Request", d.material_request, "sales_order")
+    # derive sales order directly from each PR Item's sales_order field
+    fetch_so = lambda d: d.get("sales_order")
     _process_batched_rows(doc, fetch_so, method)
