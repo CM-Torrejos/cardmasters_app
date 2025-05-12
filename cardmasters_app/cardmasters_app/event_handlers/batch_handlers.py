@@ -82,3 +82,59 @@ def create_batches_on_purchase_receipt(doc, method):
     # derive sales order directly from each PR Item's sales_order field
     fetch_so = lambda d: d.get("sales_order")
     _process_batched_rows(doc, fetch_so, method)
+
+
+# 4) Material Consumption for Manufacture / Manufacture
+import frappe
+from frappe import _
+
+def after_insert_consume(doc, method):
+    """
+    On validate of a Manufacture Stock Entry, for the “finished good” row:
+      a) pull custom_item_specifics from the Work Order header
+      b) pull batch_no from the consumption (WIP) row
+    """
+    # only for Manufacture entries that opted-in via custom_batched
+    if not getattr(doc, "custom_batched", False) or doc.purpose != "Manufacture":
+        return
+
+    # must reference a Work Order
+    if not doc.work_order:
+        frappe.throw(_("Stock Entry must reference a Work Order"))
+
+    # load the WO
+    wo = frappe.get_doc("Work Order", doc.work_order)
+
+    # grab the WO-level details
+    wo_spec = wo.get("custom_item_specifics") or ""
+
+    # 1) locate the WIP‐consumption row for the production item
+    wip_row = next((
+        item for item in doc.items
+        if item.item_code == wo.production_item
+        and item.s_warehouse == wo.wip_warehouse
+        and not item.t_warehouse  # ensure it's the “removal” line
+    ), None)
+
+    if not wip_row:
+        # dump some debug info so you can see what you're actually getting
+        frappe.errprint("Looking for WIP consumption in:")
+        for item in doc.items:
+            frappe.errprint(f"  idx {item.idx}: code={item.item_code}, s_wh={item.s_warehouse}, t_wh={item.t_warehouse}, qty={item.qty}, actual={item.actual_qty}")
+        frappe.throw(_("Could not find the WIP consumption row for {0}").format(wo.production_item))
+
+    # 2) find the FG receipt row and apply specs + batch
+    fg_row = next((
+        item for item in doc.items
+        if item.item_code == wo.production_item
+        and item.t_warehouse == wo.fg_warehouse
+        and not item.s_warehouse  # ensure it's the “addition” line
+    ), None)
+
+    if not fg_row:
+        frappe.throw(_("Could not find the FG receipt row for {0}").format(wo.production_item))
+
+    # a) copy the WO’s custom details
+    fg_row.custom_item_specifics = wo_spec
+    # b) use the batch from the consumption row
+    fg_row.batch_no = wip_row.batch_no

@@ -5,7 +5,6 @@ frappe.ui.form.on('Stock Entry', {
         !frm.doc.__islocal ||
         frm.doc.docstatus !== 0 ||
         frm.doc.purpose !== 'Material Transfer for Manufacture' ||
-        frm.doc.purpose !== 'Manufacture' ||
         !frm.doc.work_order
       ) return;
   
