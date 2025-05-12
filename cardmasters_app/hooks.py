@@ -82,6 +82,7 @@ doctype_js = {
     "Artist Sheet": "public/js/artist_sheet.js",
     "Work Order": "public/js/work_order.js",
     "Petty Cash Request": "public/js/petty_cash_request.js",
+    "Stock Entry": "public/js/stock_entry.js",
 }
 
 doc_events = {
@@ -97,6 +98,20 @@ doc_events = {
     "Work Order": {
         "after_insert" : "cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars"
     },
+    "Stock Entry": {
+        # "on_insert": [
+        #     "cardmasters_app.cardmasters_app.event_handlers.stock_entry.populate_custom_details_on_insert"
+        # ],
+        "validate": [
+            "cardmasters_app.cardmasters_app.event_handlers.batch_handlers.create_batches_on_material_receipt",
+            "cardmasters_app.cardmasters_app.event_handlers.batch_handlers.assign_batches_for_manufacture"
+        ]
+    },
+    "Purchase Receipt": {
+        "validate": [
+            "cardmasters_app.cardmasters_app.event_handlers.batch_handlers.create_batches_on_purchase_receipt"
+        ]
+    }
     # "Stock Entry": {
     #     "before_submit": "cardmasters_app.cardmasters_app.event_handlers.stock_entry.create_batches_on_update"
     # }
