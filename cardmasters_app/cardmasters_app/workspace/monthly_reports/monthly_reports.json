@@ -1,0 +1,76 @@
+{
+ "charts": [
+  {
+   "chart_name": "Sales Order Analysis",
+   "label": "Sales Order Analysis"
+  },
+  {
+   "chart_name": "Cost Center Profitability",
+   "label": "SBU Income (Sales Invoice)"
+  },
+  {
+   "chart_name": "Subclass Revenue (Sales Order)",
+   "label": "Subclass Revenue (Sales Order)"
+  },
+  {
+   "chart_name": "SBU Revenue (Sales Order) Chart",
+   "label": "SBU Revenue (Sales Order)"
+  }
+ ],
+ "content": "[{\"id\":\"V6jnD5IS3C\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Reports</span>\",\"col\":12}},{\"id\":\"qIClpTy6Sa\",\"type\":\"paragraph\",\"data\":{\"text\":\"Monthly\",\"col\":12}},{\"id\":\"0OqMKUMTyg\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Sales (SO Before Taxes)\",\"col\":5}},{\"id\":\"ohYivv6fwl\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Sales (SO After Taxes)\",\"col\":4}},{\"id\":\"dBPEuMkgRh\",\"type\":\"card\",\"data\":{\"card_name\":\"Customers\",\"col\":3}},{\"id\":\"4YPNW5_HKb\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Sales Order Analysis\",\"col\":12}},{\"id\":\"Hc1yvJxJiQ\",\"type\":\"chart\",\"data\":{\"chart_name\":\"SBU Revenue (Sales Order)\",\"col\":12}},{\"id\":\"hcJtJKiOFD\",\"type\":\"chart\",\"data\":{\"chart_name\":\"SBU Income (Sales Invoice)\",\"col\":12}},{\"id\":\"mDrXzpGVdh\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Subclass Revenue (Sales Order)\",\"col\":12}},{\"id\":\"ncnIpQyYyu\",\"type\":\"card\",\"data\":{\"card_name\":\"Quick Links\",\"col\":4}}]",
+ "creation": "2025-05-13 03:24:46.223660",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "chart",
+ "idx": 0,
+ "indicator_color": "",
+ "is_hidden": 0,
+ "label": "Monthly Reports",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Customers",
+   "link_count": 1,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Top 20",
+   "link_count": 0,
+   "link_to": "Top Customers (Sales Order)",
+   "link_type": "Report",
+   "onboard": 0,
+   "report_ref_doctype": "Sales Order",
+   "type": "Link"
+  }
+ ],
+ "modified": "2025-05-13 19:39:40.497048",
+ "modified_by": "Administrator",
+ "module": "Cardmasters App",
+ "name": "Monthly Reports",
+ "number_cards": [
+  {
+   "label": "Sales (SO Before Taxes)",
+   "number_card_name": "Sum of Amount"
+  },
+  {
+   "label": "Sales (SO After Taxes)",
+   "number_card_name": "Sum of Total"
+  }
+ ],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 2.0,
+ "shortcuts": [],
+ "title": "Monthly Reports"
+}

@@ -72,7 +72,30 @@ fixtures = [
                 # Empty template
             ]]
         ]
-    }
+    },
+
+    {
+        "doctype": "Report",
+        "filters": [
+            ["is_standard", "=", 'No']
+        ]
+    },
+
+    {
+        "doctype": "Dashboard Chart",
+        "filters": [
+            ["is_standard", "=", 'No']
+        ]
+    },
+
+    {
+        "doctype": "Number Card",
+        "filters": [
+            ["is_standard", "=", '0']
+        ]
+    },
+
+
     
 ]
 
@@ -85,6 +108,12 @@ doctype_js = {
     "Petty Cash Request": "public/js/petty_cash_request.js",
     "Stock Entry": "public/js/stock_entry.js",
 }
+
+# load Chart.js legend-filter everywhere
+# RIGHT
+# app_include_js = "/assets/cardmasters_app/js/chart_legend_filter.js"
+# app_include_css = "/assets/cardmasters_app/css/chart_legend_limit.css"
+
 
 doc_events = {
 	"Petty Cash Voucher": {
