@@ -52,18 +52,17 @@ fixtures = [
 
 
     # 5) DocType Links
-    {
-        "doctype": "DocType Link",
-        "filters": [
-            ["parent", "in", [
-                 # Empty template
-                 "Damages and Returns",
-                 "Sales Order",
-                 "Job Card",
-
-            ]]
-        ]
-    },
+    # {
+    #     "doctype": "DocType Link",
+    #     "filters": [
+    #         ["parent", "in", [
+    #              # Empty template
+    #              "Damages and Returns",
+    #              "Sales Order",
+    #              "Job Card",
+    #         ]]
+    #     ]
+    # },
 
     {
         "doctype": "DocType Action",
@@ -90,6 +89,13 @@ fixtures = [
 
     {
         "doctype": "Number Card",
+        "filters": [
+            ["is_standard", "=", '0']
+        ]
+    },
+
+    {
+        "doctype": "Dashboard",
         "filters": [
             ["is_standard", "=", '0']
         ]
