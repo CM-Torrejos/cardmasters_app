@@ -1,0 +1,263 @@
+[
+ {
+  "add_total_row": 0,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "default": null,
+    "fieldname": "company",
+    "fieldtype": "Link",
+    "label": "Company",
+    "mandatory": 1,
+    "options": "Company",
+    "parent": "SBU Revenue (Sales Order)",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "default": null,
+    "fieldname": "from_date",
+    "fieldtype": "Date",
+    "label": "From Date",
+    "mandatory": 1,
+    "options": null,
+    "parent": "SBU Revenue (Sales Order)",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "default": null,
+    "fieldname": "to_date",
+    "fieldtype": "Date",
+    "label": "To Date",
+    "mandatory": 1,
+    "options": null,
+    "parent": "SBU Revenue (Sales Order)",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": null,
+  "json": null,
+  "letter_head": null,
+  "modified": "2025-05-14 10:55:35.139817",
+  "module": "Cardmasters App",
+  "name": "SBU Revenue (Sales Order)",
+  "prepared_report": 0,
+  "query": "SELECT\n  soi.custom_subclass AS `Custom Subclass:Link/Subclass :150`,\n  SUM(soi.amount)     AS `Total Amount:Currency:120`\nFROM `tabSales Order Item` AS soi\nJOIN `tabSales Order`       AS so  ON so.name = soi.parent\nWHERE\n  so.company        = %(company)s\n  AND so.docstatus  = 1\n  AND so.transaction_date\n      BETWEEN %(from_date)s\n          AND %(to_date)s\nGROUP BY\n  soi.custom_subclass\nORDER BY\n  SUM(soi.amount) DESC;\n",
+  "ref_doctype": "Sales Order",
+  "reference_report": null,
+  "report_name": "SBU Revenue (Sales Order)",
+  "report_script": "",
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "parent": "SBU Revenue (Sales Order)",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales User"
+   },
+   {
+    "parent": "SBU Revenue (Sales Order)",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales Manager"
+   },
+   {
+    "parent": "SBU Revenue (Sales Order)",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Maintenance User"
+   },
+   {
+    "parent": "SBU Revenue (Sales Order)",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "SBU Revenue (Sales Order)",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   }
+  ],
+  "timeout": 0
+ },
+ {
+  "add_total_row": 0,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "default": null,
+    "fieldname": "company",
+    "fieldtype": "Link",
+    "label": "Company",
+    "mandatory": 1,
+    "options": "Company",
+    "parent": "Subclass Revenue (Sales Order)",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "default": null,
+    "fieldname": "from_date",
+    "fieldtype": "Date",
+    "label": "From Date",
+    "mandatory": 1,
+    "options": null,
+    "parent": "Subclass Revenue (Sales Order)",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "default": null,
+    "fieldname": "to_date",
+    "fieldtype": "Date",
+    "label": "To Date",
+    "mandatory": 1,
+    "options": null,
+    "parent": "Subclass Revenue (Sales Order)",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": null,
+  "json": null,
+  "letter_head": null,
+  "modified": "2025-05-14 09:41:41.856161",
+  "module": "Cardmasters App",
+  "name": "Subclass Revenue (Sales Order)",
+  "prepared_report": 0,
+  "query": "SELECT\n  soi.custom_subclass AS `Custom Subclass:Link/Subclass:150`,\n  SUM(soi.amount)     AS `Total Amount:Currency:120`\nFROM `tabSales Order Item` AS soi\nJOIN `tabSales Order`       AS so  ON so.name = soi.parent\nWHERE\n  so.company        = %(company)s\n  AND so.docstatus  = 1\n  AND so.transaction_date\n      BETWEEN %(from_date)s\n          AND %(to_date)s\nGROUP BY\n  soi.custom_subclass\nORDER BY\n  SUM(soi.amount) DESC;\n",
+  "ref_doctype": "Sales Order",
+  "reference_report": null,
+  "report_name": "Subclass Revenue (Sales Order)",
+  "report_script": null,
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "parent": "Subclass Revenue (Sales Order)",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts Manager"
+   },
+   {
+    "parent": "Subclass Revenue (Sales Order)",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts User"
+   }
+  ],
+  "timeout": 0
+ },
+ {
+  "add_total_row": 0,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "default": null,
+    "fieldname": "company",
+    "fieldtype": "Link",
+    "label": "Company",
+    "mandatory": 1,
+    "options": "Company",
+    "parent": "Top Customers (Sales Order)",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "default": null,
+    "fieldname": "from_date",
+    "fieldtype": "Date",
+    "label": "From Date",
+    "mandatory": 1,
+    "options": null,
+    "parent": "Top Customers (Sales Order)",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "default": null,
+    "fieldname": "to_date",
+    "fieldtype": "Date",
+    "label": "To Date",
+    "mandatory": 1,
+    "options": null,
+    "parent": "Top Customers (Sales Order)",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": null,
+  "json": null,
+  "letter_head": null,
+  "modified": "2025-05-13 19:32:50.577571",
+  "module": "Cardmasters App",
+  "name": "Top Customers (Sales Order)",
+  "prepared_report": 0,
+  "query": "SELECT\n  so.customer            AS \"Customer:Link/Customer:150\",\n  c.customer_name        AS \"Customer Name:Data:200\",\n  SUM(so.grand_total)    AS \"Total Sales Amount:Currency:150\"\nFROM `tabSales Order` so\nJOIN `tabCustomer` c\n  ON c.name = so.customer\nWHERE\n  so.company = %(company)s\n  AND so.transaction_date BETWEEN %(from_date)s AND %(to_date)s\n  AND so.docstatus = 1\nGROUP BY\n  so.customer,\n  c.customer_name\nORDER BY\n  SUM(so.grand_total) DESC\nLIMIT 20\n",
+  "ref_doctype": "Sales Order",
+  "reference_report": null,
+  "report_name": "Top Customers (Sales Order)",
+  "report_script": null,
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "parent": "Top Customers (Sales Order)",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales User"
+   },
+   {
+    "parent": "Top Customers (Sales Order)",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales Manager"
+   },
+   {
+    "parent": "Top Customers (Sales Order)",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Maintenance User"
+   },
+   {
+    "parent": "Top Customers (Sales Order)",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "Top Customers (Sales Order)",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   }
+  ],
+  "timeout": 0
+ }
+]

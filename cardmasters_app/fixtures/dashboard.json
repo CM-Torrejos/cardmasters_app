@@ -1,0 +1,57 @@
+[
+ {
+  "cards": [
+   {
+    "card": "Sum of Amount",
+    "parent": "REPORTS",
+    "parentfield": "cards",
+    "parenttype": "Dashboard"
+   },
+   {
+    "card": "Sum of Total",
+    "parent": "REPORTS",
+    "parentfield": "cards",
+    "parenttype": "Dashboard"
+   }
+  ],
+  "chart_options": "{\"colors\": [\"#F86A16\", \"#1F327C\", \"#ffffff\"]}",
+  "charts": [
+   {
+    "chart": "Sales Order Analysis",
+    "parent": "REPORTS",
+    "parentfield": "charts",
+    "parenttype": "Dashboard",
+    "width": "Half"
+   },
+   {
+    "chart": "SBU Revenue (Sales Order) Chart",
+    "parent": "REPORTS",
+    "parentfield": "charts",
+    "parenttype": "Dashboard",
+    "width": "Half"
+   },
+   {
+    "chart": "Cost Center Profitability",
+    "parent": "REPORTS",
+    "parentfield": "charts",
+    "parenttype": "Dashboard",
+    "width": "Half"
+   },
+   {
+    "chart": "Subclass Revenue (Sales Order) Chart",
+    "parent": "REPORTS",
+    "parentfield": "charts",
+    "parenttype": "Dashboard",
+    "width": "Half"
+   }
+  ],
+  "dashboard_name": "REPORTS",
+  "docstatus": 0,
+  "doctype": "Dashboard",
+  "is_default": 0,
+  "is_standard": 0,
+  "modified": "2025-05-14 11:38:04.952968",
+  "module": null,
+  "name": "REPORTS"
+ }
+]
