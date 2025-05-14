@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class SubclassBreakdown(Document):
+class Subclass(Document):
 	pass
