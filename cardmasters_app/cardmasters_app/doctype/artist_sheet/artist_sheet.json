@@ -9,11 +9,16 @@
   "sales_order",
   "artist",
   "column_break_eojj",
-  "sbu",
   "naming_series",
+  "section_break_wifg",
+  "expected_starting_datetime",
+  "column_break_fqkx",
+  "expected_finished_datetime",
+  "expected_total_time",
   "section_break_ingn",
   "timesheet",
   "total_time_in_minutes",
+  "time_difference",
   "section_break_mwjg",
   "remarks"
  ],
@@ -39,14 +44,9 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "sbu",
-   "fieldtype": "Select",
-   "label": "SBU",
-   "options": "\nGarments\nSignages\nAwards and Crafts\nPicture Frames and Prints\nPackaging and Labels\nWood Carving and Engraving"
-  },
-  {
    "fieldname": "naming_series",
    "fieldtype": "Select",
+   "hidden": 1,
    "label": "Naming Series"
   },
   {
@@ -72,12 +72,40 @@
    "fieldname": "total_time_in_minutes",
    "fieldtype": "Float",
    "label": "Total Time in Minutes"
+  },
+  {
+   "fieldname": "section_break_wifg",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_fqkx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "expected_finished_datetime",
+   "fieldtype": "Datetime",
+   "label": "Expected Finish Date / Time"
+  },
+  {
+   "fieldname": "expected_total_time",
+   "fieldtype": "Float",
+   "label": "Expected Total Time (in mins)"
+  },
+  {
+   "fieldname": "time_difference",
+   "fieldtype": "Float",
+   "label": "Time Difference"
+  },
+  {
+   "fieldname": "expected_starting_datetime",
+   "fieldtype": "Datetime",
+   "label": "Expected Starting Date / Time"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-03 14:32:52.088775",
+ "modified": "2025-05-16 16:37:11.943930",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Sheet",
