@@ -78,7 +78,7 @@ def create_batches_on_purchase_receipt(doc, method):
         return
 
     # derive sales order directly from each PR Item's sales_order field
-    fetch_so = lambda d: d.get("sales_order")
+    fetch_so = lambda d: d.get("sales_order") or d.get("item_code")
     _process_batched_rows(doc, fetch_so, method)
 
 
