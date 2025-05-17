@@ -48,7 +48,7 @@ frappe.ui.form.on('Artist Sheet', {
 	const total = frm.doc.timesheet
 	  .reduce((sum, r) => sum + (r.time_in_minutes || 0), 0);
   
-	frm.set_value('total_time_in_minutes', total);
+	frm.set_value('finished_total_time', total);
 	return frm.save();
   }
   

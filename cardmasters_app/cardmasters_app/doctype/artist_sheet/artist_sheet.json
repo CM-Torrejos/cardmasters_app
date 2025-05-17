@@ -10,6 +10,8 @@
   "artist",
   "column_break_eojj",
   "naming_series",
+  "date_created",
+  "difficulty",
   "section_break_wifg",
   "expected_starting_datetime",
   "column_break_fqkx",
@@ -17,7 +19,7 @@
   "expected_total_time",
   "section_break_ingn",
   "timesheet",
-  "total_time_in_minutes",
+  "finished_total_time",
   "time_difference",
   "section_break_mwjg",
   "remarks"
@@ -29,14 +31,15 @@
    "in_list_view": 1,
    "label": "Sales Order",
    "options": "Sales Order",
-   "reqd": 1
+   "reqd": 1,
+   "search_index": 1
   },
   {
    "fieldname": "artist",
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Artist",
-   "options": "User",
+   "options": "Employee",
    "reqd": 1
   },
   {
@@ -69,11 +72,6 @@
    "options": "Artist Timesheet"
   },
   {
-   "fieldname": "total_time_in_minutes",
-   "fieldtype": "Float",
-   "label": "Total Time in Minutes"
-  },
-  {
    "fieldname": "section_break_wifg",
    "fieldtype": "Section Break"
   },
@@ -84,12 +82,15 @@
   {
    "fieldname": "expected_finished_datetime",
    "fieldtype": "Datetime",
-   "label": "Expected Finish Date / Time"
+   "label": "Expected Finish Date / Time",
+   "reqd": 1
   },
   {
    "fieldname": "expected_total_time",
    "fieldtype": "Float",
-   "label": "Expected Total Time (in mins)"
+   "label": "Expected Total Time (in mins)",
+   "non_negative": 1,
+   "reqd": 1
   },
   {
    "fieldname": "time_difference",
@@ -99,13 +100,32 @@
   {
    "fieldname": "expected_starting_datetime",
    "fieldtype": "Datetime",
-   "label": "Expected Starting Date / Time"
+   "label": "Expected Starting Date / Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "difficulty",
+   "fieldtype": "Select",
+   "label": "Difficulty",
+   "options": "1\n2\n3",
+   "reqd": 1
+  },
+  {
+   "fieldname": "date_created",
+   "fieldtype": "Date",
+   "label": "Date Created",
+   "reqd": 1
+  },
+  {
+   "fieldname": "finished_total_time",
+   "fieldtype": "Float",
+   "label": "Total Time in Minutes"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-16 16:37:11.943930",
+ "modified": "2025-05-17 08:29:01.332970",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Sheet",

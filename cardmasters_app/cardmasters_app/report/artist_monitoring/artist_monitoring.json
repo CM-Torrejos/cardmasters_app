@@ -1,0 +1,52 @@
+{
+ "add_total_row": 0,
+ "add_translate_data": 0,
+ "columns": [],
+ "creation": "2025-05-16 23:01:33.098442",
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "mandatory": 0,
+   "options": "pending\nfinished",
+   "wildcard_filter": 0
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date",
+   "mandatory": 0,
+   "wildcard_filter": 0
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date",
+   "mandatory": 0,
+   "wildcard_filter": 0
+  }
+ ],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letterhead": null,
+ "modified": "2025-05-17 08:13:40.442361",
+ "modified_by": "Administrator",
+ "module": "Cardmasters App",
+ "name": "Artist Monitoring",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "ref_doctype": "Artist Sheet",
+ "report_name": "Artist Monitoring",
+ "report_script": "def execute(filters=None):\n    filters = filters or {}\n    status = filters.get(\"status\") or \"pending\"\n\n    # pick the right operator\n    op = \"!=\" if status == \"pending\" else \"=\"\n\n    # get only the sheets we care about\n    sheets = frappe.get_all(\n        \"Artist Sheet\",\n        filters = {\n            \"workflow_state\": [op, \"Client Approved\"]\n        },\n        fields = [\"name\", \"artist\", \"workflow_state\"],\n        order_by = \"artist, name\"\n    )\n\n    # build rows, blanking out repeated artist names\n    data = []\n    last_artist = None\n    for s in sheets:\n        artist = s.get(\"artist\")\n        data.append({\n            \"artist\": artist if artist != last_artist else \"\",\n            \"sheet\":  s.get(\"name\"),\n            \"state\":  s.get(\"workflow_state\")\n        })\n        last_artist = artist\n\n    # define your columns\n    columns = [\n        {\"fieldname\":\"artist\", \"label\":\"Artist\",       \"fieldtype\":\"Link\", \"options\":\"User\",         \"width\":150},\n        {\"fieldname\":\"sheet\",  \"label\":\"Artist Sheet\", \"fieldtype\":\"Link\", \"options\":\"Artist Sheet\", \"width\":200},\n        {\"fieldname\":\"state\",  \"label\":\"Workflow State\",\"fieldtype\":\"Data\", \"width\":150}\n    ]\n\n    return columns, data",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "System Manager"
+  }
+ ],
+ "timeout": 0
+}
