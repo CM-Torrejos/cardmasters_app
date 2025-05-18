@@ -1,0 +1,265 @@
+diff --git a/cardmasters_app/cardmasters_app/event_handlers/batch_handlers.py b/cardmasters_app/cardmasters_app/event_handlers/batch_handlers.py
+index a8bc2e3..3e402f2 100644
+--- a/cardmasters_app/cardmasters_app/event_handlers/batch_handlers.py
++++ b/cardmasters_app/cardmasters_app/event_handlers/batch_handlers.py
+@@ -5,28 +5,31 @@ from frappe import _
+ # 2. On each item row: "custom_item_specifics" (Data)
+ # 3. On Item master: "custom_requires_custom_batch" (Check)
+ 
+-# Helper to build or fetch batch
+-def _get_or_create_batch(batch_name, item_code, posting_date):
+-    # enforce 100-char limit
+-    name = batch_name[:100]
+-    if not frappe.db.exists("Batch", name):
+-        try:
+-            frappe.get_doc({
+-                "doctype": "Batch",
+-                "batch_id": name,
+-                "item": item_code,
+-                "fifo_date": posting_date
+-            }).insert(ignore_permissions=True)
+-        except frappe.DuplicateEntryError:
+-            frappe.db.rollback()
+-    return name
++# Function removed and logic incorporated into _process_batched_rows
+ 
+ 
+ def _process_batched_rows(doc, fetch_so, method):
+     errors = []
++
++    # Get all unique item codes first
++    item_codes = list(set(d.item_code for d in doc.items))
++
++    # Batch fetch all item flags in a single query
++    item_batch_flags = {}
++    if item_codes:
++        batch_flags = frappe.get_all(
++            "Item",
++            filters={"name": ["in", item_codes]},
++            fields=["name", "custom_requires_custom_batch"]
++        )
++        item_batch_flags = {item.name: item.custom_requires_custom_batch for item in batch_flags}
++
++    # Collect batch creation data
++    batches_to_create = []
++
+     for d in doc.items:
+         # only process items flagged on the Item master
+-        requires_batch = frappe.get_cached_value("Item", d.item_code, "custom_requires_custom_batch")
++        requires_batch = item_batch_flags.get(d.item_code)
+         if not requires_batch:
+             continue
+ 
+@@ -40,12 +43,40 @@ def _process_batched_rows(doc, fetch_so, method):
+             errors.append(_("Row {idx}: Missing Item Details").format(idx=d.idx))
+             continue
+ 
+-        batch_name = f"{so_name} : {details}"
+-        d.batch_no = _get_or_create_batch(batch_name, d.item_code, doc.posting_date)
++        batch_name = f"{so_name} : {details}"[:100]  # Enforce 100-char limit
++
++        # Store the batch name for later assignment
++        d.batch_no = batch_name
++
++        # Add to list of batches to potentially create
++        batches_to_create.append({
++            "batch_id": batch_name,
++            "item_code": d.item_code,
++            "posting_date": doc.posting_date
++        })
+ 
+     if errors:
+         frappe.throw("<br>".join(errors))
+ 
++    # Bulk check which batches already exist
++    if batches_to_create:
++        batch_names = [b["batch_id"] for b in batches_to_create]
++        existing_batches = frappe.get_all("Batch", filters={"batch_id": ["in", batch_names]}, pluck="batch_id")
++        existing_batches_set = set(existing_batches)
++
++        # Create only the batches that don't exist yet
++        for batch_data in batches_to_create:
++            if batch_data["batch_id"] not in existing_batches_set:
++                try:
++                    frappe.get_doc({
++                        "doctype": "Batch",
++                        "batch_id": batch_data["batch_id"],
++                        "item": batch_data["item_code"],
++                        "fifo_date": batch_data["posting_date"]
++                    }).insert(ignore_permissions=True)
++                except frappe.DuplicateEntryError:
++                    frappe.db.rollback()
++
+ 
+ # 1) Material Receipt for CLIENT items
+ 
+diff --git a/cardmasters_app/public/js/sales_order.js b/cardmasters_app/public/js/sales_order.js
+index 2be8907..01f58c4 100644
+--- a/cardmasters_app/public/js/sales_order.js
++++ b/cardmasters_app/public/js/sales_order.js
+@@ -6,7 +6,7 @@ frappe.ui.form.on('Sales Order', {
+             	frappe.new_doc('Petty Cash Request', {
+                 	sales_order: frm.doc.name
+             	});
+-        	}, 'Create'); 
++        	}, 'Create');
+     	}
+ 	}
+ });
+@@ -21,41 +21,52 @@ frappe.ui.form.on('Sales Order', {
+                 	sales_order: frm.doc.name,
+                 	artist: frm.doc.custom_artist
+             	});
+-        	}, __('Create')); 
++        	}, __('Create'));
+     	}
+ 	}
+ });
+ 
+-// TODO: Optimize Script
+-// Show Work Order Progress
++// Optimized Work Order Progress display
+ frappe.ui.form.on('Sales Order', {
+ 	refresh: function(frm) {
+     	// Ensure the Sales Order is saved before fetching Work Orders
+     	if (!frm.doc.__islocal) {
+-        	// frappe.show_alert("Fetching Work Orders..."); // Debugging message
+-
++        	// Use a more efficient query with limit and order
+         	frappe.call({
+             	method: 'frappe.client.get_list',
+             	args: {
+                 	doctype: 'Work Order',
+                 	filters: { sales_order: frm.doc.name },
+-                	fields: ['name', 'status', 'production_item']
++                	fields: ['name', 'status', 'production_item'],
++                    order_by: 'creation DESC',
++                    limit_page_length: 50 // Limit to a reasonable number
+             	},
+             	callback: function(response) {
+-                	// frappe.show_alert("Work Orders fetched: " + response.message.length); // Debug message
+-                	console.log(response.message);
++                	// Prepare the HTML outside the loop for better performance
++                	if (response.message && response.message.length > 0) {
++                    	const rows = response.message.map(wo => `
++                            <tr>
++                                <td><a href="/app/work-order/${wo.name}" target="_blank">${wo.name}</a></td>
++                                <td>${wo.production_item || ''}</td>
++                                <td>${wo.status || ''}</td>
++                            </tr>
++                        `).join('');
++
++                        const html = `
++                            <table class="table table-bordered">
++                                <thead>
++                                    <tr>
++                                        <th>Work Order</th>
++                                        <th>Item</th>
++                                        <th>Progress</th>
++                                    </tr>
++                                </thead>
++                                <tbody>
++                                    ${rows}
++                                </tbody>
++                            </table>
++                        `;
+ 
+-                	if (response.message.length > 0) {
+-                    	let html = '<table class="table table-bordered"><tr><th>Work Order</th><th>Item</th><th>Progress</th></tr>';
+-                    	response.message.forEach(wo => {
+-                        	html += `<tr>
+-                                    	<td><a href="/app/work-order/${wo.name}" target="_blank">${wo.name}</a></td>
+-                                    	<td>${wo.production_item}</td>
+-                                    	
+-                                    	<td>${wo.status}</td>
+-                                	</tr>`;
+-                    	});
+-                    	html += '</table>';
+                     	frm.fields_dict['custom_progress_summary'].$wrapper.html(html);
+                 	} else {
+                     	frm.fields_dict['custom_progress_summary'].$wrapper.html("<p>No Work Orders found.</p>");
+@@ -63,7 +74,7 @@ frappe.ui.form.on('Sales Order', {
+             	}
+         	});
+     	} else {
+-        	frappe.show_alert("Sales Order is not yet saved. Work Orders will load after saving.");
++        	// Don't show alert on every refresh - just update the field
+         	frm.fields_dict['custom_progress_summary'].$wrapper.html("<p>Save the Sales Order to view Work Orders.</p>");
+     	}
+ 	}
+diff --git a/cardmasters_app/public/js/work_order.js b/cardmasters_app/public/js/work_order.js
+index d7362cd..382e038 100644
+--- a/cardmasters_app/public/js/work_order.js
++++ b/cardmasters_app/public/js/work_order.js
+@@ -1,29 +1,48 @@
+-// TODO: optimize script
++// Optimized script - removed TODO
+ frappe.ui.form.on('Work Order', {
+ 	refresh: function(frm) {
+     	// Ensure the Work Order is saved before fetching Job Cards
+     	if (!frm.doc.__islocal) {
++            // Use a more efficient query with limit and order
+         	frappe.call({
+             	method: 'frappe.client.get_list',
+             	args: {
+                 	doctype: 'Job Card',
+                 	filters: { work_order: frm.doc.name },
+-                	fields: ['name', 'status', 'operation', 'employee']
++                	fields: ['name', 'status', 'operation', 'employee'],
++                    order_by: 'creation DESC',
++                    limit_page_length: 50 // Limit to a reasonable number
+             	},
+             	callback: function(response) {
+-                	console.log(response.message);
++                	// Removed console.log for production code
++
++                    // Prepare the HTML outside the loop for better performance
++                	if (response.message && response.message.length > 0) {
++                    	const rows = response.message.map(jc => `
++                            <tr>
++                                <td><a href="/app/job-card/${jc.name}" target="_blank">${jc.name}</a></td>
++                                <td>${jc.operation || ''}</td>
++                                <td>${jc.employee || 'N/A'}</td>
++                                <td>${jc.status || ''}</td>
++                            </tr>
++                        `).join('');
++
++                        const html = `
++                            <table class="table table-bordered">
++                                <thead>
++                                    <tr>
++                                        <th>Job Card</th>
++                                        <th>Operation</th>
++                                        <th>Employee</th>
++                                        <th>Status</th>
++                                    </tr>
++                                </thead>
++                                <tbody>
++                                    ${rows}
++                                </tbody>
++                            </table>
++                        `;
+ 
+-                	if (response.message.length > 0) {
+-                    	let html = '<table class="table table-bordered"><tr><th>Job Card</th><th>Operation</th><th>Employee</th><th>Status</th></tr>';
+-                    	response.message.forEach(jc => {
+-                        	html += `<tr>
+-                                    	<td><a href="/app/job-card/${jc.name}" target="_blank">${jc.name}</a></td>
+-                                    	<td>${jc.operation}</td>
+-                                    	<td>${jc.employee || 'N/A'}</td>
+-                                    	<td>${jc.status}</td>
+-                                	</tr>`;
+-                    	});
+-                    	html += '</table>';
+                     	frm.fields_dict['custom_progress_summary'].$wrapper.html(html);
+                 	} else {
+                     	frm.fields_dict['custom_progress_summary'].$wrapper.html("<p>No Job Cards found.</p>");
+@@ -31,7 +50,7 @@ frappe.ui.form.on('Work Order', {
+             	}
+         	});
+     	} else {
+-        	frappe.show_alert("Work Order is not yet saved. Job Cards will load after saving.");
++        	// Don't show alert on every refresh - just update the field
+         	frm.fields_dict['custom_progress_summary'].$wrapper.html("<p>Save the Work Order to view Job Cards.</p>");
+     	}
+ 	}
