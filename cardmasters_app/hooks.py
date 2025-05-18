@@ -154,8 +154,9 @@ doc_events = {
             "cardmasters_app.cardmasters_app.event_handlers.artist_sheet.calculate_time_difference"
         ] 
     },
-    "Stock Entry": {
-        "before_submit": "cardmasters_app.cardmasters_app.event_handlers.sales_order.before_save"
+    "Sales Order": {
+        "before_save": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.before_save"],
+        "before_update_after_submit": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.before_save"]
     }
 }
 # Apps
