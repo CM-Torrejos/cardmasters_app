@@ -82,15 +82,13 @@
   {
    "fieldname": "expected_finished_datetime",
    "fieldtype": "Datetime",
-   "label": "Expected Finish Date / Time",
-   "reqd": 1
+   "label": "Expected Finish Date / Time"
   },
   {
    "fieldname": "expected_total_time",
    "fieldtype": "Float",
    "label": "Expected Total Time (in mins)",
-   "non_negative": 1,
-   "reqd": 1
+   "non_negative": 1
   },
   {
    "fieldname": "time_difference",
@@ -100,15 +98,13 @@
   {
    "fieldname": "expected_starting_datetime",
    "fieldtype": "Datetime",
-   "label": "Expected Starting Date / Time",
-   "reqd": 1
+   "label": "Expected Starting Date / Time"
   },
   {
    "fieldname": "difficulty",
    "fieldtype": "Select",
    "label": "Difficulty",
-   "options": "1\n2\n3",
-   "reqd": 1
+   "options": "1\n2\n3"
   },
   {
    "fieldname": "date_created",
@@ -125,7 +121,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-17 08:29:01.332970",
+ "modified": "2025-05-18 21:37:33.607397",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Sheet",

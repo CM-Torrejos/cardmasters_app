@@ -1,4 +1,5 @@
 import frappe
+from frappe.utils import nowdate
 
 def calculate_time_difference(doc, method):
     """
