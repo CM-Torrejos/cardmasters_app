@@ -158,6 +158,9 @@ doc_events = {
     },
     "Job Card": {
         "on_update": "cardmasters_app.cardmasters_app.event_handlers.job_card.on_job_card_create_handler"
+    },
+    "Delivery Note": {
+        "validate": "cardmasters_app.cardmasters_app.event_handlers.batch_handlers.assign_batches_on_delivery_note"
     }
 }
 # Apps

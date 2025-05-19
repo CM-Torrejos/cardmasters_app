@@ -136,3 +136,13 @@ def after_insert_consume(doc, method):
     fg_row.custom_item_specifics = wo_spec
     # b) use the batch from the consumption row
     fg_row.batch_no = wip_row.batch_no
+
+
+def assign_batches_on_delivery_note(doc, method):
+    # only run if the DN itself is flagged
+    if not getattr(doc, "custom_batched", False):
+        return
+
+    # for each row, pull the Sales Order link (or fall back to item_code)
+    fetch_so = lambda d: d.get("against_sales_order") or d.get("item_code")
+    _process_batched_rows(doc, fetch_so, method)
