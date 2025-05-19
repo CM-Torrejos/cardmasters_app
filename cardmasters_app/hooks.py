@@ -100,9 +100,6 @@ fixtures = [
             ["is_standard", "=", '0']
         ]
     },
-
-
-    
 ]
 
 doctype_js = {
@@ -113,6 +110,7 @@ doctype_js = {
     "Work Order": "public/js/work_order.js",
     "Petty Cash Request": "public/js/petty_cash_request.js",
     "Stock Entry": "public/js/stock_entry.js",
+    "Purchase Order": "public/js/purchase_order.js",
 }
 
 # load Chart.js legend-filter everywhere
@@ -128,9 +126,9 @@ doc_events = {
     "Purchase Receipt": {
         "after_submit": "cardmasters_app.cardmasters_app.event_handlers.purchase_receipt.update_pcr_onpr"
     },
-    "Purchase Invoice": {
-        "after_submit": "cardmasters_app.cardmasters_app.event_handlers.sales_invoice.update_pcr_onpi"
-    },
+    # "Purchase Invoice": {
+    #     "after_submit": "cardmasters_app.cardmasters_app.event_handlers.sales_invoice.update_pcr_onpi"
+    # },
     "Work Order": {
         "after_insert" : "cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars"
     },
@@ -155,8 +153,8 @@ doc_events = {
         ] 
     },
     "Sales Order": {
-        "before_save": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.before_save"],
-        "before_update_after_submit": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.before_save"]
+        "before_save": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.handle_progress_status"],
+        "before_update_after_submit": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.handle_progress_status"]
     }
 }
 # Apps

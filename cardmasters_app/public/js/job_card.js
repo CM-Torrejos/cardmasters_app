@@ -26,6 +26,13 @@ frappe.ui.form.on('Job Card', {
 		});
 	  }, __('Create'));
 
+	   // Damages and Returns under the Create menu
+	   frm.add_custom_button(__('Damages and Returns'), () => {
+		frappe.new_doc('Damages and Returns', {
+		  job_card: frm.doc.name
+		});
+	  }, __('Create'));
+
 	}
   });
   

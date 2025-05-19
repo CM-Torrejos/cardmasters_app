@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "format:LAYOUT-{artist}-{sales_order}-{###}",
+ "autoname": "format:LAYOUT-{sales_order}-{###}",
  "creation": "2025-04-25 11:09:29.485161",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -121,7 +121,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-18 21:37:33.607397",
+ "modified": "2025-05-18 23:16:40.597099",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Sheet",
