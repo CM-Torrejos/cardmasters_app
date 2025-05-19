@@ -155,6 +155,9 @@ doc_events = {
     "Sales Order": {
         "before_save": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.handle_progress_status"],
         "before_update_after_submit": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.handle_progress_status"]
+    },
+    "Job Card": {
+        "on_update": "cardmasters_app.cardmasters_app.event_handlers.job_card.on_job_card_create_handler"
     }
 }
 # Apps
