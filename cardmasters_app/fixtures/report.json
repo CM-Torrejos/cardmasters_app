@@ -6,6 +6,62 @@
   "disabled": 0,
   "docstatus": 0,
   "doctype": "Report",
+  "filters": [],
+  "is_standard": "No",
+  "javascript": null,
+  "json": null,
+  "letter_head": null,
+  "modified": "2025-05-17 04:08:41.970081",
+  "module": "Cardmasters App",
+  "name": "Sales Order - Artist Sheet Monitoring",
+  "prepared_report": 0,
+  "query": "SELECT\n  so.name          AS \"Sales Order:Link/Sales Order:150\",\n  so.customer      AS \"Customer:Link/Customer:150\",\n  so.transaction_date AS \"Order Date:Date:100\"\nFROM `tabSales Order` so\nLEFT JOIN `tabArtist Sheet` cd\n  ON cd.sales_order = so.name\nWHERE cd.name IS NULL\n  AND so.docstatus < 2\nORDER BY so.transaction_date DESC\n",
+  "ref_doctype": "Sales Order",
+  "reference_report": null,
+  "report_name": "Sales Order - Artist Sheet Monitoring",
+  "report_script": null,
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "parent": "Sales Order - Artist Sheet Monitoring",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales User"
+   },
+   {
+    "parent": "Sales Order - Artist Sheet Monitoring",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales Manager"
+   },
+   {
+    "parent": "Sales Order - Artist Sheet Monitoring",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Maintenance User"
+   },
+   {
+    "parent": "Sales Order - Artist Sheet Monitoring",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "Sales Order - Artist Sheet Monitoring",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   }
+  ],
+  "timeout": 0
+ },
+ {
+  "add_total_row": 0,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
   "filters": [
    {
     "default": null,

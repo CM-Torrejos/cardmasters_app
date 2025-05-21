@@ -2,24 +2,6 @@
  {
   "docstatus": 0,
   "doctype": "Workflow State",
-  "icon": "question-sign",
-  "modified": "2025-04-24 12:11:30.782822",
-  "name": "Pending",
-  "style": "",
-  "workflow_state_name": "Pending"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "remove",
-  "modified": "2025-04-24 12:11:30.786757",
-  "name": "Rejected",
-  "style": "Danger",
-  "workflow_state_name": "Rejected"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
   "icon": "",
   "modified": "2025-04-28 05:15:52.946608",
   "name": "Item Released",
@@ -30,28 +12,10 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-04-28 07:07:20.066013",
-  "name": "Cancelled",
-  "style": "",
-  "workflow_state_name": "Cancelled"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-04-28 05:16:46.347916",
   "name": "Invoiced and Received",
   "style": "",
   "workflow_state_name": "Invoiced and Received"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-04-28 05:41:22.819852",
-  "name": "Client Approved",
-  "style": "",
-  "workflow_state_name": "Client Approved"
  },
  {
   "docstatus": 0,
@@ -93,10 +57,28 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-04-28 05:41:13.884843",
-  "name": "Pending Client Approval",
+  "modified": "2025-05-19 04:38:03.612422",
+  "name": "Saved",
   "style": "",
-  "workflow_state_name": "Pending Client Approval"
+  "workflow_state_name": "Saved"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-28 07:07:20.066013",
+  "name": "Cancelled",
+  "style": "",
+  "workflow_state_name": "Cancelled"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "remove",
+  "modified": "2025-04-24 12:11:30.786757",
+  "name": "Rejected",
+  "style": "Danger",
+  "workflow_state_name": "Rejected"
  },
  {
   "docstatus": 0,
@@ -111,19 +93,73 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-04-28 05:15:24.755572",
+  "modified": "2025-05-17 04:59:56.120535",
   "name": "Pending Approval",
-  "style": "",
+  "style": "Info",
   "workflow_state_name": "Pending Approval"
  },
  {
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-04-28 05:41:02.598889",
-  "name": "Layouting",
+  "modified": "2025-05-19 04:22:33.354416",
+  "name": "Claimed",
+  "style": "Success",
+  "workflow_state_name": "Claimed"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-17 05:00:37.846485",
+  "name": "Client Approved",
+  "style": "Success",
+  "workflow_state_name": "Client Approved"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-17 05:00:31.788551",
+  "name": "Pending Client Approval",
+  "style": "Danger",
+  "workflow_state_name": "Pending Client Approval"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-19 04:23:04.558194",
+  "name": "Claiming",
+  "style": "Inverse",
+  "workflow_state_name": "Claiming"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "question-sign",
+  "modified": "2025-04-24 12:11:30.782822",
+  "name": "Pending",
   "style": "",
-  "workflow_state_name": "Layouting"
+  "workflow_state_name": "Pending"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-19 04:21:43.010823",
+  "name": "Artist",
+  "style": "Info",
+  "workflow_state_name": "Artist"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-19 04:23:13.963387",
+  "name": "Production",
+  "style": "Warning",
+  "workflow_state_name": "Production"
  },
  {
   "docstatus": 0,
@@ -133,5 +169,14 @@
   "name": "Draft",
   "style": "",
   "workflow_state_name": "Draft"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-17 05:00:04.727905",
+  "name": "Layouting",
+  "style": "Warning",
+  "workflow_state_name": "Layouting"
  }
 ]
