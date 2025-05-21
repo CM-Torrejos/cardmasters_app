@@ -38,16 +38,29 @@
   
 
 // Create Petty Cash Request
+// frappe.ui.form.on('Job Card', {
+// 	refresh: function(frm) {
+// 	  // Petty Cash Request under the Create menu
+// 	  frm.add_custom_button(__('Material Request'), () => {
+// 		frappe.new_doc('Material Request', {
+// 		  job_card: frm.doc.name,
+// 		  work_order: frm.doc.work_order,
+// 		  material_request_type: 'Material Transfer',
+// 		  set_warehouse: 'Work In Progress - CM CDO',
+
+// 		});
+// 	  }, __('Create'));
+// 	}
+//   });
+  
+
 frappe.ui.form.on('Job Card', {
 	refresh: function(frm) {
 	  // Petty Cash Request under the Create menu
 	  frm.add_custom_button(__('Material Request'), () => {
-		frappe.new_doc('Material Request', {
-		  job_card: frm.doc.name,
+		frappe.new_doc('Stock Entry', {
+		  stock_entry_type: 'Material Consumption for Manufacture',	
 		  work_order: frm.doc.work_order,
-		  material_request_type: 'Material Transfer',
-		  set_warehouse: 'Work In Progress - CM CDO',
-		  
 		});
 	  }, __('Create'));
 	}

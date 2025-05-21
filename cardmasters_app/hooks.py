@@ -133,9 +133,9 @@ doc_events = {
         "after_insert" : "cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars"
     },
     "Stock Entry": {
-        # "after_insert": [
-        #     "cardmasters_app.cardmasters_app.event_handlers.batch_handlers.after_insert_consume"
-        # ],
+        "after_insert": [
+            "cardmasters_app.cardmasters_app.event_handlers.batch_handlers.after_insert_consume"
+        ],
         "validate": [
             "cardmasters_app.cardmasters_app.event_handlers.batch_handlers.create_batches_on_material_receipt",
             "cardmasters_app.cardmasters_app.event_handlers.batch_handlers.assign_batches_for_manufacture",
