@@ -96,53 +96,36 @@ async function fetchUnliquidatedTransactions(frm) {
 }
 
 //query liquidated transactions 
-async function fetchLiquidatedTransactions(frm){
-    console.log('[Liq] Fetching...');
+async function fetchLiquidatedTransactions(frm) {
+    console.log('[Liq] Fetching…');
     frm.clear_table('liquidated_transactions_table');
-    
-    const { message: transactions = [] } = await frappe.call ({
+
+    const { message: transactions = [] } = await frappe.call({
         method: 'cardmasters_app.cardmasters_app.api.petty_cash_count_dev.get_liquidated_transactions',
-        args: { petty_cash_count: frm.doc.name  },
+        args: { petty_cash_count: frm.doc.name },
     });
+
+    console.log(transactions);
 
     let total = 0;
 
-    const promises = transactions.map( async(tx) => {
+    transactions.forEach(tx => {
         const row = frm.add_child('liquidated_transactions_table');
-        row.material_request = tx.material_request;
-        row.purchase_order = tx.purchase_order;
-        row.purchase_invoice = tx.purchase_invoice;
+        row.material_request   = tx.material_request;
+        row.purchase_order     = tx.purchase_order;
+        row.purchase_receipt   = tx.purchase_receipt;
+        row.purchase_invoice   = tx.purchase_invoice;
+        row.amount_paid        = tx.amount_paid || 0;
 
-        try {
-            const response = await frappe.call({
-                method: 'frappe.client.get',
-                args: {
-                    doctype: 'Purchase Invoice',
-                    name: tx.invoice_name
-                }
-            });
-
-            const invoice = response.message;
-            if (invoice && invoice.grand_total) {
-                row.amount_paid = invoice.grand_total
-                total += invoice.grand_total || 0;
-            }else {
-                console.log(`Grand Total not found for Invoice: ${tx.invoice_name}`);
-            }
-        }catch(err){
-            console.error(`[Sync] Error fetching grand_total for Purchase Invoice ${tx.invoice_name}:`, error);
-        }
-
-        // Let all promises finish before proceeding to set values
-        await Promise.all(promises);
-
-        // Now that all the data has been fetched, update the form fields
-        frm.set_value('total_liquidated', total);
-        frm.refresh_field('liquidated_transactions_table');
-        console.log(`[Liq] Added ${transactions.length} rows. Total = ${total}`);
-        console.log('out' + total);
+        total += row.amount_paid;
     });
+
+    frm.set_value('total_liquidated', total);
+    frm.refresh_field('liquidated_transactions_table');
+
+    console.log(`[Liq] Added ${transactions.length} rows. Total = ${total}`);
 }
+
 
 //update the cash count balance field
 function updateCashCountBalance(frm) {

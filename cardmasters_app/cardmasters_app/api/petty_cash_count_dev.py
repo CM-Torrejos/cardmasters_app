@@ -44,7 +44,7 @@ def get_liquidated_transactions(petty_cash_count):
         FROM `tabPurchase Invoice` pi
         JOIN `tabPurchase Invoice Item` pii
             ON pii.parent = pi.name
-        WHERE pi.custom_revolving_fund = 1
+        WHERE pi.custom_from_revolving_fund = 1
           AND pi.docstatus = 1
           AND pi.posting_date = %(count_date)s
         GROUP BY pi.name, pii.purchase_order, pii.purchase_receipt, pi.grand_total

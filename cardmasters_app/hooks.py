@@ -111,7 +111,8 @@ doctype_js = {
     "Petty Cash Request": "public/js/petty_cash_request.js",
     "Stock Entry": "public/js/stock_entry.js",
     "Purchase Order": "public/js/purchase_order.js",
-    "tester": "public/js/tester.js"
+    "tester": "public/js/tester.js",
+    "Purchase Invoice": "public/js/purchase_invoice.js",
 }
 
 # load Chart.js legend-filter everywhere
