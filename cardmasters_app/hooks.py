@@ -113,6 +113,7 @@ doctype_js = {
     "Purchase Order": "public/js/purchase_order.js",
     "tester": "public/js/tester.js",
     "Purchase Invoice": "public/js/purchase_invoice.js",
+    "Payment Entry": "public/js/payment_entry.js"
 }
 
 # load Chart.js legend-filter everywhere
