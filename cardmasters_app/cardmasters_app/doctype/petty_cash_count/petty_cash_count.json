@@ -8,8 +8,9 @@
  "field_order": [
   "naming_series",
   "date",
+  "sync_transactions",
   "column_break_yriw",
-  "starting_petty_cash_fund",
+  "allocated_revolving_fund",
   "company",
   "section_break_ceyq",
   "petty_cash_count_table",
@@ -49,19 +50,12 @@
   },
   {
    "fieldname": "date",
-   "fieldtype": "Datetime",
+   "fieldtype": "Date",
    "label": "Date "
   },
   {
    "fieldname": "column_break_yriw",
    "fieldtype": "Column Break"
-  },
-  {
-   "default": "150000",
-   "fieldname": "starting_petty_cash_fund",
-   "fieldtype": "Currency",
-   "label": "Starting Petty Cash Fund",
-   "read_only": 1
   },
   {
    "fieldname": "section_break_ceyq",
@@ -99,6 +93,7 @@
   },
   {
    "allow_on_submit": 1,
+   "description": "Formula: allocated_rf - (total_cash_count + total_unliquidated + total_liquidated)",
    "fieldname": "balance",
    "fieldtype": "Currency",
    "label": "Balance",
@@ -140,18 +135,25 @@
    "fieldtype": "Link",
    "label": "Company",
    "options": "Company"
+  },
+  {
+   "default": "150000",
+   "fieldname": "allocated_revolving_fund",
+   "fieldtype": "Currency",
+   "label": "Allocated Revolving Fund",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sync_transactions",
+   "fieldtype": "Button",
+   "label": "Sync Transactions"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
- "links": [
-  {
-   "link_doctype": "Petty Cash Request",
-   "link_fieldname": "petty_cash_count"
-  }
- ],
- "modified": "2025-05-06 02:40:42.318802",
+ "links": [],
+ "modified": "2025-05-26 03:02:02.946872",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Petty Cash Count",

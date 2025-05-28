@@ -167,7 +167,7 @@ function updateCashCountBalance(frm) {
   const u = flt(frm.doc.total_unliquidated);
   const l = flt(frm.doc.total_liquidated);
   const f = flt(frm.doc.total_petty_cash_count);
-  const s = flt(frm.doc.starting_petty_cash_fund);
+  const s = flt(frm.doc.allocated_petty_cash_fund);
   const balance = s - (u + l + f);
   frm.set_value('balance', balance);
   console.log(`[Balance] ${s} - ${u} + ${l} + ${f} = ${balance}`);

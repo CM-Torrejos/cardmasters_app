@@ -18,7 +18,7 @@ def get_liquidated_transactions(petty_cash_count=None):
                 pi.name AS invoice_name,
                 v.total_amount_released
             FROM
-                `tabPetty Cash Request` pcr
+                `tabPurchase Order` po
             INNER JOIN
                 `tabPurchase Invoice` pi
               ON pi.custom_petty_cash_request = pcr.name
@@ -73,3 +73,6 @@ def get_unliquidated_transactions():
     except Exception as e:
         frappe.log_error(f"get_unliquidated_transactions error: {str(e)}")
         frappe.response['message'] = []
+
+
+

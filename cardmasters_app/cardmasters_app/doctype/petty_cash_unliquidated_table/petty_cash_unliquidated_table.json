@@ -6,37 +6,37 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "petty_cash_request",
-  "petty_cash_voucher",
-  "amount"
+  "material_request",
+  "purchase_order",
+  "amount_released"
  ],
  "fields": [
   {
-   "fieldname": "petty_cash_request",
+   "fieldname": "material_request",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Petty Cash Request",
-   "options": "Petty Cash Request"
+   "label": "Material Request",
+   "options": "Material Request"
   },
   {
-   "fieldname": "petty_cash_voucher",
+   "fieldname": "purchase_order",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Petty Cash Voucher",
-   "options": "Petty Cash Voucher"
+   "label": "Purchase Order",
+   "options": "Purchase Order"
   },
   {
-   "fieldname": "amount",
+   "fieldname": "amount_released",
    "fieldtype": "Currency",
    "in_list_view": 1,
-   "label": "Amount"
+   "label": "Amount Released"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-04-26 14:27:24.381970",
+ "modified": "2025-05-28 13:18:51.251909",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Petty Cash Unliquidated Table",
