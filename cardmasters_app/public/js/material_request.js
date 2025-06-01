@@ -4,20 +4,42 @@ frappe.ui.form.on('Material Request', {
     //     add_rcpi_button(frm);
     // },
     
-    refresh: (frm) => {
-        // Only run once the MR is saved/submitted
-        if (frm.doc.docstatus === 1) {
-            // Customer Provided: hide “Material Receipt” and add RCPI
-            if (frm.doc.material_request_type === 'Customer Provided') {
-                setTimeout(() => {
-                    frm.page.remove_inner_button(__('Material Receipt'), __('Create'));
-                }, 100);
-                add_rcpi_button(frm);
-            }
-            // Material Transfer: add your custom Material Transfer button
-            else if (frm.doc.material_request_type === 'Material Transfer') {
-                add_material_transfer_button(frm);
-            }
+    refresh: function(frm) {
+        if (frm.doc.docstatus === 1 && frm.doc.material_request_type === 'Customer Provided') {
+            // Remove the default "Material Receipt" button (if present)
+            setTimeout(() => {
+                frm.page.remove_inner_button(__('Material Receipt'), __('Create'));
+            }, 100);
+
+            // Add our custom "Receive Customer Provided Item" button
+            frm.add_custom_button(__('Receive Customer Provided Item'), async () => {
+                try {
+                    // Call the backend Python function we just created
+                    // No nested callbacks—.then() is optional since we can await
+                    const response = await frappe.call({
+                        method: 'cardmasters_app.cardmasters_app.api.material_request.make_rcpi_stock_entry',
+                        args: {
+                            material_request_name: frm.doc.name
+                        }
+                    });
+
+                    // If the Python call returned a Stock Entry name, redirect to it
+                    if (response.message) {
+                        frappe.set_route('Form', 'Stock Entry', response.message);
+                    }
+                } catch (err) {
+                    // In case something goes wrong, show a frappe error
+                    frappe.show_alert({
+                        message: __('Could not create the Stock Entry: {0}', [err.message]),
+                        indicator: 'red'
+                    });
+                }
+            }, __('Create'));
+        }
+
+        // (Handle the Material Transfer button case here, if you have one)
+        else if (frm.doc.docstatus === 1 && frm.doc.material_request_type === 'Material Transfer') {
+            // … your existing add_material_transfer_button(frm) call
         }
     },
     
