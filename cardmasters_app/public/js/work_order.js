@@ -34,5 +34,15 @@ frappe.ui.form.on('Work Order', {
         	frappe.show_alert("Work Order is not yet saved. Job Cards will load after saving.");
         	frm.fields_dict['custom_progress_summary'].$wrapper.html("<p>Save the Work Order to view Job Cards.</p>");
     	}
+	},
+
+	refresh: (frm) => {
+		frm.add_custom_button('Withdraw More Materials', () => {
+			frappe.new_doc('Material Request', {
+				material_request_type: 'Material Transfer',
+				work_order : frm.doc.name,
+				set_from_warehouse: 'MASTER WAREHOUSE - CM CDO'
+			})
+		})
 	}
 });
