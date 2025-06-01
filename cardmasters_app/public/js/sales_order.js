@@ -1,5 +1,11 @@
 // Create Petty Cash Request
 frappe.ui.form.on('Sales Order', {
+	// onload_post_render: frm => {
+	// 	setTimeout(() => {
+	// 		frm.page.remove_inner_button(__('Material Request'),  __('Create'));
+	// 		}, 1000);
+	// 	},
+
 	refresh(frm) {
     	if (!frm.is_new()) {
         	frm.add_custom_button('Petty Cash Request', () => {
@@ -10,6 +16,7 @@ frappe.ui.form.on('Sales Order', {
     	}
 	}
 });
+
 
 // Create Artist Sheet
 frappe.ui.form.on('Sales Order', {

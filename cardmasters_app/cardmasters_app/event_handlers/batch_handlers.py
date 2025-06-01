@@ -98,7 +98,7 @@ def after_insert_consume(doc, method):
     wip_row = next((
         item for item in doc.items
         if item.item_code == wo.production_item
-        and item.s_warehouse == wo.wip_warehouse
+        # and item.s_warehouse == wo.wip_warehouse
         and not item.t_warehouse
     ), None)
     if not wip_row:
@@ -116,7 +116,7 @@ def after_insert_consume(doc, method):
     fg_row = next((
         item for item in doc.items
         if item.item_code == wo.production_item
-        and item.t_warehouse == wo.fg_warehouse
+        # and item.t_warehouse == wo.fg_warehouse
         and not item.s_warehouse
     ), None)
     if not fg_row:
