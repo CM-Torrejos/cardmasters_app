@@ -1,17 +1,30 @@
 frappe.ui.form.on('Material Request', {
-    refresh(frm) {
-        add_material_transfer_button(frm);
-        add_fetch_batched_button(frm); 
-        add_customer_received_mr_button(frm);
-    },
-
-    refresh: function(frm) {
-        add_material_transfer_button(frm);
-        add_fetch_batched_button(frm); 
-
-        if (frm.doc.purpose === 'Customer Provided' && evaluate_customer_provided(frm)){
-
+    // refresh(frm) {
+    //     add_material_transfer_button(frm); 
+    //     add_rcpi_button(frm);
+    // },
+    
+    refresh: (frm) => {
+        // Only run once the MR is saved/submitted
+        if (frm.doc.docstatus === 1) {
+            // Customer Provided: hide “Material Receipt” and add RCPI
+            if (frm.doc.material_request_type === 'Customer Provided') {
+                setTimeout(() => {
+                    frm.page.remove_inner_button(__('Material Receipt'), __('Create'));
+                }, 100);
+                add_rcpi_button(frm);
+            }
+            // Material Transfer: add your custom Material Transfer button
+            else if (frm.doc.material_request_type === 'Material Transfer') {
+                add_material_transfer_button(frm);
+            }
         }
+    },
+    
+    on_submit: function(frm) {
+        // As soon as submit completes, forcibly reload the form so that
+        // refresh() will see docstatus == 1 and apply your buttons right away.
+        window.location.reload(true);
     },
     
     uom: (frm) => {
@@ -20,7 +33,7 @@ frappe.ui.form.on('Material Request', {
     
     validate: function(frm) {
         // Only enforce when Purpose is exactly "Customer Provided"
-        if (frm.doc.purpose === 'Customer Provided') {
+        if (frm.doc.material_request_type === 'Customer Provided') {
             // If there are no items, nothing to check
             console.log('validate function running')
             if (!frm.doc.items || frm.doc.items.length === 0) {
@@ -77,7 +90,7 @@ function add_material_transfer_button(frm) {
     }, __('Create'));
 }
 
-
+// WIP
 function add_customer_received_mr_button(frm) {
     if (!frm.doc.work_order) return;
     
@@ -134,10 +147,9 @@ function add_customer_received_mr_button(frm) {
     });
 }
 
-function add_material_transfer_button(frm){
-    frm.add_custom_button(__('Receive Customer Provided Item'), () =>{
+function add_rcpi_button(frm) {
+    frm.add_custom_button(__('Receive Customer Provided Item'), () => {
         let sales_order = frm.doc.items[0].sales_order;
-
         let mapped_items = (frm.doc.items || []).map(row => {
             return {
                 item_code: row.item_code,
@@ -155,14 +167,10 @@ function add_material_transfer_button(frm){
         });
         
         frappe.new_doc('Stock Entry', {
-            stock_entry_type:   'Material Receipt',
+            stock_entry_type: 'Material Receipt',
             custom_sales_order: sales_order,
-            items:              mapped_items,
-        })    
-    })
-}
-
-
-function evaluate_customer_provided(frm){
-    
+            items: mapped_items,
+        });
+        
+    }, __('Create'));
 }
