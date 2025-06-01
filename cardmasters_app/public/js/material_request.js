@@ -75,17 +75,33 @@ frappe.ui.form.on('Material Request', {
 
 function add_material_transfer_button(frm) {
     frm.add_custom_button(__('Material Transfer (For Manufacture)'), () => {
-        const items = frm.doc.wo.items.map(r => ({
-            item_code: r.item_code,
-            qty:       r.qty,
-            ...(r.custom_item_specifics ? JSON.parse(r.custom_item_specifics) : {})
-        }));
+        // const items = frm.doc.items.map(r => ({
+        //     item_code: r.item_code,
+        //     qty:       r.qty,
+        //     ...(r.custom_item_specifics ? JSON.parse(r.custom_item_specifics) : {})
+        // }));
+
+        let mapped_items = (frm.doc.items || []).map(row => {
+            return {
+                item_code: row.item_code,
+                qty: row.qty,
+                uom: row.uom,
+                stock_uom: row.stock_uom,
+                transfer_qty: row.qty,
+                t_warehouse: row.warehouse,
+                material_request: frm.doc.name,
+                material_request_item: row.name,
+                basic_rate: '0',
+                custom_item_specifics: row.custom_item_specifics,
+                use_serial_batch_fields: '1'
+            };
+        });
         
         frappe.new_doc('Stock Entry', {
             stock_entry_type:    'Material Transfer for Manufacture',
             work_order:          frm.doc.work_order,
             material_request:    frm.doc.name,
-            items
+            items: mapped_items
         });
     }, __('Create'));
 }
@@ -158,8 +174,6 @@ function add_rcpi_button(frm) {
                 stock_uom: row.stock_uom,
                 transfer_qty: row.qty,
                 t_warehouse: row.warehouse,
-                material_request: frm.doc.name,
-                material_request_item: row.name,
                 basic_rate: '0',
                 custom_item_specifics: row.custom_item_specifics,
                 use_serial_batch_fields: '1'
