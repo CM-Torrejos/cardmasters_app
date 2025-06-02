@@ -78,7 +78,7 @@ async function fetchUnliquidatedTransactions(frm) {
     frm.clear_table('unliquidated_transactions_table');
 
     const { message: transactions = [] } = await frappe.call({
-        method: 'cardmasters_app.cardmasters_app.api.petty_cash_count_dev.get_unliquidated_transactions',
+        method: 'cardmasters_app.cardmasters_app.api.petty_cash_count.get_unliquidated_transactions',
         args: { petty_cash_count: frm.doc.name },
     })
 

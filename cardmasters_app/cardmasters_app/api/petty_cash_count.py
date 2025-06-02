@@ -1,78 +1,56 @@
 import frappe
 
 @frappe.whitelist()
-def get_liquidated_transactions(petty_cash_count=None):
-    print("Server is executing for liquidated")
-    results = []
-
+def get_unliquidated_transactions(petty_cash_count):
+    """Return Purchase Orders with custom_from_revolving_fund == 1 and no linked Purchase Invoices."""
+    query = """
+        SELECT
+            po.name AS purchase_order,
+            GROUP_CONCAT(DISTINCT poi.material_request SEPARATOR ', ') AS material_request,
+            po.custom_amount_released AS amount_released
+        FROM `tabPurchase Order` po
+        JOIN `tabPurchase Order Item` poi
+            ON poi.parent = po.name
+        LEFT JOIN `tabPurchase Invoice Item` pii
+            ON pii.purchase_order = po.name
+        WHERE po.custom_from_revolving_fund = 1
+          AND po.docstatus = 1
+          AND pii.name IS NULL
+        GROUP BY po.name, po.custom_amount_released
+    """
     try:
-        if not petty_cash_count:
-            print(f"Invalid petty_cash_count: {petty_cash_count}")
-            frappe.response['message'] = results
-            return
-
-        query = """
-            SELECT
-                pcr.name AS request,
-                v.name AS voucher_name,
-                pi.name AS invoice_name,
-                v.total_amount_released
-            FROM
-                `tabPurchase Order` po
-            INNER JOIN
-                `tabPurchase Invoice` pi
-              ON pi.custom_petty_cash_request = pcr.name
-            INNER JOIN
-                `tabPetty Cash Voucher` v
-              ON v.petty_cash_request = pcr.name
-            WHERE
-                pcr.petty_cash_count = %s
-              AND pcr.docstatus != 2
-              AND pi.docstatus != 2
-              AND v.docstatus != 2
-        """
-        results = frappe.db.sql(query, values=[petty_cash_count], as_dict=True)
-        print(f"Total results fetched: {len(results)}")
-
-        frappe.response['message'] = results
-
+        return frappe.db.sql(query, as_dict=True)
     except Exception as e:
-        print(f"Error in get_liquidated_transactions: {str(e)}")
-        frappe.response['message'] = []
-
+        frappe.log_error(f"Error fetching unliquidated transactions: {e}", "get_unliquidated_transactions")
+        return []
 
 @frappe.whitelist()
-def get_unliquidated_transactions():
-    print("Server is executing for unliquidated")
+def get_liquidated_transactions(petty_cash_count):
+    """Return Purchase Invoices with custom_revolving_fund == 1 on the Petty Cash Count date."""
     try:
-        print("Script is running!")
-
-        query = """
-            SELECT
-                pcr.name AS request,
-                v.name AS voucher_name,
-                v.total_amount_released
-            FROM
-                `tabPetty Cash Request` pcr
-            LEFT JOIN
-                `tabPurchase Invoice` pi
-              ON pi.custom_petty_cash_request = pcr.name
-            INNER JOIN
-                `tabPetty Cash Voucher` v
-              ON v.petty_cash_request = pcr.name
-            WHERE
-                pi.name IS NULL
-              AND pcr.docstatus != 2
-              AND v.docstatus != 2
-        """
-        results = frappe.db.sql(query, as_dict=True)
-
-        print(f"Total unliquidated transactions: {len(results)}")
-        frappe.response['message'] = results
-
+        pcc = frappe.get_doc('Petty Cash Count', petty_cash_count)
+        count_date = pcc.date
     except Exception as e:
-        frappe.log_error(f"get_unliquidated_transactions error: {str(e)}")
-        frappe.response['message'] = []
+        frappe.log_error(f"Invalid Petty Cash Count: {petty_cash_count} - {e}", "get_liquidated_transactions")
+        return []
 
-
-
+    query = """
+        SELECT
+            pi.name AS purchase_invoice,
+            pii.purchase_order AS purchase_order,
+            pii.purchase_receipt AS purchase_receipt,
+            GROUP_CONCAT(DISTINCT pii.material_request SEPARATOR ', ') AS material_request,
+            pi.grand_total AS amount_paid
+        FROM `tabPurchase Invoice` pi
+        JOIN `tabPurchase Invoice Item` pii
+            ON pii.parent = pi.name
+        WHERE pi.custom_from_revolving_fund = 1
+          AND pi.docstatus = 1
+          AND pi.posting_date = %(count_date)s
+        GROUP BY pi.name, pii.purchase_order, pii.purchase_receipt, pi.grand_total
+    """
+    try:
+        return frappe.db.sql(query, values={"count_date": count_date}, as_dict=True)
+    except Exception as e:
+        frappe.log_error(f"Error fetching liquidated transactions: {e}", "get_liquidated_transactions")
+        return []

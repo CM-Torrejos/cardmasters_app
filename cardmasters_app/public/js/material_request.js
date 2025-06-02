@@ -109,8 +109,7 @@ function add_material_transfer_button(frm) {
         });
     }, __('Create'));
 }
-
-// WIP
+// WIP (May no longer be needed since consumption hapens on finish of work order)
 function add_customer_received_mr_button(frm) {
     if (!frm.doc.work_order) return;
     

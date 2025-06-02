@@ -105,7 +105,7 @@ fixtures = [
 doctype_js = {
     "Sales Order": "public/js/sales_order.js",
     "Job Card": "public/js/job_card.js",
-    "Petty Cash Count": "public/js/petty_cash_count_dev.js",
+    "Petty Cash Count": "public/js/petty_cash_count.js",
     "Artist Sheet": "public/js/artist_sheet.js",
     "Work Order": "public/js/work_order.js",
     "Petty Cash Request": "public/js/petty_cash_request.js",
