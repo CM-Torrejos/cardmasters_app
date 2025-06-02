@@ -35,7 +35,7 @@ def make_rcpi_stock_entry(material_request_name):
             "t_warehouse":               row.warehouse,
             "material_request":          mr.name,
             "material_request_item":     row.name,
-            "basic_rate":                0,
+            "basic_rate":                '0',
             "custom_item_specifics":     row.get("custom_item_specifics"),
             "use_serial_batch_fields":   1
         })
