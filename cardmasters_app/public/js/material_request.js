@@ -1,9 +1,4 @@
-frappe.ui.form.on('Material Request', {
-    // refresh(frm) {
-    //     add_material_transfer_button(frm); 
-    //     add_rcpi_button(frm);
-    // },
-    
+frappe.ui.form.on('Material Request', {    
     refresh: function(frm) {
         if (frm.doc.docstatus === 1 && frm.doc.material_request_type === 'Customer Provided') {
             // Remove the default "Material Receipt" button (if present)
@@ -14,8 +9,7 @@ frappe.ui.form.on('Material Request', {
             // Add our custom "Receive Customer Provided Item" button
             frm.add_custom_button(__('Receive Customer Provided Item'), async () => {
                 try {
-                    // Call the backend Python function we just created
-                    // No nested callbacks—.then() is optional since we can await
+                    // Call the backend Python function
                     const response = await frappe.call({
                         method: 'cardmasters_app.cardmasters_app.api.material_request.make_rcpi_stock_entry',
                         args: {
@@ -38,19 +32,10 @@ frappe.ui.form.on('Material Request', {
         }
 
         // (Handle the Material Transfer button case here, if you have one)
-        else if (frm.doc.docstatus === 1 && frm.doc.material_request_type === 'Material Transfer') {
+        else if (frm.doc.docstatus === 1 && frm.doc.material_request_type === 'Material Transfer' && frm.doc.work_order) {
             // … your existing add_material_transfer_button(frm) call
+            
         }
-    },
-    
-    on_submit: function(frm) {
-        // As soon as submit completes, forcibly reload the form so that
-        // refresh() will see docstatus == 1 and apply your buttons right away.
-        window.location.reload(true);
-    },
-    
-    uom: (frm) => {
-        frm.refresh_field('conversion_factor')
     },
     
     validate: function(frm) {
@@ -90,10 +75,7 @@ frappe.ui.form.on('Material Request', {
             console.log('poggers')
         }
     },
-    
-    
 }); 
-
 
 function add_material_transfer_button(frm) {
     frm.add_custom_button(__('Material Transfer (For Manufacture)'), () => {
