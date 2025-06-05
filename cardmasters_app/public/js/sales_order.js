@@ -58,12 +58,12 @@ frappe.ui.form.on('Sales Order', {
 	
 		// Map state → Frappe colour class
 		const colorMap = {
-		  'Claiming':            'light-blue',
-		  'Pending':			   'yellow',
-		  'Artist':			   'blue',
-		  'Production':		   'orange',
-		  'Claimed':             'green',
-		  'Rejected':            'red',
+		  'Claiming':			'light-blue',
+		  'Pending':			'yellow',
+		  'Artist':				'blue',
+		  'Production':			'orange',
+		  'Claimed':			'green',
+		  'Rejected':			'red',
 		  // …etc
 		};
 		const color = colorMap[state] || 'gray';

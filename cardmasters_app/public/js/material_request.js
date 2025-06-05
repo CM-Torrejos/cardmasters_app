@@ -66,8 +66,6 @@ frappe.ui.form.on('Material Request', {
             if (mismatch) {
                 frappe.throw(__('All items must reference the same Sales Order when Purpose is "Customer Provided".'));
             }
-            
-            console.log('poggers')
         }
     },
 }); 
