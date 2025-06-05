@@ -11,15 +11,7 @@ fixtures = [
     {
         "doctype": "Custom Field",
         "filters": [
-            ["dt", "in", [
-                'Artist Sheet', 'Item', 'Material Request Item'
-                'Payment Entry', 'Petty Cash Request', 'Purchase Invoice', 
-                'Purchase Order', 'Purchase Order Item', 'Purchase Receipt', 
-                'Purchase Receipt Item',
-                'Sales Invoice', 'Sales Order', 'Sales Order Item', 'Stock Entry',
-                'Stock Entry Detail', 
-                'Work Order', 'Work Order Item' 
-            ]]
+            ["is_system_generated", "=", 0]
         ]
     },
 
@@ -30,7 +22,7 @@ fixtures = [
             ["is_system_generated", "=", 0]
         ]
     },
-    # 2) Workflows on custom doctypes OR overridden core workflows
+    # Workflow
     {
         "doctype": "Workflow",
         "or_filters": [
@@ -38,7 +30,10 @@ fixtures = [
             ["document_type", "in", [
                 "Petty Cash Request",
                 "Artist Sheet",
-                "Damages and Returns"
+                "Damages and Returns",
+                'Sales Order',
+                'Quotation',
+                'Material Request'
             ]],
             # capture any core workflows you’ve overridden
             ["name", "in", [
@@ -47,32 +42,10 @@ fixtures = [
         ]
     },
 
-    # 3) All States for those workflows
+    # Workflow states
     {"doctype": "Workflow State"},
 
-
-    # 5) DocType Links
-    # {
-    #     "doctype": "DocType Link",
-    #     "filters": [
-    #         ["parent", "in", [
-    #              # Empty template
-    #              "Damages and Returns",
-    #              "Sales Order",
-    #              "Job Card",
-    #         ]]
-    #     ]
-    # },
-
-    {
-        "doctype": "DocType Action",
-        "filters": [
-            ["parent", "in", [
-                # Empty template
-            ]]
-        ]
-    },
-
+    # Reports
     {
         "doctype": "Report",
         "filters": [
@@ -80,6 +53,7 @@ fixtures = [
         ]
     },
 
+    # Dashboard charts
     {
         "doctype": "Dashboard Chart",
         "filters": [
@@ -87,6 +61,7 @@ fixtures = [
         ]
     },
 
+    # Number Cards
     {
         "doctype": "Number Card",
         "filters": [
@@ -94,6 +69,7 @@ fixtures = [
         ]
     },
 
+    # Dashboards
     {
         "doctype": "Dashboard",
         "filters": [
