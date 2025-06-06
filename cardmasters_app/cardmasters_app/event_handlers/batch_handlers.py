@@ -82,35 +82,35 @@ def create_batches_on_purchase_receipt(doc, method):
 # 4) Material Consumption for Manufacture / Manufacture
 
 def after_insert_consume(doc, method):
-    # only for Manufacture entries that opted-in via custom_batched
-    if not getattr(doc, "custom_batched", False) or doc.purpose != "Manufacture":
-        return
+    # # only for Manufacture entries that opted-in via custom_batched
+    # if not getattr(doc, "custom_batched", False) or doc.purpose != "Manufacture":
+    #     return
 
-    # must reference a Work Order
-    if not doc.work_order:
-        frappe.throw(_("Stock Entry must reference a Work Order"))
+    # # must reference a Work Order
+    # if not doc.work_order:
+    #     frappe.throw(_("Stock Entry must reference a Work Order"))
 
     # load the Work Order
     wo = frappe.get_doc("Work Order", doc.work_order)
     wo_spec = (wo.get("custom_item_specifics") or "").strip()
 
-    # 1) locate the WIP‐consumption row for the production item
-    wip_row = next((
-        item for item in doc.items
-        if item.item_code == wo.production_item
-        # and item.s_warehouse == wo.wip_warehouse
-        and not item.t_warehouse
-    ), None)
-    if not wip_row:
-        frappe.throw(_("Could not find the WIP consumption row for {0}").format(wo.production_item))
+    # # 1) locate the WIP‐consumption row for the production item
+    # wip_row = next((
+    #     item for item in doc.items
+    #     if item.item_code == wo.production_item
+    #     # and item.s_warehouse == wo.wip_warehouse
+    #     and not item.t_warehouse
+    # ), None)
+    # if not wip_row:
+    #     frappe.throw(_("Could not find the WIP consumption row for {0}").format(wo.production_item))
 
-    # ─── Assign the WIP batch on the consumption row ───
-    batch_name = f"{wo.sales_order} : {wo_spec}"
-    wip_row.batch_no = _get_or_create_batch(
-        batch_name,
-        wip_row.item_code,
-        doc.posting_date
-    )
+    # # ─── Assign the WIP batch on the consumption row ───
+    # batch_name = f"{wo.sales_order} : {wo_spec}"
+    # wip_row.batch_no = _get_or_create_batch(
+    #     batch_name,
+    #     wip_row.item_code,
+    #     doc.posting_date
+    # )
 
     # 2) locate the FG receipt row for the production item
     fg_row = next((
@@ -124,7 +124,15 @@ def after_insert_consume(doc, method):
 
     # 3) copy specs and batch to FG row
     fg_row.custom_item_specifics = wo_spec
-    fg_row.batch_no = wip_row.batch_no
+    # fg_row.batch_no = wip_row.batch_no
+
+    # ─── Assign the WIP batch on the consumption row ───
+    batch_name = f"{wo.sales_order} : {wo_spec}"
+    fg_row.batch_no = _get_or_create_batch(
+        batch_name,
+        fg_row.item_code,
+        doc.posting_date
+    )
 
 
 def assign_batches_on_delivery_note(doc, method):
