@@ -10,7 +10,7 @@ fixtures = [
     # 1) Custom Fields 
     {
         "doctype": "Custom Field",
-        "sync_on_migrate": true,
+        "sync_on_migrate": True,
         "filters": [
             ["is_system_generated", "=", 0]
         ]
@@ -19,7 +19,7 @@ fixtures = [
     # 2) Property Setters (overrides to native fields)
     {
         "doctype": "Property Setter",
-        "sync_on_migrate": true,
+        "sync_on_migrate": True,
         "filters": [
             ["is_system_generated", "=", 0]
         ]
@@ -27,7 +27,7 @@ fixtures = [
     # Workflow
     {
         "doctype": "Workflow",
-        "sync_on_migrate": true,
+        "sync_on_migrate": True,
         "or_filters": [
             # auto-capture your custom-doctype workflows
             ["document_type", "in", [
@@ -46,12 +46,12 @@ fixtures = [
     },
 
     # Workflow states
-    {"doctype": "Workflow State", "sync_on_migrate": true,},
+    {"doctype": "Workflow State", "sync_on_migrate": True,},
 
     # Reports
     {
         "doctype": "Report",
-        "sync_on_migrate": true,
+        "sync_on_migrate": True,
         "filters": [
             ["is_standard", "=", 'No']
         ]
@@ -60,7 +60,7 @@ fixtures = [
     # Dashboard charts
     {
         "doctype": "Dashboard Chart",
-        "sync_on_migrate": true,
+        "sync_on_migrate": True,
         "filters": [
             ["is_standard", "=", 'No']
         ]
@@ -69,7 +69,7 @@ fixtures = [
     # Number Cards
     {
         "doctype": "Number Card",
-        "sync_on_migrate": true,
+        "sync_on_migrate": True,
         "filters": [
             ["is_standard", "=", '0']
         ]
@@ -78,7 +78,7 @@ fixtures = [
     # Dashboards
     {
         "doctype": "Dashboard",
-        "sync_on_migrate": true,
+        "sync_on_migrate": True,
         "filters": [
             ["is_standard", "=", '0']
         ]
