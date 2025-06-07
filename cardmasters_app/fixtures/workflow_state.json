@@ -102,28 +102,10 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-05-17 05:00:31.788551",
-  "name": "Pending Client Approval",
-  "style": "Danger",
-  "workflow_state_name": "Pending Client Approval"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-05-19 04:23:04.558194",
   "name": "Claiming",
   "style": "Inverse",
   "workflow_state_name": "Claiming"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-05-19 04:21:43.010823",
-  "name": "Artist",
-  "style": "Info",
-  "workflow_state_name": "Artist"
  },
  {
   "docstatus": 0,
@@ -138,10 +120,28 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-05-19 04:23:13.963387",
-  "name": "Production",
-  "style": "Warning",
-  "workflow_state_name": "Production"
+  "modified": "2025-05-17 04:59:56.120535",
+  "name": "Pending Approval",
+  "style": "Info",
+  "workflow_state_name": "Pending Approval"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-17 05:00:31.788551",
+  "name": "Pending Client Approval",
+  "style": "Danger",
+  "workflow_state_name": "Pending Client Approval"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-19 04:21:43.010823",
+  "name": "Artist",
+  "style": "Info",
+  "workflow_state_name": "Artist"
  },
  {
   "docstatus": 0,
@@ -156,27 +156,27 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-05-17 05:00:04.727905",
-  "name": "Layouting",
-  "style": "Warning",
-  "workflow_state_name": "Layouting"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-05-17 04:59:56.120535",
-  "name": "Pending Approval",
-  "style": "Info",
-  "workflow_state_name": "Pending Approval"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-04-28 05:15:12.134310",
   "name": "Draft",
   "style": "",
   "workflow_state_name": "Draft"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-19 04:23:13.963387",
+  "name": "Production",
+  "style": "Warning",
+  "workflow_state_name": "Production"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-17 05:00:04.727905",
+  "name": "Layouting",
+  "style": "Warning",
+  "workflow_state_name": "Layouting"
  }
 ]
