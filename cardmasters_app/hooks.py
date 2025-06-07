@@ -25,25 +25,7 @@ fixtures = [
         ]
     },
     # Workflow
-    {
-        "doctype": "Workflow",
-        "sync_on_migrate": True,
-        "or_filters": [
-            # auto-capture your custom-doctype workflows
-            ["document_type", "in", [
-                "Petty Cash Request",
-                "Artist Sheet",
-                "Damages and Returns",
-                'Sales Order',
-                'Quotation',
-                'Material Request'
-            ]],
-            # capture any core workflows you’ve overridden
-            ["name", "in", [
-                # fill in here (empty template)
-            ]]
-        ]
-    },
+    {"doctype": "Workflow", "sync_on_migrate": True,},
 
     # Workflow states
     {"doctype": "Workflow State", "sync_on_migrate": True,},
