@@ -8,7 +8,7 @@
  "field_order": [
   "item_code",
   "qty",
-  "cusotm_item_specifics",
+  "custom_item_specifics",
   "column_break_euka",
   "uom",
   "s_warehouse"
@@ -30,13 +30,6 @@
    "label": "Qty"
   },
   {
-   "allow_on_submit": 1,
-   "fieldname": "cusotm_item_specifics",
-   "fieldtype": "Text",
-   "in_list_view": 1,
-   "label": "Item Specifics"
-  },
-  {
    "fieldname": "column_break_euka",
    "fieldtype": "Column Break"
   },
@@ -55,13 +48,20 @@
    "in_list_view": 1,
    "label": "Source Warehouse",
    "options": "Warehouse"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "custom_item_specifics",
+   "fieldtype": "Text",
+   "in_list_view": 1,
+   "label": "Item Specifics"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-06-02 09:58:30.126704",
+ "modified": "2025-06-09 14:44:18.306394",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Additional Work Order Items",

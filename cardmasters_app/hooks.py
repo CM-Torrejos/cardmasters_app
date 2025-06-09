@@ -116,9 +116,9 @@ doc_events = {
             "cardmasters_app.cardmasters_app.event_handlers.batch_handlers.create_batches_on_purchase_receipt"
         ]
     },
-    "Artist Sheet": {
+    "Artist Card": {
         "before_save": [
-            "cardmasters_app.cardmasters_app.event_handlers.artist_sheet.calculate_time_difference"
+            "cardmasters_app.cardmasters_app.event_handlers.artist_card.calculate_time_difference"
         ] 
     },
     "Sales Order": {
@@ -130,7 +130,11 @@ doc_events = {
     },
     "Delivery Note": {
         "validate": "cardmasters_app.cardmasters_app.event_handlers.batch_handlers.assign_batches_on_delivery_note"
+    },
+    "Purchase Order": {
+        "validate": "cardmasters_app.cardmasters_app.event_handlers.purchase_order.validate_po_revolving"
     }
+
 }
 # Apps
 # ------------------
