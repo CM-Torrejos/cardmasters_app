@@ -83,12 +83,12 @@ def create_batches_on_purchase_receipt(doc, method):
 
 def after_insert_consume(doc, method):
     # # only for Manufacture entries that opted-in via custom_batched
-    # if not getattr(doc, "custom_batched", False) or doc.purpose != "Manufacture":
-    #     return
+    if not getattr(doc, "custom_batched", False) or doc.purpose != "Manufacture":
+        return
 
-    # # must reference a Work Order
-    # if not doc.work_order:
-    #     frappe.throw(_("Stock Entry must reference a Work Order"))
+    # must reference a Work Order
+    if not doc.work_order:
+        frappe.throw(_("Stock Entry must reference a Work Order"))
 
     # load the Work Order
     wo = frappe.get_doc("Work Order", doc.work_order)

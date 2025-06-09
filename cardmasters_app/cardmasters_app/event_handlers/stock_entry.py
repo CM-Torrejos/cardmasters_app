@@ -5,10 +5,10 @@ from frappe import _
 
 def inherit_item_details_on_insert(doc, method):
     # Only for Transfer for Manufacture with batching
-    # if doc.purpose != "Material Transfer for Manufacture" or not doc.custom_batched:
-    #     return
-    # if not doc.work_order:
-    #     return
+    if doc.purpose != "Material Transfer for Manufacture" or not doc.custom_batched:
+        return
+    if not doc.work_order:
+        return
 
     # Fetch Work Order and map item to its custom details
     wo = frappe.get_doc("Work Order", doc.work_order)

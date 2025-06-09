@@ -16,7 +16,7 @@
  "name": "Artist Performance Monitoring",
  "owner": "Administrator",
  "prepared_report": 0,
- "ref_doctype": "Artist Sheet",
+ "ref_doctype": "Artist Card",
  "report_name": "Artist Performance Monitoring",
  "report_type": "Script Report",
  "roles": [

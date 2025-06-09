@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class ArtistSheet(Document):
+class ArtistCard(Document):
 	pass

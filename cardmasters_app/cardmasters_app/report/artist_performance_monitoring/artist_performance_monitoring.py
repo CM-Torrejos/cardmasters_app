@@ -15,14 +15,14 @@ def execute(filters=None):
     to_date    = filters.get("to_date")
 
     # Build WHERE clauses and params
-    clauses = ["asheet.workflow_state = %s"]
+    clauses = ["acard.workflow_state = %s"]
     params  = ["Client Approved"]
 
     if from_date:
-        clauses.append("DATE(asheet.creation) >= %s")
+        clauses.append("DATE(acard.creation) >= %s")
         params.append(from_date)
     if to_date:
-        clauses.append("DATE(asheet.creation) <= %s")
+        clauses.append("DATE(acard.creation) <= %s")
         params.append(to_date)
 
     where_sql = " AND ".join(clauses)
@@ -30,17 +30,17 @@ def execute(filters=None):
     # Fetch averages per artist
     rows = frappe.db.sql(f"""
         SELECT
-            asheet.artist             AS artist_id,
+            acard.artist             AS artist_id,
             emp.first_name            AS artist,
-            AVG(asheet.expected_total_time)    AS avg_expected_total_time,
-            AVG(asheet.total_time_in_minutes)  AS avg_finished_total_time,
-            AVG(CAST(asheet.difficulty AS UNSIGNED)) AS avg_difficulty,
-            AVG(asheet.time_difference)        AS avg_time_difference
-        FROM `tabArtist Sheet` AS asheet
+            AVG(acard.expected_total_time)    AS avg_expected_total_time,
+            AVG(acard.total_time_in_minutes)  AS avg_finished_total_time,
+            AVG(CAST(acard.difficulty AS UNSIGNED)) AS avg_difficulty,
+            AVG(acard.time_difference)        AS avg_time_difference
+        FROM `tabArtist Card` AS acard
         LEFT JOIN `tabEmployee` AS emp
-            ON emp.name = asheet.artist
+            ON emp.name = acard.artist
         WHERE {where_sql}
-        GROUP BY asheet.artist, emp.first_name
+        GROUP BY acard.artist, emp.first_name
         ORDER BY emp.first_name
     """, tuple(params), as_dict=True)
 

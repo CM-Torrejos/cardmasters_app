@@ -5,5 +5,5 @@
 from frappe.tests.utils import FrappeTestCase
 
 
-class TestArtistSheet(FrappeTestCase):
+class TestArtistCard(FrappeTestCase):
 	pass

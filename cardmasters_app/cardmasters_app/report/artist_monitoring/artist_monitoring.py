@@ -17,14 +17,14 @@ def execute(filters=None):
     op = "!=" if status == "pending" else "="
 
     # build WHERE clauses & params
-    conditions = [f"asheet.workflow_state {op} %s"]
+    conditions = [f"acard.workflow_state {op} %s"]
     params     = ["Client Approved"]
 
     if from_date:
-        conditions.append("DATE(asheet.creation) >= %s")
+        conditions.append("DATE(acard.creation) >= %s")
         params.append(from_date)
     if to_date:
-        conditions.append("DATE(asheet.creation) <= %s")
+        conditions.append("DATE(acard.creation) <= %s")
         params.append(to_date)
 
     where_clause = " AND ".join(conditions)
@@ -32,18 +32,18 @@ def execute(filters=None):
     # pull all fields + join to Employee for first_name
     sheets = frappe.db.sql(f"""
         SELECT
-            asheet.name                  AS sheet_name,
-            asheet.artist                AS artist_id,
+            acard.name                  AS sheet_name,
+            acard.artist                AS artist_id,
             emp.first_name               AS artist_name,
-            asheet.sales_order           AS sales_order,
-            asheet.workflow_state        AS workflow_state,
-            asheet.expected_total_time   AS expected_total_time,
-            asheet.total_time_in_minutes AS total_time
-        FROM `tabArtist Sheet` AS asheet
+            acard.sales_order           AS sales_order,
+            acard.workflow_state        AS workflow_state,
+            acard.expected_total_time   AS expected_total_time,
+            acard.total_time_in_minutes AS total_time
+        FROM `tabArtist Card` AS acard
         LEFT JOIN `tabEmployee` emp
-            ON emp.name = asheet.artist
+            ON emp.name = acard.artist
         WHERE {where_clause}
-        ORDER BY asheet.artist, asheet.name
+        ORDER BY acard.artist, acard.name
     """, tuple(params), as_dict=True)
 
     data = []
@@ -88,7 +88,7 @@ def execute(filters=None):
     # column definitions
     columns = [
         {"fieldname":"artist",              "label":"Artist",              "fieldtype":"Data",  "width":150},
-        {"fieldname":"sheet",               "label":"Artist Sheet",        "fieldtype":"Link",  "options":"Artist Sheet","width":200},
+        {"fieldname":"sheet",               "label":"Artist Card",        "fieldtype":"Link",  "options":"Artist Card","width":200},
         {"fieldname":"sales_order",         "label":"Sales Order",         "fieldtype":"Link",  "options":"Sales Order", "width":150},
         {"fieldname":"workflow_state",      "label":"Workflow State",      "fieldtype":"Data",  "width":150},
         {"fieldname":"expected_total_time", "label":"Expected Total Time", "fieldtype":"Float", "width":150},
