@@ -117,6 +117,14 @@ async function fetchLiquidatedTransactions(frm) {
         row.purchase_invoice   = tx.purchase_invoice;
         row.amount_paid        = tx.amount_paid || 0;
 
+        if (tx.outstanding_amount === 0) {
+            row.reimbursed = 'Yes';
+        } else if (tx.outstanding_amount === tx.amount_paid) {
+            row.reimbursed = 'No';
+        } else {
+            row.reimbursed = 'Partially';
+        };
+
         total += row.amount_paid;
     });
 

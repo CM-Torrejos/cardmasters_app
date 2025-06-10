@@ -14,7 +14,7 @@ frappe.ui.form.on('Payment Entry', {
       frm.doc.party === 'MISCELLANEOUS SUPPLIER'
     ) {
       // use frm.doc.party_balance (ERPNext already fetched it for you)
-      frm.set_value('paid_amount', (frm.doc.party_balance * -1));
+      // frm.set_value('paid_amount', (frm.doc.party_balance * -1));
       frm.set_value('paid_to', '2111 - ACCOUNT PAYABLE - RF - CM CDO');
     }
   }

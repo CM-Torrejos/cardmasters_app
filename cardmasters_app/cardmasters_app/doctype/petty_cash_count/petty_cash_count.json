@@ -24,9 +24,7 @@
   "section_break_ybtw",
   "balance",
   "section_break_qj8d",
-  "amended_from",
-  "report_tab",
-  "petty_cash_transactions"
+  "amended_from"
  ],
  "fields": [
   {
@@ -100,16 +98,6 @@
    "read_only": 1
   },
   {
-   "fieldname": "report_tab",
-   "fieldtype": "Tab Break",
-   "label": "Report"
-  },
-  {
-   "fieldname": "petty_cash_transactions",
-   "fieldtype": "HTML",
-   "label": "Petty Cash Transactions"
-  },
-  {
    "allow_on_submit": 1,
    "fieldname": "petty_cash_count_table",
    "fieldtype": "Table",
@@ -153,7 +141,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-05-26 03:02:02.946872",
+ "modified": "2025-06-10 10:22:21.425878",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Petty Cash Count",

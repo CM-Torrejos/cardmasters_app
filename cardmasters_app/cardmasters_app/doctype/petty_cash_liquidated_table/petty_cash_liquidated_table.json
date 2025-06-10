@@ -10,7 +10,8 @@
   "purchase_order",
   "purchase_receipt",
   "purchase_invoice",
-  "amount_paid"
+  "amount_paid",
+  "reimbursed"
  ],
  "fields": [
   {
@@ -29,7 +30,6 @@
   {
    "fieldname": "material_request",
    "fieldtype": "Link",
-   "in_list_view": 1,
    "label": "Material Request",
    "options": "Material Request"
   },
@@ -46,13 +46,20 @@
    "in_list_view": 1,
    "label": "Purchase Receipt",
    "options": "Purchase Receipt"
+  },
+  {
+   "fieldname": "reimbursed",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Reimbursed",
+   "options": "Yes\nPartially\nNo"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-05-27 13:46:05.401749",
+ "modified": "2025-06-10 10:30:53.760556",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Petty Cash Liquidated Table",

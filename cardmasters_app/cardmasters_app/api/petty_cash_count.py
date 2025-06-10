@@ -40,7 +40,8 @@ def get_liquidated_transactions(petty_cash_count):
             pii.purchase_order AS purchase_order,
             pii.purchase_receipt AS purchase_receipt,
             GROUP_CONCAT(DISTINCT pii.material_request SEPARATOR ', ') AS material_request,
-            pi.grand_total AS amount_paid
+            pi.grand_total AS amount_paid,
+            pi.outstanding_amount AS outstanding_amount
         FROM `tabPurchase Invoice` pi
         JOIN `tabPurchase Invoice Item` pii
             ON pii.parent = pi.name
