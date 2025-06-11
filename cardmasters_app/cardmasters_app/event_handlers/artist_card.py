@@ -18,3 +18,24 @@ def calculate_time_difference(doc, method):
     else:
         # reset (optional—drop this line if you want to preserve old values)
         doc.time_difference = None
+
+def validate_submission(doc, method):
+    """
+    Prevent submitting an Artist Card if its linked Sales Order
+    already has any other Artist Card.
+    """
+    if doc.sales_order:
+        # find any other Artist Card with this SO
+        exists = frappe.db.exists(
+            "Artist Card",
+            [
+                ["sales_order", "=", doc.sales_order],
+                ["name", "!=", doc.name]
+            ]
+        )
+
+        if exists:
+            frappe.throw(
+                ("Sales Order {0} already has an Artist Card ({1})")
+                .format(doc.sales_order, exists)
+            )

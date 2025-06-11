@@ -133,6 +133,9 @@ doc_events = {
     },
     "Purchase Order": {
         "validate": "cardmasters_app.cardmasters_app.event_handlers.purchase_order.validate_po_revolving"
+    },
+    "Artist Card": {
+        "before_save": "cardmasters_app.cardmasters_app.event_handlers.artist_card.validate_submission"
     }
 
 }

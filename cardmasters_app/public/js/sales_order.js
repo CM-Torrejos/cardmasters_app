@@ -4,7 +4,7 @@ frappe.ui.form.on('Sales Order', {
     	if (!frm.doc.__islocal) {
         	// Add the button to the "Create" dropdown
         	frm.add_custom_button(__('Create Artist Sheet'), function() {
-            	frappe.new_doc('Artist Sheet', {
+            	frappe.new_doc('Artist Card', {
                 	sales_order: frm.doc.name,
                 	artist: frm.doc.custom_artist
             	});
