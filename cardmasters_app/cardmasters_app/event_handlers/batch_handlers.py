@@ -44,32 +44,32 @@ def _process_batched_rows(doc, fetch_so, method):
         frappe.throw("<br>".join(errors))
 
 
-# 1) Material Receipt for CLIENT items
+# # 1) Material Receipt for CLIENT items
+# # Not necessary?
+# def create_batches_on_material_receipt(doc, method):
+#     if not getattr(doc, "custom_batched", False) or doc.purpose != "Material Receipt":
+#         return
 
-def create_batches_on_material_receipt(doc, method):
-    if not getattr(doc, "custom_batched", False) or doc.purpose != "Material Receipt":
-        return
-
-    # sales order entered by user on the Stock Entry
-    fetch_so = lambda d: doc.get("custom_sales_order")
-    _process_batched_rows(doc, fetch_so, method)
+#     # sales order entered by user on the Stock Entry
+#     fetch_so = lambda d: doc.get("custom_sales_order")
+#     _process_batched_rows(doc, fetch_so, method)
 
 
-# 2) Transfer for Manufacture
+# # 2) Transfer for Manufacture
+# # not necessary?
+# def assign_batches_for_manufacture(doc, method):
+#     if not getattr(doc, "custom_batched", False) or doc.purpose != "Material Transfer for Manufacture":
+#         return
 
-def assign_batches_for_manufacture(doc, method):
-    if not getattr(doc, "custom_batched", False) or doc.purpose != "Material Transfer for Manufacture":
-        return
-
-    if not doc.work_order:
-        frappe.throw(_("Stock Entry must reference a Work Order"))
-    wo = frappe.get_doc("Work Order", doc.work_order)
-    fetch_so = lambda d: wo.sales_order
-    _process_batched_rows(doc, fetch_so, method)
+#     if not doc.work_order:
+#         frappe.throw(_("Stock Entry must reference a Work Order"))
+#     wo = frappe.get_doc("Work Order", doc.work_order)
+#     fetch_so = lambda d: wo.sales_order
+#     _process_batched_rows(doc, fetch_so, method)
 
 
 # 3) Purchase Receipt for PROCURED items
-
+# needed since al adhoc purchases will be stored in one item
 def create_batches_on_purchase_receipt(doc, method):
     if not getattr(doc, "custom_batched", False):
         return

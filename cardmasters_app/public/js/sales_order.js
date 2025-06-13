@@ -19,7 +19,7 @@ frappe.ui.form.on('Sales Order', {
             	args: {
                 	doctype: 'Work Order',
                 	filters: { sales_order: frm.doc.name },
-                	fields: ['name', 'status', 'production_item']
+                	fields: ['name', 'status', 'item_name']
             	},
             	callback: function(response) {
                 	// frappe.show_alert("Work Orders fetched: " + response.message.length); // Debug message
@@ -30,7 +30,7 @@ frappe.ui.form.on('Sales Order', {
                     	response.message.forEach(wo => {
                         	html += `<tr>
                                     	<td><a href="/app/work-order/${wo.name}" target="_blank">${wo.name}</a></td>
-                                    	<td>${wo.production_item}</td>
+                                    	<td>${wo.item_name}</td>
                                     	
                                     	<td>${wo.status}</td>
                                 	</tr>`;

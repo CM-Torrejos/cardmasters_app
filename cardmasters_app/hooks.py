@@ -106,8 +106,8 @@ doc_events = {
             "cardmasters_app.cardmasters_app.event_handlers.batch_handlers.after_insert_consume"
         ],
         "validate": [
-            "cardmasters_app.cardmasters_app.event_handlers.batch_handlers.create_batches_on_material_receipt",
-            "cardmasters_app.cardmasters_app.event_handlers.batch_handlers.assign_batches_for_manufacture",
+            # "cardmasters_app.cardmasters_app.event_handlers.batch_handlers.create_batches_on_material_receipt",
+            # "cardmasters_app.cardmasters_app.event_handlers.batch_handlers.assign_batches_for_manufacture",
             "cardmasters_app.cardmasters_app.event_handlers.batch_handlers.after_insert_consume",
         ]
     },

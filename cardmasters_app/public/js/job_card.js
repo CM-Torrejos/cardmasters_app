@@ -66,17 +66,17 @@ frappe.ui.form.on("Job Card", {
 // 	}
 //   });
   
-frappe.ui.form.on('Job Card', {
-	refresh: function(frm) {
-		frm.add_custom_button(
-			__('Material Request'),
-			() => {
-				frappe.new_doc('Material Request', {
-					// job_card: frm.doc.name,
-					work_order: frm.doc.work_order,
-					material_request_type: 'Material Transfer',
-				})
-			}
-		)
-	}
-});
+// frappe.ui.form.on('Job Card', {
+// 	refresh: function(frm) {
+// 		frm.add_custom_button(
+// 			__('Material Request'),
+// 			() => {
+// 				frappe.new_doc('Material Request', {
+// 					// job_card: frm.doc.name,
+// 					work_order: frm.doc.work_order,
+// 					material_request_type: 'Material Transfer',
+// 				})
+// 			}
+// 		)
+// 	}
+// });
