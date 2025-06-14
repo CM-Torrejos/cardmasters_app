@@ -87,6 +87,10 @@ doctype_js = {
     "Material Request": "public/js/material_request.js"
 }
 
+override_doctype_class = {
+    "Job Card": "cardmasters_app.cardmasters_app.api.disable_job_card_validation.JobCard"
+}
+
 # load Chart.js legend-filter everywhere
 # RIGHT
 # app_include_js = "/assets/cardmasters_app/js/chart_legend_filter.js"
