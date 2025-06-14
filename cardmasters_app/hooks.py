@@ -65,13 +65,18 @@ fixtures = [
             ["is_standard", "=", '0']
         ]
     },
+
+    {
+        "doctype": "Workflow Action Master",
+        "sync_on_migrate": True,
+    },
 ]
 
 doctype_js = {
     "Sales Order": "public/js/sales_order.js",
     "Job Card": "public/js/job_card.js",
     "Petty Cash Count": "public/js/petty_cash_count.js",
-    "Artist Sheet": "public/js/artist_sheet.js",
+    "Artist Card": "public/js/artist_card.js",
     "Work Order": "public/js/work_order.js",
     "Petty Cash Request": "public/js/petty_cash_request.js",
     "Stock Entry": "public/js/stock_entry.js",
@@ -95,9 +100,6 @@ doc_events = {
     "Purchase Receipt": {
         "after_submit": "cardmasters_app.cardmasters_app.event_handlers.purchase_receipt.update_pcr_onpr"
     },
-    # "Purchase Invoice": {
-    #     "after_submit": "cardmasters_app.cardmasters_app.event_handlers.sales_invoice.update_pcr_onpi"
-    # },
     "Work Order": {
         "after_insert" : "cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars"
     },

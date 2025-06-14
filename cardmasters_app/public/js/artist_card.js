@@ -1,4 +1,4 @@
-frappe.ui.form.on('Artist Sheet', {
+frappe.ui.form.on('Artist Card', {
 	refresh: function(frm) {
 	  // Only in Layouting state on saved docs
 	  if (frm.doc.workflow_state === "Layouting" && !frm.is_new()) {
