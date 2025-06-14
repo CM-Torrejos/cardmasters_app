@@ -84,37 +84,28 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-05-19 04:22:33.354416",
-  "name": "Claimed",
-  "style": "Success",
-  "workflow_state_name": "Claimed"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-05-19 04:23:04.558194",
-  "name": "Claiming",
-  "style": "Inverse",
-  "workflow_state_name": "Claiming"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-05-19 04:23:13.963387",
-  "name": "Production",
-  "style": "Warning",
-  "workflow_state_name": "Production"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-06-13 15:37:30.172447",
-  "name": "In Progress",
+  "modified": "2025-06-14 16:13:08.484803",
+  "name": "Not Started",
   "style": "",
-  "workflow_state_name": "In Progress"
+  "workflow_state_name": "Not Started"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-14 16:13:17.447592",
+  "name": "In Process",
+  "style": "",
+  "workflow_state_name": "In Process"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-14 16:13:23.893958",
+  "name": "Completed",
+  "style": "",
+  "workflow_state_name": "Completed"
  },
  {
   "docstatus": 0,
@@ -124,24 +115,6 @@
   "name": "Reimbursed",
   "style": "",
   "workflow_state_name": "Reimbursed"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-05-17 05:00:37.846485",
-  "name": "Client Approved",
-  "style": "Success",
-  "workflow_state_name": "Client Approved"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-05-19 04:21:43.010823",
-  "name": "Artist",
-  "style": "Info",
-  "workflow_state_name": "Artist"
  },
  {
   "docstatus": 0,
@@ -165,6 +138,24 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
+  "modified": "2025-06-13 15:37:30.172447",
+  "name": "In Progress",
+  "style": "",
+  "workflow_state_name": "In Progress"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-17 05:00:37.846485",
+  "name": "Client Approved",
+  "style": "Success",
+  "workflow_state_name": "Client Approved"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
   "modified": "2025-05-17 05:00:31.788551",
   "name": "Pending Client Approval",
   "style": "Danger",
@@ -173,11 +164,11 @@
  {
   "docstatus": 0,
   "doctype": "Workflow State",
-  "icon": "question-sign",
-  "modified": "2025-04-24 12:11:30.782822",
-  "name": "Pending",
-  "style": "",
-  "workflow_state_name": "Pending"
+  "icon": "",
+  "modified": "2025-05-19 04:22:33.354416",
+  "name": "Claimed",
+  "style": "Success",
+  "workflow_state_name": "Claimed"
  },
  {
   "docstatus": 0,
@@ -192,10 +183,46 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
+  "modified": "2025-05-19 04:23:04.558194",
+  "name": "Claiming",
+  "style": "Inverse",
+  "workflow_state_name": "Claiming"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-19 04:23:13.963387",
+  "name": "Production",
+  "style": "Warning",
+  "workflow_state_name": "Production"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
   "modified": "2025-05-17 04:59:56.120535",
   "name": "Pending Approval",
   "style": "Info",
   "workflow_state_name": "Pending Approval"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "question-sign",
+  "modified": "2025-04-24 12:11:30.782822",
+  "name": "Pending",
+  "style": "",
+  "workflow_state_name": "Pending"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-19 04:21:43.010823",
+  "name": "Artist",
+  "style": "Info",
+  "workflow_state_name": "Artist"
  },
  {
   "docstatus": 0,

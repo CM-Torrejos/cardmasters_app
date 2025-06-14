@@ -137,7 +137,7 @@
   "doctype": "Workflow",
   "document_type": "Sales Order",
   "is_active": 1,
-  "modified": "2025-05-19 04:47:49.795918",
+  "modified": "2025-06-14 22:43:18.532692",
   "name": "Sales Order Flow",
   "override_status": 1,
   "send_email_alert": 0,
@@ -241,7 +241,7 @@
   ],
   "transitions": [
    {
-    "action": "Save",
+    "action": "Submit",
     "allow_self_approval": 1,
     "allowed": "System Manager",
     "condition": null,
@@ -548,97 +548,6 @@
   ],
   "workflow_data": null,
   "workflow_name": "Quotation workflow",
-  "workflow_state_field": "workflow_state"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow",
-  "document_type": "Work Order",
-  "is_active": 0,
-  "modified": "2025-06-02 09:40:53.320495",
-  "name": "Work Order Flow",
-  "override_status": 1,
-  "send_email_alert": 0,
-  "states": [
-   {
-    "allow_edit": "System Manager",
-    "avoid_status_override": 0,
-    "doc_status": "0",
-    "is_optional_state": 0,
-    "message": null,
-    "next_action_email_template": null,
-    "parent": "Work Order Flow",
-    "parentfield": "states",
-    "parenttype": "Workflow",
-    "send_email": 1,
-    "state": "Draft",
-    "update_field": null,
-    "update_value": null,
-    "workflow_builder_id": null
-   },
-   {
-    "allow_edit": "System Manager",
-    "avoid_status_override": 0,
-    "doc_status": "1",
-    "is_optional_state": 0,
-    "message": null,
-    "next_action_email_template": null,
-    "parent": "Work Order Flow",
-    "parentfield": "states",
-    "parenttype": "Workflow",
-    "send_email": 1,
-    "state": "Approved",
-    "update_field": null,
-    "update_value": null,
-    "workflow_builder_id": null
-   },
-   {
-    "allow_edit": "System Manager",
-    "avoid_status_override": 0,
-    "doc_status": "2",
-    "is_optional_state": 0,
-    "message": null,
-    "next_action_email_template": null,
-    "parent": "Work Order Flow",
-    "parentfield": "states",
-    "parenttype": "Workflow",
-    "send_email": 1,
-    "state": "Cancelled",
-    "update_field": null,
-    "update_value": null,
-    "workflow_builder_id": null
-   }
-  ],
-  "transitions": [
-   {
-    "action": "Approve",
-    "allow_self_approval": 1,
-    "allowed": "System Manager",
-    "condition": null,
-    "next_state": "Approved",
-    "parent": "Work Order Flow",
-    "parentfield": "transitions",
-    "parenttype": "Workflow",
-    "send_email_to_creator": 0,
-    "state": "Draft",
-    "workflow_builder_id": null
-   },
-   {
-    "action": "Cancel",
-    "allow_self_approval": 1,
-    "allowed": "System Manager",
-    "condition": null,
-    "next_state": "Cancelled",
-    "parent": "Work Order Flow",
-    "parentfield": "transitions",
-    "parenttype": "Workflow",
-    "send_email_to_creator": 0,
-    "state": "Approved",
-    "workflow_builder_id": null
-   }
-  ],
-  "workflow_data": null,
-  "workflow_name": "Work Order Flow",
   "workflow_state_field": "workflow_state"
  },
  {
