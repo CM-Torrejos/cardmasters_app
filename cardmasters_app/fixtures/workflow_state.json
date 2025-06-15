@@ -120,19 +120,10 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-06-13 15:39:33.356357",
-  "name": "For Approval",
-  "style": "",
-  "workflow_state_name": "For Approval"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-06-13 15:39:39.622398",
-  "name": "For Reimbursement",
-  "style": "",
-  "workflow_state_name": "For Reimbursement"
+  "modified": "2025-05-19 04:22:33.354416",
+  "name": "Claimed",
+  "style": "Success",
+  "workflow_state_name": "Claimed"
  },
  {
   "docstatus": 0,
@@ -146,38 +137,29 @@
  {
   "docstatus": 0,
   "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-05-19 04:22:33.354416",
-  "name": "Claimed",
-  "style": "Success",
-  "workflow_state_name": "Claimed"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-05-17 05:00:31.788551",
-  "name": "Pending Client Approval",
-  "style": "Danger",
-  "workflow_state_name": "Pending Client Approval"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-05-17 05:00:37.846485",
-  "name": "Client Approved",
-  "style": "Success",
-  "workflow_state_name": "Client Approved"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
   "icon": "ok-sign",
   "modified": "2025-04-24 12:11:30.784826",
   "name": "Approved",
   "style": "Success",
   "workflow_state_name": "Approved"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-13 15:39:33.356357",
+  "name": "For Approval",
+  "style": "",
+  "workflow_state_name": "For Approval"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-13 15:39:39.622398",
+  "name": "For Reimbursement",
+  "style": "",
+  "workflow_state_name": "For Reimbursement"
  },
  {
   "docstatus": 0,
@@ -201,6 +183,15 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
+  "modified": "2025-05-17 05:00:37.846485",
+  "name": "Client Approved",
+  "style": "Success",
+  "workflow_state_name": "Client Approved"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
   "modified": "2025-05-17 04:59:56.120535",
   "name": "Pending Approval",
   "style": "Info",
@@ -219,6 +210,15 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
+  "modified": "2025-05-17 05:00:31.788551",
+  "name": "Pending Client Approval",
+  "style": "Danger",
+  "workflow_state_name": "Pending Client Approval"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
   "modified": "2025-05-19 04:21:43.010823",
   "name": "Artist",
   "style": "Info",
@@ -228,18 +228,18 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-05-17 05:00:04.727905",
-  "name": "Layouting",
-  "style": "Warning",
-  "workflow_state_name": "Layouting"
+  "modified": "2025-04-28 05:15:12.134310",
+  "name": "Draft",
+  "style": "",
+  "workflow_state_name": "Draft"
  },
  {
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-04-28 05:15:12.134310",
-  "name": "Draft",
-  "style": "",
-  "workflow_state_name": "Draft"
+  "modified": "2025-05-17 05:00:04.727905",
+  "name": "Layouting",
+  "style": "Warning",
+  "workflow_state_name": "Layouting"
  }
 ]
