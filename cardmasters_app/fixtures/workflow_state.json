@@ -147,10 +147,10 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-05-17 05:00:37.846485",
-  "name": "Client Approved",
+  "modified": "2025-05-19 04:22:33.354416",
+  "name": "Claimed",
   "style": "Success",
-  "workflow_state_name": "Client Approved"
+  "workflow_state_name": "Claimed"
  },
  {
   "docstatus": 0,
@@ -165,10 +165,10 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-05-19 04:22:33.354416",
-  "name": "Claimed",
+  "modified": "2025-05-17 05:00:37.846485",
+  "name": "Client Approved",
   "style": "Success",
-  "workflow_state_name": "Claimed"
+  "workflow_state_name": "Client Approved"
  },
  {
   "docstatus": 0,

@@ -1,0 +1,78 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"hoKr7bCodg\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Create</b></span>\",\"col\":12}},{\"id\":\"oBXPZYRi41\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Material Request\",\"col\":3}},{\"id\":\"wyzflwTQ5N\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"AUyLTPfUA5\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Lists</b></span>\",\"col\":12}},{\"id\":\"kaveqWtHbO\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Orders\",\"col\":3}},{\"id\":\"bIhVEM66gU\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Artist Cards\",\"col\":3}},{\"id\":\"2cRVVmUJ8a\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Work Orders to BOM\",\"col\":3}},{\"id\":\"BUFmMij6GO\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"pwTIlo1TeK\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Sales Orders without Artist\",\"col\":4}},{\"id\":\"MbQDKySLNL\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Artist Cards\",\"col\":4}},{\"id\":\"0tdLACCV9N\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Work Orders to BOM\",\"col\":4}}]",
+ "creation": "2025-06-11 09:32:00.916980",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "edit",
+ "idx": 1,
+ "indicator_color": "",
+ "is_hidden": 0,
+ "label": "Artist Department",
+ "links": [],
+ "modified": "2025-06-16 00:20:19.152952",
+ "modified_by": "Administrator",
+ "module": "Cardmasters App",
+ "name": "Artist Department",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [
+  {
+   "document_type": "Artist Card",
+   "label": "Artist Cards",
+   "quick_list_filter": "[]"
+  },
+  {
+   "document_type": "Sales Order",
+   "label": "Sales Orders without Artist",
+   "quick_list_filter": "[[\"Sales Order\",\"workflow_state\",\"=\",\"Pending\",false]]"
+  },
+  {
+   "document_type": "Work Order",
+   "label": "Work Orders to BOM",
+   "quick_list_filter": "[]"
+  }
+ ],
+ "roles": [],
+ "sequence_id": 2.0,
+ "shortcuts": [
+  {
+   "color": "Blue",
+   "doc_view": "List",
+   "label": "Sales Orders",
+   "link_to": "Sales Order",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "New",
+   "label": "Create Material Request",
+   "link_to": "Material Request",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Orange",
+   "doc_view": "List",
+   "label": "Artist Cards",
+   "link_to": "Artist Card",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Red",
+   "doc_view": "List",
+   "label": "Work Orders to BOM",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"Work Order\",\"status\",\"=\",\"Draft\",false]]",
+   "type": "DocType"
+  }
+ ],
+ "title": "Artist Department"
+}

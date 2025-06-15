@@ -1,0 +1,115 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"RSH_RK0qfL\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"SByyTJiO0E\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Petty Cash Count\",\"col\":3}},{\"id\":\"_0FFkoM1mD\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"View all Petty Cash Count\",\"col\":3}},{\"id\":\"0GatUl9RSP\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Payment Entry\",\"col\":3}},{\"id\":\"-5npgfrloU\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"4ipRlaJrL8\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Material Request\",\"col\":4}},{\"id\":\"FNbViaDyoQ\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Purchase Order\",\"col\":4}},{\"id\":\"oRMEZSZySY\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Purchase Receipt\",\"col\":4}},{\"id\":\"I4Zizc4DA_\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Purchase Invoice\",\"col\":12}},{\"id\":\"9nGEK2DASN\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"cDaadYU1hV\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Additional Tools</b></span>\",\"col\":12}},{\"id\":\"MXEAwudNb_\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Suppliers\",\"col\":3}},{\"id\":\"UriIjy3rmI\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Journal Entry\",\"col\":3}},{\"id\":\"hLZ91-2X2W\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Accounts Payable\",\"col\":3}},{\"id\":\"K4VBNqFb5V\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"AP Summary\",\"col\":3}},{\"id\":\"fFio1RjNdB\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Supplier Ledger Summary\",\"col\":3}}]",
+ "creation": "2025-06-11 17:11:51.898616",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "arrow-left",
+ "idx": 1,
+ "indicator_color": "",
+ "is_hidden": 0,
+ "label": "Payable",
+ "links": [],
+ "modified": "2025-06-16 00:20:50.287340",
+ "modified_by": "Administrator",
+ "module": "Cardmasters App",
+ "name": "Payable",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "Accounts",
+ "public": 1,
+ "quick_lists": [
+  {
+   "document_type": "Material Request",
+   "label": "Material Request",
+   "quick_list_filter": "[]"
+  },
+  {
+   "document_type": "Purchase Order",
+   "label": "Purchase Order",
+   "quick_list_filter": "[]"
+  },
+  {
+   "document_type": "Purchase Receipt",
+   "label": "Purchase Receipt",
+   "quick_list_filter": "[]"
+  },
+  {
+   "document_type": "Purchase Invoice",
+   "label": "Purchase Invoice",
+   "quick_list_filter": "[]"
+  }
+ ],
+ "roles": [],
+ "sequence_id": 45.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Suppliers",
+   "link_to": "Supplier",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "New",
+   "label": "Create Petty Cash Count",
+   "link_to": "Petty Cash Count",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Journal Entry",
+   "link_to": "Journal Entry",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Yellow",
+   "doc_view": "List",
+   "label": "View all Petty Cash Count",
+   "link_to": "Petty Cash Count",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Accounts Payable",
+   "link_to": "Accounts Payable",
+   "report_ref_doctype": "Purchase Invoice",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "New",
+   "label": "Create Payment Entry",
+   "link_to": "Payment Entry",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "AP Summary",
+   "link_to": "Accounts Payable Summary",
+   "report_ref_doctype": "Purchase Invoice",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Supplier Ledger Summary",
+   "link_to": "Supplier Ledger Summary",
+   "report_ref_doctype": "Purchase Invoice",
+   "type": "Report"
+  }
+ ],
+ "title": "Payable"
+}

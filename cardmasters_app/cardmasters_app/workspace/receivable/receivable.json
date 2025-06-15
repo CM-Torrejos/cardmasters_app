@@ -1,0 +1,91 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"dpHMWpD-xB\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Quick Access</span>\",\"col\":12}},{\"id\":\"aW21nOyK5j\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Payment Entry \",\"col\":3}},{\"id\":\"CqetAimP21\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Payment Request\",\"col\":3}},{\"id\":\"kj-CMz611k\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Journal Entry\",\"col\":3}},{\"id\":\"2-mACFcxaT\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"jj2id8cRdn\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Sales Order\",\"col\":4}},{\"id\":\"VAeba-ZMgs\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Sales Invoice\",\"col\":4}},{\"id\":\"sEGn0YnAZK\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Delivery Note\",\"col\":4}},{\"id\":\"_MH2WAsdfE\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"wgSkQLlyhH\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Customer Receivables</b></span>\",\"col\":12}},{\"id\":\"rTgQWFyJTC\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Accounts Receivable\",\"col\":3}},{\"id\":\"e9NsnPYVk9\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"AR Summary\",\"col\":3}},{\"id\":\"N5vibrzVx3\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Customers\",\"col\":12}}]",
+ "creation": "2025-06-11 17:13:21.400945",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "arrow-right",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "Receivable",
+ "links": [],
+ "modified": "2025-06-16 00:20:44.355334",
+ "modified_by": "Administrator",
+ "module": "Cardmasters App",
+ "name": "Receivable",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "Accounts",
+ "public": 1,
+ "quick_lists": [
+  {
+   "document_type": "Sales Order",
+   "label": "Sales Order",
+   "quick_list_filter": "[]"
+  },
+  {
+   "document_type": "Customer",
+   "label": "Customers",
+   "quick_list_filter": "[]"
+  },
+  {
+   "document_type": "Sales Invoice",
+   "label": "Sales Invoice",
+   "quick_list_filter": "[]"
+  },
+  {
+   "document_type": "Delivery Note",
+   "label": "Delivery Note",
+   "quick_list_filter": "[]"
+  }
+ ],
+ "roles": [],
+ "sequence_id": 45.1,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "New",
+   "label": "Create Payment Request",
+   "link_to": "Payment Request",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "New",
+   "label": "Create Journal Entry",
+   "link_to": "Journal Entry",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Accounts Receivable",
+   "link_to": "Accounts Receivable",
+   "report_ref_doctype": "Sales Invoice",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "New",
+   "label": "Create Payment Entry ",
+   "link_to": "Payment Entry",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "AR Summary",
+   "link_to": "Accounts Receivable Summary",
+   "report_ref_doctype": "Sales Invoice",
+   "type": "Report"
+  }
+ ],
+ "title": "Receivable"
+}

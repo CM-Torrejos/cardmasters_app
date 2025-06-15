@@ -1,0 +1,269 @@
+{
+ "charts": [
+  {
+   "chart_name": "Warehouse wise Stock Value",
+   "label": "Warehouse wise Stock Value"
+  }
+ ],
+ "content": "[{\"id\":\"MvSPBclQ80\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"eWpRrNoOFh\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Stock Entry\",\"col\":3}},{\"id\":\"YqNDFGtcF5\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"View Items\",\"col\":3}},{\"id\":\"SmmjfVlLCr\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"View Item Group\",\"col\":3}},{\"id\":\"p6XQCEJ0GJ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Stock Quantity\",\"col\":3}},{\"id\":\"USaAEywl0H\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Stock Summary\",\"col\":3}},{\"id\":\"__sXHjnWvk\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"EdiC4Q32ed\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Warehouse wise Stock Value\",\"col\":12}},{\"id\":\"3t6jNt7TBz\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Material Request\",\"col\":4}},{\"id\":\"YHkJyj1S6a\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Purchase Order\",\"col\":4}},{\"id\":\"V9TvDnoEK1\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Purchase Receipt\",\"col\":4}},{\"id\":\"5hzUO6hYfr\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"St5HqJkli6\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Inventory Tools</b></span>\",\"col\":12}},{\"id\":\"AoDjoaUKk9\",\"type\":\"card\",\"data\":{\"card_name\":\"Item Settings\",\"col\":4}},{\"id\":\"boEN4-Pod9\",\"type\":\"card\",\"data\":{\"card_name\":\"Warehouse\",\"col\":4}},{\"id\":\"nN59YiNTTN\",\"type\":\"card\",\"data\":{\"card_name\":\"Stock Monitoring\",\"col\":4}},{\"id\":\"yUR5Uke9dD\",\"type\":\"card\",\"data\":{\"card_name\":\"Reference\",\"col\":4}}]",
+ "creation": "2025-06-11 15:13:47.841880",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "stock",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "Inventory",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Item Settings",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Item",
+   "link_count": 0,
+   "link_to": "Item",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Item Group",
+   "link_count": 0,
+   "link_to": "Item Group",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "UOM",
+   "link_count": 0,
+   "link_to": "UOM",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "UOM (Conversion Factor)",
+   "link_count": 0,
+   "link_to": "UOM Conversion Factor",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Warehouse",
+   "link_count": 2,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Warehouse",
+   "link_count": 0,
+   "link_to": "Warehouse",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Warehouse Type",
+   "link_count": 0,
+   "link_to": "Warehouse Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Stock Monitoring",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Detailed Stock Qty",
+   "link_count": 0,
+   "link_to": "Stock Projected Qty",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Stock Summary",
+   "link_count": 0,
+   "link_to": "Total Stock Summary",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Warehouse Monitoring",
+   "link_count": 0,
+   "link_to": "Warehouse Wise Stock Balance",
+   "link_type": "Report",
+   "onboard": 0,
+   "report_ref_doctype": "Stock Ledger Entry",
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Stock Reconcillation",
+   "link_count": 0,
+   "link_to": "Stock Reconciliation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Reference",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Orders",
+   "link_count": 0,
+   "link_to": "Sales Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Work Order",
+   "link_count": 0,
+   "link_to": "Work Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Purchase Order",
+   "link_count": 0,
+   "link_to": "Purchase Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Material Request",
+   "link_count": 0,
+   "link_to": "Material Request",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2025-06-16 00:20:57.040628",
+ "modified_by": "Administrator",
+ "module": "Cardmasters App",
+ "name": "Inventory",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [
+  {
+   "document_type": "Material Request",
+   "label": "Material Request",
+   "quick_list_filter": "[]"
+  },
+  {
+   "document_type": "Purchase Order",
+   "label": "Purchase Order",
+   "quick_list_filter": "[]"
+  },
+  {
+   "document_type": "Purchase Receipt",
+   "label": "Purchase Receipt",
+   "quick_list_filter": "[]"
+  }
+ ],
+ "roles": [],
+ "sequence_id": 11.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "View Item Group",
+   "link_to": "Item Group",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Stock Quantity",
+   "link_to": "Stock Projected Qty",
+   "report_ref_doctype": "Item",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Stock Summary",
+   "link_to": "Total Stock Summary",
+   "report_ref_doctype": "Stock Entry",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "New",
+   "label": "Create Stock Entry",
+   "link_to": "Stock Entry",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "View Items",
+   "link_to": "Item",
+   "stats_filter": "[]",
+   "type": "DocType"
+  }
+ ],
+ "title": "Inventory"
+}

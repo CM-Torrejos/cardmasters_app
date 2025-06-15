@@ -1,0 +1,94 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"wNqzQqjcDe\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Create</b></span>\",\"col\":12}},{\"id\":\"IA1FGw682h\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Material Request (for general restocking)\",\"col\":5}},{\"id\":\"4IXB1k1mxs\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"PSxUSCxUO7\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>List</b></span>\",\"col\":12}},{\"id\":\"l_6bDVzrUL\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Print Jobs\",\"col\":3}},{\"id\":\"5AnYdyUxc1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Orders\",\"col\":3}},{\"id\":\"X8554s1FLB\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Work Orders\",\"col\":3}},{\"id\":\"Iy_xezp7dm\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"k0roR04WAf\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Printing Jobs for artists\",\"col\":4}},{\"id\":\"Mq5abkoMby\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Printing jobs for Machine operators\",\"col\":4}},{\"id\":\"BVegMS7uwH\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Work Orders\",\"col\":4}},{\"id\":\"dZczi3jpkv\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"4iqGDeXq96\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Inventory</b></span>\",\"col\":12}},{\"id\":\"h9gP8TwVq1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"View Current Stock\",\"col\":3}},{\"id\":\"hJWAy5xRM2\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Material Request (Restock)\",\"col\":3}}]",
+ "creation": "2025-06-11 09:59:49.957004",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "printer",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "Printing",
+ "links": [],
+ "modified": "2025-06-16 00:20:13.819601",
+ "modified_by": "Administrator",
+ "module": "Cardmasters App",
+ "name": "Printing",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "Production Department",
+ "public": 1,
+ "quick_lists": [
+  {
+   "document_type": "Job Card",
+   "label": "Printing jobs for Machine operators",
+   "quick_list_filter": "[[\"Job Card\",\"workstation\",\"=\",\"ANNEX - PRINTS\",false]]"
+  },
+  {
+   "document_type": "Work Order",
+   "label": "Work Orders",
+   "quick_list_filter": "[]"
+  },
+  {
+   "document_type": "Job Card",
+   "label": "Printing Jobs for artists",
+   "quick_list_filter": "[[\"Job Card\",\"workstation\",\"=\",\"MAIN - ARTIST\",false]]"
+  }
+ ],
+ "roles": [],
+ "sequence_id": 4.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "View Current Stock",
+   "link_to": "Stock Projected Qty",
+   "report_ref_doctype": "Item",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "New",
+   "label": "Create Material Request (Restock)",
+   "link_to": "Material Request",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Orange",
+   "doc_view": "List",
+   "label": "Print Jobs",
+   "link_to": "Job Card",
+   "stats_filter": "[[\"Job Card\",\"workstation\",\"=\",\"ANNEX - PRINTS\",false],[\"Job Card\",\"workstation\",\"=\",\"MAIN - ARTIST\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "New",
+   "label": "Create Material Request (for general restocking)",
+   "link_to": "Material Request",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Yellow",
+   "doc_view": "List",
+   "label": "Sales Orders",
+   "link_to": "Sales Order",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Work Orders",
+   "link_to": "Work Order",
+   "stats_filter": "[]",
+   "type": "DocType"
+  }
+ ],
+ "title": "Printing"
+}

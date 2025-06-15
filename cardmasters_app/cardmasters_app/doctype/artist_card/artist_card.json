@@ -12,6 +12,7 @@
   "naming_series",
   "date_created",
   "difficulty",
+  "work_order_created",
   "section_break_wifg",
   "expected_starting_datetime",
   "column_break_fqkx",
@@ -116,12 +117,19 @@
    "fieldname": "finished_total_time",
    "fieldtype": "Float",
    "label": "Total Time in Minutes"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.workflow_state == 'Client Approved'",
+   "fieldname": "work_order_created",
+   "fieldtype": "Check",
+   "label": "Work Order Created"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-18 23:16:40.597099",
+ "modified": "2025-06-15 21:48:42.265811",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Card",
