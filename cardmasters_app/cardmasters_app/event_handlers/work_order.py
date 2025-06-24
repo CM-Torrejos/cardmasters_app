@@ -47,8 +47,9 @@ def before_work_order_save(doc, method):
 
 def before_work_order_submit(doc, method):
 	doc = frappe.get_doc("Sales Order", doc.sales_order)
-	doc = apply_workflow(doc, "Begin Production")
-	doc.save()
+	if (doc.workflow_state and doc.workflow_state == 'Artist'):
+		doc = apply_workflow(doc, "Begin Production")
+		doc.save()
 
 def on_work_order_cancel(doc, method):
 	doc = apply_workflow(doc, "Cancel")

@@ -53,7 +53,7 @@ def check_all_job_cards_submitted(doc, method):
 	
 	pending = [c.name for c in cards if c.status != 'Completed']
 	print(pending)
-	if (pending.length == 0):
+	if (len(pending) == 0):
 
 		doc = frappe.get_doc("Work Order", doc.work_order)
 		doc = apply_workflow(doc, "Finish Item")
