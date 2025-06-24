@@ -1,5 +1,7 @@
 frappe.ui.form.on('Material Request', {    
     refresh: function(frm) {
+        
+
         if (frm.doc.docstatus === 1 && frm.doc.material_request_type === 'Customer Provided') {
             // Remove the default "Material Receipt" button (if present)
             setTimeout(() => {

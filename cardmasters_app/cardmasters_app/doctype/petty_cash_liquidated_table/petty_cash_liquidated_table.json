@@ -48,18 +48,20 @@
    "options": "Purchase Receipt"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "reimbursed",
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Reimbursed",
-   "options": "Yes\nPartially\nNo"
+   "options": "Yes\nPartially\nNo",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-06-10 10:30:53.760556",
+ "modified": "2025-06-19 13:46:31.793596",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Petty Cash Liquidated Table",

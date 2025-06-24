@@ -95,6 +95,7 @@ override_doctype_class = {
 # RIGHT
 # app_include_js = "/assets/cardmasters_app/js/chart_legend_filter.js"
 # app_include_css = "/assets/cardmasters_app/css/chart_legend_limit.css"
+app_include_js = "/assets/cardmasters_app/js/address_contact_quick_entry_patch.js"
 
 
 doc_events = {
@@ -105,7 +106,10 @@ doc_events = {
         "after_submit": "cardmasters_app.cardmasters_app.event_handlers.purchase_receipt.update_pcr_onpr"
     },
     "Work Order": {
-        "after_insert" : "cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars"
+        "after_insert" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars"],
+        "before_save" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_save"],
+        "before_submit" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_submit"],
+        "on_cancel" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.on_work_order_cancel"]
     },
     "Stock Entry": {
         "after_insert": [
@@ -132,7 +136,9 @@ doc_events = {
         "before_update_after_submit": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.handle_progress_status"]
     },
     "Job Card": {
-        "on_update": "cardmasters_app.cardmasters_app.event_handlers.job_card.on_job_card_create_handler"
+        "on_update": ["cardmasters_app.cardmasters_app.event_handlers.job_card.on_job_card_create_handler"],
+        "before_save": ["cardmasters_app.cardmasters_app.event_handlers.job_card.before_job_card_save"],
+        "before_submit" : ["cardmasters_app.cardmasters_app.event_handlers.job_card.check_all_job_cards_submitted"]
     },
     "Delivery Note": {
         "validate": "cardmasters_app.cardmasters_app.event_handlers.batch_handlers.assign_batches_on_delivery_note"
@@ -141,8 +147,9 @@ doc_events = {
         "validate": "cardmasters_app.cardmasters_app.event_handlers.purchase_order.validate_po_revolving"
     },
     "Artist Card": {
-        "before_save": "cardmasters_app.cardmasters_app.event_handlers.artist_card.validate_submission"
-    }
+        "before_insert": ["cardmasters_app.cardmasters_app.event_handlers.artist_card.validate_submission"],
+        "before_insert" : ["cardmasters_app.cardmasters_app.event_handlers.artist_card.before_insert"]
+    },
 
 }
 # Apps

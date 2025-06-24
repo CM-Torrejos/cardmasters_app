@@ -3,7 +3,7 @@ frappe.ui.form.on('Sales Order', {
 		// Artist Sheet Button Creation
     	if (!frm.doc.__islocal) {
         	// Add the button to the "Create" dropdown
-        	frm.add_custom_button(__('Create Artist Sheet'), function() {
+        	frm.add_custom_button(__('Create Artist Card'), function() {
             	frappe.new_doc('Artist Card', {
                 	sales_order: frm.doc.name,
                 	artist: frm.doc.custom_artist
@@ -19,20 +19,20 @@ frappe.ui.form.on('Sales Order', {
             	args: {
                 	doctype: 'Work Order',
                 	filters: { sales_order: frm.doc.name },
-                	fields: ['name', 'status', 'item_name']
+                	fields: ['name', 'workflow_state', 'item_name', 'status']
             	},
             	callback: function(response) {
                 	// frappe.show_alert("Work Orders fetched: " + response.message.length); // Debug message
                 	console.log(response.message);
 
                 	if (response.message.length > 0) {
-                    	let html = '<table class="table table-bordered"><tr><th>Work Order</th><th>Item</th><th>Progress</th></tr>';
+                    	let html = '<table class="table table-bordered"><tr><th>Work Order</th><th>Item</th><th>Form Status</th><th>Progress</th></tr>';
                     	response.message.forEach(wo => {
                         	html += `<tr>
                                     	<td><a href="/app/work-order/${wo.name}" target="_blank">${wo.name}</a></td>
                                     	<td>${wo.item_name}</td>
-                                    	
                                     	<td>${wo.status}</td>
+                                    	<td>${wo.workflow_state}</td>
                                 	</tr>`;
                     	});
                     	html += '</table>';

@@ -1,5 +1,6 @@
 import frappe
 from frappe.utils import nowdate
+from frappe.model.workflow import apply_workflow, get_transitions
 
 def calculate_time_difference(doc, method):
     """
@@ -39,3 +40,9 @@ def validate_submission(doc, method):
                 ("Sales Order {0} already has an Artist Card ({1})")
                 .format(doc.sales_order, exists)
             )
+
+def before_insert(doc, method):
+    doc = frappe.get_doc("Sales Order", doc.sales_order)
+    if (doc.workflow)
+    doc = apply_workflow(doc, "Begin Layout")
+    doc.save()
