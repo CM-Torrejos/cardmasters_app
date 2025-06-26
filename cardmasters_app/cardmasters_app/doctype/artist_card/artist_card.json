@@ -129,7 +129,8 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-06-15 21:48:42.265811",
+ "make_attachments_public": 1,
+ "modified": "2025-06-25 14:22:14.778998",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Card",
@@ -152,5 +153,6 @@
  "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1
 }

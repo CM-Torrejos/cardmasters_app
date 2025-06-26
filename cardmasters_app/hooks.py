@@ -95,7 +95,10 @@ override_doctype_class = {
 # RIGHT
 # app_include_js = "/assets/cardmasters_app/js/chart_legend_filter.js"
 # app_include_css = "/assets/cardmasters_app/css/chart_legend_limit.css"
-app_include_js = "/assets/cardmasters_app/js/address_contact_quick_entry_patch.js"
+app_include_js = [
+    "/assets/cardmasters_app/js/address_contact_quick_entry_patch.js",
+    "/assets/cardmasters_app/js/update_child_items.js"
+]
 
 
 doc_events = {
@@ -109,7 +112,8 @@ doc_events = {
         "after_insert" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars"],
         "before_save" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_save"],
         "before_submit" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_submit"],
-        "on_cancel" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.on_work_order_cancel"]
+        "on_cancel" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.on_work_order_cancel"],
+        "on_trash" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.clear_child_rows"]
     },
     "Stock Entry": {
         "after_insert": [

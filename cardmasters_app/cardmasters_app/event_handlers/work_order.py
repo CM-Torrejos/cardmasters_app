@@ -53,3 +53,7 @@ def before_work_order_submit(doc, method):
 
 def on_work_order_cancel(doc, method):
 	doc = apply_workflow(doc, "Cancel")
+
+def clear_child_rows(doc, method):
+    # 'My Child Table' = your child‐DocType
+    frappe.db.delete("Artist BOM table", {"parent": doc.name})

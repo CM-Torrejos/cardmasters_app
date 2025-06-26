@@ -11,7 +11,7 @@ frappe.ui.form.on('Payment Entry', {
     if (
       frm.doc.payment_type === 'Pay' &&
       frm.doc.party_type === 'Supplier' &&
-      frm.doc.party === 'MISCELLANEOUS SUPPLIER'
+      frm.doc.party === 'DISBURSEMENT OFFICER'
     ) {
       // use frm.doc.party_balance (ERPNext already fetched it for you)
       // frm.set_value('paid_amount', (frm.doc.party_balance * -1));
