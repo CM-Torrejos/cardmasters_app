@@ -42,7 +42,7 @@ def _process_batched_rows(doc, fetch_so, method, create_batches=True):
             frappe.throw(_("Row {idx}: Unable to determine linked Sales Order").format(idx=d.idx))
 
         # pull item specifics field (adjust field name if different)
-        specifics = d.get("item_specifics") or ""
+        specifics = d.get("custom_item_specifics") or ""
         batch_name = _build_batch_name(so_name, d.item_code, specifics)
 
         if create_batches:
