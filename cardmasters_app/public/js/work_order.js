@@ -39,7 +39,7 @@ frappe.ui.form.on('Work Order', {
 
 	// TODO: Ensure that this code only runs when the thing is submitted already.
 	refresh: (frm) => {
-		frm.add_custom_button('Withdraw More Materials', () => {
+		frm.add_custom_button('Material Request', () => {
 			frappe.new_doc('Material Request', {
 				material_request_type: 'Material Transfer',
 				work_order : frm.doc.name,
