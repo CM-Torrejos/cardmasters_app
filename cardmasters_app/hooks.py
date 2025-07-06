@@ -129,7 +129,9 @@ doc_events = {
     },
     "Artist Card": {
         "before_save": [
-            "cardmasters_app.cardmasters_app.event_handlers.artist_card.calculate_time_difference"
+            "cardmasters_app.cardmasters_app.event_handlers.artist_card.calculate_time_difference",
+            "cardmasters_app.cardmasters_app.event_handlers.artist_card.validate_submission",
+            "cardmasters_app.cardmasters_app.event_handlers.artist_card.before_insert",
         ] 
     },
     "Sales Order": {
@@ -147,11 +149,6 @@ doc_events = {
     },
     "Purchase Order": {
         "validate": "cardmasters_app.cardmasters_app.event_handlers.purchase_order.validate_po_revolving"
-    },
-    "Artist Card": {
-        "before_insert": [
-            "cardmasters_app.cardmasters_app.event_handlers.artist_card.validate_submission"
-            ]
     },
     "Material Request": {
         "before_save": ["cardmasters_app.cardmasters_app.event_handlers.material_request.validate_request"],
