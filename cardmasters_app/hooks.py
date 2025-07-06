@@ -134,7 +134,8 @@ doc_events = {
     },
     "Sales Order": {
         "before_save": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.handle_progress_status"],
-        "before_update_after_submit": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.handle_progress_status"]
+        "before_update_after_submit": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.handle_progress_status"],
+        "validate": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.validate_alias_on_facebook_channel"]
     },
     "Job Card": {
         "on_update": ["cardmasters_app.cardmasters_app.event_handlers.job_card.on_job_card_create_handler"],
@@ -148,8 +149,12 @@ doc_events = {
         "validate": "cardmasters_app.cardmasters_app.event_handlers.purchase_order.validate_po_revolving"
     },
     "Artist Card": {
-        "before_insert": ["cardmasters_app.cardmasters_app.event_handlers.artist_card.validate_submission"],
-        "before_insert" : ["cardmasters_app.cardmasters_app.event_handlers.artist_card.before_insert"]
+        "before_insert": [
+            "cardmasters_app.cardmasters_app.event_handlers.artist_card.validate_submission"
+            ]
+    },
+    "Material Request": {
+        "before_save": ["cardmasters_app.cardmasters_app.event_handlers.material_request.validate_request"],
     },
 
 }
