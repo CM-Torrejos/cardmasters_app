@@ -13,7 +13,7 @@
  "is_hidden": 0,
  "label": "Cutting and Engrave",
  "links": [],
- "modified": "2025-07-03 15:58:11.367838",
+ "modified": "2025-07-07 00:17:02.601276",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Cutting and Engrave",
@@ -30,7 +30,7 @@
   {
    "document_type": "Job Card",
    "label": "C&E Jobs",
-   "quick_list_filter": "[[\"Job Card\",\"workstation\",\"=\",\"ANNEX - PRINTING\",false]]"
+   "quick_list_filter": "[[\"Job Card\",\"workstation\",\"=\",\"ANNEX - MACHINE STATION\",false]]"
   }
  ],
  "roles": [],

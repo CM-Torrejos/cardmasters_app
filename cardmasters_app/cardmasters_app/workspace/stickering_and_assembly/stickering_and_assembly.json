@@ -13,7 +13,7 @@
  "is_hidden": 0,
  "label": "Stickering and Assembly",
  "links": [],
- "modified": "2025-07-03 15:58:11.444222",
+ "modified": "2025-07-07 00:17:22.074683",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Stickering and Assembly",
@@ -30,7 +30,7 @@
   {
    "document_type": "Job Card",
    "label": "S&A Jobs",
-   "quick_list_filter": "[[\"Job Card\",\"workstation\",\"=\",\"ANNEX - PRINTING\",false]]"
+   "quick_list_filter": "[[\"Job Card\",\"workstation\",\"=\",\"ANNEX - STICKERING AND ASSEMBLY\",false]]"
   }
  ],
  "roles": [],

@@ -13,7 +13,7 @@
  "is_hidden": 0,
  "label": "Tailoring",
  "links": [],
- "modified": "2025-07-03 15:58:11.520786",
+ "modified": "2025-07-07 00:17:44.973625",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Tailoring",
@@ -30,7 +30,7 @@
   {
    "document_type": "Job Card",
    "label": "Tailoring Jobs",
-   "quick_list_filter": "[[\"Job Card\",\"workstation\",\"=\",\"ANNEX - PRINTING\",false]]"
+   "quick_list_filter": "[[\"Job Card\",\"workstation\",\"=\",\"TAILORING\",false]]"
   }
  ],
  "roles": [],
