@@ -1,15 +1,29 @@
 frappe.ui.form.on('Sales Order', {
 	refresh: function(frm) {
 		// Artist Sheet Button Creation
-    	if (!frm.doc.__islocal) {
-        	// Add the button to the "Create" dropdown
-        	frm.add_custom_button(__('Create Artist Card'), function() {
-            	frappe.new_doc('Artist Card', {
-                	sales_order: frm.doc.name,
-                	artist: frm.doc.custom_artist
-            	});
-        	}, __('Create')); 
-    	}
+		function set_artist_card_button() {
+            frm.clear_custom_buttons();
+
+            const invalid_statuses = ['On Hold', 'Cancelled', 'Closed', 'Draft'];
+
+            if (!invalid_statuses.includes(frm.doc.status)) {
+                frm.add_custom_button(__('Create Artist Card'), function() {
+                    frappe.new_doc('Artist Card', {
+                        sales_order: frm.doc.name,
+                        artist: frm.doc.custom_artist
+                    });
+                }, __('Create'));
+            }
+        }
+		
+        // Call it on refresh
+        set_artist_card_button();
+
+        // Optional: re-run it after status changes dynamically
+        frm.fields_dict.status.df.onchange = function() {
+            set_artist_card_button();
+        };
+
 
 		// Work Order Progress HTML block
 		if (!frm.doc.__islocal) {
@@ -48,6 +62,46 @@ frappe.ui.form.on('Sales Order', {
     	}
 
 		// Display custom workflow state as pill
+		// $('span.custom-state-pill').remove();
+		// const state = frm.doc.workflow_state; // ← rename if needed
+		// if (!state) {
+		//   console.log('[your_app] no workflow_state, skipping');
+		//   return;
+		// }
+		// console.log('[your_app] custom workflow state:', state);
+	
+		// // Map state → Frappe colour class
+		// const colorMap = {
+		//   'Claiming':			'light-blue',
+		//   'Pending':			'yellow',
+		//   'Artist':				'blue',
+		//   'Production':			'orange',
+		//   'Claimed':			'green',
+		//   'Rejected':			'red',
+		//   // …etc
+		// };
+		// const color = colorMap[state] || 'gray';
+		// console.log('[your_app] using colour:', color);
+	
+		// // Build pill using the *exact* same core classes
+		// const $pill = $('<span>')
+		//   .addClass(`indicator-pill no-indicator-dot whitespace-nowrap custom-state-pill ${color}`)
+		//   .text(state);
+	
+		// const $native = $('span.indicator-pill.no-indicator-dot.whitespace-nowrap').first();
+		// console.log('[your_app] native pills found:', $('span.indicator-pill.no-indicator-dot.whitespace-nowrap').length);
+	
+		// if ($native.length) {
+		//   $native.after($pill);
+		//   console.log('[your_app] appended custom pill after native one');
+		// } else {
+		//   // fallback: stick it next to the title
+		//   $('.page-head .title-area .flex').first().append($pill);
+		//   console.log('[your_app] native pill not found, appended to title-area');
+		// }
+	},
+
+	onload: function(frm) {
 		$('span.custom-state-pill').remove();
 		const state = frm.doc.workflow_state; // ← rename if needed
 		if (!state) {
@@ -86,4 +140,30 @@ frappe.ui.form.on('Sales Order', {
 		  console.log('[your_app] native pill not found, appended to title-area');
 		}
 	}
+
+	
+	// refresh: function(frm) {
+    //     // Clear previous custom indicator to prevent duplicates on refresh
+    //     frm.page.clear_indicator();
+    //     const state = frm.doc.workflow_state;
+    //     if (!state) {
+    //         return;
+    //     }
+
+    //     // Map your workflow_state to a color
+    //     const colorMap = {
+    //         'Claiming': 'light-blue',
+    //         'Pending': 'yellow',
+    //         'Artist': 'blue',
+    //         'Production': 'orange',
+    //         'Claimed': 'green',
+    //         'Rejected': 'red'
+    //     };
+
+    //     const color = colorMap[state] || 'gray';
+
+    //     // Use the built-in function to add the indicator
+    //     // The function returns the indicator element, which you can customize further if needed
+    //     frm.page.add_indicator(state, color);
+    // }
 });
