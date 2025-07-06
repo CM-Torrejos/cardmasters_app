@@ -130,9 +130,11 @@ doc_events = {
     "Artist Card": {
         "before_save": [
             "cardmasters_app.cardmasters_app.event_handlers.artist_card.calculate_time_difference",
-            "cardmasters_app.cardmasters_app.event_handlers.artist_card.validate_submission",
+        ] ,
+        "before_insert" : [
             "cardmasters_app.cardmasters_app.event_handlers.artist_card.before_insert",
-        ] 
+            "cardmasters_app.cardmasters_app.event_handlers.artist_card.validate_submission",
+        ]
     },
     "Sales Order": {
         "before_save": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.handle_progress_status"],
