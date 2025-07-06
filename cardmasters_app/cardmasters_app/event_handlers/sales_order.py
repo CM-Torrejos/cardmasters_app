@@ -40,3 +40,10 @@ def handle_progress_status(doc, method):
                 "artist": emp,
                 "date_created": nowdate()
             }).insert(ignore_permissions=True)
+
+
+def validate_alias_on_facebook_channel(doc, method):
+    if doc.custom_sales_channel == 'Facebook' or doc.custom_sales_channel == 'Marketplace':
+        customer = frappe.db.get_value("Customer", doc.customer, "custom_alias")
+        if not customer:
+            frappe.throw(("Set the Facebook name for the Customer in the Customer Masters"))
