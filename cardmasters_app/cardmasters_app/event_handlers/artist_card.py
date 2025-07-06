@@ -28,11 +28,7 @@ def validate_submission(doc, method):
 	if doc.sales_order:
 		# find any other Artist Card with this SO
 		exists = frappe.db.exists(
-			"Artist Card",
-			[
-				["sales_order", "=", doc.sales_order],
-				["name", "!=", doc.name]
-			]
+			"Artist Card",{"sales_order": doc.sales_order}
 		)
 
 		if exists:
@@ -46,3 +42,4 @@ def before_insert(doc, method):
 	if (doc.workflow_state and doc.workflow_state == 'Pending'):
 		doc = apply_workflow(doc, "Begin Layout")
 		doc.save()
+
