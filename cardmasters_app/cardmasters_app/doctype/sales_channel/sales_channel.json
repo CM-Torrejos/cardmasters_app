@@ -1,0 +1,59 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:{sales_channel}",
+ "creation": "2025-07-07 08:25:26.989670",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "sales_channel",
+  "has_alias",
+  "has_sales_partner"
+ ],
+ "fields": [
+  {
+   "fieldname": "sales_channel",
+   "fieldtype": "Data",
+   "label": "Sales Channel"
+  },
+  {
+   "default": "0",
+   "fieldname": "has_alias",
+   "fieldtype": "Check",
+   "label": "Has Alias"
+  },
+  {
+   "default": "0",
+   "fieldname": "has_sales_partner",
+   "fieldtype": "Check",
+   "label": "Has Sales Partner"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-07-07 08:38:40.057616",
+ "modified_by": "Administrator",
+ "module": "Cardmasters App",
+ "name": "Sales Channel",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
