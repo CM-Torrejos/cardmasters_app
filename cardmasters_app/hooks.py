@@ -137,8 +137,6 @@ doc_events = {
         ]
     },
     "Sales Order": {
-        "before_save": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.handle_progress_status"],
-        "before_update_after_submit": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.handle_progress_status"],
         "validate": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.validate_alias_on_facebook_channel"]
     },
     "Job Card": {
@@ -152,9 +150,9 @@ doc_events = {
     "Purchase Order": {
         "validate": "cardmasters_app.cardmasters_app.event_handlers.purchase_order.validate_po_revolving"
     },
-    "Material Request": {
-        "before_save": ["cardmasters_app.cardmasters_app.event_handlers.material_request.validate_request"],
-    },
+    # "Material Request": {
+    #     "before_save": ["cardmasters_app.cardmasters_app.event_handlers.material_request.validate_request"],
+    # },
 
 }
 # Apps
