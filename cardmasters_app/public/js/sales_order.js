@@ -142,6 +142,34 @@ frappe.ui.form.on('Sales Order', {
 		// }
 	},
 	
+	custom_sales_channel: function(frm){
+		frappe.call({
+			method: "frappe.client.get_value",
+			args: {
+				doctype: "Sales Channel",
+				filters: { name: frm.doc.custom_sales_channel },
+				fieldname: "has_sales_partner"
+			},
+			callback: function(response) {
+				console.log("im running")
+				if (response.message) {
+					let has_sales_partner = response.message.has_sales_partner;
+					console.log(has_sales_partner)
+					if (has_sales_partner){
+						console.log('im supposed to set req to 1')
+						frm.set_df_property('sales_partner', 'reqd', 1);
+					}else{
+						frm.set_df_property('sales_partner', 'reqd', 0);
+					}
+					
+					
+				}
+				
+				
+			}
+		});
+	}
+	
 	
 	
 	
