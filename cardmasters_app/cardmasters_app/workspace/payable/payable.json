@@ -13,7 +13,7 @@
  "is_hidden": 0,
  "label": "Payable",
  "links": [],
- "modified": "2025-07-03 15:58:11.759137",
+ "modified": "2025-07-07 16:40:01.715726",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Payable",
@@ -25,7 +25,7 @@
   {
    "document_type": "Material Request",
    "label": "Material Request",
-   "quick_list_filter": "[]"
+   "quick_list_filter": "[[\"Material Request\",\"workflow_state\",\"=\",\"Approved\",false],[\"Material Request\",\"material_request_type\",\"=\",\"Purchase\",false]]"
   },
   {
    "document_type": "Purchase Order",
@@ -44,7 +44,7 @@
   }
  ],
  "roles": [],
- "sequence_id": 14.0,
+ "sequence_id": 13.0,
  "shortcuts": [
   {
    "color": "Grey",

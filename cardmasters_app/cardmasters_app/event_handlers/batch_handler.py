@@ -29,7 +29,7 @@ def set_batch_no_for_purchase_receipt(doc, method):
 
 		item_group = frappe.db.get_value("Item", item_group, "item_group")
 
-		if item_group = "Expense Items"
+		# if item_group == "Expense Items"
 		
 		sales_order = item.get("sales_order")
 		item_code = item.get("item_code")

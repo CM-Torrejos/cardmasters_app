@@ -13,7 +13,7 @@
  "is_hidden": 0,
  "label": "Receivable",
  "links": [],
- "modified": "2025-07-03 15:58:11.826496",
+ "modified": "2025-07-07 15:13:27.777931",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Receivable",
@@ -44,7 +44,7 @@
   }
  ],
  "roles": [],
- "sequence_id": 15.0,
+ "sequence_id": 14.0,
  "shortcuts": [
   {
    "color": "Grey",
