@@ -2,9 +2,9 @@
  {
   "docstatus": 0,
   "doctype": "Workflow Action Master",
-  "modified": "2025-06-20 13:21:05.506289",
-  "name": "Skip Artist",
-  "workflow_action_name": "Skip Artist"
+  "modified": "2025-07-02 13:47:24.449966",
+  "name": "Review",
+  "workflow_action_name": "Review"
  },
  {
   "docstatus": 0,
@@ -44,23 +44,9 @@
  {
   "docstatus": 0,
   "doctype": "Workflow Action Master",
-  "modified": "2025-06-13 15:41:52.910965",
-  "name": "Request Approval",
-  "workflow_action_name": "Request Approval"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow Action Master",
   "modified": "2025-06-13 15:42:26.848845",
   "name": "Request Reimbursement",
   "workflow_action_name": "Request Reimbursement"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow Action Master",
-  "modified": "2025-06-13 15:42:54.796601",
-  "name": "Reimbursed",
-  "workflow_action_name": "Reimbursed"
  },
  {
   "docstatus": 0,
@@ -145,5 +131,40 @@
   "modified": "2025-04-28 05:42:35.304733",
   "name": "Begin Layout",
   "workflow_action_name": "Begin Layout"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-07-03 08:44:51.893626",
+  "name": "Ready for Delivery",
+  "workflow_action_name": "Ready for Delivery"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-07-03 09:03:53.485209",
+  "name": "Conclude Production",
+  "workflow_action_name": "Conclude Production"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-06-20 13:21:05.506289",
+  "name": "Skip Artist",
+  "workflow_action_name": "Skip Artist"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-06-13 15:41:52.910965",
+  "name": "Request Approval",
+  "workflow_action_name": "Request Approval"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-06-13 15:42:54.796601",
+  "name": "Reimbursed",
+  "workflow_action_name": "Reimbursed"
  }
 ]
