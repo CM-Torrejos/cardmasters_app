@@ -99,7 +99,6 @@ app_include_js = [
     "/assets/cardmasters_app/js/address_contact_quick_entry_patch.js",
     "/assets/cardmasters_app/js/update_child_items.js"
 ]
-# test
 
 doc_events = {
 	"Petty Cash Voucher": {

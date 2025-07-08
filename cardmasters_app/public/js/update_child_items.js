@@ -19,7 +19,9 @@ erpnext.utils.update_child_items = function (opts) {
 			uom: d.uom,
 			fg_item: d.fg_item,
 			fg_item_qty: d.fg_item_qty,
-            custom_subclass: d.custom_subclass
+            custom_subclass: d.custom_subclass,
+			custom_item_specifics: d.custom_item_specifics,
+			custom_particulars: d.custom_particulars
 		};
 	});
 
@@ -171,6 +173,18 @@ erpnext.utils.update_child_items = function (opts) {
             label: __("Subclass"),
             reqd: 1
 		},
+		{
+			fieldtype: "Small Text",
+			fieldname: "custom_item_specifics",
+			in_list_view: 1,
+            label: __("Item Specifics"),
+		},
+		{
+			fieldtype: "Text",
+			fieldname: "custom_particulars",
+			in_list_view: 1,
+            label: __("Particulars"),
+		},
 	];
 
 	if (frm.doc.doctype == "Sales Order" || frm.doc.doctype == "Purchase Order") {
@@ -261,7 +275,7 @@ erpnext.utils.update_child_items = function (opts) {
 		update_items: function () {
 			const trans_items = this.get_values()["trans_items"].filter((item) => !!item.item_code);
 			frappe.call({
-				method: "erpnext.controllers.accounts_controller.update_child_qty_rate",
+				method: "cardmasters_app.cardmasters_app.api.override_update_child_qty_rate.update_child_qty_rate",
 				freeze: true,
 				args: {
 					parent_doctype: frm.doc.doctype,

@@ -15,7 +15,7 @@ frappe.ui.form.on('Purchase Order Item', {
   // Purchase Order → on load or any refresh (e.g. after mapping from MR)
   frappe.ui.form.on('Purchase Order', {
     refresh(frm) {
-      // Only do this for new documents (so you don’t overwrite rates on an existing PO)
+      // Only do this for new documents (don’t overwrite rates on an existing PO)
       if (frm.is_new()) {
         frm.doc.items.forEach(function(row) {
           frappe.model.set_value(row.doctype, row.name, 'basic_rate', 0);

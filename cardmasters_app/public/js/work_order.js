@@ -50,7 +50,6 @@ frappe.ui.form.on('Work Order', {
 		};
 
 		if (frm.doc.sales_order) {
-			console.log('hello world')
 			frappe.call({
 				method: 'cardmasters_app.cardmasters_app.event_handlers.get_sales_order.get_sales_order_html',
 				args: {
@@ -130,15 +129,4 @@ frappe.ui.form.on('Work Order', {
 		})
 	},
 
-
-	// // TODO: Ensure that this code only runs when the thing is submitted already.
-	// refresh: (frm) => {
-	// 	frm.add_custom_button('Material Request', () => {
-	// 		frappe.new_doc('Material Request', {
-	// 			material_request_type: 'Material Transfer',
-	// 			work_order : frm.doc.name,
-	// 			set_from_warehouse: 'MASTER WAREHOUSE - CM CDO'
-	// 		})
-	// 	})
-	// }
 });

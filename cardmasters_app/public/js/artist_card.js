@@ -1,8 +1,6 @@
 frappe.ui.form.on('Artist Card', {
 	refresh: function(frm) {
-		console.log('hello world')
 		if (frm.doc.sales_order) {
-			console.log('hello world')
 			frappe.call({
 				method: 'cardmasters_app.cardmasters_app.event_handlers.get_sales_order.get_sales_order_html',
 				args: {
@@ -29,9 +27,9 @@ frappe.ui.form.on('Artist Card', {
 							setTimeout(() => {
 								const style = doc.createElement("style");
 								style.innerHTML = `
-                body { margin: 0; padding: 0; overflow: hidden; }
-                .print-format-toolbar { display: none !important; }
-            `;
+										body { margin: 0; padding: 0; overflow: hidden; }
+										.print-format-toolbar { display: none !important; }
+									`;
 								doc.head.appendChild(style);
 							}, 100); // wait 100ms
 						};

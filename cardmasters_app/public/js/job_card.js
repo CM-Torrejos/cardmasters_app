@@ -10,7 +10,6 @@ frappe.ui.form.on("Job Card", {
 
 	refresh: function(frm) {
 		if (frm.doc.custom_sales_order) {
-			console.log('hello world')
 			frappe.call({
 				method: 'cardmasters_app.cardmasters_app.event_handlers.get_sales_order.get_sales_order_html',
 				args: {

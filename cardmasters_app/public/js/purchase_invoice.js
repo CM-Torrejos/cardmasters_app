@@ -8,8 +8,5 @@ frappe.ui.form.on('Purchase Invoice', {
         );
       }
     },
-  
-    // runs when the form is loaded or refreshed
-    
   });
   
