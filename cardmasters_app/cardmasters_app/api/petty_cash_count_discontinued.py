@@ -2,23 +2,19 @@ import frappe
 
 @frappe.whitelist()
 def get_unliquidated_transactions(petty_cash_count):
-    """
-    Return Purchase Orders where the Supplier is a disbursement officer
-    (custom_is_disbursement_officer == 1) and which have no linked Purchase Invoices.
-    """
+    # Instead of checking custom revolving fund, check  if the supplier is a disbursement officer instead
+    """Return Purchase Orders with custom_from_revolving_fund == 1 and no linked Purchase Invoices."""
     query = """
         SELECT
             po.name AS purchase_order,
             GROUP_CONCAT(DISTINCT poi.material_request SEPARATOR ', ') AS material_request,
             po.custom_amount_released AS amount_released
         FROM `tabPurchase Order` po
-        JOIN `tabSupplier` s
-            ON s.name = po.supplier
         JOIN `tabPurchase Order Item` poi
             ON poi.parent = po.name
         LEFT JOIN `tabPurchase Invoice Item` pii
             ON pii.purchase_order = po.name
-        WHERE s.custom_is_disbursement_officer = 1
+        WHERE po.custom_from_revolving_fund = 1
           AND po.docstatus = 1
           AND pii.name IS NULL
         GROUP BY po.name, po.custom_amount_released
@@ -31,10 +27,8 @@ def get_unliquidated_transactions(petty_cash_count):
 
 @frappe.whitelist()
 def get_liquidated_transactions(petty_cash_count):
-    """
-    Return Purchase Invoices on the Petty Cash Count date where the Supplier
-    is a disbursement officer (custom_is_disbursement_officer == 1).
-    """
+    # Instead of checking custom revolving fund, check  if the supplier is a disbursement officer instead
+    """Return Purchase Invoices with custom_revolving_fund == 1 on the Petty Cash Count date."""
     try:
         pcc = frappe.get_doc('Petty Cash Count', petty_cash_count)
         count_date = pcc.date
@@ -51,11 +45,9 @@ def get_liquidated_transactions(petty_cash_count):
             pi.grand_total AS amount_paid,
             pi.outstanding_amount AS outstanding_amount
         FROM `tabPurchase Invoice` pi
-        JOIN `tabSupplier` s
-            ON s.name = pi.supplier
         JOIN `tabPurchase Invoice Item` pii
             ON pii.parent = pi.name
-        WHERE s.custom_is_disbursement_officer = 1
+        WHERE pi.custom_from_revolving_fund = 1
           AND pi.docstatus = 1
           AND pi.posting_date = %(count_date)s
         GROUP BY pi.name, pii.purchase_order, pii.purchase_receipt, pi.grand_total
