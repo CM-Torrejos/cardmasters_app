@@ -111,7 +111,6 @@ doc_events = {
         "after_insert" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars"],
         "before_save" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_save"],
         "before_submit" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_submit"],
-        "on_cancel" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.on_work_order_cancel"]
     },
     "Stock Entry": {
         "after_insert": [
@@ -147,7 +146,7 @@ doc_events = {
         "validate": "cardmasters_app.cardmasters_app.event_handlers.batch_handlers.assign_batches_on_delivery_note"
     },
     "Purchase Order": {
-        "validate": "cardmasters_app.cardmasters_app.event_handlers.purchase_order.validate_po_revolving"
+        # "validate": "cardmasters_app.cardmasters_app.event_handlers.purchase_order.validate_po_revolving"
     },
     # "Material Request": {
     #     "before_save": ["cardmasters_app.cardmasters_app.event_handlers.material_request.validate_request"],
