@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"Gu_rcTSnND\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Create</b></span>\",\"col\":12}},{\"id\":\"A7M7JFIJkX\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Quotation\",\"col\":3}},{\"id\":\"4ssOZ1F2fC\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Sales Order\",\"col\":3}},{\"id\":\"U6ZvNjnUO5\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Customer\",\"col\":3}},{\"id\":\"Kooz8IuBGN\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Contact\",\"col\":3}},{\"id\":\"oBXPZYRi41\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Material Request\",\"col\":3}},{\"id\":\"wyzflwTQ5N\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"AUyLTPfUA5\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Lists</b></span>\",\"col\":12}},{\"id\":\"mHSxd-xEfe\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Customers\",\"col\":3}},{\"id\":\"Hfid6qcT1Y\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Contacts\",\"col\":3}},{\"id\":\"yU2X8rr2zz\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Quotations\",\"col\":3}},{\"id\":\"kaveqWtHbO\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Orders\",\"col\":3}},{\"id\":\"7pNPVU9KVZ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Items for Sale\",\"col\":3}},{\"id\":\"VqFbIoSxd9\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Stock Quantity\",\"col\":3}},{\"id\":\"Bfm_F9qeEM\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"lnBsNK0Hp0\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Sales Order\",\"col\":8}},{\"id\":\"aaekSj2y0c\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Quotation\",\"col\":4}}]",
+ "content": "[{\"id\":\"Gu_rcTSnND\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Create</b></span>\",\"col\":12}},{\"id\":\"A7M7JFIJkX\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Quotation\",\"col\":3}},{\"id\":\"4ssOZ1F2fC\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Sales Order\",\"col\":3}},{\"id\":\"U6ZvNjnUO5\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Customer\",\"col\":3}},{\"id\":\"Kooz8IuBGN\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Contact\",\"col\":3}},{\"id\":\"oBXPZYRi41\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Material Request\",\"col\":3}},{\"id\":\"wyzflwTQ5N\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"AUyLTPfUA5\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Lists</b></span>\",\"col\":12}},{\"id\":\"mHSxd-xEfe\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Customers\",\"col\":3}},{\"id\":\"Hfid6qcT1Y\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Contacts\",\"col\":3}},{\"id\":\"yU2X8rr2zz\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Quotations\",\"col\":3}},{\"id\":\"kaveqWtHbO\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Orders\",\"col\":3}},{\"id\":\"7pNPVU9KVZ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Items for Sale\",\"col\":3}},{\"id\":\"NNoApKScgC\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Material Requests\",\"col\":3}},{\"id\":\"VqFbIoSxd9\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Stock Quantity\",\"col\":3}},{\"id\":\"Bfm_F9qeEM\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"lnBsNK0Hp0\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Sales Order\",\"col\":6}},{\"id\":\"aaekSj2y0c\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Quotation\",\"col\":6}}]",
  "creation": "2025-06-11 08:25:15.639302",
  "custom_blocks": [],
  "docstatus": 0,
@@ -13,7 +13,7 @@
  "is_hidden": 0,
  "label": "Sales Department",
  "links": [],
- "modified": "2025-07-07 15:13:27.149980",
+ "modified": "2025-07-18 17:14:00.445930",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Sales Department",
@@ -36,6 +36,14 @@
  "roles": [],
  "sequence_id": 1.0,
  "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Material Requests",
+   "link_to": "Material Request",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
   {
    "color": "Grey",
    "doc_view": "New",

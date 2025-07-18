@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"wNqzQqjcDe\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Create</b></span>\",\"col\":12}},{\"id\":\"IA1FGw682h\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Material Request (for general restocking)\",\"col\":5}},{\"id\":\"4IXB1k1mxs\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"PSxUSCxUO7\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>List</b></span>\",\"col\":12}},{\"id\":\"l_6bDVzrUL\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Tailoring Jobs\",\"col\":3}},{\"id\":\"5AnYdyUxc1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Orders\",\"col\":3}},{\"id\":\"X8554s1FLB\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Work Orders\",\"col\":3}},{\"id\":\"Iy_xezp7dm\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"k0roR04WAf\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Tailoring Jobs\",\"col\":8}},{\"id\":\"BVegMS7uwH\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Work Orders\",\"col\":4}},{\"id\":\"dZczi3jpkv\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"4iqGDeXq96\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Inventory</b></span>\",\"col\":12}},{\"id\":\"h9gP8TwVq1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"View Current Stock\",\"col\":3}},{\"id\":\"hJWAy5xRM2\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Material Request (Restock)\",\"col\":3}}]",
+ "content": "[{\"id\":\"wNqzQqjcDe\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Create</b></span>\",\"col\":12}},{\"id\":\"IA1FGw682h\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Material Request (for general restocking)\",\"col\":5}},{\"id\":\"4IXB1k1mxs\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"PSxUSCxUO7\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>List</b></span>\",\"col\":12}},{\"id\":\"l_6bDVzrUL\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Tailoring Jobs\",\"col\":3}},{\"id\":\"5AnYdyUxc1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Orders\",\"col\":3}},{\"id\":\"X8554s1FLB\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Work Orders\",\"col\":3}},{\"id\":\"hj_6nzKQK9\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Material Requests\",\"col\":3}},{\"id\":\"Iy_xezp7dm\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"k0roR04WAf\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Tailoring Jobs\",\"col\":8}},{\"id\":\"BVegMS7uwH\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Work Orders\",\"col\":4}},{\"id\":\"dZczi3jpkv\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"4iqGDeXq96\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Inventory</b></span>\",\"col\":12}},{\"id\":\"h9gP8TwVq1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"View Current Stock\",\"col\":3}},{\"id\":\"hJWAy5xRM2\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Material Request (Restock)\",\"col\":3}}]",
  "creation": "2025-06-11 13:56:07.476682",
  "custom_blocks": [],
  "docstatus": 0,
@@ -13,7 +13,7 @@
  "is_hidden": 0,
  "label": "Tailoring",
  "links": [],
- "modified": "2025-07-07 15:13:27.548369",
+ "modified": "2025-07-18 17:14:01.011002",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Tailoring",
@@ -40,6 +40,14 @@
    "color": "Grey",
    "doc_view": "New",
    "label": "Create Material Request (Restock)",
+   "link_to": "Material Request",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Material Requests",
    "link_to": "Material Request",
    "stats_filter": "[]",
    "type": "DocType"

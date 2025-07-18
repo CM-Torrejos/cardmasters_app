@@ -13,7 +13,7 @@
  "is_hidden": 0,
  "label": "Payable",
  "links": [],
- "modified": "2025-07-07 16:40:01.715726",
+ "modified": "2025-07-18 17:14:01.286170",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Payable",
@@ -44,7 +44,7 @@
   }
  ],
  "roles": [],
- "sequence_id": 13.0,
+ "sequence_id": 14.0,
  "shortcuts": [
   {
    "color": "Grey",

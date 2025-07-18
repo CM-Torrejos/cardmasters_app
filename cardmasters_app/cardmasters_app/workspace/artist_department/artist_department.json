@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"hoKr7bCodg\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Create</b></span>\",\"col\":12}},{\"id\":\"oBXPZYRi41\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Material Request\",\"col\":3}},{\"id\":\"wyzflwTQ5N\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"AUyLTPfUA5\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Lists</b></span>\",\"col\":12}},{\"id\":\"kaveqWtHbO\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Orders\",\"col\":3}},{\"id\":\"bIhVEM66gU\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Artist Cards\",\"col\":3}},{\"id\":\"2cRVVmUJ8a\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Work Orders to BOM\",\"col\":3}},{\"id\":\"BUFmMij6GO\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"pwTIlo1TeK\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Sales Orders without Artist\",\"col\":12}},{\"id\":\"MbQDKySLNL\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Artist Cards\",\"col\":7}},{\"id\":\"rKHfU3DNuZ\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Artist Cards (Filtered Finished)\",\"col\":5}}]",
+ "content": "[{\"id\":\"hoKr7bCodg\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Create</b></span>\",\"col\":12}},{\"id\":\"oBXPZYRi41\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Material Request\",\"col\":3}},{\"id\":\"wyzflwTQ5N\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"AUyLTPfUA5\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Lists</b></span>\",\"col\":12}},{\"id\":\"kaveqWtHbO\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Orders\",\"col\":3}},{\"id\":\"bIhVEM66gU\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Artist Cards\",\"col\":3}},{\"id\":\"2cRVVmUJ8a\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Work Orders to BOM\",\"col\":3}},{\"id\":\"A7YbsZOQOH\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Material Requests\",\"col\":3}},{\"id\":\"BUFmMij6GO\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"pwTIlo1TeK\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Sales Orders without Artist\",\"col\":6}},{\"id\":\"MbQDKySLNL\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Artist Cards\",\"col\":6}},{\"id\":\"rKHfU3DNuZ\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Artist Cards (Filtered Finished)\",\"col\":12}}]",
  "creation": "2025-06-11 09:32:00.916980",
  "custom_blocks": [],
  "docstatus": 0,
@@ -13,7 +13,7 @@
  "is_hidden": 0,
  "label": "Artist Department",
  "links": [],
- "modified": "2025-07-07 15:13:27.219353",
+ "modified": "2025-07-18 17:14:00.560036",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Department",
@@ -46,6 +46,14 @@
    "doc_view": "List",
    "label": "Sales Orders",
    "link_to": "Sales Order",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Material Requests",
+   "link_to": "Material Request",
    "stats_filter": "[]",
    "type": "DocType"
   },

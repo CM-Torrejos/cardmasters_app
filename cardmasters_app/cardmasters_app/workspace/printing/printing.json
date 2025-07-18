@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"wNqzQqjcDe\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Create</b></span>\",\"col\":12}},{\"id\":\"IA1FGw682h\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Material Request (for general restocking)\",\"col\":5}},{\"id\":\"4IXB1k1mxs\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"PSxUSCxUO7\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>List</b></span>\",\"col\":12}},{\"id\":\"l_6bDVzrUL\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Print Jobs\",\"col\":3}},{\"id\":\"5AnYdyUxc1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Orders\",\"col\":3}},{\"id\":\"X8554s1FLB\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Work Orders\",\"col\":3}},{\"id\":\"Iy_xezp7dm\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"k0roR04WAf\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"SMALL PRINTS (ARTIST)\",\"col\":4}},{\"id\":\"Mq5abkoMby\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"DIRECT TO FILM\",\"col\":4}},{\"id\":\"b2lknZyLMp\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"UV DIRECT TO FILM\",\"col\":4}},{\"id\":\"MHOO3zJE4G\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"UV FLATBED\",\"col\":4}},{\"id\":\"gTl-ezHWNz\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"UV ROLL TO ROLL\",\"col\":4}},{\"id\":\"M5KF59sjL_\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"STICKER PRINTING\",\"col\":4}},{\"id\":\"sS-q8YH2qi\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"TARPAULIN\",\"col\":4}},{\"id\":\"j_0LpZyiM3\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"SUBLIMATION PRINTING\",\"col\":4}},{\"id\":\"g-7nvUUrfO\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"BVegMS7uwH\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Work Orders\",\"col\":12}},{\"id\":\"dZczi3jpkv\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"4iqGDeXq96\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Inventory</b></span>\",\"col\":12}},{\"id\":\"h9gP8TwVq1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"View Current Stock\",\"col\":3}},{\"id\":\"hJWAy5xRM2\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Material Request (Restock)\",\"col\":3}}]",
+ "content": "[{\"id\":\"wNqzQqjcDe\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Create</b></span>\",\"col\":12}},{\"id\":\"IA1FGw682h\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Material Request (for general restocking)\",\"col\":5}},{\"id\":\"4IXB1k1mxs\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"PSxUSCxUO7\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>List</b></span>\",\"col\":12}},{\"id\":\"l_6bDVzrUL\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Print Jobs\",\"col\":3}},{\"id\":\"5AnYdyUxc1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Orders\",\"col\":3}},{\"id\":\"X8554s1FLB\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Work Orders\",\"col\":3}},{\"id\":\"FSpYBGW_M4\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Material Requests\",\"col\":3}},{\"id\":\"Iy_xezp7dm\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"k0roR04WAf\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"SMALL PRINTS (ARTIST)\",\"col\":4}},{\"id\":\"Mq5abkoMby\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"DIRECT TO FILM\",\"col\":4}},{\"id\":\"b2lknZyLMp\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"UV DIRECT TO FILM\",\"col\":4}},{\"id\":\"MHOO3zJE4G\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"UV FLATBED\",\"col\":4}},{\"id\":\"gTl-ezHWNz\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"UV ROLL TO ROLL\",\"col\":4}},{\"id\":\"M5KF59sjL_\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"STICKER PRINTING\",\"col\":4}},{\"id\":\"sS-q8YH2qi\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"TARPAULIN\",\"col\":4}},{\"id\":\"j_0LpZyiM3\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"SUBLIMATION PRINTING\",\"col\":4}},{\"id\":\"ZVP_sWKlG9\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"LARGE FORMAT PRINTING\",\"col\":4}},{\"id\":\"ICyG3L3JR5\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"FOIL STAMP\",\"col\":4}},{\"id\":\"g-7nvUUrfO\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"BVegMS7uwH\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Work Orders\",\"col\":12}},{\"id\":\"dZczi3jpkv\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"4iqGDeXq96\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Inventory</b></span>\",\"col\":12}},{\"id\":\"h9gP8TwVq1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"View Current Stock\",\"col\":3}},{\"id\":\"hJWAy5xRM2\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Material Request (Restock)\",\"col\":3}}]",
  "creation": "2025-06-11 09:59:49.957004",
  "custom_blocks": [],
  "docstatus": 0,
@@ -13,7 +13,7 @@
  "is_hidden": 0,
  "label": "Printing",
  "links": [],
- "modified": "2025-07-07 15:13:27.301832",
+ "modified": "2025-07-18 17:14:00.649986",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Printing",
@@ -29,8 +29,18 @@
   },
   {
    "document_type": "Job Card",
+   "label": "LARGE FORMAT PRINTING",
+   "quick_list_filter": "[[\"Job Card\",\"operation\",\"=\",\"LARGE FORMAT PRINTING\",false]]"
+  },
+  {
+   "document_type": "Job Card",
    "label": "SMALL PRINTS (ARTIST)",
    "quick_list_filter": "[[\"Job Card\",\"workstation\",\"=\",\"MAIN - ARTIST\",false]]"
+  },
+  {
+   "document_type": "Job Card",
+   "label": "FOIL STAMP",
+   "quick_list_filter": "[[\"Job Card\",\"operation\",\"=\",\"FOIL STAMP\",false]]"
   },
   {
    "document_type": "Work Order",
@@ -78,6 +88,14 @@
    "link_to": "Stock Projected Qty",
    "report_ref_doctype": "Item",
    "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Material Requests",
+   "link_to": "Material Request",
+   "stats_filter": "[]",
+   "type": "DocType"
   },
   {
    "color": "Grey",
