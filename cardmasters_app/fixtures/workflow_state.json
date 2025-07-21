@@ -30,15 +30,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-04-28 07:07:20.066013",
-  "name": "Cancelled",
-  "style": "",
-  "workflow_state_name": "Cancelled"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-06-19 15:15:37.722345",
   "name": "Received by Requesting Party",
   "style": "",
@@ -61,15 +52,6 @@
   "name": "Reimbursed",
   "style": "Success",
   "workflow_state_name": "Reimbursed"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-06-20 10:28:19.225345",
-  "name": "Delivery Ready",
-  "style": "",
-  "workflow_state_name": "Delivery Ready"
  },
  {
   "docstatus": 0,
@@ -138,33 +120,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-07-03 09:03:34.047628",
-  "name": "Production Concluded",
-  "style": "",
-  "workflow_state_name": "Production Concluded"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-06-20 13:20:19.040149",
-  "name": "No Artist - Pending Production",
-  "style": "",
-  "workflow_state_name": "No Artist - Pending Production"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-06-20 13:59:18.266820",
-  "name": "Claiming: Pending BOM",
-  "style": "",
-  "workflow_state_name": "Claiming: Pending BOM"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-07-05 10:13:34.724257",
   "name": "In Progress",
   "style": "Info",
@@ -183,24 +138,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-05-17 04:59:56.120535",
-  "name": "Pending Approval",
-  "style": "Info",
-  "workflow_state_name": "Pending Approval"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-06-20 10:26:34.368986",
-  "name": "BOM WIP",
-  "style": "",
-  "workflow_state_name": "BOM WIP"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-07-05 10:13:49.959500",
   "name": "For Reimbursement",
   "style": "Warning",
@@ -214,6 +151,33 @@
   "name": "Draft",
   "style": "",
   "workflow_state_name": "Draft"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-07-03 09:03:34.047628",
+  "name": "Production Concluded",
+  "style": "",
+  "workflow_state_name": "Production Concluded"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-17 04:59:56.120535",
+  "name": "Pending Approval",
+  "style": "Info",
+  "workflow_state_name": "Pending Approval"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-20 10:26:34.368986",
+  "name": "BOM WIP",
+  "style": "",
+  "workflow_state_name": "BOM WIP"
  },
  {
   "docstatus": 0,
@@ -250,5 +214,41 @@
   "name": "Awaiting Submission",
   "style": "",
   "workflow_state_name": "Awaiting Submission"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-20 10:28:19.225345",
+  "name": "Delivery Ready",
+  "style": "",
+  "workflow_state_name": "Delivery Ready"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-20 13:20:19.040149",
+  "name": "No Artist - Pending Production",
+  "style": "",
+  "workflow_state_name": "No Artist - Pending Production"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-20 13:59:18.266820",
+  "name": "Claiming: Pending BOM",
+  "style": "",
+  "workflow_state_name": "Claiming: Pending BOM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-28 07:07:20.066013",
+  "name": "Cancelled",
+  "style": "",
+  "workflow_state_name": "Cancelled"
  }
 ]
