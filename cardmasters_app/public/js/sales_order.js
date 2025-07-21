@@ -15,6 +15,22 @@ frappe.ui.form.on('Sales Order', {
 				}, __('Create'));
 			}
 		}
+
+		// Stock Entry Button Creation
+		function set_stock_entry_button() {
+			
+			const invalid_statuses = ['On Hold', 'Cancelled', 'Closed', 'Draft'];
+			
+			if (!invalid_statuses.includes(frm.doc.status)) {
+				frm.add_custom_button(__('Quick Manufacture'), function() {
+					frappe.new_doc('Stock Entry', {
+						stock_entry_type: 'Manufacture',
+						custom_sales_order: frm.doc.name,
+						
+					});
+				}, __('Create'));
+			}
+		}
 		
 		// Custom Pill Append
 		function set_custom_pill(doc) {
@@ -57,6 +73,7 @@ frappe.ui.form.on('Sales Order', {
 		// Call it on refresh
 		set_custom_pill();
 		set_artist_card_button();
+		set_stock_entry_button();
 		
 		// Optional: re-run it after status changes dynamically
 		frm.fields_dict.status.df.onchange = function() {

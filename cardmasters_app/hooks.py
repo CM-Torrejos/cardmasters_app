@@ -148,9 +148,13 @@ doc_events = {
     "Purchase Order": {
         # "validate": "cardmasters_app.cardmasters_app.event_handlers.purchase_order.validate_po_revolving"
     },
-    # "Material Request": {
-    #     "before_save": ["cardmasters_app.cardmasters_app.event_handlers.material_request.validate_request"],
-    # },
+    "Material Request": {
+        "validate": [
+            "cardmasters_app.cardmasters_app.event_handlers.material_request.validate_material_request",
+            "cardmasters_app.cardmasters_app.api.material_request.register_and_update"
+        ],
+
+    },
 
 }
 # Apps
