@@ -25,7 +25,7 @@
   "finished_total_time",
   "time_difference",
   "section_break_mwjg",
-  "artist_bom",
+  "bom",
   "remarks",
   "sales_order_tab_tab",
   "sales_order_print"
@@ -64,7 +64,7 @@
   },
   {
    "fieldname": "remarks",
-   "fieldtype": "Text",
+   "fieldtype": "Small Text",
    "label": "Remarks"
   },
   {
@@ -154,16 +154,16 @@
    "label": "Workflow State"
   },
   {
-   "fieldname": "artist_bom",
+   "fieldname": "bom",
    "fieldtype": "Long Text",
-   "label": "Artist BOM"
+   "label": "BOM"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
  "make_attachments_public": 1,
- "modified": "2025-07-19 10:15:25.291293",
+ "modified": "2025-07-22 10:26:31.095206",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Card",

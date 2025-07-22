@@ -8,10 +8,13 @@ def inherit_remarks_particulars(doc, method=None):
 
 	# load SO
 	so = frappe.get_doc("Sales Order", doc.sales_order)
+	ac = frappe.get_doc("Artist Card", doc.custom_artist_card)
 
 	# inherit header fields
 	doc.custom_remarks = so.get("custom_remarks")
 	doc.custom_deadline = so.get("delivery_date")
+	doc.custom_artist_bom = ac.get("bom")
+	doc.custom_artist_remarks = ac.get("remarks")
 
 	# fetch the Sales Order Item row matching production_item
 	so_item_row = None

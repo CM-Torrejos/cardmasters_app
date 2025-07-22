@@ -11,37 +11,14 @@ def on_job_card_create_handler(doc, method):
 
 def before_job_card_save(doc, method):
 	if doc.work_order:
+		wo = frappe.get_doc("Work Order", doc.work_order)
 		# directly fetch the sales_order field from the Work Order doctype
-		doc.custom_item = frappe.db.get_value(
-			"Work Order",
-			doc.work_order,
-			"item_name"
-		)
-
-		doc.custom_item_specifics = frappe.db.get_value(
-			"Work Order",
-			doc.work_order,
-			"custom_item_specifics"
-		)
-
-		doc.custom_particulars = frappe.db.get_value(
-			"Work Order",
-			doc.work_order,
-			"custom_particulars"
-		)
-
-		doc.custom_sales_order = frappe.db.get_value(
-			"Work Order", 
-			doc.work_order, 
-			"sales_order"
-		)
-
-		doc.custom_deadline = frappe.db.get_value(
-			"Work Order",
-			doc.work_order,
-			"custom_deadline"
-		)
-
+		doc.custom_item = wo.get("item_name")
+		doc.custom_item_specifics = wo.get("custom_item_specifics")
+		doc.custom_particulars = wo.get("custom_particulars")
+		doc.custom_sales_order = wo.get("sales_order")
+		doc.custom_deadline = wo.get("custom_deadline")
+		doc.custom_artist_card = wo.get("custom_artist_card")
 
 def check_all_job_cards_submitted(doc, method):
 

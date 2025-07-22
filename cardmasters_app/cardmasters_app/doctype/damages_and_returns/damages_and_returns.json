@@ -1,13 +1,14 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "format:{sales_order}-{blame}-{##}",
  "creation": "2025-04-26 09:10:24.897133",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "type",
-  "job_card",
   "sales_order",
+  "work_order",
   "column_break_pgtg",
   "date",
   "date_of_damage_or_return",
@@ -45,14 +46,6 @@
    "search_index": 1
   },
   {
-   "depends_on": "eval:doc.type == 'Damage'",
-   "fieldname": "job_card",
-   "fieldtype": "Link",
-   "label": "Job Card",
-   "options": "Job Card",
-   "search_index": 1
-  },
-  {
    "fieldname": "column_break_pgtg",
    "fieldtype": "Column Break"
   },
@@ -86,7 +79,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "in_standard_filter": 1,
-   "label": "Blame",
+   "label": "Point Person",
    "mandatory_depends_on": "eval:doc.error_type == \"Human\"",
    "options": "User"
   },
@@ -116,6 +109,13 @@
    "label": "Type",
    "options": "Damage\nReturn",
    "reqd": 1
+  },
+  {
+   "fieldname": "work_order",
+   "fieldtype": "Link",
+   "label": "Work Order",
+   "options": "Work Order",
+   "search_index": 1
   }
  ],
  "grid_page_length": 50,
@@ -131,10 +131,11 @@
    "link_fieldname": "custom_damages_and_returns"
   }
  ],
- "modified": "2025-05-03 13:16:43.826447",
+ "modified": "2025-07-21 14:18:43.801472",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damages and Returns",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

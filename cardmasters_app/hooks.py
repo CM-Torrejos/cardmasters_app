@@ -149,11 +149,7 @@ doc_events = {
         # "validate": "cardmasters_app.cardmasters_app.event_handlers.purchase_order.validate_po_revolving"
     },
     "Material Request": {
-        "validate": [
-            "cardmasters_app.cardmasters_app.event_handlers.material_request.validate_material_request",
-            "cardmasters_app.cardmasters_app.api.material_request.register_and_update"
-        ],
-
+        "validate": ["cardmasters_app.cardmasters_app.event_handlers.material_request.validate_material_request"],
     },
 
 }
