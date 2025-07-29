@@ -72,7 +72,7 @@ frappe.ui.form.ContactQEntry = class ContactQEntry extends frappe.ui.form.QuickE
             fieldname: "pincode",
             fieldtype: "Data",
             reqd: 1,
-            default: "Cagayan De Oro City"
+            default: "9000"
         },
         {
             fieldtype: "Column Break"
@@ -87,14 +87,15 @@ frappe.ui.form.ContactQEntry = class ContactQEntry extends frappe.ui.form.QuickE
         {
             label: __("City"),
             fieldname: "city",
-            fieldtype: "Link",
+            fieldtype: "Data",
             reqd: 1,
             default: "Cagayan De Oro City"
         },
         {
-            label: __("State"),
+            label: __("State/Province"),
             fieldname: "state",
-            fieldtype: "Link",
+            fieldtype: "Data",
+            default: "Misamis Oriental"
         },
         {
             label: __("Customer POS Id"),
