@@ -1,4 +1,5 @@
 import frappe
+from frappe import _
 
 def get_or_create_batch(batch_name, item_code, posting_date):
 	"""Fetch existing Batch or create a new one."""
