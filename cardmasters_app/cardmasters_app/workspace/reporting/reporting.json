@@ -1,24 +1,15 @@
 {
- "charts": [
-  {
-   "chart_name": "SBU Revenue (Sales Order) Chart",
-   "label": "SBU Revenue (Sales Order) Chart"
-  },
-  {
-   "chart_name": "Subclass Revenue (Sales Order) Chart",
-   "label": "Subclass Revenue (Sales Order) Chart"
-  }
- ],
- "content": "[{\"id\":\"vYr0LawTHE\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Quick Access</span>\",\"col\":12}},{\"id\":\"N5YIsr_Kdf\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Profit per Invoice\",\"col\":3}},{\"id\":\"Sv0MRIF1Bw\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"SBU Profitability\",\"col\":3}},{\"id\":\"uiXuhZ1fHh\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"SBU Revenue (Sales Order)\",\"col\":3}},{\"id\":\"Hjn2wP6fZ_\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Subclass Revenue (Sales Order)\",\"col\":3}},{\"id\":\"H2bks1-7Sl\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Top Customers (Sales Order)\",\"col\":3}},{\"id\":\"KHBQSOfOBn\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"u0SUahdF8_\",\"type\":\"chart\",\"data\":{\"chart_name\":\"SBU Revenue (Sales Order) Chart\",\"col\":6}},{\"id\":\"n4Mgo_xwQ_\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Subclass Revenue (Sales Order) Chart\",\"col\":6}},{\"id\":\"FBfSenmuQ3\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"568_XRzjHH\",\"type\":\"card\",\"data\":{\"card_name\":\"Ledgers\",\"col\":4}},{\"id\":\"96kiJEENJk\",\"type\":\"card\",\"data\":{\"card_name\":\"Financial Statements\",\"col\":4}},{\"id\":\"zijOwnI3JB\",\"type\":\"card\",\"data\":{\"card_name\":\"Profitability\",\"col\":4}},{\"id\":\"GQTYA-wiKW\",\"type\":\"card\",\"data\":{\"card_name\":\"Sales Reports\",\"col\":4}},{\"id\":\"juElZ6DyGU\",\"type\":\"card\",\"data\":{\"card_name\":\"Purchase Reports\",\"col\":4}}]",
+ "charts": [],
+ "content": "[{\"id\":\"vYr0LawTHE\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Quick Reports</span>\",\"col\":12}},{\"id\":\"s4EmwSdBv5\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"SBU Revenue (Sales Order)\",\"col\":3}},{\"id\":\"gORgqneyXi\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"SBU Revenue (Cost Center)\",\"col\":3}},{\"id\":\"65Jwh2qFl7\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Subclass Revenue (Sales Order)\",\"col\":3}},{\"id\":\"QvdZVXKzJX\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Top Customers (Sales Order)\",\"col\":3}},{\"id\":\"fKiWjMNLI0\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"568_XRzjHH\",\"type\":\"card\",\"data\":{\"card_name\":\"Ledgers\",\"col\":3}},{\"id\":\"96kiJEENJk\",\"type\":\"card\",\"data\":{\"card_name\":\"Financial Statements\",\"col\":3}},{\"id\":\"ElpCM8F9mu\",\"type\":\"card\",\"data\":{\"card_name\":\"Sales\",\"col\":3}},{\"id\":\"zijOwnI3JB\",\"type\":\"card\",\"data\":{\"card_name\":\"Profitability\",\"col\":3}},{\"id\":\"f5R8PM5jW0\",\"type\":\"card\",\"data\":{\"card_name\":\"Other Reports\",\"col\":6}},{\"id\":\"rHD-JypzDa\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b></b></span>\",\"col\":12}}]",
  "creation": "2025-06-11 19:27:48.642358",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
  "for_user": "",
- "hide_custom": 0,
- "icon": "file-large",
+ "hide_custom": 1,
+ "icon": "file",
  "idx": 0,
- "indicator_color": "green",
+ "indicator_color": "",
  "is_hidden": 0,
  "label": "Reporting",
  "links": [
@@ -134,7 +125,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Profitability",
-   "link_count": 4,
+   "link_count": 2,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -142,7 +133,7 @@
   {
    "hidden": 0,
    "is_query_report": 1,
-   "label": "Gross Profit",
+   "label": "Gross Profit (Per Invoice)",
    "link_count": 0,
    "link_to": "Gross Profit",
    "link_type": "Report",
@@ -152,7 +143,7 @@
   {
    "hidden": 0,
    "is_query_report": 1,
-   "label": "Profitability Analysis",
+   "label": "Profitability Analysis (SBU))",
    "link_count": 0,
    "link_to": "Profitability Analysis",
    "link_type": "Report",
@@ -161,29 +152,9 @@
   },
   {
    "hidden": 0,
-   "is_query_report": 1,
-   "label": "Sales Invoice Trends",
-   "link_count": 0,
-   "link_to": "Sales Invoice Trends",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Purchase Invoice Trends",
-   "link_count": 0,
-   "link_to": "Purchase Invoice Trends",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
    "is_query_report": 0,
-   "label": "Sales Reports",
-   "link_count": 3,
+   "label": "Sales",
+   "link_count": 4,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -191,17 +162,7 @@
   {
    "hidden": 0,
    "is_query_report": 1,
-   "label": "Sales Analytics",
-   "link_count": 0,
-   "link_to": "Sales Analytics",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Sales Order Analysis",
+   "label": "Sales Order Reporting",
    "link_count": 0,
    "link_to": "Sales Order Analysis",
    "link_type": "Report",
@@ -211,71 +172,82 @@
   {
    "hidden": 0,
    "is_query_report": 1,
-   "label": "Item-wise Sales History",
+   "label": "Quick SBU Report",
    "link_count": 0,
-   "link_to": "Item-wise Sales History",
+   "link_to": "SBU Revenue (Sales Order)",
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
   },
   {
    "hidden": 0,
+   "is_query_report": 1,
+   "label": "Quick Subclass Report",
+   "link_count": 0,
+   "link_to": "Subclass Revenue (Sales Order)",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Top Customers",
+   "link_count": 0,
+   "link_to": "Top Customers (Sales Order)",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "description": "Reports here requires you switch view of the list to report view",
+   "hidden": 0,
    "is_query_report": 0,
-   "label": "Purchase Reports",
-   "link_count": 3,
+   "label": "Other Reports",
+   "link_count": 2,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
   },
   {
    "hidden": 0,
-   "is_query_report": 1,
-   "label": "Purchase Analytics",
+   "is_query_report": 0,
+   "label": "Cashier's Report",
    "link_count": 0,
-   "link_to": "Purchase Analytics",
-   "link_type": "Report",
+   "link_to": "Payment Entry",
+   "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
   },
   {
    "hidden": 0,
-   "is_query_report": 1,
-   "label": "Purchase Order Analysis",
+   "is_query_report": 0,
+   "label": "Disbursement Report",
    "link_count": 0,
-   "link_to": "Purchase Order Analysis",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Item-wise Purchase History",
-   "link_count": 0,
-   "link_to": "Item-wise Purchase History",
-   "link_type": "Report",
+   "link_to": "Purchase Invoice",
+   "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
   }
  ],
- "modified": "2025-07-18 17:14:01.391778",
+ "modified": "2025-07-29 08:03:57.726150",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Reporting",
  "number_cards": [],
  "owner": "Administrator",
- "parent_page": "Accounts",
+ "parent_page": "Accounting Department",
  "public": 1,
  "quick_lists": [],
  "roles": [],
- "sequence_id": 16.0,
+ "sequence_id": 17.0,
  "shortcuts": [
   {
    "color": "Grey",
    "doc_view": "List",
-   "label": "Profit per Invoice",
-   "link_to": "Gross Profit",
-   "report_ref_doctype": "Sales Invoice",
+   "label": "SBU Revenue (Sales Order)",
+   "link_to": "SBU Revenue (Sales Order)",
+   "report_ref_doctype": "Sales Order",
    "type": "Report"
   },
   {
@@ -289,17 +261,9 @@
   {
    "color": "Grey",
    "doc_view": "List",
-   "label": "SBU Profitability",
+   "label": "SBU Revenue (Cost Center)",
    "link_to": "Profitability Analysis",
    "report_ref_doctype": "GL Entry",
-   "type": "Report"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "SBU Revenue (Sales Order)",
-   "link_to": "SBU Revenue (Sales Order)",
-   "report_ref_doctype": "Sales Order",
    "type": "Report"
   },
   {

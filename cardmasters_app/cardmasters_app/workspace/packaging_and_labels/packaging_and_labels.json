@@ -1,17 +1,17 @@
 {
  "charts": [],
- "content": "[{\"id\":\"wNqzQqjcDe\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"IA1FGw682h\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Embroidery Jobs\",\"col\":5}},{\"id\":\"4IXB1k1mxs\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"kqarl-Hsu1\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"m-StJ6H_Vb\",\"type\":\"card\",\"data\":{\"card_name\":\"Production Data\",\"col\":4}},{\"id\":\"I5YVxfXMfR\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}}]",
- "creation": "2025-07-28 01:18:26.561749",
+ "content": "[{\"id\":\"wNqzQqjcDe\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"IA1FGw682h\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"PNL Stickering and Assembly Jobs\",\"col\":3}},{\"id\":\"dZczi3jpkv\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"f6XFslqstn\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"-1133z3L9T\",\"type\":\"card\",\"data\":{\"card_name\":\"Production Data\",\"col\":4}},{\"id\":\"A8v08dpY27\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}}]",
+ "creation": "2025-07-18 14:01:49.296606",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
  "for_user": "",
  "hide_custom": 1,
- "icon": "quantity-1",
+ "icon": "stock",
  "idx": 1,
- "indicator_color": "",
+ "indicator_color": "green",
  "is_hidden": 0,
- "label": "Embroidery",
+ "label": "Packaging and Labels",
  "links": [
   {
    "hidden": 0,
@@ -152,26 +152,26 @@
    "type": "Link"
   }
  ],
- "modified": "2025-07-29 11:13:59.889031",
+ "modified": "2025-07-29 08:03:57.595283",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
- "name": "Embroidery",
+ "name": "Packaging and Labels",
  "number_cards": [],
  "owner": "Administrator",
  "parent_page": "Production Department",
  "public": 1,
  "quick_lists": [],
  "roles": [],
- "sequence_id": 8.0,
+ "sequence_id": 12.0,
  "shortcuts": [
   {
    "color": "Grey",
    "doc_view": "List",
-   "label": "Embroidery Jobs",
+   "label": "PNL Stickering and Assembly Jobs",
    "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"EMBROIDERY\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - EMBROIDERY\",false]]",
+   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"PNL STICKERING AND ASSEMBLY\",false],[\"Job Card\",\"workstation\",\"=\",\"PNL - ASSEMBLY\",false]]",
    "type": "DocType"
   }
  ],
- "title": "Embroidery"
+ "title": "Packaging and Labels"
 }

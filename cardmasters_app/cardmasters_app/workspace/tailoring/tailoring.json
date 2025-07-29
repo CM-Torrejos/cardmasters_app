@@ -1,19 +1,158 @@
 {
  "charts": [],
- "content": "[{\"id\":\"wNqzQqjcDe\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Create</b></span>\",\"col\":12}},{\"id\":\"IA1FGw682h\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Material Request (for general restocking)\",\"col\":5}},{\"id\":\"4IXB1k1mxs\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"PSxUSCxUO7\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>List</b></span>\",\"col\":12}},{\"id\":\"l_6bDVzrUL\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Tailoring Jobs\",\"col\":3}},{\"id\":\"5AnYdyUxc1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Orders\",\"col\":3}},{\"id\":\"X8554s1FLB\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Work Orders\",\"col\":3}},{\"id\":\"hj_6nzKQK9\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Material Requests\",\"col\":3}},{\"id\":\"Iy_xezp7dm\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"k0roR04WAf\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Tailoring Jobs\",\"col\":8}},{\"id\":\"BVegMS7uwH\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Work Orders\",\"col\":4}},{\"id\":\"dZczi3jpkv\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"4iqGDeXq96\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Inventory</b></span>\",\"col\":12}},{\"id\":\"h9gP8TwVq1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"View Current Stock\",\"col\":3}},{\"id\":\"hJWAy5xRM2\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Material Request (Restock)\",\"col\":3}}]",
- "creation": "2025-06-11 13:56:07.476682",
+ "content": "[{\"id\":\"wNqzQqjcDe\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"IA1FGw682h\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Tailoring Jobs\",\"col\":3}},{\"id\":\"4IXB1k1mxs\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"kqarl-Hsu1\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"m-StJ6H_Vb\",\"type\":\"card\",\"data\":{\"card_name\":\"Production Data\",\"col\":4}},{\"id\":\"JbqL230rok\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}}]",
+ "creation": "2025-07-28 01:22:49.367885",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
  "for_user": "",
- "hide_custom": 0,
+ "hide_custom": 1,
  "icon": "shortcut",
  "idx": 1,
  "indicator_color": "",
  "is_hidden": 0,
  "label": "Tailoring",
- "links": [],
- "modified": "2025-07-18 17:14:01.011002",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Orders",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Order",
+   "link_count": 0,
+   "link_to": "Sales Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Artist Card",
+   "link_count": 0,
+   "link_to": "Artist Card",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Work Order",
+   "link_count": 0,
+   "link_to": "Work Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Job Card",
+   "link_count": 0,
+   "link_to": "Job Card",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Production Data",
+   "link_count": 3,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Operation",
+   "link_count": 0,
+   "link_to": "Operation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Workstation",
+   "link_count": 0,
+   "link_to": "Workstation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "BOM",
+   "link_count": 0,
+   "link_to": "BOM",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Items and Stock",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Item",
+   "link_count": 0,
+   "link_to": "Item",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Item Group",
+   "link_count": 0,
+   "link_to": "Item Group",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Check Stock Availability",
+   "link_count": 0,
+   "link_to": "Stock Projected Qty",
+   "link_type": "Report",
+   "onboard": 0,
+   "report_ref_doctype": "Item",
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Material Request",
+   "link_count": 0,
+   "link_to": "Material Request",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2025-07-29 08:03:56.743180",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Tailoring",
@@ -21,75 +160,16 @@
  "owner": "Administrator",
  "parent_page": "Production Department",
  "public": 1,
- "quick_lists": [
-  {
-   "document_type": "Work Order",
-   "label": "Work Orders",
-   "quick_list_filter": "[]"
-  },
-  {
-   "document_type": "Job Card",
-   "label": "Tailoring Jobs",
-   "quick_list_filter": "[[\"Job Card\",\"workstation\",\"=\",\"TAILORING\",false]]"
-  }
- ],
+ "quick_lists": [],
  "roles": [],
- "sequence_id": 9.0,
+ "sequence_id": 8.1,
  "shortcuts": [
   {
    "color": "Grey",
-   "doc_view": "New",
-   "label": "Create Material Request (Restock)",
-   "link_to": "Material Request",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "Material Requests",
-   "link_to": "Material Request",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "View Current Stock",
-   "link_to": "Stock Projected Qty",
-   "report_ref_doctype": "Item",
-   "type": "Report"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "New",
-   "label": "Create Material Request (for general restocking)",
-   "link_to": "Material Request",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Orange",
    "doc_view": "List",
    "label": "Tailoring Jobs",
    "link_to": "Job Card",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Yellow",
-   "doc_view": "List",
-   "label": "Sales Orders",
-   "link_to": "Sales Order",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "Work Orders",
-   "link_to": "Work Order",
-   "stats_filter": "[]",
+   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"TAILORING\",false],[\"Job Card\",\"workstation\",\"=\",\"TAILORING\",false]]",
    "type": "DocType"
   }
  ],

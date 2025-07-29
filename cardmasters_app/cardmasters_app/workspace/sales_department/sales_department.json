@@ -1,19 +1,196 @@
 {
  "charts": [],
- "content": "[{\"id\":\"Gu_rcTSnND\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Create</b></span>\",\"col\":12}},{\"id\":\"A7M7JFIJkX\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Quotation\",\"col\":3}},{\"id\":\"4ssOZ1F2fC\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Sales Order\",\"col\":3}},{\"id\":\"U6ZvNjnUO5\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Customer\",\"col\":3}},{\"id\":\"Kooz8IuBGN\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Contact\",\"col\":3}},{\"id\":\"oBXPZYRi41\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Material Request\",\"col\":3}},{\"id\":\"wyzflwTQ5N\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"AUyLTPfUA5\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Lists</b></span>\",\"col\":12}},{\"id\":\"mHSxd-xEfe\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Customers\",\"col\":3}},{\"id\":\"Hfid6qcT1Y\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Contacts\",\"col\":3}},{\"id\":\"yU2X8rr2zz\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Quotations\",\"col\":3}},{\"id\":\"kaveqWtHbO\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Orders\",\"col\":3}},{\"id\":\"7pNPVU9KVZ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Items for Sale\",\"col\":3}},{\"id\":\"NNoApKScgC\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Material Requests\",\"col\":3}},{\"id\":\"VqFbIoSxd9\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Stock Quantity\",\"col\":3}},{\"id\":\"Bfm_F9qeEM\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"lnBsNK0Hp0\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Sales Order\",\"col\":6}},{\"id\":\"aaekSj2y0c\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Quotation\",\"col\":6}}]",
+ "content": "[{\"id\":\"AUyLTPfUA5\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"mHSxd-xEfe\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Sales Order\",\"col\":3}},{\"id\":\"yU2X8rr2zz\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Quotation\",\"col\":3}},{\"id\":\"NNoApKScgC\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create MR\",\"col\":3}},{\"id\":\"chADzTNGmt\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Calendar\",\"col\":3}},{\"id\":\"Bfm_F9qeEM\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"VMMh1TMsHI\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"8_-LoKlvPo\",\"type\":\"card\",\"data\":{\"card_name\":\"Customer Data\",\"col\":4}},{\"id\":\"AK06-bvAXA\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}},{\"id\":\"_X6fD5-O-l\",\"type\":\"card\",\"data\":{\"card_name\":\"Sales Tools\",\"col\":4}}]",
  "creation": "2025-06-11 08:25:15.639302",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
  "for_user": "",
- "hide_custom": 0,
+ "hide_custom": 1,
  "icon": "sell",
  "idx": 0,
  "indicator_color": "green",
  "is_hidden": 0,
  "label": "Sales Department",
- "links": [],
- "modified": "2025-07-18 17:14:00.445930",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Orders",
+   "link_count": 2,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Order",
+   "link_count": 0,
+   "link_to": "Sales Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Quotation",
+   "link_count": 0,
+   "link_to": "Quotation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Customer Data",
+   "link_count": 3,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Customer",
+   "link_count": 0,
+   "link_to": "Customer",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Contact",
+   "link_count": 0,
+   "link_to": "Contact",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Address",
+   "link_count": 0,
+   "link_to": "Address",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Items and Stock",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Items",
+   "link_count": 0,
+   "link_to": "Item",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Item Groups",
+   "link_count": 0,
+   "link_to": "Item Group",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Check Stock Availability",
+   "link_count": 0,
+   "link_to": "Stock Projected Qty",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Material Request",
+   "link_count": 0,
+   "link_to": "Material Request",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Tools",
+   "link_count": 5,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Partner",
+   "link_count": 0,
+   "link_to": "Sales Partner",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Partner Type",
+   "link_count": 0,
+   "link_to": "Sales Partner Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Channels",
+   "link_count": 0,
+   "link_to": "Sales Channel",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Subclass",
+   "link_count": 0,
+   "link_to": "Subclass",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Taxes",
+   "link_count": 0,
+   "link_to": "Sales Taxes and Charges Template",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2025-07-28 01:18:47.479427",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Sales Department",
@@ -21,31 +198,12 @@
  "owner": "Administrator",
  "parent_page": "",
  "public": 1,
- "quick_lists": [
-  {
-   "document_type": "Sales Order",
-   "label": "Sales Order",
-   "quick_list_filter": "[]"
-  },
-  {
-   "document_type": "Quotation",
-   "label": "Quotation",
-   "quick_list_filter": "[]"
-  }
- ],
+ "quick_lists": [],
  "roles": [],
  "sequence_id": 1.0,
  "shortcuts": [
   {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "Material Requests",
-   "link_to": "Material Request",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
+   "color": "Cyan",
    "doc_view": "New",
    "label": "Create Sales Order",
    "link_to": "Sales Order",
@@ -54,82 +212,26 @@
   },
   {
    "color": "Grey",
-   "doc_view": "New",
-   "label": "Create Material Request",
+   "doc_view": "List",
+   "label": "Create MR",
    "link_to": "Material Request",
    "stats_filter": "[]",
    "type": "DocType"
   },
   {
-   "color": "Blue",
-   "doc_view": "List",
-   "label": "Sales Orders",
+   "color": "Grey",
+   "doc_view": "Calendar",
+   "label": "Calendar",
    "link_to": "Sales Order",
    "stats_filter": "[]",
    "type": "DocType"
   },
   {
    "color": "Orange",
-   "doc_view": "List",
-   "label": "Quotations",
-   "link_to": "Quotation",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "Stock Quantity",
-   "link_to": "Stock Projected Qty",
-   "report_ref_doctype": "Item",
-   "type": "Report"
-  },
-  {
-   "color": "Grey",
    "doc_view": "New",
    "label": "Create Quotation",
    "link_to": "Quotation",
    "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Cyan",
-   "doc_view": "List",
-   "label": "Customers",
-   "link_to": "Customer",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "New",
-   "label": "Create Customer",
-   "link_to": "Customer",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "Contacts",
-   "link_to": "Contact",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "New",
-   "label": "Create Contact",
-   "link_to": "Contact",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "Items for Sale",
-   "link_to": "Item",
-   "stats_filter": "[[\"Item\",\"item_group\",\"=\",\"PRODUCTS\",false]]",
    "type": "DocType"
   }
  ],
