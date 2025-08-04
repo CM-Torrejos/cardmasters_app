@@ -109,7 +109,7 @@ doc_events = {
     },
     "Work Order": {
         "after_insert" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars"],
-        "before_save" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_save"],
+        # "before_insert" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_save"],
         "before_submit" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_submit"],
     },
     "Stock Entry": {

@@ -19,40 +19,41 @@ frappe.ui.form.on("Job Card", {
 				},
 				callback: function(r) {
 					if (r.message) {
+						// … inside your callback …
 						const iframe = document.createElement("iframe");
-						iframe.style.width = "800px";
+						iframe.src = "about:blank";      // ← add this!
+						iframe.style.width  = "800px";
 						iframe.style.height = "1000px";
 						iframe.style.border = "1px solid #ccc";
-						iframe.style.overflow = "hidden";
 						iframe.setAttribute("scrolling", "no");
 						
-						frm.fields_dict.custom_sales_order_print.$wrapper.empty().append(iframe);
-						
-						iframe.onload = function () {
+						// install onload _before_ appending
+						iframe.onload = function() {
 							const doc = iframe.contentWindow.document;
 							doc.open();
 							doc.write(r.message);
 							doc.close();
 							
-							// Wait for toolbar to be added before styling
+							// hide the toolbar once content is in
 							setTimeout(() => {
 								const style = doc.createElement("style");
 								style.innerHTML = `
-                body { margin: 0; padding: 0; overflow: hidden; }
-                .print-format-toolbar { display: none !important; }
-            `;
+								body { margin: 0; padding: 0; overflow: hidden; }
+								.print-format-toolbar { display: none !important; }
+								`;
 								doc.head.appendChild(style);
-							}, 100); // wait 100ms
+							}, 100);
 						};
+						
+						frm.fields_dict.custom_sales_order_print.$wrapper
+						.empty()
+						.append(iframe);
+						
 					}
 				}
 			});
-			
-			if (frm.doc.status === 'On Hold') {
-				frappe.show_alert("Don't forget to comment the reason for pausing");
-			}
 		}
-		
+
 		if (!frm.doc.__islocal) {
 			// frappe.show_alert("Fetching Work Orders..."); // Debugging message
 			frappe.call({

@@ -2,19 +2,32 @@ import frappe
 from frappe.model.workflow import apply_workflow, get_transitions
 
 def inherit_remarks_particulars(doc, method=None):
-	print("im running")
-	if not doc.sales_order:
-		return
+	
+	artist_card = frappe.db.get_value(
+			"Artist Card",
+			{'sales_order': doc.sales_order},
+			"name"
+		)
 
 	# load SO
 	so = frappe.get_doc("Sales Order", doc.sales_order)
-	ac = frappe.get_doc("Artist Card", doc.custom_artist_card)
 
 	# inherit header fields
 	doc.custom_remarks = so.get("custom_remarks")
 	doc.custom_deadline = so.get("delivery_date")
-	doc.custom_artist_bom = ac.get("bom")
-	doc.custom_artist_remarks = ac.get("remarks")
+
+
+	if artist_card:
+		doc.custom_artist_card = artist_card
+		ac = frappe.get_doc("Artist Card", doc.custom_artist_card)
+
+		doc.custom_artist_bom = ac.get("bom")
+		doc.custom_artist_remarks = ac.get("remarks")
+	else:
+		frappe.msgprint("This work order has no artist card. Be Warned!")
+
+	if not doc.sales_order:
+		return
 
 	# fetch the Sales Order Item row matching production_item
 	so_item_row = None
@@ -36,17 +49,6 @@ def inherit_remarks_particulars(doc, method=None):
 				req.custom_item_specifics = doc.custom_item_specifics
 				break
 
-def before_work_order_save(doc, method):
-		# directly fetch the sales_order field from the Work Order doctype
-		
-		artist_card = frappe.db.get_value(
-			"Artist Card",
-			{'sales_order': doc.sales_order},
-			"name"
-		)
-
-		if(artist_card):
-			doc.custom_artist_card = artist_card
 
 def before_work_order_submit(doc, method):
 	doc = frappe.get_doc("Sales Order", doc.sales_order)
@@ -56,5 +58,5 @@ def before_work_order_submit(doc, method):
 
 
 def clear_child_rows(doc, method):
-    # 'My Child Table' = your child‐DocType
-    frappe.db.delete("Artist BOM table", {"parent": doc.name})
+	# 'My Child Table' = your child‐DocType
+	frappe.db.delete("Artist BOM table", {"parent": doc.name})
