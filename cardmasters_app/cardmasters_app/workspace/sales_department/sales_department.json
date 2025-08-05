@@ -190,7 +190,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-07-28 01:18:47.479427",
+ "modified": "2025-08-05 14:29:22.012568",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Sales Department",
@@ -199,7 +199,14 @@
  "parent_page": "",
  "public": 1,
  "quick_lists": [],
- "roles": [],
+ "roles": [
+  {
+   "role": "CM Office Sales"
+  },
+  {
+   "role": "CM Sales Head"
+  }
+ ],
  "sequence_id": 1.0,
  "shortcuts": [
   {

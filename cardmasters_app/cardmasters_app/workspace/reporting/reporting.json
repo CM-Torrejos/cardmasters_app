@@ -212,25 +212,26 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Disbursement Report",
+   "link_count": 0,
+   "link_to": "Disbursement Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "report_ref_doctype": "Purchase Invoice",
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Cashier's Report",
    "link_count": 0,
    "link_to": "Payment Entry",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Disbursement Report",
-   "link_count": 0,
-   "link_to": "Purchase Invoice",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
   }
  ],
- "modified": "2025-07-29 08:03:57.726150",
+ "modified": "2025-08-05 09:02:43.492436",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Reporting",
