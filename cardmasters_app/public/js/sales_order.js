@@ -50,6 +50,7 @@ frappe.ui.form.on('Sales Order', {
 				'Production':			'orange',
 				'Claimed':			'green',
 				'Rejected':			'red',
+				'Production Concluded': 	'green'
 				// …etc
 			};
 			const color = colorMap[state] || 'gray';
@@ -70,6 +71,8 @@ frappe.ui.form.on('Sales Order', {
 			}
 		}
 		
+
+
 		// Call it on refresh
 		set_custom_pill();
 		set_artist_card_button();
