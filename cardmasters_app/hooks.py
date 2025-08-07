@@ -74,6 +74,7 @@ fixtures = [
 
 doctype_js = {
     "Sales Order": "public/js/sales_order.js",
+    "Quotation": "public/js/quotation.js",
     "Job Card": "public/js/job_card.js",
     "Petty Cash Count": "public/js/petty_cash_count.js",
     "Artist Card": "public/js/artist_card.js",

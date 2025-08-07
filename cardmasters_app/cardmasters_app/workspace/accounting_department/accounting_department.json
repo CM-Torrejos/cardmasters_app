@@ -369,7 +369,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-07-29 08:03:58.212909",
+ "modified": "2025-08-06 13:39:33.262210",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Accounting Department",
@@ -378,7 +378,14 @@
  "parent_page": "",
  "public": 1,
  "quick_lists": [],
- "roles": [],
+ "roles": [
+  {
+   "role": "CM Controller"
+  },
+  {
+   "role": "CM Analyst"
+  }
+ ],
  "sequence_id": 14.0,
  "shortcuts": [
   {

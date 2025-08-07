@@ -19,7 +19,7 @@ erpnext.utils.update_child_items = function (opts) {
 			uom: d.uom,
 			fg_item: d.fg_item,
 			fg_item_qty: d.fg_item_qty,
-            custom_subclass: d.custom_subclass,
+            // custom_subclass: d.custom_subclass,
 			custom_item_specifics: d.custom_item_specifics,
 			custom_particulars: d.custom_particulars
 		};
@@ -165,14 +165,14 @@ erpnext.utils.update_child_items = function (opts) {
 			label: __("Rate"),
 			precision: get_precision("rate"),
 		},
-        {
-			fieldtype: "Link",
-			fieldname: "custom_subclass",
-			options: "Subclass",
-			in_list_view: 1,
-            label: __("Subclass"),
-            reqd: 1
-		},
+        // {
+		// 	fieldtype: "Link",
+		// 	fieldname: "custom_subclass",
+		// 	options: "Subclass",
+		// 	in_list_view: 1,
+        //     label: __("Subclass"),
+        //     reqd: 1
+		// },
 		{
 			fieldtype: "Small Text",
 			fieldname: "custom_item_specifics",

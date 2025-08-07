@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-07-29 08:03:57.119429",
+ "modified": "2025-08-06 13:30:27.912435",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Cutting and Engrave",
@@ -161,7 +161,14 @@
  "parent_page": "Production Department",
  "public": 1,
  "quick_lists": [],
- "roles": [],
+ "roles": [
+  {
+   "role": "CM Production Head"
+  },
+  {
+   "role": "Cutting and Engrave Workstation Leader"
+  }
+ ],
  "sequence_id": 6.0,
  "shortcuts": [
   {

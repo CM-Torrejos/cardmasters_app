@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-07-29 08:03:57.434182",
+ "modified": "2025-08-06 13:38:43.708554",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Bulua Cutting",
@@ -161,7 +161,14 @@
  "parent_page": "Production Department",
  "public": 1,
  "quick_lists": [],
- "roles": [],
+ "roles": [
+  {
+   "role": "CM Production Head"
+  },
+  {
+   "role": "Bulua Cutting Workstation Leader"
+  }
+ ],
  "sequence_id": 12.1,
  "shortcuts": [
   {

@@ -151,7 +151,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-07-29 08:03:58.594065",
+ "modified": "2025-08-06 13:29:42.688527",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Printing",
@@ -160,7 +160,14 @@
  "parent_page": "Production Department",
  "public": 1,
  "quick_lists": [],
- "roles": [],
+ "roles": [
+  {
+   "role": "CM Production Head"
+  },
+  {
+   "role": "Print Workstation Leader"
+  }
+ ],
  "sequence_id": 4.0,
  "shortcuts": [
   {
