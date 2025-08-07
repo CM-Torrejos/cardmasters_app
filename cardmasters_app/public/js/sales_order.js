@@ -71,12 +71,26 @@ frappe.ui.form.on('Sales Order', {
 			}
 		}
 		
-
-
 		// Call it on refresh
 		set_custom_pill();
-		set_artist_card_button();
-		set_stock_entry_button();
+
+		if (!frappe.user.has_role('System Manager')) {
+            // frm.remove_button('Request for Raw Materials');
+        }
+
+		if (!frappe.user.has_role('CM Head Approver') || !frappe.user.has_role('System Manager')) {
+            frm.remove_custom_button('Update Items');
+        }
+
+		if (frappe.user.has_role('CM Artist Head') || frappe.user.has_role('System Manager')) {
+            set_artist_card_button();
+        }
+
+		if (frappe.user.has_role('CM Production Head') || frappe.user.has_role('System Manager')) {
+            set_stock_entry_button();
+        }
+
+		
 		
 		// Optional: re-run it after status changes dynamically
 		frm.fields_dict.status.df.onchange = function() {
@@ -116,7 +130,8 @@ frappe.ui.form.on('Sales Order', {
 					}
 				}
 			});
-		}
+		}   
+
 	},
 	
 	custom_sales_channel: function(frm){

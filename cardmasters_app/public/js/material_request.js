@@ -42,6 +42,10 @@ frappe.ui.form.on('Material Request', {
         
         // Call it on refresh
         set_custom_pill();
+
+        if (!frappe.user.has_role('System Manager')) {
+            frm.remove_button('Create');
+        }
         
         // Optional: re-run it after status changes dynamically
         frm.fields_dict.status.df.onchange = function() {
