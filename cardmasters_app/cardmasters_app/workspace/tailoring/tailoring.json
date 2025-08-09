@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-08-06 13:31:45.205632",
+ "modified": "2025-08-08 14:35:38.778221",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Tailoring",
@@ -169,7 +169,7 @@
    "role": "Tailoring Workstation Leader"
   }
  ],
- "sequence_id": 8.1,
+ "sequence_id": 9.0,
  "shortcuts": [
   {
    "color": "Grey",

@@ -151,7 +151,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-08-06 13:29:42.688527",
+ "modified": "2025-08-08 14:35:38.186801",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Printing",
@@ -165,7 +165,7 @@
    "role": "CM Production Head"
   },
   {
-   "role": "Print Workstation Leader"
+   "role": "CM Print Workstation Leader"
   }
  ],
  "sequence_id": 4.0,
@@ -175,7 +175,7 @@
    "doc_view": "List",
    "label": "Direct To Film Jobs",
    "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"DIRECT TO FILM\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - MACHINE STATION\",false]]",
+   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"DIRECT TO FILM\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - PRINTS\",false]]",
    "type": "DocType"
   },
   {
@@ -183,7 +183,7 @@
    "doc_view": "List",
    "label": "UV Job Card",
    "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"UV DIRECT TO FILM\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - MACHINE STATION\",false]]",
+   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"UV DIRECT TO FILM\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - PRINTS\",false]]",
    "type": "DocType"
   },
   {
@@ -191,7 +191,7 @@
    "doc_view": "List",
    "label": "UV Flatbed",
    "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"UV FLATBED\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - MACHINE STATION\",false]]",
+   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"UV FLATBED\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - PRINTS\",false]]",
    "type": "DocType"
   },
   {
@@ -199,7 +199,7 @@
    "doc_view": "List",
    "label": "UV Roll to Roll",
    "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"UV ROLL TO ROLL\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - MACHINE STATION\",false]]",
+   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"UV ROLL TO ROLL\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - PRINTS\",false]]",
    "type": "DocType"
   },
   {
@@ -207,7 +207,7 @@
    "doc_view": "List",
    "label": "UV Sticker Printing",
    "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"UV STICKER PRINTING\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - MACHINE STATION\",false]]",
+   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"UV STICKER PRINTING\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - PRINTS\",false]]",
    "type": "DocType"
   },
   {
@@ -215,7 +215,7 @@
    "doc_view": "List",
    "label": "Tarpaulin Printing",
    "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"TARPAULIN PRINTING\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - MACHINE STATION\",false]]",
+   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"TARPAULIN PRINTING\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - PRINTS\",false]]",
    "type": "DocType"
   },
   {
@@ -223,7 +223,7 @@
    "doc_view": "List",
    "label": "Sublimation Printing",
    "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"SUBLIMATION PRINTING\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - MACHINE STATION\",false]]",
+   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"SUBLIMATION PRINTING\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - PRINTS\",false]]",
    "type": "DocType"
   },
   {
@@ -231,7 +231,7 @@
    "doc_view": "List",
    "label": "Large Format Printing",
    "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"LARGE FORMAT PRINTING\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - MACHINE STATION\",false]]",
+   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"LARGE FORMAT PRINTING\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - PRINTS\",false]]",
    "type": "DocType"
   },
   {
@@ -239,7 +239,7 @@
    "doc_view": "List",
    "label": "Foil Stamp",
    "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"FOIL STAMP\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - MACHINE STATION\",false]]",
+   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"FOIL STAMP\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - PRINTS\",false]]",
    "type": "DocType"
   },
   {
@@ -247,7 +247,7 @@
    "doc_view": "List",
    "label": "Small Prints",
    "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"GENERAL PRINTING (CK, C2S, FUJI, PHOTCOPY)\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - MACHINE STATION\",false]]",
+   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"GENERAL PRINTING (CK, C2S, FUJI, PHOTCOPY)\",false],[\"Job Card\",\"workstation\",\"=\",\"MAIN - ARTIST\",false]]",
    "type": "DocType"
   }
  ],

@@ -8,7 +8,7 @@
  "for_user": "",
  "hide_custom": 1,
  "icon": "edit",
- "idx": 1,
+ "idx": 2,
  "indicator_color": "",
  "is_hidden": 0,
  "label": "Artist Department",
@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-08-05 14:31:54.185970",
+ "modified": "2025-08-08 14:35:37.915968",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Department",

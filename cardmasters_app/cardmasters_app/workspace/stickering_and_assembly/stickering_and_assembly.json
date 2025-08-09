@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-08-06 13:32:03.573905",
+ "modified": "2025-08-08 14:35:38.853994",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Stickering and Assembly",
@@ -169,7 +169,7 @@
    "role": "Stickering and Assembly Workstation Leader"
   }
  ],
- "sequence_id": 8.2,
+ "sequence_id": 10.0,
  "shortcuts": [
   {
    "color": "Grey",
