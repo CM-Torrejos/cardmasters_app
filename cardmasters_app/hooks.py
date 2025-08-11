@@ -85,7 +85,8 @@ doctype_js = {
     "tester": "public/js/tester.js",
     "Purchase Invoice": "public/js/purchase_invoice.js",
     "Payment Entry": "public/js/payment_entry.js",
-    "Material Request": "public/js/material_request.js"
+    "Material Request": "public/js/material_request.js",
+    "Employee": "public/js/employee.js"
 }
 
 override_doctype_class = {

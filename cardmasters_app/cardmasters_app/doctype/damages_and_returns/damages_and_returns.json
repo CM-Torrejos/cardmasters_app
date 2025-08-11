@@ -12,9 +12,11 @@
   "column_break_pgtg",
   "date",
   "date_of_damage_or_return",
+  "department",
   "column_break_esmj",
   "error_type",
   "blame",
+  "reason_for_damage",
   "section_break_cxwc",
   "damaged_or_returned_item",
   "section_break_kydy",
@@ -71,7 +73,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Error Type",
-   "options": "Human\nMachine",
+   "options": "Human\nMachine\nN/A",
    "reqd": 1
   },
   {
@@ -116,6 +118,18 @@
    "label": "Work Order",
    "options": "Work Order",
    "search_index": 1
+  },
+  {
+   "fieldname": "reason_for_damage",
+   "fieldtype": "Link",
+   "label": "Reason for Damage",
+   "options": "Damage Reason"
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "label": "Department",
+   "options": "Department"
   }
  ],
  "grid_page_length": 50,
@@ -131,7 +145,7 @@
    "link_fieldname": "custom_damages_and_returns"
   }
  ],
- "modified": "2025-07-21 14:18:43.801472",
+ "modified": "2025-08-09 16:14:53.213366",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damages and Returns",
