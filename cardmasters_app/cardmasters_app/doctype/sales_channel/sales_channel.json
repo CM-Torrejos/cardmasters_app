@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "format:{sales_channel}",
  "creation": "2025-07-07 08:25:26.989670",
@@ -32,7 +33,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-07-07 08:38:40.057616",
+ "modified": "2025-08-11 10:58:14.225637",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Sales Channel",
