@@ -134,7 +134,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Sales Tools",
-   "link_count": 5,
+   "link_count": 7,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -172,6 +172,26 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Quotation Lost Reason",
+   "link_count": 0,
+   "link_to": "Quotation Lost Reason",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Competitor",
+   "link_count": 0,
+   "link_to": "Competitor",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Subclass",
    "link_count": 0,
    "link_to": "Subclass",
@@ -190,7 +210,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-08-08 14:35:37.773981",
+ "modified": "2025-08-14 10:44:06.632908",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Sales Department",

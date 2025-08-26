@@ -106,9 +106,6 @@ doc_events = {
 	"Petty Cash Voucher": {
     	"after_submit": "cardmasters_app.cardmasters_app.event_handlers.petty_cash_voucher.update_pcr_onpcv"
     },
-    "Purchase Receipt": {
-        "after_submit": "cardmasters_app.cardmasters_app.event_handlers.purchase_receipt.update_pcr_onpr"
-    },
     "Work Order": {
         "after_insert" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars"],
         # "before_insert" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_save"],
@@ -120,11 +117,6 @@ doc_events = {
         ],
         "validate": [
             "cardmasters_app.cardmasters_app.event_handlers.batch_handler.set_batch_no_for_fg_on_manufacture_entry",
-        ]
-    },
-    "Purchase Receipt": {
-        "validate": [
-            "cardmasters_app.cardmasters_app.event_handlers.batch_handlers.create_batches_on_purchase_receipt"
         ]
     },
     "Artist Card": {
@@ -145,7 +137,7 @@ doc_events = {
         "before_submit" : ["cardmasters_app.cardmasters_app.event_handlers.job_card.check_all_job_cards_submitted"]
     },
     "Delivery Note": {
-        "validate": "cardmasters_app.cardmasters_app.event_handlers.batch_handlers.assign_batches_on_delivery_note"
+        "validate": "cardmasters_app.cardmasters_app.event_handlers.batch_handler.set_batch_no_for_delivery_note"
     },
     "Purchase Order": {
         # "validate": "cardmasters_app.cardmasters_app.event_handlers.purchase_order.validate_po_revolving"
@@ -153,7 +145,6 @@ doc_events = {
     "Material Request": {
         "validate": ["cardmasters_app.cardmasters_app.event_handlers.material_request.validate_material_request"],
     },
-
 }
 # Apps
 # ------------------

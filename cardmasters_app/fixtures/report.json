@@ -62,6 +62,398 @@
   "disabled": 0,
   "docstatus": 0,
   "doctype": "Report",
+  "filters": [],
+  "is_standard": "No",
+  "javascript": null,
+  "json": "{\"filters\":[],\"fields\":[[\"name\",\"Sales Order\"],[\"docstatus\",\"Sales Order\"],[\"customer_name\",\"Sales Order\"],[\"workflow_state\",\"Sales Order\"],[\"customer\",\"Sales Order\"],[\"transaction_date\",\"Sales Order\"],[\"delivery_date\",\"Sales Order\"],[\"custom_po_to_follow\",\"Sales Order\"],[\"company\",\"Sales Order\"],[\"grand_total\",\"Sales Order\"],[\"status\",\"Sales Order\"],[\"delivery_status\",\"Sales Order\"],[\"per_delivered\",\"Sales Order\"],[\"per_billed\",\"Sales Order\"],[\"billing_status\",\"Sales Order\"],[\"currency\",\"Sales Order\"],[\"base_grand_total\",\"Sales Order\"],[\"order_type\",\"Sales Order\"],[\"skip_delivery_note\",\"Sales Order\"]],\"order_by\":\"`tabSales Order`.`modified` desc\",\"add_totals_row\":true,\"page_length\":20,\"column_widths\":{\"name\":120,\"customer_name\":120,\"workflow_state\":120,\"customer\":120,\"transaction_date\":160,\"delivery_date\":120,\"custom_po_to_follow\":120,\"company\":150,\"grand_total\":150,\"status\":100,\"delivery_status\":120,\"per_delivered\":100,\"per_billed\":100,\"billing_status\":120,\"currency\":100,\"base_grand_total\":150,\"order_type\":120,\"skip_delivery_note\":120},\"group_by\":null}",
+  "letter_head": null,
+  "modified": "2025-07-25 09:06:32.406442",
+  "module": "Selling",
+  "name": "Default",
+  "prepared_report": 0,
+  "query": null,
+  "ref_doctype": "Sales Order",
+  "reference_report": null,
+  "report_name": "Default",
+  "report_script": null,
+  "report_type": "Report Builder",
+  "roles": [
+   {
+    "parent": "Default",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales User"
+   },
+   {
+    "parent": "Default",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales Manager"
+   },
+   {
+    "parent": "Default",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Maintenance User"
+   },
+   {
+    "parent": "Default",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "Default",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   }
+  ],
+  "timeout": 0
+ },
+ {
+  "add_total_row": 0,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "default": null,
+    "fieldname": "sales_order",
+    "fieldtype": "Link",
+    "label": "Sales Order",
+    "mandatory": 1,
+    "options": "Sales Order",
+    "parent": "MR Monitoring",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": null,
+  "json": null,
+  "letter_head": null,
+  "modified": "2025-07-30 08:45:12.941648",
+  "module": "Cardmasters App",
+  "name": "MR Monitoring",
+  "prepared_report": 0,
+  "query": "SELECT\n  mri.item_code     AS `Item Code`,\n  mri.item_name     AS `Item Name`,\n  mri.parent        AS `Voucher`,\n  mri.qty           AS `Quantity`,\n  mri.stock_uom     AS `Unit`\nFROM\n  `tabMaterial Request Item` mri\nJOIN\n  `tabMaterial Request` mr ON mri.parent = mr.name\nWHERE\n  (\n    (mr.material_request_type = 'Sales Order' AND mr.sales_order = %(sales_order)s)\n    OR\n    (mr.material_request_type = 'Manufacture' AND mr.work_order IN (\n      SELECT name FROM `tabWork Order` WHERE sales_order = %(sales_order)s\n    ))\n  )\n",
+  "ref_doctype": "Sales Order",
+  "reference_report": null,
+  "report_name": "MR Monitoring",
+  "report_script": null,
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "parent": "MR Monitoring",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "MR Monitoring",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales User"
+   },
+   {
+    "parent": "MR Monitoring",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales Manager"
+   },
+   {
+    "parent": "MR Monitoring",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   },
+   {
+    "parent": "MR Monitoring",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Maintenance User"
+   },
+   {
+    "parent": "MR Monitoring",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "CM Office Sales"
+   },
+   {
+    "parent": "MR Monitoring",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "CM Sales Head"
+   }
+  ],
+  "timeout": 0
+ },
+ {
+  "add_total_row": 0,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
+  "is_standard": "No",
+  "javascript": null,
+  "json": "{\"filters\":[],\"fields\":[[\"name\",\"Material Request\"],[\"item_code\",\"Material Request Item\"],[\"item_name\",\"Material Request Item\"],[\"material_request_type\",\"Material Request\"],[\"status\",\"Material Request\"],[\"from_warehouse\",\"Material Request Item\"],[\"warehouse\",\"Material Request Item\"],[\"ordered_qty\",\"Material Request Item\"],[\"uom\",\"Material Request Item\"],[\"custom_sales_order\",\"Material Request\"],[\"actual_qty\",\"Material Request Item\"],[\"work_order\",\"Material Request\"]],\"order_by\":\"`tabMaterial Request`.`modified` desc\",\"add_totals_row\":0,\"page_length\":20,\"column_widths\":{\"name\":120,\"Material Request Item:item_code\":100,\"Material Request Item:item_name\":100,\"material_request_type\":120,\"status\":100,\"Material Request Item:from_warehouse\":120,\"Material Request Item:warehouse\":100,\"Material Request Item:ordered_qty\":120,\"Material Request Item:uom\":70,\"custom_sales_order\":120,\"work_order\":120},\"group_by\":null}",
+  "letter_head": null,
+  "modified": "2025-07-30 08:56:23.310685",
+  "module": "Stock",
+  "name": "Material Request per Sales Order & Work Order",
+  "prepared_report": 0,
+  "query": null,
+  "ref_doctype": "Material Request",
+  "reference_report": null,
+  "report_name": "Material Request per Sales Order & Work Order",
+  "report_script": null,
+  "report_type": "Report Builder",
+  "roles": [
+   {
+    "parent": "Material Request per Sales Order & Work Order",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   },
+   {
+    "parent": "Material Request per Sales Order & Work Order",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock Manager"
+   },
+   {
+    "parent": "Material Request per Sales Order & Work Order",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Purchase Manager"
+   },
+   {
+    "parent": "Material Request per Sales Order & Work Order",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Purchase User"
+   },
+   {
+    "parent": "Material Request per Sales Order & Work Order",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "CM Office Sales"
+   },
+   {
+    "parent": "Material Request per Sales Order & Work Order",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "CM Sales Head"
+   }
+  ],
+  "timeout": 0
+ },
+ {
+  "add_total_row": 0,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
+  "is_standard": "No",
+  "javascript": null,
+  "json": "{\"filters\":[[\"Purchase Invoice\",\"supplier\",\"=\",\"DISBURSEMENT OFFICER\"]],\"fields\":[[\"name\",\"Purchase Invoice\"],[\"docstatus\",\"Purchase Invoice\"],[\"title\",\"Purchase Invoice\"],[\"supplier\",\"Purchase Invoice\"],[\"company\",\"Purchase Invoice\"],[\"posting_date\",\"Purchase Invoice\"],[\"grand_total\",\"Purchase Invoice\"],[\"status\",\"Purchase Invoice\"],[\"currency\",\"Purchase Invoice\"],[\"supplier_name\",\"Purchase Invoice\"],[\"base_grand_total\",\"Purchase Invoice\"],[\"outstanding_amount\",\"Purchase Invoice\"],[\"due_date\",\"Purchase Invoice\"],[\"is_return\",\"Purchase Invoice\"],[\"release_date\",\"Purchase Invoice\"],[\"on_hold\",\"Purchase Invoice\"],[\"represents_company\",\"Purchase Invoice\"],[\"is_internal_supplier\",\"Purchase Invoice\"]],\"order_by\":\"`tabPurchase Invoice`.`modified` desc\",\"add_totals_row\":0,\"page_length\":20,\"column_widths\":{\"name\":120,\"title\":120,\"supplier\":120,\"company\":120,\"posting_date\":120,\"grand_total\":120,\"status\":120,\"currency\":120,\"supplier_name\":120,\"base_grand_total\":120,\"outstanding_amount\":120,\"due_date\":120,\"is_return\":120,\"release_date\":120,\"on_hold\":120,\"represents_company\":120,\"is_internal_supplier\":120},\"group_by\":null}",
+  "letter_head": null,
+  "modified": "2025-08-05 08:25:36.881861",
+  "module": "Accounts",
+  "name": "Purchase Invoice : Default",
+  "prepared_report": 0,
+  "query": null,
+  "ref_doctype": "Purchase Invoice",
+  "reference_report": null,
+  "report_name": "Purchase Invoice : Default",
+  "report_script": null,
+  "report_type": "Report Builder",
+  "roles": [
+   {
+    "parent": "Purchase Invoice : Default",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "Purchase Invoice : Default",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Purchase User"
+   },
+   {
+    "parent": "Purchase Invoice : Default",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts Manager"
+   },
+   {
+    "parent": "Purchase Invoice : Default",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Auditor"
+   }
+  ],
+  "timeout": 0
+ },
+ {
+  "add_total_row": 0,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
+  "is_standard": "No",
+  "javascript": null,
+  "json": "{\"filters\":[[\"Purchase Invoice\",\"supplier\",\"=\",\"DISBURSEMENT OFFICER\"]],\"fields\":[[\"name\",\"Purchase Invoice\"],[\"supplier_name\",\"Purchase Invoice\"],[\"item_code\",\"Purchase Invoice Item\"],[\"custom_item_specifics\",\"Purchase Invoice Item\"],[\"grand_total\",\"Purchase Invoice\"],[\"outstanding_amount\",\"Purchase Invoice\"],[\"party_account_currency\",\"Purchase Invoice\"]],\"order_by\":\"`tabPurchase Invoice`.`modified` desc\",\"add_totals_row\":0,\"page_length\":20,\"column_widths\":{\"name\":120,\"supplier_name\":120,\"Purchase Invoice Item:item_code\":120,\"Purchase Invoice Item:custom_item_specifics\":120,\"grand_total\":120,\"outstanding_amount\":120,\"party_account_currency\":120},\"group_by\":null}",
+  "letter_head": null,
+  "modified": "2025-08-05 08:35:28.848932",
+  "module": "Accounts",
+  "name": "Disbursement Report",
+  "prepared_report": 0,
+  "query": null,
+  "ref_doctype": "Purchase Invoice",
+  "reference_report": null,
+  "report_name": "Disbursement Report",
+  "report_script": null,
+  "report_type": "Report Builder",
+  "roles": [
+   {
+    "parent": "Disbursement Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "Disbursement Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Purchase User"
+   },
+   {
+    "parent": "Disbursement Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts Manager"
+   },
+   {
+    "parent": "Disbursement Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Auditor"
+   }
+  ],
+  "timeout": 0
+ },
+ {
+  "add_total_row": 0,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "default": null,
+    "fieldname": "company",
+    "fieldtype": "Link",
+    "label": "Company",
+    "mandatory": 1,
+    "options": "Company",
+    "parent": "SBU Revenue (Sales Order)",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "default": null,
+    "fieldname": "from_date",
+    "fieldtype": "Date",
+    "label": "From Date",
+    "mandatory": 1,
+    "options": null,
+    "parent": "SBU Revenue (Sales Order)",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "default": null,
+    "fieldname": "to_date",
+    "fieldtype": "Date",
+    "label": "To Date",
+    "mandatory": 1,
+    "options": null,
+    "parent": "SBU Revenue (Sales Order)",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": null,
+  "json": null,
+  "letter_head": null,
+  "modified": "2025-07-24 20:15:40.849588",
+  "module": "Cardmasters App",
+  "name": "SBU Revenue (Sales Order)",
+  "prepared_report": 0,
+  "query": "SELECT\n  soi.cost_center AS `Class:Link/Cost Center :150`,\n  SUM(soi.amount) AS `Total Amount:Currency:120`\nFROM `tabSales Order Item` AS soi\nJOIN `tabSales Order` AS so ON so.name = soi.parent\nWHERE\n  so.company = %(company)s\n  AND so.docstatus = 1\n  AND so.transaction_date BETWEEN %(from_date)s AND %(to_date)s\nGROUP BY\n  soi.cost_center\nORDER BY\n  SUM(soi.amount) DESC;\n",
+  "ref_doctype": "Sales Order",
+  "reference_report": null,
+  "report_name": "SBU Revenue (Sales Order)",
+  "report_script": "",
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "parent": "SBU Revenue (Sales Order)",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales User"
+   },
+   {
+    "parent": "SBU Revenue (Sales Order)",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales Manager"
+   },
+   {
+    "parent": "SBU Revenue (Sales Order)",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Maintenance User"
+   },
+   {
+    "parent": "SBU Revenue (Sales Order)",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "SBU Revenue (Sales Order)",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   }
+  ],
+  "timeout": 0
+ },
+ {
+  "add_total_row": 0,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
   "filters": [
    {
     "default": null,
@@ -141,99 +533,6 @@
    },
    {
     "parent": "Top Customers (Sales Order)",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "Stock User"
-   }
-  ],
-  "timeout": 0
- },
- {
-  "add_total_row": 0,
-  "add_translate_data": 0,
-  "columns": [],
-  "disabled": 0,
-  "docstatus": 0,
-  "doctype": "Report",
-  "filters": [
-   {
-    "default": null,
-    "fieldname": "company",
-    "fieldtype": "Link",
-    "label": "Company",
-    "mandatory": 1,
-    "options": "Company",
-    "parent": "SBU Revenue (Sales Order)",
-    "parentfield": "filters",
-    "parenttype": "Report",
-    "wildcard_filter": 0
-   },
-   {
-    "default": null,
-    "fieldname": "from_date",
-    "fieldtype": "Date",
-    "label": "From Date",
-    "mandatory": 1,
-    "options": null,
-    "parent": "SBU Revenue (Sales Order)",
-    "parentfield": "filters",
-    "parenttype": "Report",
-    "wildcard_filter": 0
-   },
-   {
-    "default": null,
-    "fieldname": "to_date",
-    "fieldtype": "Date",
-    "label": "To Date",
-    "mandatory": 1,
-    "options": null,
-    "parent": "SBU Revenue (Sales Order)",
-    "parentfield": "filters",
-    "parenttype": "Report",
-    "wildcard_filter": 0
-   }
-  ],
-  "is_standard": "No",
-  "javascript": null,
-  "json": null,
-  "letter_head": null,
-  "modified": "2025-05-14 10:55:35.139817",
-  "module": "Cardmasters App",
-  "name": "SBU Revenue (Sales Order)",
-  "prepared_report": 0,
-  "query": "SELECT\n  soi.custom_subclass AS `Custom Subclass:Link/Subclass :150`,\n  SUM(soi.amount)     AS `Total Amount:Currency:120`\nFROM `tabSales Order Item` AS soi\nJOIN `tabSales Order`       AS so  ON so.name = soi.parent\nWHERE\n  so.company        = %(company)s\n  AND so.docstatus  = 1\n  AND so.transaction_date\n      BETWEEN %(from_date)s\n          AND %(to_date)s\nGROUP BY\n  soi.custom_subclass\nORDER BY\n  SUM(soi.amount) DESC;\n",
-  "ref_doctype": "Sales Order",
-  "reference_report": null,
-  "report_name": "SBU Revenue (Sales Order)",
-  "report_script": "",
-  "report_type": "Query Report",
-  "roles": [
-   {
-    "parent": "SBU Revenue (Sales Order)",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "Sales User"
-   },
-   {
-    "parent": "SBU Revenue (Sales Order)",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "Sales Manager"
-   },
-   {
-    "parent": "SBU Revenue (Sales Order)",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "Maintenance User"
-   },
-   {
-    "parent": "SBU Revenue (Sales Order)",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "Accounts User"
-   },
-   {
-    "parent": "SBU Revenue (Sales Order)",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Stock User"

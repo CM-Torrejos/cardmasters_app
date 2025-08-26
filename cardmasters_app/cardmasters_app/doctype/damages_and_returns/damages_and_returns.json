@@ -7,6 +7,7 @@
  "engine": "InnoDB",
  "field_order": [
   "type",
+  "company",
   "sales_order",
   "work_order",
   "column_break_pgtg",
@@ -130,6 +131,12 @@
    "fieldtype": "Link",
    "label": "Department",
    "options": "Department"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
   }
  ],
  "grid_page_length": 50,
@@ -145,7 +152,7 @@
    "link_fieldname": "custom_damages_and_returns"
   }
  ],
- "modified": "2025-08-09 16:14:53.213366",
+ "modified": "2025-08-19 16:22:20.211483",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damages and Returns",

@@ -88,6 +88,20 @@ frappe.ui.form.on("Job Card", {
 			frappe.show_alert("Job Card is not yet saved. Job Cards will load after saving.");
 			frm.fields_dict['custom_linked_jobs'].$wrapper.html("<p>Save the Job Card to view</p>");
 		}
+
+		frm.add_custom_button(__('Material Request'), () => {
+		frappe.model.open_mapped_doc({
+			method: 'erpnext.manufacturing.doctype.job_card.job_card.make_material_request',
+			source_name: frm.doc.name
+		});
+		}, __('Create'));
+		
+		frm.add_custom_button(__('Material Transfer'), () => {
+		frappe.model.open_mapped_doc({
+			method: 'erpnext.manufacturing.doctype.job_card.job_card.make_stock_entry',
+			source_name: frm.doc.name
+		});
+		}, __('Create'));
 	}
 });
 

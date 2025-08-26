@@ -1,0 +1,148 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-08-22 16:34:33.683339",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "date",
+  "sales_order",
+  "column_break_gcyi",
+  "priority_status",
+  "jo_created_by",
+  "person_responsible",
+  "section_break_xihk",
+  "concern",
+  "column_break_ohwb",
+  "qty_affected",
+  "unit",
+  "section_break_shvg",
+  "customer_feedback",
+  "column_break_ddfd",
+  "remarks",
+  "section_break_w4wr",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_w4wr",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Complaint",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "sales_order",
+   "fieldtype": "Link",
+   "label": "Sales Order",
+   "options": "Sales Order"
+  },
+  {
+   "fieldname": "column_break_gcyi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "priority_status",
+   "fieldtype": "Select",
+   "label": "Priority Status",
+   "options": "Low\nMedium\nHigh"
+  },
+  {
+   "fieldname": "jo_created_by",
+   "fieldtype": "Link",
+   "label": "JO Created By",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "person_responsible",
+   "fieldtype": "Link",
+   "label": "Person Responsible",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "section_break_xihk",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "concern",
+   "fieldtype": "Text",
+   "label": "Concern",
+   "max_height": "100px"
+  },
+  {
+   "fieldname": "qty_affected",
+   "fieldtype": "Float",
+   "label": "Qty Affected"
+  },
+  {
+   "fieldname": "unit",
+   "fieldtype": "Link",
+   "label": "Unit",
+   "options": "UOM"
+  },
+  {
+   "fieldname": "section_break_shvg",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "customer_feedback",
+   "fieldtype": "Text",
+   "label": "Customer Feedback",
+   "max_height": "50px"
+  },
+  {
+   "fieldname": "column_break_ddfd",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Text",
+   "label": "Remarks",
+   "max_height": "50px"
+  },
+  {
+   "fieldname": "column_break_ohwb",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-08-22 16:40:46.462846",
+ "modified_by": "Administrator",
+ "module": "Cardmasters App",
+ "name": "Complaint",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
