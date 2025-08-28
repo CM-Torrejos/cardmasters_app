@@ -1,62 +1,64 @@
 import frappe
-from frappe.model.workflow import apply_workflow, get_transitions
+from frappe.model.workflow import apply_workflow  # get_transitions not used; you can remove it
 
 def inherit_remarks_particulars(doc, method=None):
-	
-	artist_card = frappe.db.get_value(
-			"Artist Card",
-			{'sales_order': doc.sales_order},
-			"name"
-		)
+    # No Sales Order linked? Skip quietly with a friendly alert.
+    if not doc.sales_order:
+        frappe.msgprint("No Sales Order linked; skipping field inheritance.",
+                        alert=True, indicator="orange")
+        return
 
-	# load SO
-	so = frappe.get_doc("Sales Order", doc.sales_order)
+    so_name = doc.sales_order
 
-	# inherit header fields
-	doc.custom_remarks = so.get("custom_remarks")
-	doc.custom_deadline = so.get("delivery_date")
+    # SO name given but not found in DB → skip safely.
+    if not frappe.db.exists("Sales Order", so_name):
+        frappe.msgprint(f"Sales Order {so_name} not found; skipping field inheritance.",
+                        alert=True, indicator="orange")
+        return
 
+    # Load SO and inherit header fields
+    so = frappe.get_doc("Sales Order", so_name)
+    doc.custom_remarks  = so.get("custom_remarks")
+    doc.custom_deadline = so.get("delivery_date")
 
-	if artist_card:
-		doc.custom_artist_card = artist_card
-		ac = frappe.get_doc("Artist Card", doc.custom_artist_card)
-
-		doc.custom_artist_bom = ac.get("bom")
-		doc.custom_artist_remarks = ac.get("remarks")
-	else:
-		frappe.msgprint("This work order has no artist card. Be Warned!")
-
-	if not doc.sales_order:
-		return
-
-	# fetch the Sales Order Item row matching production_item
-	so_item_row = None
-	if doc.production_item:
-		for row in so.items:
-			if row.item_code == doc.production_item:
-				so_item_row = row
-				break
-
-	if so_item_row:
-		# inherit line-level fields
-		doc.custom_item_specifics = so_item_row.get("custom_item_specifics")
-		doc.custom_particulars      = so_item_row.get("custom_particulars")
-
-		# now update the matching required_item on the Work Order
-		for req in doc.required_items:
-			if req.item_code == doc.production_item:
-				# set the specifics on the raw material line
-				req.custom_item_specifics = doc.custom_item_specifics
-				break
+    # Artist Card tied to this Sales Order (if any)
+    artist_card = frappe.db.get_value("Artist Card", {"sales_order": so_name}, "name")
+    if artist_card:
+        doc.custom_artist_card    = artist_card
+        ac = frappe.get_doc("Artist Card", artist_card)
+        doc.custom_artist_bom     = ac.get("bom")
+        doc.custom_artist_remarks = ac.get("remarks")
+    else:
+        frappe.msgprint("This work order has no artist card. Be Warned!",
+                        alert=True, indicator="orange")
 
 
 def before_work_order_submit(doc, method):
-	doc = frappe.get_doc("Sales Order", doc.sales_order)
-	if (doc.workflow_state and doc.workflow_state == 'Artist'):
-		doc = apply_workflow(doc, "Begin Production")
-		doc.save()
+    # No Sales Order linked? Nothing to transition.
+    if not doc.sales_order:
+        return
+
+    so_name = doc.sales_order
+
+    if not frappe.db.exists("Sales Order", so_name):
+        frappe.msgprint(f"Sales Order {so_name} not found; skipping workflow transition.",
+                        alert=True, indicator="orange")
+        return
+
+    so = frappe.get_doc("Sales Order", so_name)
+
+    if so.workflow_state == "Artist":
+        try:
+            apply_workflow(so, "Begin Production")
+            so.save()
+        except Exception:
+            # Don’t block Work Order submit — just log and notify.
+            frappe.log_error(frappe.get_traceback(),
+                             f"Failed to advance Sales Order workflow for {so.name}")
+            frappe.msgprint("Could not advance Sales Order workflow. Check state/permissions.",
+                            alert=True, indicator="red")
 
 
 def clear_child_rows(doc, method):
-	# 'My Child Table' = your child‐DocType
-	frappe.db.delete("Artist BOM table", {"parent": doc.name})
+    # 'My Child Table' = your child‐DocType
+    frappe.db.delete("Artist BOM table", {"parent": doc.name})
