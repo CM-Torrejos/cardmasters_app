@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-08-08 14:35:38.929709",
+ "modified": "2025-09-02 15:11:06.236325",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Packaging and Labels",
@@ -166,7 +166,7 @@
    "role": "CM Production Head"
   },
   {
-   "role": "Packaging and Labels Workstation Leader"
+   "role": "CM Packaging and Labels Workstation Leader"
   }
  ],
  "sequence_id": 11.0,
