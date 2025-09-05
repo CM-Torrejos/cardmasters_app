@@ -75,15 +75,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-07-05 10:13:34.724257",
-  "name": "In Progress",
-  "style": "Info",
-  "workflow_state_name": "In Progress"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-07-05 10:13:38.883581",
   "name": "For Approval",
   "style": "Warning",
@@ -124,6 +115,15 @@
   "name": "Pending Client Approval",
   "style": "Danger",
   "workflow_state_name": "Pending Client Approval"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-07-05 10:13:34.724257",
+  "name": "In Progress",
+  "style": "Info",
+  "workflow_state_name": "In Progress"
  },
  {
   "docstatus": 0,
@@ -219,19 +219,19 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-05-17 04:59:56.120535",
-  "name": "Pending Approval",
-  "style": "Info",
-  "workflow_state_name": "Pending Approval"
+  "modified": "2025-06-20 10:26:34.368986",
+  "name": "BOM WIP",
+  "style": "",
+  "workflow_state_name": "BOM WIP"
  },
  {
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-06-20 10:26:34.368986",
-  "name": "BOM WIP",
-  "style": "",
-  "workflow_state_name": "BOM WIP"
+  "modified": "2025-05-17 04:59:56.120535",
+  "name": "Pending Approval",
+  "style": "Info",
+  "workflow_state_name": "Pending Approval"
  },
  {
   "docstatus": 0,
