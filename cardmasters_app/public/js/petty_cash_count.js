@@ -1,39 +1,27 @@
 frappe.ui.form.on('Petty Cash Count', {
-	//onload: populate cash count child table with denominations and their respective counts
 	onload: function(frm){
-		if(frm.doc.__islocal && !frm.doc.petty_cash_count_table.length) {
+		if (frm.doc.__islocal && !frm.doc.petty_cash_count_table.length) {
 			const default_items = ['1000','500','200','100','50','20','10','5','1','0.25','0.05','0.01'];
 			default_items.forEach(denom => {
 				const row = frm.add_child('petty_cash_count_table');
 				row.denomination = denom;
 			});
 			frm.refresh_field('petty_cash_count_table');
+			recomputeTotals(frm);
 		}
 	},
 
-	//"Callback" event handler for total_petty_cash_count field
-	//Re-calculates overall petty cash total
+	// keep this as an alias so server-side or UI changes that call it still work
 	total_petty_cash_count: function(frm) {
-		let total = 0;
-		frm.doc.petty_cash_count_table.forEach(row => {
-			total += row.amount || 0;
-		})
-		frm.set_value('total_petty_cash_count', total);
+		recomputeTotals(frm);
 	},
 
-	// on every render, generate the 'Sync Transactions button'
 	refresh: function(frm){
-		// When saved/submitted, add this button
 		if (!frm.is_new()){
 			frm.add_custom_button(
 				__('Sync Petty Cash Transactions'),
 				() => syncPettyCashTransactions(frm)
 			);
-			//disable the button if the form is in draft state
-			// frm.page.set_button_disabled(
-			//     __('Sync Petty Cash Transactions'),
-			//     frm.doc.docstatus !== 1
-			// );
 
 			if (frm.doc.workflow_state === "For Reimbursement") {
 				frm.add_custom_button('Create Payment Entry', () => {
@@ -47,36 +35,73 @@ frappe.ui.form.on('Petty Cash Count', {
 					});
 				});
 			}
-			
 		}
-	}    
-}
-);
-
-//petty cash count table 
-frappe.ui.form.on('Petty Cash Count Table', {
-	denomination: calculate_row_amount,
-	count: calculate_row_amount
+	}
 });
 
-//calculates the row amount 
-function calculate_row_amount(frm, cdt, cdn) {
-	const row = locals[cdt][cdn];
-	if (row.denomination != null & row.count != null){
-		row.amount = row.denomination * row.count;
-		frm.refresh_field('petty_cash_count_table');
-		frm.trigger('total_petty_cash_count');
-	}
+// petty cash count table: recompute when any relevant field changes
+frappe.ui.form.on('Petty Cash Count Table', {
+	denomination: calculate_row_amount,
+	count: calculate_row_amount,
+	count_iou: calculate_row_amount
+});
+
+// --- Helpers ---
+
+function fltn(v){
+	// robust float conversion for string/number/null
+	return flt(v || 0);
 }
 
-//button click function
+// per-row amount calculation and totals refresh
+function calculate_row_amount(frm, cdt, cdn) {
+	const row = locals[cdt][cdn];
+	const denom = fltn(row.denomination);
+	const cnt   = fltn(row.count);
+	const iou   = fltn(row.count_iou);
+
+	// Keep row.amount as the WITH-IOU row total so existing UI keeps working
+	row.amount = denom * (cnt + iou);
+
+	frm.refresh_field('petty_cash_count_table');
+	recomputeTotals(frm);
+}
+
+// recompute all totals (cash-only, IOU-only, and combined)
+function recomputeTotals(frm){
+	let total_cash_only = 0;
+	let total_iou       = 0;
+	let total_with_iou  = 0;
+
+	(frm.doc.petty_cash_count_table || []).forEach(row => {
+		const denom = fltn(row.denomination);
+		const cnt   = fltn(row.count);
+		const iou   = fltn(row.count_iou);
+
+		total_cash_only += denom * cnt;
+		total_iou       += denom * iou;
+		// keep row.amount in sync if someone edited directly elsewhere
+		row.amount       = denom * (cnt + iou);
+	});
+
+	total_with_iou = total_cash_only + total_iou;
+
+	frm.set_value('total_petty_cash_count_no_iou', total_cash_only);
+	frm.set_value('total_iou', total_iou);
+	frm.set_value('total_petty_cash_count', total_with_iou);
+
+	frm.refresh_field('petty_cash_count_table');
+}
+
+// --- Existing logic, with tiny log fix ---
+
 async function syncPettyCashTransactions(frm) {
 	try {
-		//Call the fetch functions, then update the balance
 		await fetchLiquidatedTransactions(frm);
 		await fetchUnliquidatedTransactions(frm);
-		updateCashCountBalance(frm)
-	}catch (err){
+		recomputeTotals(frm);           // ensure totals are fresh before balance
+		updateCashCountBalance(frm);
+	} catch (err){
 		console.error('[Sync] Error:', err);
 		frappe.msgprint({
 			title: __('Sync Error'),
@@ -86,7 +111,6 @@ async function syncPettyCashTransactions(frm) {
 	}
 }
 
-//query unliquidated transactions
 async function fetchUnliquidatedTransactions(frm) {
 	console.log('[Unliq] Fetching…');
 	frm.clear_table('unliquidated_transactions_table');
@@ -94,7 +118,7 @@ async function fetchUnliquidatedTransactions(frm) {
 	const { message: transactions = [] } = await frappe.call({
 		method: 'cardmasters_app.cardmasters_app.api.petty_cash_count.get_unliquidated_transactions',
 		args: { petty_cash_count: frm.doc.name },
-	})
+	});
 
 	let total = 0;
 	transactions.forEach(tx => {
@@ -102,14 +126,13 @@ async function fetchUnliquidatedTransactions(frm) {
 		row.material_request = tx.material_request;
 		row.purchase_order = tx.purchase_order;
 		row.amount_released = tx.amount_released;
-		total += tx.amount_released;
-	})
+		total += fltn(tx.amount_released);
+	});
 
 	frm.set_value('total_unliquidated', total);
 	frm.refresh_field('unliquidated_transactions_table');
 }
 
-//query liquidated transactions 
 async function fetchLiquidatedTransactions(frm) {
 	console.log('[Liq] Fetching…');
 	frm.clear_table('liquidated_transactions_table');
@@ -119,8 +142,6 @@ async function fetchLiquidatedTransactions(frm) {
 		args: { petty_cash_count: frm.doc.name },
 	});
 
-	console.log(transactions);
-
 	let total = 0;
 
 	transactions.forEach(tx => {
@@ -129,7 +150,7 @@ async function fetchLiquidatedTransactions(frm) {
 		row.purchase_order     = tx.purchase_order;
 		row.purchase_receipt   = tx.purchase_receipt;
 		row.purchase_invoice   = tx.purchase_invoice;
-		row.amount_paid        = tx.amount_paid || 0;
+		row.amount_paid        = fltn(tx.amount_paid);
 
 		if (tx.outstanding_amount === 0) {
 			row.reimbursed = 'Yes';
@@ -137,7 +158,7 @@ async function fetchLiquidatedTransactions(frm) {
 			row.reimbursed = 'No';
 		} else {
 			row.reimbursed = 'Partially';
-		};
+		}
 
 		total += row.amount_paid;
 	});
@@ -148,14 +169,12 @@ async function fetchLiquidatedTransactions(frm) {
 	console.log(`[Liq] Added ${transactions.length} rows. Total = ${total}`);
 }
 
-
-//update the cash count balance field
 function updateCashCountBalance(frm) {
 	const u = flt(frm.doc.total_unliquidated);
 	const l = flt(frm.doc.total_liquidated);
-	const f = flt(frm.doc.total_petty_cash_count);
+	const f = flt(frm.doc.total_petty_cash_count); // WITH IOU
 	const s = flt(frm.doc.allocated_revolving_fund);
-	const balance = s - (u + l + f);
+	const balance = (u + l + f) - s;
 	frm.set_value('balance', balance);
-	console.log(`[Balance] ${s} - ${u} + ${l} + ${f} = ${balance}`);
+	console.log(`[Balance] (${u} + ${l} + ${f}) - ${s} = ${balance}`);
 }

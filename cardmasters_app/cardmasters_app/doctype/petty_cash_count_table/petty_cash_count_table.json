@@ -8,6 +8,7 @@
  "field_order": [
   "denomination",
   "count",
+  "count_iou",
   "amount"
  ],
  "fields": [
@@ -30,13 +31,20 @@
    "fieldtype": "Currency",
    "in_list_view": 1,
    "label": "Amount"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "count_iou",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Count (IOU)"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-05-02 06:52:15.809584",
+ "modified": "2025-09-04 10:47:42.233341",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Petty Cash Count Table",

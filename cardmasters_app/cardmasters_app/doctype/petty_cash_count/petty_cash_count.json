@@ -8,12 +8,13 @@
  "field_order": [
   "naming_series",
   "date",
-  "sync_transactions",
   "column_break_yriw",
   "allocated_revolving_fund",
   "company",
   "section_break_ceyq",
   "petty_cash_count_table",
+  "total_iou",
+  "total_petty_cash_count_no_iou",
   "total_petty_cash_count",
   "section_break_mdeo",
   "unliquidated_transactions_table",
@@ -92,7 +93,7 @@
   },
   {
    "allow_on_submit": 1,
-   "description": "Formula: allocated_rf - (total_cash_count + total_unliquidated + total_liquidated)",
+   "description": "Formula: (total_cash_count + total_unliquidated + total_liquidated) -  allocated_rf",
    "fieldname": "balance",
    "fieldtype": "Currency",
    "label": "Balance",
@@ -133,16 +134,22 @@
    "read_only": 1
   },
   {
-   "fieldname": "sync_transactions",
-   "fieldtype": "Button",
-   "label": "Sync Transactions"
+   "allow_on_submit": 1,
+   "fieldname": "total_iou",
+   "fieldtype": "Currency",
+   "label": "Total IOU"
+  },
+  {
+   "fieldname": "total_petty_cash_count_no_iou",
+   "fieldtype": "Data",
+   "label": "Total Petty Cash Count (IOU Excluded)"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-08-19 15:25:56.271464",
+ "modified": "2025-09-04 11:09:23.226504",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Petty Cash Count",
