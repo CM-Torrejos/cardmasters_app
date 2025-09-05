@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-08-08 14:35:38.778221",
+ "modified": "2025-09-02 15:10:46.692222",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Tailoring",
@@ -166,7 +166,7 @@
    "role": "CM Production Head"
   },
   {
-   "role": "Tailoring Workstation Leader"
+   "role": "CM Tailoring Workstation Leader"
   }
  ],
  "sequence_id": 9.0,
