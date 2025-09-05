@@ -132,6 +132,7 @@ frappe.ui.form.on('Sales Order', {
 			});
 		}   
 
+		frm.doc.custom_outstanding_balance = frm.doc.grand_total - frm.doc.advance_paid
 	},
 	
 	custom_sales_channel: function(frm){
