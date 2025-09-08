@@ -141,7 +141,7 @@
   },
   {
    "fieldname": "total_petty_cash_count_no_iou",
-   "fieldtype": "Data",
+   "fieldtype": "Currency",
    "label": "Total Petty Cash Count (IOU Excluded)"
   }
  ],
@@ -149,7 +149,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-09-04 11:09:23.226504",
+ "modified": "2025-09-07 12:49:43.924147",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Petty Cash Count",

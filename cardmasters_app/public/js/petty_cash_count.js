@@ -1,7 +1,7 @@
 frappe.ui.form.on('Petty Cash Count', {
 	onload: function(frm){
 		if (frm.doc.__islocal && !frm.doc.petty_cash_count_table.length) {
-			const default_items = ['1000','500','200','100','50','20','10','5','1','0.25','0.05','0.01'];
+			const default_items = ['1000','500','200','100','50','20','10','5','1','0.25','0.05','0.10','0.01'];
 			default_items.forEach(denom => {
 				const row = frm.add_child('petty_cash_count_table');
 				row.denomination = denom;
