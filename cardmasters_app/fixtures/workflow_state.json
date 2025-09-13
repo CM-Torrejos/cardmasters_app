@@ -146,15 +146,6 @@
  {
   "docstatus": 0,
   "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-05-19 04:21:43.010823",
-  "name": "Artist",
-  "style": "Info",
-  "workflow_state_name": "Artist"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
   "icon": "question-sign",
   "modified": "2025-08-04 14:53:46.132163",
   "name": "Pending",
@@ -210,15 +201,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-04-28 05:15:12.134310",
-  "name": "Draft",
-  "style": "",
-  "workflow_state_name": "Draft"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-06-20 10:26:34.368986",
   "name": "BOM WIP",
   "style": "",
@@ -241,6 +223,24 @@
   "name": "Cancelled",
   "style": "",
   "workflow_state_name": "Cancelled"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-19 04:21:43.010823",
+  "name": "Artist",
+  "style": "Info",
+  "workflow_state_name": "Artist"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-28 05:15:12.134310",
+  "name": "Draft",
+  "style": "",
+  "workflow_state_name": "Draft"
  },
  {
   "docstatus": 0,
