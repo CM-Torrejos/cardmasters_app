@@ -1,9 +1,6 @@
 frappe.ui.form.on('Employee', {
     validate: function(frm) {
         if (frm.doc.date_of_joining && frm.doc.date_of_birth) {
-            // Parse the date_of_joining year (last two digits)
-            let doj = frappe.datetime.str_to_obj(frm.doc.date_of_joining);
-            let year_joining = doj.getFullYear().toString().slice(-2);
 
             // Parse date_of_birth into mmddyy format
             let dob = frappe.datetime.str_to_obj(frm.doc.date_of_birth);
@@ -12,7 +9,7 @@ frappe.ui.form.on('Employee', {
             let yy = dob.getFullYear().toString().slice(-2);
 
             // Combine into the desired format: CM{YY}-{MMDDYY}
-            frm.set_value('custom_id_code', `CM${year_joining}-${mm}${dd}${yy}`);
+            frm.set_value('custom_id_code', `${mm}${dd}${yy}`);
         }
     }
 });
