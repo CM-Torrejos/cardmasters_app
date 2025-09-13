@@ -89,11 +89,18 @@ frappe.ui.form.on("Job Card", {
 			frm.fields_dict['custom_linked_jobs'].$wrapper.html("<p>Save the Job Card to view</p>");
 		}
 
-		frm.add_custom_button(__('Material Request'), () => {
-		frappe.model.open_mapped_doc({
-			method: 'erpnext.manufacturing.doctype.job_card.job_card.make_material_request',
-			source_name: frm.doc.name
-		});
+		// frm.add_custom_button(__('Material Request'), () => {
+		// frappe.model.open_mapped_doc({
+		// 	method: 'erpnext.manufacturing.doctype.job_card.job_card.make_material_request',
+		// 	source_name: frm.doc.name
+		// });
+		// }, __('Create'));
+
+		frm.add_custom_button(__('Material Request'), function() {
+				frappe.new_doc('Material Request', {
+					work_order: frm.doc.work_order,
+					material_request_type: 'Material Transfer'
+					});
 		}, __('Create'));
 		
 		frm.add_custom_button(__('Material Transfer'), () => {
