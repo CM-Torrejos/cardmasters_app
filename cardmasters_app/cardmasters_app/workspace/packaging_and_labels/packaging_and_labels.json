@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-09-14 14:00:06.829459",
+ "modified": "2025-09-14 14:29:51.581338",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Packaging and Labels",
@@ -176,7 +176,7 @@
    "doc_view": "List",
    "label": "PNL Stickering and Assembly Jobs",
    "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"PNL STICKERING AND ASSEMBLY\",false],[\"Job Card\",\"workstation\",\"=\",\"PNL - ASSEMBLY\",false]]",
+   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"PNL STICKERING AND ASSEMBLY\",false],[\"Job Card\",\"workstation\",\"=\",\"PNL STATION\",false]]",
    "type": "DocType"
   }
  ],

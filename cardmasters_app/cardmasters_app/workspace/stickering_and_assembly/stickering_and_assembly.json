@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"wNqzQqjcDe\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"IA1FGw682h\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Embroidery Jobs\",\"col\":5}},{\"id\":\"4IXB1k1mxs\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"kqarl-Hsu1\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"m-StJ6H_Vb\",\"type\":\"card\",\"data\":{\"card_name\":\"Production Data\",\"col\":4}},{\"id\":\"s24N2GH57H\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}}]",
+ "content": "[{\"id\":\"wNqzQqjcDe\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"IA1FGw682h\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Stickering and Assembly Jobs\",\"col\":5}},{\"id\":\"4IXB1k1mxs\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"kqarl-Hsu1\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"m-StJ6H_Vb\",\"type\":\"card\",\"data\":{\"card_name\":\"Production Data\",\"col\":4}},{\"id\":\"s24N2GH57H\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}}]",
  "creation": "2025-07-28 01:23:04.532742",
  "custom_blocks": [],
  "docstatus": 0,
@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-09-14 14:00:06.755970",
+ "modified": "2025-09-14 14:29:15.892423",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Stickering and Assembly",
@@ -174,9 +174,9 @@
   {
    "color": "Grey",
    "doc_view": "List",
-   "label": "Embroidery Jobs",
+   "label": "Stickering and Assembly Jobs",
    "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"EMBROIDERY\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - EMBROIDERY\",false]]",
+   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"STICKERING AND ASSEMBLY\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - STICKERING AND ASSEMBLY\",false]]",
    "type": "DocType"
   }
  ],
