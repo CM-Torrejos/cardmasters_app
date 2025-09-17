@@ -10,7 +10,8 @@ frappe.ui.form.on('Sales Order', {
 				frm.add_custom_button(__('Create Artist Card'), function() {
 					frappe.new_doc('Artist Card', {
 						sales_order: frm.doc.name,
-						artist: frm.doc.custom_artist
+						artist: frm.doc.custom_artist,
+						customer: frm.doc.customer
 					});
 				}, __('Create'));
 			}
@@ -74,10 +75,8 @@ frappe.ui.form.on('Sales Order', {
 		// Call it on refresh
 		set_custom_pill();
 
-		if (!frappe.user.has_role('System Manager')) {
-            // frm.remove_button('Request for Raw Materials');
-        }
 
+		// TODO: This shit dont work blud
 		if (!frappe.user.has_role('CM Head Approver') || !frappe.user.has_role('System Manager')) {
             frm.remove_custom_button('Update Items');
         }
