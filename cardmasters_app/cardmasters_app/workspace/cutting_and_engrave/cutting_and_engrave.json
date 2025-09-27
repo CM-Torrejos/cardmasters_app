@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-09-14 14:00:06.389866",
+ "modified": "2025-09-17 13:36:43.938255",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Cutting and Engrave",
@@ -182,6 +182,14 @@
   {
    "color": "Grey",
    "doc_view": "List",
+   "label": "Laser Engraving",
+   "link_to": "Job Card",
+   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"LASER ENGRAVING\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
    "label": "Laser Cutting",
    "link_to": "Job Card",
    "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"LASER CUTTING\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - MACHINE STATION\",false]]",
@@ -193,14 +201,6 @@
    "label": "CNC Cutting",
    "link_to": "Job Card",
    "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"CNC\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - MACHINE STATION\",false]]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "Laser Engraving",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"LASER ENGRAVING\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - MACHINE STATION\",false]]",
    "type": "DocType"
   },
   {
