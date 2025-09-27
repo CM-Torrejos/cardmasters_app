@@ -112,7 +112,7 @@ override_doctype_class = {
 # app_include_css = "/assets/cardmasters_app/css/chart_legend_limit.css"
 app_include_js = [
     "/assets/cardmasters_app/js/address_contact_quick_entry_patch.js",
-    "/assets/cardmasters_app/js/update_child_items.js"
+    # "/assets/cardmasters_app/js/update_child_items.js"
 ]
 
 doc_events = {
@@ -139,7 +139,11 @@ doc_events = {
         "before_insert" : [
             "cardmasters_app.cardmasters_app.event_handlers.artist_card.before_insert",
             "cardmasters_app.cardmasters_app.event_handlers.artist_card.validate_submission",
-        ]
+            "cardmasters_app.cardmasters_app.event_handlers.artist_card.assign_artist_so"
+        ] , 
+        # "after_save" : [
+        #     "cardmasters_app.cardmasters_app.event_handlers.artist_card.assign_artist_so"
+        # ]
     },
     "Sales Order": {
         "validate": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.validate_alias_on_facebook_channel"]

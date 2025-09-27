@@ -125,6 +125,8 @@ frappe.ui.form.on('Work Order', {
         	frm.fields_dict['custom_progress_summary'].$wrapper.html("<p>Save the Work Order to view Job Cards.</p>");
     	}
 
+		
+
 		// frm.add_custom_button('Material Request', () => {
 		// 	frappe.new_doc('Material Request', {
 		// 		material_request_type: 'Material Transfer',

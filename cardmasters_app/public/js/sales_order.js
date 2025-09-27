@@ -11,27 +11,14 @@ frappe.ui.form.on('Sales Order', {
 					frappe.new_doc('Artist Card', {
 						sales_order: frm.doc.name,
 						artist: frm.doc.custom_artist,
-						customer: frm.doc.customer
+						customer: frm.doc.customer,
+						deadline: frm.doc.delivery_date,
+						date_created: frappe.datetime.get_today()
 					});
 				}, __('Create'));
 			}
 		}
 
-		// Stock Entry Button Creation
-		function set_stock_entry_button() {
-			
-			const invalid_statuses = ['On Hold', 'Cancelled', 'Closed', 'Draft'];
-			
-			if (!invalid_statuses.includes(frm.doc.status)) {
-				frm.add_custom_button(__('Quick Manufacture'), function() {
-					frappe.new_doc('Stock Entry', {
-						stock_entry_type: 'Manufacture',
-						custom_sales_order: frm.doc.name,
-						
-					});
-				}, __('Create'));
-			}
-		}
 		
 		// Custom Pill Append
 		function set_custom_pill(doc) {
@@ -77,7 +64,7 @@ frappe.ui.form.on('Sales Order', {
 
 
 		// TODO: This shit dont work blud
-		if (!frappe.user.has_role('CM Head Approver') || !frappe.user.has_role('System Manager')) {
+		if (!frappe.user.has_role('CM Head Approver') && !frappe.user.has_role('System Manager')) {
             frm.remove_custom_button('Update Items');
         }
 
@@ -85,11 +72,6 @@ frappe.ui.form.on('Sales Order', {
             set_artist_card_button();
         }
 
-		if (frappe.user.has_role('CM Production Head') || frappe.user.has_role('System Manager')) {
-            set_stock_entry_button();
-        }
-
-		
 		
 		// Optional: re-run it after status changes dynamically
 		frm.fields_dict.status.df.onchange = function() {

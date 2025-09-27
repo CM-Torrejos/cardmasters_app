@@ -6,14 +6,15 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "artist",
   "sales_order",
   "customer",
-  "artist",
-  "company",
   "workflow_state",
+  "company",
   "column_break_eojj",
   "naming_series",
   "date_created",
+  "deadline",
   "difficulty",
   "work_order_created",
   "section_break_wifg",
@@ -145,6 +146,7 @@
    "default": "CARDMASTERS CDO",
    "fieldname": "company",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Company",
    "options": "Company"
   },
@@ -169,13 +171,18 @@
    "fieldname": "customer",
    "fieldtype": "Data",
    "label": "Customer"
+  },
+  {
+   "fieldname": "deadline",
+   "fieldtype": "Date",
+   "label": "Deadline"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
  "make_attachments_public": 1,
- "modified": "2025-09-18 03:14:35.121996",
+ "modified": "2025-09-24 09:15:12.513978",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Card",
@@ -199,5 +206,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
+ "title_field": "customer",
  "track_changes": 1
 }
