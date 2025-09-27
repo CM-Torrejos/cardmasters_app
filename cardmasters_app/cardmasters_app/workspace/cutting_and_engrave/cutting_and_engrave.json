@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"wNqzQqjcDe\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"IA1FGw682h\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"JWEI Cutting\",\"col\":3}},{\"id\":\"vMIDCadnTs\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"CNC Cutting\",\"col\":3}},{\"id\":\"SOEyUpKDXJ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Formech Operation\",\"col\":3}},{\"id\":\"VA7JvSVF1u\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Laser Cutting\",\"col\":3}},{\"id\":\"kbwH2c6FXe\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Laser Engraving\",\"col\":3}},{\"id\":\"4IXB1k1mxs\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"kqarl-Hsu1\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"m-StJ6H_Vb\",\"type\":\"card\",\"data\":{\"card_name\":\"Production Data\",\"col\":4}},{\"id\":\"WUYUZoWGug\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}}]",
+ "content": "[{\"id\":\"wNqzQqjcDe\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"IA1FGw682h\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"JWEI Cutting\",\"col\":3}},{\"id\":\"vMIDCadnTs\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"CNC Cutting\",\"col\":3}},{\"id\":\"SOEyUpKDXJ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Formech Operation\",\"col\":3}},{\"id\":\"VA7JvSVF1u\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Laser Cutting\",\"col\":3}},{\"id\":\"kbwH2c6FXe\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Laser Engraving\",\"col\":3}},{\"id\":\"0gXDNEhUzH\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"3D Printing\",\"col\":3}},{\"id\":\"77bVOIwSzO\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Fiber Laser\",\"col\":3}},{\"id\":\"4IXB1k1mxs\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"kqarl-Hsu1\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"m-StJ6H_Vb\",\"type\":\"card\",\"data\":{\"card_name\":\"Production Data\",\"col\":4}},{\"id\":\"WUYUZoWGug\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}}]",
  "creation": "2025-07-28 00:46:43.223168",
  "custom_blocks": [],
  "docstatus": 0,
@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-09-17 13:36:43.938255",
+ "modified": "2025-09-27 13:42:01.005111",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Cutting and Engrave",
@@ -174,9 +174,25 @@
   {
    "color": "Grey",
    "doc_view": "List",
+   "label": "3D Printing",
+   "link_to": "Job Card",
+   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"3D MACHINE PRINTING\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
    "label": "JWEI Cutting",
    "link_to": "Job Card",
    "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"JWEI\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - MACHINE STATION\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Fiber Laser",
+   "link_to": "Job Card",
+   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"FIBER LASER\",false]]",
    "type": "DocType"
   },
   {

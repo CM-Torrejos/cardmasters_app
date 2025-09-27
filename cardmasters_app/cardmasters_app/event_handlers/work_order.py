@@ -23,9 +23,9 @@ def inherit_remarks_particulars(doc, method=None):
     # --- Load Sales Order and copy header fields
     so = frappe.get_doc("Sales Order", so_name)
     doc.custom_remarks  = so.get("custom_remarks")
-    doc.custom_production_remarks = so.get("custom_production_remarks")
     doc.custom_for_new_flow = so.get("custom_for_new_flow")
     doc.custom_deadline = so.get("delivery_date")
+    doc.custom_remarks_production = so.get("custom_remarks_production")
 
     # --- Artist Card tied to this SO (optional)
     artist_card = frappe.db.get_value("Artist Card", {"sales_order": so_name}, "name")
