@@ -18,10 +18,8 @@
   "difficulty",
   "work_order_created",
   "section_break_wifg",
-  "expected_starting_datetime",
-  "column_break_fqkx",
-  "expected_finished_datetime",
   "expected_total_time",
+  "column_break_fqkx",
   "section_break_ingn",
   "timesheet",
   "finished_total_time",
@@ -89,12 +87,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "expected_finished_datetime",
-   "fieldtype": "Datetime",
-   "label": "Expected Finish Date / Time",
-   "reqd": 1
-  },
-  {
    "fieldname": "expected_total_time",
    "fieldtype": "Float",
    "label": "Expected Total Time (in mins)",
@@ -105,12 +97,6 @@
    "fieldname": "time_difference",
    "fieldtype": "Float",
    "label": "Time Difference"
-  },
-  {
-   "fieldname": "expected_starting_datetime",
-   "fieldtype": "Datetime",
-   "label": "Expected Starting Date / Time",
-   "reqd": 1
   },
   {
    "fieldname": "difficulty",
@@ -182,7 +168,7 @@
  "index_web_pages_for_search": 1,
  "links": [],
  "make_attachments_public": 1,
- "modified": "2025-09-24 09:15:12.513978",
+ "modified": "2025-09-30 09:43:51.242661",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Card",
