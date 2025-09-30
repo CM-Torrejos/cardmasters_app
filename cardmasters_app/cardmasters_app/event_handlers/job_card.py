@@ -27,6 +27,10 @@ def before_job_card_save(doc, method):
 		doc.custom_artist_card = wo.get("custom_artist_card")
 		doc.custom_remarks_from_sales = wo.get("custom_remarks_production")
 
+	if doc.custom_sales_order:
+		so = frappe.get_doc("Sales Order", doc.custom_sales_order)
+		doc.custom_customer = so.get("customer")
+
 def check_all_job_cards_submitted(doc, method)	:
 
 	cards = frappe.get_all(
