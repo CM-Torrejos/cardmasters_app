@@ -151,7 +151,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-09-14 14:00:07.311906",
+ "modified": "2025-10-04 10:16:02.143191",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Receivable",
@@ -169,6 +169,9 @@
   },
   {
    "role": "CM Invoicing"
+  },
+  {
+   "role": "CM Cashier"
   }
  ],
  "sequence_id": 17.0,

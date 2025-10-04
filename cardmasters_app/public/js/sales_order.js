@@ -113,7 +113,22 @@ frappe.ui.form.on('Sales Order', {
 			});
 		}   
 
-		frm.doc.custom_outstanding_balance = frm.doc.grand_total - frm.doc.advance_paid
+		if (frm.doc.docstatus === 1) {
+            // Call our server-side python method
+            frappe.call({
+                method: 'cardmasters_app.cardmasters_app.api.outstanding_balance.get_sales_order_outstanding', // Change to your app's path
+                args: {
+                    so_name: frm.doc.name
+                },
+                callback: function(r) {
+                    if (r.message !== undefined) {
+                        // Set the value in the custom field
+                        frm.set_value('custom_outstanding_balance', r.message);
+                        frm.refresh_field('custom_outstanding_balance');
+                    }
+                }
+            });
+        }
 	},
 	
 	custom_sales_channel: function(frm){

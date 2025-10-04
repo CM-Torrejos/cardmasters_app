@@ -162,6 +162,14 @@ doc_events = {
     "Material Request": {
         "validate": ["cardmasters_app.cardmasters_app.event_handlers.material_request.validate_material_request"],
     },
+    "Payment Entry": {
+        "on_submit": "cardmasters_app.cardmasters_app.api.outstanding_balance.update_so_balance_on_payment",
+        "on_cancel": "cardmasters_app.cardmasters_app.api.outstanding_balance.update_so_balance_on_payment"
+    },
+    "Journal Entry": {
+        "on_submit": "cardmasters_app.cardmasters_app.api.outstanding_balance.update_so_balance_on_payment",
+        "on_cancel": "cardmasters_app.cardmasters_app.api.outstanding_balance.update_so_balance_on_payment"
+    }
 }
 # Apps
 # ------------------
