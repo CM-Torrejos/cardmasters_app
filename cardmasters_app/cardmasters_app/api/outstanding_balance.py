@@ -39,8 +39,6 @@ def get_sales_order_outstanding(so_name):
 
 
 @frappe.whitelist()
-def update_so_balance_on_payment(payment_doc, method):
-    @frappe.whitelist()
 def update_so_balance_on_payment(doc, method):
     """
     This function is triggered by hooks on Payment Entry and Journal Entry.
