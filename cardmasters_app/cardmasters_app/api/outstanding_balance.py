@@ -40,24 +40,29 @@ def get_sales_order_outstanding(so_name):
 
 @frappe.whitelist()
 def update_so_balance_on_payment(payment_doc, method):
+    @frappe.whitelist()
+def update_so_balance_on_payment(doc, method):
     """
     This function is triggered by hooks on Payment Entry and Journal Entry.
     It finds the related Sales Order and updates its outstanding balance field.
     """
+    # --- FIX STARTS HERE ---
+    # Add a guard clause to check if the 'references' table exists.
+    # A Journal Entry does not have this table, so doc.get("references") will be None.
+    # This check prevents the code from crashing when a Journal Entry is submitted.
+    if not doc.get("references"):
+        return  # Exit the function gracefully
+    # --- FIX ENDS HERE ---
+
     sales_orders_to_update = set()
 
-    for ref in payment_doc.get("references"):
+    for ref in doc.get("references"):
         if ref.reference_doctype == "Sales Invoice":
-            # --- THIS IS THE CORRECTED PART ---
-            # The link from SI to SO is in the child table (Sales Invoice Item), not the header.
-            # We get the sales_order from the first item in the invoice that has a link.
-            # This is safe because items on a single invoice are almost always from the same SO.
             so_name = frappe.db.get_value(
                 "Sales Invoice Item",
                 {"parent": ref.reference_name, "sales_order": ["is", "set"]},
                 "sales_order"
             )
-            # --- END OF CORRECTION ---
 
             if so_name:
                 sales_orders_to_update.add(so_name)
@@ -65,11 +70,7 @@ def update_so_balance_on_payment(payment_doc, method):
     # Now update each unique Sales Order found
     for so_name in sales_orders_to_update:
         try:
-            # RE-USE THE FUNCTION YOU ALREADY WROTE!
-            # Assuming get_sales_order_outstanding is in the same file
             new_balance = get_sales_order_outstanding(so_name)
-
-            # Update the value directly in the database
             frappe.db.set_value("Sales Order", so_name, "custom_outstanding_balance", new_balance)
 
         except Exception as e:
