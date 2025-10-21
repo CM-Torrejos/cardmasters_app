@@ -146,7 +146,8 @@ doc_events = {
         # ]
     },
     "Sales Order": {
-        "validate": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.validate_alias_on_facebook_channel"]
+        "validate": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.validate_alias_on_facebook_channel"],
+        "after_submit": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.check_artist_status"]
     },
     "Job Card": {
         "on_update": ["cardmasters_app.cardmasters_app.event_handlers.job_card.on_job_card_create_handler"],

@@ -4,7 +4,7 @@ frappe.ui.form.on('Sales Order', {
 		// Artist Sheet Button Creation
 		function set_artist_card_button() {
 			
-			const invalid_statuses = ['On Hold', 'Cancelled', 'Closed', 'Draft'];
+			const invalid_statuses = ['On Hold', 'Cancelled', 'Closed'];
 			
 			if (!invalid_statuses.includes(frm.doc.status)) {
 				frm.add_custom_button(__('Create Artist Card'), function() {
@@ -19,7 +19,7 @@ frappe.ui.form.on('Sales Order', {
 			}
 		}
 
-		
+
 		// Custom Pill Append
 		function set_custom_pill(doc) {
 			$('span.custom-state-pill').remove();

@@ -35,6 +35,7 @@ def inherit_remarks_particulars(doc, method=None):
         ac = frappe.get_doc("Artist Card", artist_card)
         doc.custom_artist_bom     = ac.get("bom")
         doc.custom_artist_remarks = ac.get("remarks")
+        doc.custom_artist_assigned = ac.get("artist")
     else:
         frappe.msgprint("This Work Order has no Artist Card. Be warned!",
                         alert=True, indicator="orange")

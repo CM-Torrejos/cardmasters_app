@@ -25,6 +25,7 @@ def before_job_card_save(doc, method):
 		doc.custom_sales_order = wo.get("sales_order")
 		doc.custom_deadline = wo.get("custom_deadline")
 		doc.custom_artist_card = wo.get("custom_artist_card")
+		doc.custom_artist_assigned = wo.get("custom_artist_assigned")
 		doc.custom_remarks_from_sales = wo.get("custom_remarks_production")
 
 	if doc.custom_sales_order:
