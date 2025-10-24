@@ -16,7 +16,7 @@ fixtures = [
         ]
     },
 
-    #Property Setters (overrides to native fields)
+    # Property Setters (overrides to native fields)
     {
         "doctype": "Property Setter",
         "sync_on_migrate": True,
@@ -46,7 +46,6 @@ doctype_js = {
     "Petty Cash Request": "public/js/petty_cash_request.js",
     "Stock Entry": "public/js/stock_entry.js",
     "Purchase Order": "public/js/purchase_order.js",
-    "tester": "public/js/tester.js",
     "Purchase Invoice": "public/js/purchase_invoice.js",
     "Payment Entry": "public/js/payment_entry.js",
     "Material Request": "public/js/material_request.js",
