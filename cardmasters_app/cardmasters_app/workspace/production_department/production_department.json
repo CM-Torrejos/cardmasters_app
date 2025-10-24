@@ -172,7 +172,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-09-14 14:00:06.046594",
+ "modified": "2025-10-24 10:24:16.777755",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Production Department",
@@ -181,14 +181,7 @@
  "parent_page": "",
  "public": 1,
  "quick_lists": [],
- "roles": [
-  {
-   "role": "CM Production Head"
-  },
-  {
-   "role": "CM Assembler"
-  }
- ],
+ "roles": [],
  "sequence_id": 3.0,
  "shortcuts": [
   {

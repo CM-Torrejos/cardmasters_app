@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-09-14 14:00:06.250958",
+ "modified": "2025-10-24 10:24:35.630939",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Heatpress",
@@ -161,14 +161,7 @@
  "parent_page": "Production Department",
  "public": 1,
  "quick_lists": [],
- "roles": [
-  {
-   "role": "CM Production Head"
-  },
-  {
-   "role": "CM Heatpress Workstation Leader"
-  }
- ],
+ "roles": [],
  "sequence_id": 5.0,
  "shortcuts": [
   {
