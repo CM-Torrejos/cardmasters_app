@@ -16,11 +16,6 @@ fixtures = [
         "sync_on_migrate": True,
     },
 
-    # Custom Permissions (DocPerm)
-    {
-        "doctype": "Custom DocPerm",
-        "sync_on_migrate": True,
-    },
     {
         "doctype": "Custom Field",
         "sync_on_migrate": True,
