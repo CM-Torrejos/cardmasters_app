@@ -13,7 +13,8 @@ frappe.ui.form.on('Sales Order', {
 						artist: frm.doc.custom_artist,
 						customer: frm.doc.customer,
 						deadline: frm.doc.delivery_date,
-						date_created: frappe.datetime.get_today()
+						date_created: frappe.datetime.get_today(),
+						custom_rush_order: frm.doc.custom_rush_order,
 					});
 				}, __('Create'));
 			}
