@@ -7,7 +7,7 @@ app_license = "mit"
 
 
 fixtures = [
-    # 1) Custom Fields 
+    # Custom Fields 
     {
         "doctype": "Custom Field",
         "sync_on_migrate": True,
@@ -16,7 +16,7 @@ fixtures = [
         ]
     },
 
-    # 2) Property Setters (overrides to native fields)
+    #Property Setters (overrides to native fields)
     {
         "doctype": "Property Setter",
         "sync_on_migrate": True,
@@ -24,51 +24,15 @@ fixtures = [
             ["is_system_generated", "=", 0]
         ]
     },
+
     # Workflow
     {"doctype": "Workflow", "sync_on_migrate": True,},
 
     # Workflow states
     {"doctype": "Workflow State", "sync_on_migrate": True,},
 
-    # Reports
-    {
-        "doctype": "Report",
-        "sync_on_migrate": True,
-        "filters": [
-            ["is_standard", "=", 'No']
-        ]
-    },
-
-    # Dashboard charts
-    {
-        "doctype": "Dashboard Chart",
-        "sync_on_migrate": True,
-        "filters": [
-            ["is_standard", "=", 'No']
-        ]
-    },
-
-    # Number Cards
-    {
-        "doctype": "Number Card",
-        "sync_on_migrate": True,
-        "filters": [
-            ["is_standard", "=", '0']
-        ]
-    },
-
-    # Dashboards
-    {
-        "doctype": "Dashboard",
-        "sync_on_migrate": True,
-        "filters": [
-            ["is_standard", "=", '0']
-        ]
-    },
-
-    {
-        "doctype": "Workflow Action Master",
-        "sync_on_migrate": True,
+    # Workflow action master
+    {"doctype": "Workflow Action Master", "sync_on_migrate": True,
     },
 ]
 
