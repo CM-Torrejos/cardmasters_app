@@ -120,7 +120,10 @@ doc_events = {
     	"after_submit": "cardmasters_app.cardmasters_app.event_handlers.petty_cash_voucher.update_pcr_onpcv"
     },
     "Work Order": {
-        "after_insert" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars"],
+        "after_insert" : [
+            "cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars",
+            "cardmasters_app.cardmasters_app.event_handlers.tags_sync.copy_tags_from_sales_order"
+            ],
         # "before_insert" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_save"],
         "before_submit" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_submit"],
     },
