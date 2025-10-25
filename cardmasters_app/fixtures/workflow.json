@@ -4,13 +4,13 @@
   "doctype": "Workflow",
   "document_type": "Artist Card",
   "is_active": 1,
-  "modified": "2025-08-05 14:14:20.811963",
+  "modified": "2025-10-24 10:28:57.067735",
   "name": "Artist Sheet Workflow",
   "override_status": 0,
   "send_email_alert": 0,
   "states": [
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -26,7 +26,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -42,7 +42,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -58,7 +58,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -74,7 +74,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -94,7 +94,7 @@
    {
     "action": "Begin Layout",
     "allow_self_approval": 1,
-    "allowed": "CM Artist",
+    "allowed": "All",
     "condition": null,
     "next_state": "Layouting",
     "parent": "Artist Sheet Workflow",
@@ -107,7 +107,7 @@
    {
     "action": "Submit for Approval",
     "allow_self_approval": 1,
-    "allowed": "CM Artist",
+    "allowed": "All",
     "condition": null,
     "next_state": "Pending Client Approval",
     "parent": "Artist Sheet Workflow",
@@ -120,7 +120,7 @@
    {
     "action": "Client Approved (Start BOM)",
     "allow_self_approval": 1,
-    "allowed": "CM Artist",
+    "allowed": "All",
     "condition": null,
     "next_state": "Client Approved (BOM WIP)",
     "parent": "Artist Sheet Workflow",
@@ -133,7 +133,7 @@
    {
     "action": "Modify Layout",
     "allow_self_approval": 1,
-    "allowed": "CM Artist",
+    "allowed": "All",
     "condition": null,
     "next_state": "Layouting",
     "parent": "Artist Sheet Workflow",
@@ -146,7 +146,7 @@
    {
     "action": "Finish BOM",
     "allow_self_approval": 1,
-    "allowed": "CM Artist",
+    "allowed": "All",
     "condition": null,
     "next_state": "BOM Finished",
     "parent": "Artist Sheet Workflow",
@@ -166,13 +166,13 @@
   "doctype": "Workflow",
   "document_type": "Sales Order",
   "is_active": 1,
-  "modified": "2025-08-21 16:07:36.502709",
+  "modified": "2025-10-24 10:29:20.216421",
   "name": "Sales Order Flow",
   "override_status": 1,
   "send_email_alert": 0,
   "states": [
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -188,7 +188,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "1",
     "is_optional_state": 0,
@@ -204,7 +204,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "2",
     "is_optional_state": 0,
@@ -220,7 +220,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "1",
     "is_optional_state": 0,
@@ -236,7 +236,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "1",
     "is_optional_state": 0,
@@ -252,7 +252,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "1",
     "is_optional_state": 0,
@@ -268,7 +268,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "1",
     "is_optional_state": 0,
@@ -288,7 +288,7 @@
    {
     "action": "Submit",
     "allow_self_approval": 1,
-    "allowed": "CM Office Sales",
+    "allowed": "All",
     "condition": null,
     "next_state": "Pending",
     "parent": "Sales Order Flow",
@@ -301,7 +301,7 @@
    {
     "action": "Begin Layout",
     "allow_self_approval": 1,
-    "allowed": "CM Artist Head",
+    "allowed": "All",
     "condition": null,
     "next_state": "Artist",
     "parent": "Sales Order Flow",
@@ -314,7 +314,7 @@
    {
     "action": "Cancel",
     "allow_self_approval": 1,
-    "allowed": "CM Sales Head",
+    "allowed": "All",
     "condition": null,
     "next_state": "Cancelled",
     "parent": "Sales Order Flow",
@@ -327,7 +327,7 @@
    {
     "action": "Skip Artist",
     "allow_self_approval": 1,
-    "allowed": "CM Artist Head",
+    "allowed": "All",
     "condition": null,
     "next_state": "No Artist - Pending Production",
     "parent": "Sales Order Flow",
@@ -340,7 +340,7 @@
    {
     "action": "Begin Production",
     "allow_self_approval": 1,
-    "allowed": "CM Production Head",
+    "allowed": "All",
     "condition": null,
     "next_state": "Production",
     "parent": "Sales Order Flow",
@@ -353,7 +353,7 @@
    {
     "action": "Begin Production",
     "allow_self_approval": 1,
-    "allowed": "CM Production Head",
+    "allowed": "All",
     "condition": null,
     "next_state": "Production",
     "parent": "Sales Order Flow",
@@ -366,7 +366,7 @@
    {
     "action": "Conclude Production",
     "allow_self_approval": 1,
-    "allowed": "CM Production Head",
+    "allowed": "All",
     "condition": null,
     "next_state": "Production Concluded",
     "parent": "Sales Order Flow",
@@ -379,7 +379,7 @@
    {
     "action": "Cancel",
     "allow_self_approval": 1,
-    "allowed": "CM Artist Head",
+    "allowed": "All",
     "condition": null,
     "next_state": "Cancelled",
     "parent": "Sales Order Flow",
@@ -392,7 +392,7 @@
    {
     "action": "Cancel",
     "allow_self_approval": 1,
-    "allowed": "CM Artist Head",
+    "allowed": "All",
     "condition": null,
     "next_state": "Cancelled",
     "parent": "Sales Order Flow",
@@ -412,13 +412,13 @@
   "doctype": "Workflow",
   "document_type": "Quotation",
   "is_active": 1,
-  "modified": "2025-08-05 14:16:41.788962",
+  "modified": "2025-10-24 10:29:09.176393",
   "name": "Quotation workflow",
   "override_status": 1,
   "send_email_alert": 0,
   "states": [
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -434,7 +434,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "1",
     "is_optional_state": 0,
@@ -450,7 +450,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -470,7 +470,7 @@
    {
     "action": "Approve",
     "allow_self_approval": 1,
-    "allowed": "CM Quotation Approver",
+    "allowed": "All",
     "condition": null,
     "next_state": "Approved",
     "parent": "Quotation workflow",
@@ -483,7 +483,7 @@
    {
     "action": "Reject",
     "allow_self_approval": 1,
-    "allowed": "CM Quotation Approver",
+    "allowed": "All",
     "condition": null,
     "next_state": "Rejected",
     "parent": "Quotation workflow",
@@ -503,13 +503,13 @@
   "doctype": "Workflow",
   "document_type": "Petty Cash Count",
   "is_active": 1,
-  "modified": "2025-08-05 14:09:47.738954",
+  "modified": "2025-10-24 10:28:41.419836",
   "name": "Petty Cash Count Flow",
   "override_status": 0,
   "send_email_alert": 0,
   "states": [
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -525,7 +525,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "1",
     "is_optional_state": 0,
@@ -541,7 +541,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "1",
     "is_optional_state": 0,
@@ -557,7 +557,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "1",
     "is_optional_state": 0,
@@ -577,7 +577,7 @@
    {
     "action": "Request Approval",
     "allow_self_approval": 1,
-    "allowed": "CM Disbursement",
+    "allowed": "All",
     "condition": null,
     "next_state": "For Approval",
     "parent": "Petty Cash Count Flow",
@@ -590,7 +590,7 @@
    {
     "action": "Request Reimbursement",
     "allow_self_approval": 1,
-    "allowed": "CM Controller",
+    "allowed": "All",
     "condition": null,
     "next_state": "For Reimbursement",
     "parent": "Petty Cash Count Flow",
@@ -603,7 +603,7 @@
    {
     "action": "Reimbursed",
     "allow_self_approval": 1,
-    "allowed": "CM Procurement",
+    "allowed": "All",
     "condition": null,
     "next_state": "Reimbursed",
     "parent": "Petty Cash Count Flow",
@@ -623,13 +623,13 @@
   "doctype": "Workflow",
   "document_type": "Work Order",
   "is_active": 1,
-  "modified": "2025-08-31 20:13:38.525086",
+  "modified": "2025-10-24 10:29:45.578053",
   "name": "Work Order Flow",
   "override_status": 1,
   "send_email_alert": 0,
   "states": [
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -645,7 +645,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "1",
     "is_optional_state": 0,
@@ -661,7 +661,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "2",
     "is_optional_state": 1,
@@ -677,7 +677,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "1",
     "is_optional_state": 0,
@@ -693,7 +693,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "1",
     "is_optional_state": 0,
@@ -709,7 +709,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "1",
     "is_optional_state": 0,
@@ -729,7 +729,7 @@
    {
     "action": "Submit",
     "allow_self_approval": 1,
-    "allowed": "CM Production Head",
+    "allowed": "All",
     "condition": null,
     "next_state": "Production",
     "parent": "Work Order Flow",
@@ -742,7 +742,7 @@
    {
     "action": "Finish Item",
     "allow_self_approval": 1,
-    "allowed": "CM Production Head",
+    "allowed": "All",
     "condition": null,
     "next_state": "Manufactured : Pending Count",
     "parent": "Work Order Flow",
@@ -755,7 +755,7 @@
    {
     "action": "Stop",
     "allow_self_approval": 1,
-    "allowed": "CM Production Head",
+    "allowed": "All",
     "condition": null,
     "next_state": "Cancelled",
     "parent": "Work Order Flow",
@@ -768,7 +768,7 @@
    {
     "action": "Count Finished",
     "allow_self_approval": 1,
-    "allowed": "CM Claiming",
+    "allowed": "All",
     "condition": null,
     "next_state": "Claiming: Pending BOM",
     "parent": "Work Order Flow",
@@ -781,7 +781,7 @@
    {
     "action": "BOM Finished",
     "allow_self_approval": 1,
-    "allowed": "CM Assembler",
+    "allowed": "All",
     "condition": null,
     "next_state": "Delivery Ready",
     "parent": "Work Order Flow",
@@ -801,7 +801,7 @@
   "doctype": "Workflow",
   "document_type": "Material Request",
   "is_active": 1,
-  "modified": "2025-09-26 14:06:17.038783",
+  "modified": "2025-10-24 09:56:45.446237",
   "name": "Material Request Flow",
   "override_status": 1,
   "send_email_alert": 0,
@@ -823,7 +823,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "CM Head Approver",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -839,7 +839,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "CM Inventory",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -855,7 +855,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "CM Inventory",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "1",
     "is_optional_state": 0,
@@ -888,7 +888,7 @@
    {
     "action": "Approve",
     "allow_self_approval": 1,
-    "allowed": "CM Head Approver",
+    "allowed": "All",
     "condition": null,
     "next_state": "Approved",
     "parent": "Material Request Flow",
@@ -901,7 +901,7 @@
    {
     "action": "Submit",
     "allow_self_approval": 1,
-    "allowed": "CM Inventory",
+    "allowed": "All",
     "condition": null,
     "next_state": "Approved and Submitted",
     "parent": "Material Request Flow",

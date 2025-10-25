@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-09-14 14:00:06.591003",
+ "modified": "2025-10-24 10:24:54.836887",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Embroidery",
@@ -161,14 +161,7 @@
  "parent_page": "Production Department",
  "public": 1,
  "quick_lists": [],
- "roles": [
-  {
-   "role": "CM Production Head"
-  },
-  {
-   "role": "CM Embroidery Workstation Leader"
-  }
- ],
+ "roles": [],
  "sequence_id": 8.0,
  "shortcuts": [
   {

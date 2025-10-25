@@ -4,7 +4,7 @@ frappe.ui.form.on('Sales Order', {
 		// Artist Sheet Button Creation
 		function set_artist_card_button() {
 			
-			const invalid_statuses = ['On Hold', 'Cancelled', 'Closed', 'Draft'];
+			const invalid_statuses = ['On Hold', 'Cancelled', 'Closed'];
 			
 			if (!invalid_statuses.includes(frm.doc.status)) {
 				frm.add_custom_button(__('Create Artist Card'), function() {
@@ -13,13 +13,14 @@ frappe.ui.form.on('Sales Order', {
 						artist: frm.doc.custom_artist,
 						customer: frm.doc.customer,
 						deadline: frm.doc.delivery_date,
-						date_created: frappe.datetime.get_today()
+						date_created: frappe.datetime.get_today(),
+						custom_rush_order: frm.doc.custom_rush_order,
 					});
 				}, __('Create'));
 			}
 		}
 
-		
+
 		// Custom Pill Append
 		function set_custom_pill(doc) {
 			$('span.custom-state-pill').remove();

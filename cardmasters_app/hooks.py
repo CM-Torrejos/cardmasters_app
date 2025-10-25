@@ -7,20 +7,7 @@ app_license = "mit"
 
 
 fixtures = [
-    # 1) Custom Fields 
-    {
-        "doctype": "Role",
-        "filters": [
-            ["is_custom", "=", 1]   # only custom roles
-        ],
-        "sync_on_migrate": True,
-    },
-
-    # Custom Permissions (DocPerm)
-    {
-        "doctype": "Custom DocPerm",
-        "sync_on_migrate": True,
-    },
+    # Custom Fields 
     {
         "doctype": "Custom Field",
         "sync_on_migrate": True,
@@ -29,7 +16,7 @@ fixtures = [
         ]
     },
 
-    # 2) Property Setters (overrides to native fields)
+    # Property Setters (overrides to native fields)
     {
         "doctype": "Property Setter",
         "sync_on_migrate": True,
@@ -37,51 +24,15 @@ fixtures = [
             ["is_system_generated", "=", 0]
         ]
     },
+
     # Workflow
     {"doctype": "Workflow", "sync_on_migrate": True,},
 
     # Workflow states
     {"doctype": "Workflow State", "sync_on_migrate": True,},
 
-    # Reports
-    {
-        "doctype": "Report",
-        "sync_on_migrate": True,
-        "filters": [
-            ["is_standard", "=", 'No']
-        ]
-    },
-
-    # Dashboard charts
-    {
-        "doctype": "Dashboard Chart",
-        "sync_on_migrate": True,
-        "filters": [
-            ["is_standard", "=", 'No']
-        ]
-    },
-
-    # Number Cards
-    {
-        "doctype": "Number Card",
-        "sync_on_migrate": True,
-        "filters": [
-            ["is_standard", "=", '0']
-        ]
-    },
-
-    # Dashboards
-    {
-        "doctype": "Dashboard",
-        "sync_on_migrate": True,
-        "filters": [
-            ["is_standard", "=", '0']
-        ]
-    },
-
-    {
-        "doctype": "Workflow Action Master",
-        "sync_on_migrate": True,
+    # Workflow action master
+    {"doctype": "Workflow Action Master", "sync_on_migrate": True,
     },
 ]
 
@@ -95,7 +46,6 @@ doctype_js = {
     "Petty Cash Request": "public/js/petty_cash_request.js",
     "Stock Entry": "public/js/stock_entry.js",
     "Purchase Order": "public/js/purchase_order.js",
-    "tester": "public/js/tester.js",
     "Purchase Invoice": "public/js/purchase_invoice.js",
     "Payment Entry": "public/js/payment_entry.js",
     "Material Request": "public/js/material_request.js",
@@ -149,7 +99,8 @@ doc_events = {
         # ]
     },
     "Sales Order": {
-        "validate": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.validate_alias_on_facebook_channel"]
+        "validate": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.validate_alias_on_facebook_channel"],
+        "after_submit": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.check_artist_status"]
     },
     "Job Card": {
         "on_update": ["cardmasters_app.cardmasters_app.event_handlers.job_card.on_job_card_create_handler"],

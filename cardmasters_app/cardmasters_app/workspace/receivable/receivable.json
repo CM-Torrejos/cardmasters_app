@@ -151,7 +151,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-10-04 10:16:02.143191",
+ "modified": "2025-10-24 10:25:52.799194",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Receivable",
@@ -160,20 +160,7 @@
  "parent_page": "Accounting Department",
  "public": 1,
  "quick_lists": [],
- "roles": [
-  {
-   "role": "CM Controller"
-  },
-  {
-   "role": "CM Analyst"
-  },
-  {
-   "role": "CM Invoicing"
-  },
-  {
-   "role": "CM Cashier"
-  }
- ],
+ "roles": [],
  "sequence_id": 17.0,
  "shortcuts": [
   {

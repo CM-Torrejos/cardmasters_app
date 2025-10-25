@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-09-14 14:00:05.953239",
+ "modified": "2025-10-24 10:24:06.770600",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Department",
@@ -161,14 +161,7 @@
  "parent_page": "",
  "public": 1,
  "quick_lists": [],
- "roles": [
-  {
-   "role": "CM Artist"
-  },
-  {
-   "role": "CM Artist Head"
-  }
- ],
+ "roles": [],
  "sequence_id": 2.0,
  "shortcuts": [
   {
