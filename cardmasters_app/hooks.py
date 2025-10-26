@@ -123,6 +123,9 @@ doc_events = {
     "Journal Entry": {
         "on_submit": "cardmasters_app.cardmasters_app.api.outstanding_balance.update_so_balance_on_payment",
         "on_cancel": "cardmasters_app.cardmasters_app.api.outstanding_balance.update_so_balance_on_payment"
+    },
+    "Tag Link": {
+        "after_insert": "cardmasters_app.cardmasters_app.event_handlers.tags_sync.sync_new_tag_to_work_orders"
     }
 }
 # Apps
