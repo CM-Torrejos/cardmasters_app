@@ -183,15 +183,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-07-03 09:10:17.857134",
-  "name": "Awaiting Submission",
-  "style": "",
-  "workflow_state_name": "Awaiting Submission"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-05-17 04:59:56.120535",
   "name": "Pending Approval",
   "style": "Info",
@@ -246,10 +237,10 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-06-20 10:26:34.368986",
-  "name": "BOM WIP",
+  "modified": "2025-07-03 09:10:17.857134",
+  "name": "Awaiting Submission",
   "style": "",
-  "workflow_state_name": "BOM WIP"
+  "workflow_state_name": "Awaiting Submission"
  },
  {
   "docstatus": 0,
@@ -259,5 +250,14 @@
   "name": "Production",
   "style": "Warning",
   "workflow_state_name": "Production"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-20 10:26:34.368986",
+  "name": "BOM WIP",
+  "style": "",
+  "workflow_state_name": "BOM WIP"
  }
 ]
