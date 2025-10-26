@@ -47,6 +47,6 @@ def before_insert(doc, method):
 	so = frappe.get_doc("Sales Order", doc.sales_order)
 	if (so.workflow_state and so.workflow_state == 'Pending'):
 		print('thsi runs 2')
-		so = apply_workflow(doc, "Begin Layout")
+		so = apply_workflow(so, "Begin Layout")
 		so.save()
 

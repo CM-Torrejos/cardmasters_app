@@ -10,11 +10,10 @@ frappe.ui.form.on('Sales Order', {
 				frm.add_custom_button(__('Create Artist Card'), function() {
 					frappe.new_doc('Artist Card', {
 						sales_order: frm.doc.name,
-						artist: frm.doc.custom_artist,
 						customer: frm.doc.customer,
 						deadline: frm.doc.delivery_date,
 						date_created: frappe.datetime.get_today(),
-						custom_rush_order: frm.doc.custom_rush_order,
+						rush_order: frm.doc.custom_rush_order,
 					});
 				}, __('Create'));
 			}

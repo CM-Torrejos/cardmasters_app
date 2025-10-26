@@ -27,12 +27,6 @@ def inherit_remarks_particulars(doc, method=None):
     doc.custom_remarks_production = so.get("custom_remarks_production")
     doc.custom_rush_order = so.get("custom_rush_order")
 
-    # --- Inherit Tags from the Sales Order : only copy tags on the initial creation.
-    if doc.is_new():
-        sales_order_tags = so.get("_tags")
-        if sales_order_tags:
-            doc.set("_tags", sales_order_tags)
-
     # --- Artist Card tied to this SO (optional)
     artist_card = frappe.db.get_value("Artist Card", {"sales_order": doc.sales_order}, "name")
     if artist_card:
@@ -107,6 +101,3 @@ def before_work_order_submit(doc, method):
 def clear_child_rows(doc, method):
     # Clean up child table rows for this Work Order as needed.
     frappe.db.delete("Artist BOM table", {"parent": doc.name})
-
-
-def 
