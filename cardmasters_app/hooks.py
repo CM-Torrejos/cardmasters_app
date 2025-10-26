@@ -128,6 +128,11 @@ doc_events = {
         "after_insert": "cardmasters_app.cardmasters_app.event_handlers.tags_sync.sync_new_tag_to_work_orders"
     }
 }
+
+override_whitelisted_methods = {
+    "frappe.desk.doctype.tag.tag.remove_tag": "cardmasters_app.cardmasters_app.event_handlers.tags_sync.custom_remove_tag_and_sync"
+}
+
 # Apps
 # ------------------
 

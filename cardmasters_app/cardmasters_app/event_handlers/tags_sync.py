@@ -1,4 +1,5 @@
 import frappe
+from frappe.desk.doctype.tag.tag import check_user_tags
 
 def copy_tags_from_sales_order(doc, method):
     """
@@ -96,3 +97,97 @@ def sync_new_tag_to_work_orders(doc, method):
 
     except Exception as e:
         frappe.log_error(f"Error in 'sync_new_tag_to_work_orders': {e}", "Tag Sync Error")
+
+"""
+Function 3: Works via 'override_whitelisted_methods'
+Replaces the 'remove_tag' function to sync deletions.
+"""
+@frappe.whitelist() # This is CRITICAL.
+def custom_remove_tag_and_sync(tag, dt, dn): # <-- THE FIX IS HERE
+    """
+    Hook: override_whitelisted_methods
+    Action: Overrides the standard 'remove_tag' function.
+            1. Runs our custom logic to remove tags from linked WOs.
+            2. Runs the original 'remove_tag' logic to delete the Tag Link.
+    
+    'tag' is the tag name (e.g., "MyTag")
+    'dt' is the doctype (e.g., "Sales Order")
+    'dn' is the doc name (e.g., "SO-00001")
+    """
+    
+    # We are logging the correct variables now
+    frappe.logger().error(
+        f"[Tag Sync] OVERRIDE 'remove_tag' fired for: {dt} '{dn}' (Tag: {tag})"
+    )
+
+    # --- 1. Our Custom Logic (Run FIRST) ---
+    if dt == "Sales Order":  # <-- Use 'dt'
+        sales_order_name = dn  # <-- Use 'dn'
+        removed_tag = tag
+        
+        frappe.logger().error(f"[Tag Sync] Tag '{removed_tag}' removed from SO: {sales_order_name}. Finding WOs...")
+        
+        try:
+            # Find all 'Draft' (0) and 'Submitted' (1) WOs
+            linked_wos = frappe.get_all("Work Order",
+                filters={
+                    "sales_order": sales_order_name,
+                    "docstatus": ["in", [0, 1]],
+                    "status": ["not in", ["Completed", "Cancelled"]]
+                },
+                fields=["name"]
+            )
+
+            if not linked_wos:
+                frappe.logger().error(f"[Tag Sync] No active WOs found for {sales_order_name}.")
+            else:
+                frappe.logger().error(f"[Tag Sync] Found {len(linked_wos)} active WOs to check for tag removal.")
+                
+                for wo in linked_wos:
+                    try:
+                        wo_doc = frappe.get_doc("Work Order", wo.name)
+                        wo_doc.remove_tag(removed_tag)
+                        wo_doc.save(ignore_permissions=True) # Save the WO
+                        frappe.logger().error(f"[Tag Sync] Removed tag '{removed_tag}' from WO: {wo_doc.name}")
+                    except Exception as e:
+                        frappe.log_error(f"Error removing tag from WO {wo.name}: {e}", "Tag Sync Error")
+            
+            frappe.logger().error(f"[Tag Sync] SUCCESS: Finished syncing removed tag '{removed_tag}'.")
+
+        except Exception as e:
+            frappe.log_error(f"Error in 'sync_removed_tag_from_sales_order': {e}", "Tag Sync Error")
+    
+    # --- 2. Original Function Logic (Run LAST) ---
+    # This logic is copied from tag.py to make the tag
+    # actually delete from the Sales Order.
+    try:
+        check_user_tags(tag) # Perform original permission check
+
+        # This is the line from update_tags()
+        frappe.db.delete(
+            "Tag Link",
+            {
+                "document_type": dt,  # <-- Use 'dt'
+                "document_name": dn,  # <-- Use 'dn'
+                "tag": tag,
+            },
+        )
+
+        # We also have to update the `_user_tags` column in the Sales Order
+        so_doc = frappe.get_doc(dt, dn) # <-- Use 'dt', 'dn'
+        current_tags = so_doc.get_tags()
+        if tag in current_tags:
+            current_tags.remove(tag)
+            
+        new_tag_string = ",".join(current_tags)
+        if new_tag_string:
+             new_tag_string = "," + new_tag_string
+             
+        # Update the SO's _user_tags field
+        frappe.db.set_value(dt, dn, "_user_tags", new_tag_string, update_modified=False)
+
+        frappe.logger().error(f"[Tag Sync] Original 'remove_tag' logic executed for {dn}.")
+
+    except Exception as e:
+        frappe.log_error(f"Error in original remove_tag logic: {e}", "Tag Sync Error")
+        raise e
