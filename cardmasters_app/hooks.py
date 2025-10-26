@@ -70,7 +70,14 @@ doc_events = {
     	"after_submit": "cardmasters_app.cardmasters_app.event_handlers.petty_cash_voucher.update_pcr_onpcv"
     },
     "Work Order": {
+
+        "after_insert" : [
+            "cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars",
+            "cardmasters_app.cardmasters_app.event_handlers.tags_sync.copy_tags_from_sales_order"
+            ],
+
         "before_save" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars"],
+
         # "before_insert" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_save"],
         "before_submit" : [
             "cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_submit",
@@ -124,8 +131,16 @@ doc_events = {
     "Journal Entry": {
         "on_submit": "cardmasters_app.cardmasters_app.api.outstanding_balance.update_so_balance_on_payment",
         "on_cancel": "cardmasters_app.cardmasters_app.api.outstanding_balance.update_so_balance_on_payment"
+    },
+    "Tag Link": {
+        "after_insert": "cardmasters_app.cardmasters_app.event_handlers.tags_sync.sync_new_tag_to_work_orders"
     }
 }
+
+override_whitelisted_methods = {
+    "frappe.desk.doctype.tag.tag.remove_tag": "cardmasters_app.cardmasters_app.event_handlers.tags_sync.custom_remove_tag_and_sync"
+}
+
 # Apps
 # ------------------
 
