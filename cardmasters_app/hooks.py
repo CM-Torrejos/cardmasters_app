@@ -81,7 +81,7 @@ doc_events = {
 
         "after_insert" : [
             "cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars",
-            "cardmasters_app.cardmasters_app.event_handlers.tags_sync.set_work_order_tags_from_sales_order"
+            "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_tags_from_sales_order_on_creation"
         ],
 
         "before_save" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars"],
@@ -105,10 +105,13 @@ doc_events = {
         "before_save": [
             "cardmasters_app.cardmasters_app.event_handlers.artist_card.calculate_time_difference"
         ],
-        "before_insert" : [
+        "before_insert": [
             "cardmasters_app.cardmasters_app.event_handlers.artist_card.before_insert",
             "cardmasters_app.cardmasters_app.event_handlers.artist_card.validate_submission",
             "cardmasters_app.cardmasters_app.event_handlers.artist_card.assign_artist_so"
+        ],
+        "after_insert": [
+            "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_tags_from_sales_order_on_creation"
         ]
         # "after_save" : [
         #     "cardmasters_app.cardmasters_app.event_handlers.artist_card.assign_artist_so"
@@ -117,12 +120,12 @@ doc_events = {
     "Sales Order": {
         "validate": [
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.validate_alias_on_facebook_channel",
-            # "cardmasters_app.cardmasters_app.event_handlers.tags_sync.automated_sales_order_tagging"
+            # "cardmasters_app.cardmasters_app.event_handlers.tag_automation.automated_sales_order_tagging"
             ],
         "after_submit": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.check_artist_status"],
-        "after_insert": "cardmasters_app.cardmasters_app.event_handlers.tags_sync.automated_sales_order_tagging",
-        # "on_update": "cardmasters_app.cardmasters_app.event_handlers.tags_sync.automated_sales_order_tagging",
-        'on_update_after_submit': "cardmasters_app.cardmasters_app.event_handlers.tags_sync.automated_sales_order_tagging"
+        "after_insert": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.automated_sales_order_tagging",
+        # "on_update": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.automated_sales_order_tagging",
+        'on_update_after_submit': "cardmasters_app.cardmasters_app.event_handlers.tag_automation.automated_sales_order_tagging"
     },
     "Job Card": {
         "on_update": ["cardmasters_app.cardmasters_app.event_handlers.job_card.on_job_card_create_handler"],
@@ -147,12 +150,12 @@ doc_events = {
         "on_cancel": "cardmasters_app.cardmasters_app.api.outstanding_balance.update_so_balance_on_payment"
     },
     "Tag Link": {
-        "after_insert": "cardmasters_app.cardmasters_app.event_handlers.tags_sync.sync_new_sales_order_tags_to_work_orders"
+        "after_insert": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_linked_documents_on_master_document_tags_addition"
     }
 }
 
 override_whitelisted_methods = {
-    "frappe.desk.doctype.tag.tag.remove_tag": "cardmasters_app.cardmasters_app.event_handlers.tags_sync.sync_work_order_tags_on_sales_order_tag_removal"
+    "frappe.desk.doctype.tag.tag.remove_tag": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_linked_documents_on_master_documemt_tags_removal"
 }
 
 # Apps
