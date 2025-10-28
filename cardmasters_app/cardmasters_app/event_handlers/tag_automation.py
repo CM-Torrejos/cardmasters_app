@@ -20,6 +20,13 @@ PROPAGATION_MAP = {
             "link_field": "sales_order",
             "filters": {"docstatus": ["in", [0, 1]]},
         },
+        "Job Card": {
+            "link_field": "custom_sales_order",
+            "filter": {
+                "docstatus": ["in", [0, 1]],
+                "status": ["not in", ["Completed", "Cancelled"]],
+            }
+        }
     },
 }
 
@@ -222,40 +229,55 @@ def automated_sales_order_tagging(doc, method):
     except Exception as e:
         frappe.log_error(title="Automated Tagging Error", message=frappe.get_traceback())
 
-def sync_tags_from_sales_order_on_creation(doc, method):
+def sync_tags_from_master_on_creation(doc, method):
     """
     Hook: after_insert
-    Action: Pulls tags from the linked Sales Order when a new <doctype> is created.
-    'doc' is the new document.
+    Generic tag propagation for any document creation.
+    Automatically determines if this document is a target of propagation_map
+    and copies tags from its linked master document.
     """
-    
-    logger.info(f"HOOK 'after_insert' running for {doc.name}")
 
-    if not doc.sales_order:
-        logger.error(f"No Sales Order linked to {doc.name}. Stopping.")
-        return
+    logger.info(f"HOOK 'after_insert' running for {doc.doctype} '{doc.name}'")
 
     try:
-        # 1. Get the Sales Order document itself
-        # We need the full doc to use the .get_tags() method
-        so = frappe.get_doc("Sales Order", doc.sales_order)
-        
-        # 2. Get the list of tags from the Sales Order
-        so_tags = so.get_tags()
+        # Step 1: Find which master_doctype this document depends on
+        for master_doctype, targets in PROPAGATION_MAP.items():
+            if doc.doctype in targets:
+                config = targets[doc.doctype]
+                link_field = config.get("link_field")
 
-        if not so_tags:
-            logger.info(f"No tags found on Sales Order {so.name}. Nothing to copy.")
-            return
+                if not link_field:
+                    logger.warning(f"No link_field specified for {doc.doctype} under {master_doctype}. Skipping.")
+                    continue
 
-        logger.info(f"Found tags on {so.name}: {so_tags}")
+                # Step 2: Get linked master document name
+                master_name = getattr(doc, link_field, None)
+                if not master_name:
+                    logger.info(f"{doc.doctype} '{doc.name}' has no value for link field '{link_field}'. Skipping.")
+                    continue
 
-        # 3. Add each tag to the new document ('doc')
-        for tag in so_tags:
-            doc.add_tag(tag)
-            logger.info(f"Applied tag '{tag}' to {doc.name}")
-        
-        logger.info(f"SUCCESS: Finished copying tags to {doc.name}")
+                # Step 3: Fetch master document and its tags
+                master_doc = frappe.get_doc(master_doctype, master_name)
+                master_tags = master_doc.get_tags()
 
-    except Exception as e:
-        # Log any other errors
+                if not master_tags:
+                    logger.info(f"No tags found on {master_doctype} '{master_doc.name}'. Nothing to sync.")
+                    continue
+
+                logger.info(
+                    f"Found tags on {master_doctype} '{master_doc.name}': {master_tags}. "
+                    f"Applying to {doc.doctype} '{doc.name}'."
+                )
+
+                # Step 4: Apply all tags to the new document
+                for tag in master_tags:
+                    doc.add_tag(tag)
+                    logger.info(f"Applied tag '{tag}' to {doc.doctype} '{doc.name}'")
+
+                logger.info(f"SUCCESS: Copied tags from {master_doctype} '{master_doc.name}' to {doc.doctype} '{doc.name}'")
+
+        else:
+            logger.debug(f"{doc.doctype} not found in any PROPAGATION_MAP target. Skipping tag sync.")
+
+    except Exception:
         frappe.log_error(title="Automated Tagging Error", message=frappe.get_traceback())
