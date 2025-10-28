@@ -34,6 +34,9 @@ def get_sales_order_outstanding(so_name):
 
     outstanding_balance = so_grand_total - total_paid
 
+    # save new outstanding balance in database 
+    so.db_set('custom_outstanding_balance', outstanding_balance)
+
     # Ensure the balance doesn't go below zero
     return outstanding_balance if outstanding_balance > 0 else 0
 

@@ -81,15 +81,14 @@ doc_events = {
 
         "after_insert" : [
             "cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars",
-            "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_tags_from_sales_order_on_creation"
+            "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_tags_from_master_on_creation"
         ],
 
         "before_save" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars"],
 
         # "before_insert" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_save"],
         "before_submit" : [
-            "cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_submit",
-            "cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_submit_for_tags",
+            "cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_submit"
         ],
         "after_submit" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.after_submit"]
     },
@@ -111,7 +110,7 @@ doc_events = {
             "cardmasters_app.cardmasters_app.event_handlers.artist_card.assign_artist_so"
         ],
         "after_insert": [
-            "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_tags_from_sales_order_on_creation"
+            "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_tags_from_master_on_creation"
         ]
         # "after_save" : [
         #     "cardmasters_app.cardmasters_app.event_handlers.artist_card.assign_artist_so"
@@ -130,7 +129,10 @@ doc_events = {
     "Job Card": {
         "on_update": ["cardmasters_app.cardmasters_app.event_handlers.job_card.on_job_card_create_handler"],
         "before_save": ["cardmasters_app.cardmasters_app.event_handlers.job_card.before_job_card_save"],
-        "before_submit" : ["cardmasters_app.cardmasters_app.event_handlers.job_card.check_all_job_cards_submitted"]
+        "before_submit" : ["cardmasters_app.cardmasters_app.event_handlers.job_card.check_all_job_cards_submitted"],
+        "after_insert" : [
+            "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_tags_from_master_on_creation"
+        ],
     },
     "Delivery Note": {
         "validate": "cardmasters_app.cardmasters_app.event_handlers.batch_handler.set_batch_no_for_delivery_note"
