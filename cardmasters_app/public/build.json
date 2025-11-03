@@ -1,0 +1,4 @@
+{
+    "css/cardmasters_app.css": ["public/css/cardmasters_app.css"],
+    "js/theme_switcher.js": ["public/js/theme_switcher.js"]
+}
