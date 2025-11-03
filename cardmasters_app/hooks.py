@@ -160,6 +160,9 @@ override_whitelisted_methods = {
     "frappe.desk.doctype.tag.tag.remove_tag": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_linked_documents_on_master_documemt_tags_removal"
 }
 
+app_include_css = "/assets/cardmasters_app/css/cardmasters_app.css"
+app_include_js = "/assets/cardmasters_app/js/theme_switcher.js"
+
 # Apps
 # ------------------
 
