@@ -128,6 +128,7 @@ frappe.ui.form.on('Sales Order', {
                     }
                 }
             });
+			doc.save(ignore_permissions=true)
         }
 	},
 	
