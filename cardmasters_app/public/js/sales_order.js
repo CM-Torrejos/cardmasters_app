@@ -114,21 +114,30 @@ frappe.ui.form.on('Sales Order', {
 		}   
 
 		if (frm.doc.docstatus === 1) {
-            // Call our server-side python method
-            frappe.call({
-                method: 'cardmasters_app.cardmasters_app.api.outstanding_balance.get_sales_order_outstanding', // Change to your app's path
-                args: {
-                    so_name: frm.doc.name
-                },
-                callback: function(r) {
-                    if (r.message !== undefined) {
-                        // Set the value in the custom field
-                        frm.set_value('custom_outstanding_balance', r.message);
-                        frm.refresh_field('custom_outstanding_balance');
-                    }
-                }
-            });
-        }
+    		// Call our server-side python method
+			frappe.call({
+				method: 'cardmasters_app.cardmasters_app.api.outstanding_balance.get_sales_order_outstanding',
+				args: {
+					so_name: frm.doc.name
+				},
+				callback: function(r) {
+					if (r.message !== undefined) {
+						
+						// --- THE FIX ---
+
+						// 1. Set the value directly in the form's local data object.
+						//    This does NOT mark the form as "dirty".
+						frm.doc.custom_outstanding_balance = r.message;
+
+						// 2. Tell the UI to re-render just this one field
+						//    to show the new value from frm.doc.
+						frm.refresh_field('custom_outstanding_balance');
+					}
+				}
+			});
+			
+			// REMOVED: doc.save(ignore_permissions=true)
+		}
 	},
 	
 	custom_sales_channel: function(frm){
