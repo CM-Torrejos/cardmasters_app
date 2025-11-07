@@ -157,7 +157,8 @@ doc_events = {
 }
 
 override_whitelisted_methods = {
-    "frappe.desk.doctype.tag.tag.remove_tag": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_linked_documents_on_master_documemt_tags_removal"
+    "frappe.desk.doctype.tag.tag.remove_tag": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_linked_documents_on_master_documemt_tags_removal",
+    "frappe.core.doctype.user.user.switch_theme": "cardmasters_app.cardmasters_app.overrides.user.switch_theme"
 }
 
 app_include_css = "/assets/cardmasters_app/css/cardmasters_app.css"
