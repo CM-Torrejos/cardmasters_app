@@ -1,0 +1,65 @@
+#!/bin/bash
+# -------------------------------------------
+# CardMasters Build Script CLI
+# Usage: cardmasters build <version>
+# Example: cardmasters build 0.0.1
+# -------------------------------------------
+
+set -e  # Stop on error
+
+COMMAND=$1
+VERSION=$2
+
+if [ -z "$COMMAND" ] || [ -z "$VERSION" ]; then
+  echo "❌ Usage: cardmasters build <version>"
+  exit 1
+fi
+
+if [ "$COMMAND" != "build" ]; then
+  echo "❌ Unknown command: $COMMAND"
+  echo "Usage: cardmasters build <version>"
+  exit 1
+fi
+
+echo "🚀 Building CardMasters Docker image (version: $VERSION)..."
+
+# === STEP 1: Create apps.json ===
+sudo tee /opt/apps.json > /dev/null <<EOF
+[
+    {
+        "url": "https://github.com/frappe/erpnext",
+        "branch": "version-15"
+    },
+    {
+        "url": "https://github.com/frappe/hrms",
+        "branch": "version-15"
+    },
+    {
+        "url": "https://github.com/CM-Torrejos/cardmasters_app",
+        "branch": "develop"
+    }
+]
+EOF
+
+# === STEP 2: Encode and verify ===
+export APPS_JSON_BASE64=$(sudo cat /opt/apps.json | base64 -w 0)
+echo "$APPS_JSON_BASE64" | base64 -d | sudo tee test.json > /dev/null
+
+# === STEP 3: Build Docker image ===
+# Go to frappe_docker root (where Containerfile is)
+cd ~/frappe_docker
+
+sudo -E docker buildx build \
+  --no-cache \
+  --build-arg "FRAPPE_PATH=https://github.com/frappe/frappe" \
+  --build-arg "FRAPPE_BRANCH=version-15" \
+  --build-arg "PYTHON_VERSION=3.11.9" \
+  --build-arg "NODE_VERSION=18.20.2" \
+  --build-arg "APPS_JSON_BASE64=$APPS_JSON_BASE64" \
+  --tag "creyescardmasters/cardmastersph-production:$VERSION" \
+  --file images/custom/Containerfile .
+
+# === STEP 4: Push to Docker Hub ===
+sudo docker push "creyescardmasters/cardmastersph-production:$VERSION"
+
+echo "✅ Done! Image built and pushed as creyescardmasters/cardmastersph-production:$VERSION"
