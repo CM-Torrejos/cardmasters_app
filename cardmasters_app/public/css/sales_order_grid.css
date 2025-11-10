@@ -1,0 +1,50 @@
+/* 1. Allows all grid field-columns to grow vertically */
+.form-grid .grid-static-col {
+    height: auto !important;
+    max-height: none !important;
+}
+
+/* 2. Preps all TEXTAREAS for resize */
+.form-grid .editable-row textarea {
+    min-height: 62px !important;
+    height: auto !important;
+    max-height: none !important;
+}
+
+/* 3. Make ALL OTHER INPUTS match */
+.form-grid .editable-row .form-control:not(textarea) {
+    min-height: 62px !important;
+    height: auto !important;
+    max-height: none !important;
+}
+
+/* 4. Make the Row Index and Checkbox columns match */
+.form-grid .editable-row .row-index.sortable-handle.col,
+.form-grid .editable-row .row-check.sortable-handle.col {
+    min-height: 62px !important;
+    height: auto !important;
+    max-height: none !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* 5. Style the "Edit" button's column */
+.form-grid .editable-row .col:last-child {
+    min-height: 62px !important;
+    height: auto !important;
+    max-height: none !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.grid-overflow-no-ellipsis > .static-area.ellipsis {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    max-width: none;
+    vertical-align: middle;
+}

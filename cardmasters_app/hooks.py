@@ -45,7 +45,10 @@ fixtures = [
 ]
 
 doctype_js = {
-    "Sales Order": "public/js/sales_order.js",
+    "Sales Order": [
+        "public/js/sales_order.js",
+        "public/js/sales_order/grid_resize.js"
+        ],
     "Quotation": "public/js/quotation.js",
     "Job Card": "public/js/job_card.js",
     "Petty Cash Count": "public/js/petty_cash_count.js",
@@ -161,7 +164,10 @@ override_whitelisted_methods = {
     "frappe.core.doctype.user.user.switch_theme": "cardmasters_app.cardmasters_app.overrides.user.switch_theme"
 }
 
-app_include_css = "/assets/cardmasters_app/css/cardmasters_app.css"
+app_include_css = [
+    "/assets/cardmasters_app/css/cardmasters_app.css",
+    "/assets/cardmasters_app/css/sales_order_grid.css"
+    ]
 
 # Apps
 # ------------------
