@@ -70,7 +70,7 @@ override_doctype_class = {
 # app_include_css = "/assets/cardmasters_app/css/chart_legend_limit.css"
 app_include_js = [
     "/assets/cardmasters_app/js/address_contact_quick_entry_patch.js",
-    # "/assets/cardmasters_app/js/update_child_items.js"
+    "/assets/cardmasters_app/js/theme_switcher.js",
 ]
 
 doc_events = {
@@ -162,7 +162,6 @@ override_whitelisted_methods = {
 }
 
 app_include_css = "/assets/cardmasters_app/css/cardmasters_app.css"
-app_include_js = "/assets/cardmasters_app/js/theme_switcher.js"
 
 # Apps
 # ------------------
