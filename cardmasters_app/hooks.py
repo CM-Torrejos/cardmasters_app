@@ -83,7 +83,7 @@ doc_events = {
     "Work Order": {
 
         "after_insert" : [
-            "cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars",
+            # "cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars",
             "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_tags_from_master_on_creation"
         ],
 
