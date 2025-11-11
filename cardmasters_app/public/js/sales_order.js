@@ -68,9 +68,9 @@ frappe.ui.form.on('Sales Order', {
         //     frm.remove_custom_button('Update Items');
         // }
 
-		// if (frappe.user.has_role('CM Artist Head') || frappe.user.has_role('System Manager')) {
-        //     set_artist_card_button();
-        // }
+		if (frappe.user.has_role('CM Artist Head') || frappe.user.has_role('System Manager')) {
+            set_artist_card_button();
+        }
 
 		
 		// Optional: re-run it after status changes dynamically
