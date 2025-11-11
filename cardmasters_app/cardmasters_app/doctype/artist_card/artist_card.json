@@ -144,12 +144,9 @@
   },
   {
    "fieldname": "workflow_state",
-   "fieldtype": "Link",
+   "fieldtype": "Select",
    "hidden": 1,
-   "in_list_view": 1,
-   "label": "Workflow State",
-   "no_copy": 1,
-   "options": "Workflow State"
+   "label": "Workflow State"
   },
   {
    "default": "No BOM",
@@ -178,7 +175,7 @@
  "index_web_pages_for_search": 1,
  "links": [],
  "make_attachments_public": 1,
- "modified": "2025-11-11 11:27:44.068979",
+ "modified": "2025-10-24 16:59:01.052029",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Card",
