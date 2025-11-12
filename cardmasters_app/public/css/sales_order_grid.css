@@ -48,3 +48,11 @@
     max-width: none;
     vertical-align: middle;
 }
+
+.row-check.sortable-handle.col {
+    height: auto !important;
+}
+
+.row-index.sortable-handle.col {
+    height: auto !important;
+}
