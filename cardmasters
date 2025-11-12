@@ -1,65 +1,121 @@
 #!/bin/bash
 # -------------------------------------------
 # CardMasters Build Script CLI
-# Usage: cardmasters build <version>
-# Example: cardmasters build 0.0.1
+# Usage: cardmasters <branch> build <version>
+# Example: cardmasters develop build 0.0.1
 # -------------------------------------------
 
 set -e  # Stop on error
 
-COMMAND=$1
-VERSION=$2
+BRANCH=$1
+COMMAND=$2
+VERSION=$3
 
-if [ -z "$COMMAND" ] || [ -z "$VERSION" ]; then
-  echo "❌ Usage: cardmasters build <version>"
+if [ -z "$BRANCH" ] || [ -z "$COMMAND" ] || [ -z "$VERSION" ]; then
+  echo "❌ Usage: cardmasters <branch> build <version>"
   exit 1
 fi
 
 if [ "$COMMAND" != "build" ]; then
   echo "❌ Unknown command: $COMMAND"
-  echo "Usage: cardmasters build <version>"
+  echo "Usage: cardmasters <branch> build <version>"
   exit 1
 fi
 
-echo "🚀 Building CardMasters Docker image (version: $VERSION)..."
+echo "🚀 Building CardMasters Docker image for branch '$BRANCH' (version: $VERSION)..."
 
-# === STEP 1: Create apps.json ===
-sudo tee /opt/apps.json > /dev/null <<EOF
+# === STEP 1: Check for jq ===
+if ! command -v jq &> /dev/null; then
+  echo "🔧 'jq' command-line JSON processor not found. Installing..."
+  sudo apt-get update
+  sudo apt-get install -y jq
+else
+  echo "✅ 'jq' is already installed."
+fi
+
+# === STEP 2: Define File Paths ===
+# Using /tmp for temporary files
+APPS_JSON_FILE="/opt/apps.json"
+LAYERS_FILE="/tmp/app_layers.txt"
+
+# Paths to your docker project
+BASE_DIR="$HOME/frappe_docker"
+TEMPLATE_FILE="$BASE_DIR/development/frappe-bench/apps/cardmasters_app/images/Containerfile.template"
+CONTAINERFILE="$BASE_DIR/development/frappe-bench/apps/cardmasters_app/images/Containerfile"
+
+# Check if template file exists
+if [ ! -f "$TEMPLATE_FILE" ]; then
+  echo "❌ Error: Template file not found at $TEMPLATE_FILE"
+  echo "Please rename your 'Containerfile' to 'Containerfile.template' in that location."
+  exit 1
+fi
+
+# === STEP 3: Cleanup Trap ===
+# This ensures our temporary files are deleted when the script exits
+trap 'rm -f "$LAYERS_FILE" "$CONTAINERFILE"' EXIT HUP INT QUIT TERM
+
+# === STEP 4: Create apps.json ===
+sudo tee "$APPS_JSON_FILE" > /dev/null <<EOF
 [
-    {
-        "url": "https://github.com/frappe/erpnext",
-        "branch": "version-15"
-    },
-    {
-        "url": "https://github.com/frappe/hrms",
-        "branch": "version-15"
-    },
-    {
-        "url": "https://github.com/CM-Torrejos/cardmasters_app",
-        "branch": "develop"
-    }
+  {
+    "url": "https://github.com/frappe/erpnext",
+    "branch": "version-15"
+  },
+  {
+    "url": "https://github.com/frappe/hrms",
+    "branch": "version-15"
+  },
+  {
+    "url": "https://github.com/CM-Torrejos/cardmasters_app",
+    "branch": "$BRANCH"
+  }
 ]
 EOF
 
-# === STEP 2: Encode and verify ===
-export APPS_JSON_BASE64=$(sudo cat /opt/apps.json | base64 -w 0)
-echo "$APPS_JSON_BASE64" | base64 -d | sudo tee test.json > /dev/null
+# === STEP 5: Generate App Layers ===
+echo "⚙️ Generating app layers from $APPS_JSON_FILE..."
+rm -f "$LAYERS_FILE" # Ensure it's empty before starting
 
-# === STEP 3: Build Docker image ===
+# Read the json file and generate RUN commands
+jq -c '.[]' "$APPS_JSON_FILE" | while IFS= read -r app_json; do
+  url=$(echo "$app_json" | jq -r '.url')
+  branch=$(echo "$app_json" | jq -r '.branch')
+
+  # Get app name from URL (e.g., "erpnext" from "https://github.com/frappe/erpnext")
+  name=$(basename "$url")
+
+  # Write the Dockerfile RUN command to our layers file
+  echo "RUN bench get-app --branch ${branch} ${name} ${url}" >> "$LAYERS_FILE"
+done
+
+echo "Generated app layers:"
+cat "$LAYERS_FILE"
+
+# === STEP 6: Generate Final Containerfile ===
+echo "⚙️ Creating final Containerfile at $CONTAINERFILE..."
+# This sed command reads the $LAYERS_FILE and inserts its content
+# where the placeholder is, then deletes the placeholder line.
+sed -e "/# __APP_LAYERS_HERE__/r $LAYERS_FILE" \
+  -e "/# __APP_LAYERS_HERE__/d" \
+  "$TEMPLATE_FILE" > "$CONTAINERFILE"
+
+# === STEP 7: Build Docker image ===
+echo "🐳 Building Docker image..."
 # Go to frappe_docker root (where Containerfile is)
-cd ~/frappe_docker
+cd "$BASE_DIR"
 
+# Note: Removed --no-cache to use layer caching.
+# Removed APPS_JSON_BASE64 build-arg.
+# Using --file to point to the new $CONTAINERFILE.
 sudo -E docker buildx build \
-  --no-cache \
   --build-arg "FRAPPE_PATH=https://github.com/frappe/frappe" \
   --build-arg "FRAPPE_BRANCH=version-15" \
   --build-arg "PYTHON_VERSION=3.11.9" \
   --build-arg "NODE_VERSION=18.20.2" \
-  --build-arg "APPS_JSON_BASE64=$APPS_JSON_BASE64" \
   --tag "creyescardmasters/cardmastersph-production:$VERSION" \
-  --file images/custom/Containerfile .
+  --file "$CONTAINERFILE" .
 
-# === STEP 4: Push to Docker Hub ===
+# === STEP 8: Push to Docker Hub ===
 sudo docker push "creyescardmasters/cardmastersph-production:$VERSION"
 
 echo "✅ Done! Image built and pushed as creyescardmasters/cardmastersph-production:$VERSION"
