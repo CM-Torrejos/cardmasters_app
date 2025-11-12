@@ -45,7 +45,10 @@ fixtures = [
 ]
 
 doctype_js = {
-    "Sales Order": "public/js/sales_order.js",
+    "Sales Order": [
+        "public/js/sales_order.js",
+        "public/js/sales_order/grid_resize.js"
+        ],
     "Quotation": "public/js/quotation.js",
     "Job Card": "public/js/job_card.js",
     "Petty Cash Count": "public/js/petty_cash_count.js",
@@ -70,7 +73,7 @@ override_doctype_class = {
 # app_include_css = "/assets/cardmasters_app/css/chart_legend_limit.css"
 app_include_js = [
     "/assets/cardmasters_app/js/address_contact_quick_entry_patch.js",
-    # "/assets/cardmasters_app/js/update_child_items.js"
+    "/assets/cardmasters_app/js/theme_switcher.js",
 ]
 
 doc_events = {
@@ -157,11 +160,14 @@ doc_events = {
 }
 
 override_whitelisted_methods = {
-    "frappe.desk.doctype.tag.tag.remove_tag": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_linked_documents_on_master_documemt_tags_removal"
+    "frappe.desk.doctype.tag.tag.remove_tag": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_linked_documents_on_master_documemt_tags_removal",
+    "frappe.core.doctype.user.user.switch_theme": "cardmasters_app.cardmasters_app.overrides.user.switch_theme"
 }
 
-app_include_css = "/assets/cardmasters_app/css/cardmasters_app.css"
-app_include_js = "/assets/cardmasters_app/js/theme_switcher.js"
+app_include_css = [
+    "/assets/cardmasters_app/css/cardmasters_app.css",
+    "/assets/cardmasters_app/css/sales_order_grid.css"
+    ]
 
 # Apps
 # ------------------

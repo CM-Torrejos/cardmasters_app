@@ -70,8 +70,9 @@ frappe.ui.ThemeSwitcher = class ThemeSwitcher {
 					info: __("Uses system's theme to switch between light and dark mode"),
 				},
                 {
-					name: "new-dark",
+					name: "newdark",
 					label: __("NEW Dark Mode"),
+					info: __("Custom Dark Theme"),
 				},
 			];
 
@@ -131,6 +132,7 @@ frappe.ui.ThemeSwitcher = class ThemeSwitcher {
 	toggle_theme(theme) {
 		this.current_theme = theme.toLowerCase();
 		document.documentElement.setAttribute("data-theme-mode", this.current_theme);
+		frappe.ui.set_theme(this.current_theme);
 		frappe.show_alert(__("Theme Changed"), 3);
 
 		frappe.xcall("frappe.core.doctype.user.user.switch_theme", {
