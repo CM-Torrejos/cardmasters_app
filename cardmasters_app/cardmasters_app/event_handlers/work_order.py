@@ -36,8 +36,10 @@ def inherit_remarks_particulars(doc, method=None):
         doc.custom_artist_remarks = ac.get("remarks")
         doc.custom_artist_assigned = ac.get("artist")
     else:
-        frappe.msgprint("This Work Order has no Artist Card. Be warned!",
+        if not getattr(doc, "_artist_msg_shown", False):
+            frappe.msgprint("This Work Order has no Artist Card. Be warned!",
                         alert=True, indicator="orange")
+            doc._artist_msg_shown = True
 
     # === Restore the per-item inheritance (safe)
     so_item_row = None
