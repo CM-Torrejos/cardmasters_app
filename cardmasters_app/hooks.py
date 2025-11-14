@@ -81,19 +81,16 @@ doc_events = {
     	"after_submit": "cardmasters_app.cardmasters_app.event_handlers.petty_cash_voucher.update_pcr_onpcv"
     },
     "Work Order": {
-
         "after_insert" : [
-            # "cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars",
+            "cardmasters_app.cardmasters_app.event_handlers.work_order.pull_sales_order_details",
             "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_tags_from_master_on_creation"
         ],
-
-        "before_save" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.inherit_remarks_particulars"],
-
-        # "before_insert" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_save"],
         "before_submit" : [
             "cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_submit"
         ],
-        "after_submit" : ["cardmasters_app.cardmasters_app.event_handlers.work_order.after_submit"]
+        "after_submit" : [
+            "cardmasters_app.cardmasters_app.event_handlers.work_order.after_submit"
+        ]
     },
     "Stock Entry": {
         "after_insert": [

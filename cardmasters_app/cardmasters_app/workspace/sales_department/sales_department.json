@@ -210,7 +210,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-11-10 08:29:55.593880",
+ "modified": "2025-11-13 14:18:24.342047",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Sales Department",
@@ -224,7 +224,7 @@
    "role": "CM Office Sales"
   }
  ],
- "sequence_id": 1.0,
+ "sequence_id": 2.0,
  "shortcuts": [
   {
    "color": "Cyan",
