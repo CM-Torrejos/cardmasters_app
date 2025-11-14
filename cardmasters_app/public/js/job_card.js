@@ -1,7 +1,6 @@
 // Validate finished QTY before submission
 frappe.ui.form.on("Job Card", {
 	
-	
 	validate: function(frm) {
 		if (frm.doc.status === "Completed") {
 			if (frm.doc.total_completed_qty !== frm.doc.total_qty) {
@@ -11,6 +10,7 @@ frappe.ui.form.on("Job Card", {
 	},
 	
 	refresh: function(frm) {
+
 		if (frm.doc.custom_sales_order) {
 			frappe.call({
 				method: 'cardmasters_app.cardmasters_app.event_handlers.get_sales_order.get_sales_order_html',
@@ -109,6 +109,9 @@ frappe.ui.form.on("Job Card", {
 			source_name: frm.doc.name
 		});
 		}, __('Create'));
+
 	}
+
+	
 });
 
