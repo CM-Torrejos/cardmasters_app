@@ -105,10 +105,17 @@ def pull_sales_order_details(doc, method=None):
 			doc.custom_artist_remarks = ac_remarks
 		
 	else:
-		frappe.msgprint("This Work Order has no Artist Card. Be warned!",
-						alert=True, indicator="orange")
-
-
+		frappe.publish_realtime(
+			"msgprint",
+			{
+				"message": "This Work Order has no Artist Card. Be warned!",
+				"title": "Warning",
+				"indicator": "orange",
+				"alert": True
+			},
+			user=frappe.session.user,
+			after_commit=True
+		)
 
 def before_work_order_submit(doc, method):
 	"""On WO submit, advance the SO workflow from 'Artist' → 'Begin Production' when linked."""
