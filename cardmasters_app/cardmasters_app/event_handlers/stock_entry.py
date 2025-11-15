@@ -2,7 +2,6 @@
 import frappe
 from frappe import _
 
-
 def inherit_item_details_on_insert(doc, method):
     # Only for Transfer for Manufacture with batching
     if doc.purpose != "Material Transfer for Manufacture" or not doc.custom_batched:
@@ -21,3 +20,75 @@ def inherit_item_details_on_insert(doc, method):
         detail = details_map.get(d.item_code)
         if detail:
             d.custom_item_details = detail
+
+def get_wip_stock_entry_type():  
+    try:
+        wip_type_name = frappe.db.get_value(
+            "Stock Entry Type", 
+            {"custom_is_wip": 1}, 
+            "name"
+        )
+
+        if wip_type_name:
+            return wip_type_name
+        
+        else:
+            frappe.log_error("No Stock Entry Type found with 'custom_is_wip' checked.")
+            return None
+
+    except Exception as e:
+        frappe.log_error(f"Error querying Stock Entry Type: {e}")
+        return None
+
+def get_wip_warehouse_name():
+    try:
+        wip_warehouse = frappe.db.get_value(
+            "Warehouse", 
+            {"custom_is_wip": 1}, 
+            "name"
+        )
+
+        if wip_warehouse:
+            return wip_warehouse
+        
+        else:
+            frappe.log_error("No Warehouse found with 'custom_is_wip' checked.")
+            return None
+            
+    except Exception as e:
+        frappe.log_error(f"Error querying Warehouse DocType: {e}")
+        return None
+
+def validate_manufacture_source_warehouse(doc, method):
+    """
+	Shows a warning if any item's source warehouse
+	is not 'Work In Progress - CM CDO'.
+	"""
+    
+    manufacture = get_wip_stock_entry_type()
+    warehouse = get_wip_warehouse_name()
+
+    frappe.log_error("manufacture", manufacture)
+    frappe.log_error("warehouse", warehouse)
+
+    # Only run this check if the Stock Entry type is "Manufacture"
+    if doc.stock_entry_type != manufacture:
+        return
+
+    # Loop through each item in the 'items' child table
+    for item in doc.items:
+        
+        # Check if the item's source warehouse (s_warehouse) is not the required one
+        if item.s_warehouse != warehouse:
+            if not item.s_warehouse:
+                continue
+
+            # Show the warning message
+            frappe.msgprint(
+                "The items' source warehouses are not Work In Progress (WIP) locations.",
+                title="Warehouse Warning",
+                indicator="orange"
+            )
+            
+            # We found one, no need to check the rest or show more messages
+            break

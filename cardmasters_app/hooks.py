@@ -93,6 +93,9 @@ doc_events = {
         ]
     },
     "Stock Entry": {
+        "before_insert": [
+            "cardmasters_app.cardmasters_app.event_handlers.stock_entry.validate_manufacture_source_warehouse"
+        ],
         "after_insert": [
             "cardmasters_app.cardmasters_app.event_handlers.batch_handler.set_batch_no_for_fg_on_manufacture_entry"
         ],
