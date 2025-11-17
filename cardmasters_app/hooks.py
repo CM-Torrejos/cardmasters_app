@@ -127,7 +127,7 @@ doc_events = {
         'on_update_after_submit': "cardmasters_app.cardmasters_app.event_handlers.tag_automation.automated_sales_order_tagging"
     },
     "Job Card": {
-        "on_update": ["cardmasters_app.cardmasters_app.event_handlers.job_card.on_job_card_create_handler"],
+        # "on_update": ["cardmasters_app.cardmasters_app.event_handlers.job_card.on_job_card_create_handler"],
         "before_save": ["cardmasters_app.cardmasters_app.event_handlers.job_card.before_job_card_save"],
         "before_submit" : ["cardmasters_app.cardmasters_app.event_handlers.job_card.check_all_job_cards_submitted"],
         "after_insert" : [
