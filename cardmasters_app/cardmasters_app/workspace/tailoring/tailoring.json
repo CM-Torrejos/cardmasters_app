@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-10-24 10:25:00.510892",
+ "modified": "2025-11-13 14:22:35.563170",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Tailoring",
@@ -161,8 +161,12 @@
  "parent_page": "Production Department",
  "public": 1,
  "quick_lists": [],
- "roles": [],
- "sequence_id": 9.0,
+ "roles": [
+  {
+   "role": "CM Tailoring Workstation Leader"
+  }
+ ],
+ "sequence_id": 10.0,
  "shortcuts": [
   {
    "color": "Grey",
