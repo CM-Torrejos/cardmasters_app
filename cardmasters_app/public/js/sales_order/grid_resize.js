@@ -14,13 +14,13 @@ frappe.ui.form.on('Sales Order', {
 
         // --- Helper function for placeholder centering ---
         const centerEmptyPlaceholders = ($row, newHeight) => {
-            const placeholderLineHeight = 16; // avg px height of one line of text
+            const placeholderLineHeight = 16; 
             let newPaddingTop = (parseInt(newHeight, 10) - placeholderLineHeight) / 2;
             if (newPaddingTop < 0) newPaddingTop = 0;
 
             $row.find('textarea').each(function() {
                 let $el = $(this);
-                // $el.css('text-align', 'center'); // You had this commented, so I'll keep it commented.
+                // $el.css('text-align', 'center'); 
 
                 if ($el.val() === '') {
                     $el.css('padding-top', newPaddingTop + 'px');
@@ -31,71 +31,89 @@ frappe.ui.form.on('Sales Order', {
             });
         };
         
-        // --- [NEW FUNCTION] Finds the tallest field ---
+        // --- Finds the tallest field ---
         const getTallestHeight = ($row, fieldnames) => {
             let tallest = 0;
-
             fieldnames.forEach(fieldname => {
                 let $field = $row.find(`textarea[data-fieldname="${fieldname}"]`);
                 if ($field.length) {
-                    // Temporarily set height to auto to measure
+                    // This 'auto' reset is key to measuring
                     $field.css('height', 'auto'); 
-                    
                     let scrollHeight = $field.get(0).scrollHeight;
                     if (scrollHeight > tallest) {
                         tallest = scrollHeight;
                     }
                 }
             });
+            let minHeight = 62; // Your CSS minimum
+            if (tallest < minHeight) tallest = minHeight;
+            
             return (tallest + 2) + 'px'; // Return the max height with buffer
         };
+        
+        // --- MASTER RESIZE FUNCTION (No changes) ---
+        const resizeRow = ($dataRow) => {
+            // Check if the row still exists in the DOM
+            if (!$dataRow || !$dataRow.length) return; 
 
-        // --- Dynamic Selector Builder ---
+            let newHeight = getTallestHeight($dataRow, trigger_fields);
+            
+            $dataRow.find('.form-control').each(function() {
+                setImportantHeight(this, newHeight);
+            });
+            
+            $dataRow.find('.row-index.sortable-handle.col').each(function() {
+                setImportantHeight(this, newHeight);
+            });
+            $dataRow.find('.row-check.sortable-handle.col').each(function() {
+                setImportantHeight(this, newHeight);
+            });
+
+            $dataRow.find('.col:last-child').each(function() {
+                setImportantHeight(this, newHeight);
+            });
+            
+            centerEmptyPlaceholders($dataRow, newHeight);
+
+            let $gridRow = $dataRow.closest('.grid-row');
+            if ($gridRow.length) {
+                $gridRow.css('min-height', newHeight);
+            }
+        };
+
+        // --- DYNAMIC SELECTOR AND GRID WRAPPER ---
         const trigger_selector = trigger_fields
             .map(fieldname => `textarea[data-fieldname="${fieldname}"]`)
             .join(', ');
-
-        // Find the grid's main container
+            
         let grid_wrapper = frm.fields_dict.items.grid.wrapper;
 
-        // --- Updated Listener ---
+        // --- LISTENER 1 (For Typing) ---
+        // This is fast and has no delay.
         $(grid_wrapper).on(
             'input', 
             trigger_selector, 
             function() {
-                // 'this' is the element we're typing in
-                let trigger_element = this;
+                let $dataRow = $(this).closest('.data-row');
+                resizeRow($dataRow); // No timeout needed, fires as you type
+            }
+        );
+
+        // --- [THE FIX] LISTENER 2 (For Clicking) ---
+        // This listens for *any* field getting focus and
+        // uses a 50ms delay to wait for Frappe to render.
+        $(grid_wrapper).on(
+            'focusin',
+            '.form-control', // This fires on the "first click"
+            function() {
+                let $dataRow = $(this).closest('.data-row');
                 
-                setTimeout(() => {
-                    // Find the parent row *first*
-                    let $row = $(trigger_element).closest('.data-row');
-
-                    // --- [FIXED LOGIC] ---
-                    // 1. Find the tallest height needed for ANY trigger field in this row
-                    let newHeight = getTallestHeight($row, trigger_fields);
-                    
-                    // 2. Resize all form controls
-                    $row.find('.form-control').each(function() {
-                        setImportantHeight(this, newHeight);
-                    });
-                    
-                    // 3. Resize the Row-Index and Row-Check columns
-                    $row.find('.row-index.sortable-handle.col').each(function() {
-                        setImportantHeight(this, newHeight);
-                    });
-                    $row.find('.row-check.sortable-handle.col').each(function() {
-                        setImportantHeight(this, newHeight);
-                    });
-
-                    // 4. Resize the "Edit" button's column
-                    $row.find('.col:last-child').each(function() {
-                        setImportantHeight(this, newHeight);
-                    });
-                    
-                    // 5. Center placeholders in empty fields
-                    centerEmptyPlaceholders($row, newHeight);
-
-                }, 0); // Only one timeout needed now
+                // Only run this if it's an editable row
+                if ($dataRow.hasClass('editable-row')) {
+                    // Use a 50ms delay to wait for all fields
+                    // to be rendered in the DOM before we measure them.
+                    setTimeout(() => resizeRow($dataRow), 50);
+                }
             }
         );
     }
