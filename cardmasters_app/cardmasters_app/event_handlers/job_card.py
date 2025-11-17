@@ -15,22 +15,30 @@ def assign_artist_jc(doc, method):
 	doc.save() 
 
 def before_job_card_save(doc, method):
-	
-	if doc.work_order:
-		wo = frappe.get_doc("Work Order", doc.work_order)
-		# directly fetch the sales_order field from the Work Order doctype
-		doc.custom_item = wo.get("item_name")
-		doc.custom_item_specifics = wo.get("custom_item_specifics")
-		doc.custom_particulars = wo.get("custom_particulars")
-		doc.custom_sales_order = wo.get("sales_order")
-		doc.custom_deadline = wo.get("custom_deadline")
-		doc.custom_artist_card = wo.get("custom_artist_card")
-		doc.custom_artist_assigned = wo.get("custom_artist_assigned")
-		doc.custom_remarks_from_sales = wo.get("custom_remarks_production")
 
-	if doc.custom_sales_order:
-		so = frappe.get_doc("Sales Order", doc.custom_sales_order)
-		doc.custom_customer = so.get("customer")
+	if not doc.work_order:
+		return
+
+	is_new = doc.is_new()
+	if not is_new:
+		return
+
+	wo = frappe.get_doc("Work Order", doc.work_order)
+
+	doc.custom_sales_order = wo.get("sales_order")
+	doc.custom_customer = wo.get("custom_customer")
+	doc.custom_artist_card = wo.get("custom_artist_card")
+	doc.custom_artist_assigned = wo.get("custom_artist_assigned")
+	doc.custom_deadline = wo.get("custom_deadline")
+	doc.custom_item = wo.get("item_name")
+	doc.custom_item_specifics = wo.get("custom_item_specifics")
+	doc.custom_particulars = wo.get("custom_particulars")
+	doc.custom_remarks = wo.get("custom_remarks")
+	doc.custom_remarks_production = wo.get("custom_remarks_production")
+	doc.custom_artist_card = wo.get("custom_artist_card")
+	doc.custom_artist_assigned = wo.get("custom_artist_assigned")
+	doc.custom_artist_bom = wo.get("custom_artist_bom")
+	doc.custom_artist_remarks = wo.get("custom_artist_remarks")
 
 def check_all_job_cards_submitted(doc, method)	:
 

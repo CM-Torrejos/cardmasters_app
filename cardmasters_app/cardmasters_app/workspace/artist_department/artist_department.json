@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-10-24 10:24:06.770600",
+ "modified": "2025-11-13 14:18:24.460889",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Department",
@@ -161,8 +161,15 @@
  "parent_page": "",
  "public": 1,
  "quick_lists": [],
- "roles": [],
- "sequence_id": 2.0,
+ "roles": [
+  {
+   "role": "CM Artist"
+  },
+  {
+   "role": "CM Artist Assigner"
+  }
+ ],
+ "sequence_id": 3.0,
  "shortcuts": [
   {
    "color": "Grey",

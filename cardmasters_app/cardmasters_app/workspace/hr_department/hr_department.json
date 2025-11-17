@@ -171,7 +171,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-09-24 09:42:10.546290",
+ "modified": "2025-11-13 14:19:25.133184",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "HR Department",
@@ -180,8 +180,12 @@
  "parent_page": "",
  "public": 1,
  "quick_lists": [],
- "roles": [],
- "sequence_id": 19.0,
+ "roles": [
+  {
+   "role": "CM HR Officer"
+  }
+ ],
+ "sequence_id": 15.0,
  "shortcuts": [
   {
    "color": "Grey",
