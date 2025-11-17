@@ -623,13 +623,13 @@
   "doctype": "Workflow",
   "document_type": "Work Order",
   "is_active": 1,
-  "modified": "2025-10-24 10:29:45.578053",
+  "modified": "2025-11-14 16:28:36.469448",
   "name": "Work Order Flow",
   "override_status": 1,
   "send_email_alert": 0,
   "states": [
    {
-    "allow_edit": "All",
+    "allow_edit": "CM Production Head",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -729,7 +729,7 @@
    {
     "action": "Submit",
     "allow_self_approval": 1,
-    "allowed": "All",
+    "allowed": "CM Production Head",
     "condition": null,
     "next_state": "Production",
     "parent": "Work Order Flow",

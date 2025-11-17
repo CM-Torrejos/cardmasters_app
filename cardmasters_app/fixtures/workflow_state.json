@@ -75,28 +75,10 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-06-20 10:28:19.225345",
-  "name": "Delivery Ready",
-  "style": "",
-  "workflow_state_name": "Delivery Ready"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-08-04 14:54:40.231869",
   "name": "No Artist - Pending Production",
   "style": "Danger",
   "workflow_state_name": "No Artist - Pending Production"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-06-20 13:59:18.266820",
-  "name": "Claiming: Pending BOM",
-  "style": "",
-  "workflow_state_name": "Claiming: Pending BOM"
  },
  {
   "docstatus": 0,
@@ -165,15 +147,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-06-20 13:58:58.310609",
-  "name": "Manufactured : Pending Count",
-  "style": "",
-  "workflow_state_name": "Manufactured : Pending Count"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-05-17 04:59:56.120535",
   "name": "Pending Approval",
   "style": "Info",
@@ -201,6 +174,24 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
+  "modified": "2025-06-20 10:28:19.225345",
+  "name": "Delivery Ready",
+  "style": "",
+  "workflow_state_name": "Delivery Ready"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-20 13:59:18.266820",
+  "name": "Claiming: Pending BOM",
+  "style": "",
+  "workflow_state_name": "Claiming: Pending BOM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
   "modified": "2025-05-17 05:00:04.727905",
   "name": "Layouting",
   "style": "Warning",
@@ -210,10 +201,10 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-05-19 04:21:43.010823",
-  "name": "Artist",
-  "style": "Info",
-  "workflow_state_name": "Artist"
+  "modified": "2025-06-20 13:58:58.310609",
+  "name": "Manufactured : Pending Count",
+  "style": "",
+  "workflow_state_name": "Manufactured : Pending Count"
  },
  {
   "docstatus": 0,
@@ -237,10 +228,10 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-05-19 04:23:13.963387",
-  "name": "Production",
-  "style": "Warning",
-  "workflow_state_name": "Production"
+  "modified": "2025-05-19 04:21:43.010823",
+  "name": "Artist",
+  "style": "Info",
+  "workflow_state_name": "Artist"
  },
  {
   "docstatus": 0,
@@ -250,6 +241,15 @@
   "name": "Pending",
   "style": "",
   "workflow_state_name": "Pending"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-19 04:23:13.963387",
+  "name": "Production",
+  "style": "Warning",
+  "workflow_state_name": "Production"
  },
  {
   "docstatus": 0,

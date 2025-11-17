@@ -79,13 +79,6 @@
  {
   "docstatus": 0,
   "doctype": "Workflow Action Master",
-  "modified": "2025-07-18 10:19:34.882682",
-  "name": "Stop",
-  "workflow_action_name": "Stop"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow Action Master",
   "modified": "2025-06-20 14:01:31.465891",
   "name": "Count Finished",
   "workflow_action_name": "Count Finished"
@@ -173,5 +166,12 @@
   "modified": "2025-06-14 16:14:27.814532",
   "name": "Submit",
   "workflow_action_name": "Submit"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-07-18 10:19:34.882682",
+  "name": "Stop",
+  "workflow_action_name": "Stop"
  }
 ]
