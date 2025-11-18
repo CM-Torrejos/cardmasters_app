@@ -1,0 +1,6 @@
+{
+    "sonarlint.connectedMode.project": {
+        "connectionId": "cm-reyes",
+        "projectKey": "CM-Reyes_cardmasters_app"
+    }
+}
