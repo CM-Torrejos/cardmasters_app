@@ -111,15 +111,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-08-04 14:54:54.371813",
-  "name": "Production Concluded",
-  "style": "Success",
-  "workflow_state_name": "Production Concluded"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-07-05 10:13:38.883581",
   "name": "For Approval",
   "style": "Warning",
@@ -192,28 +183,10 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-05-17 05:00:04.727905",
-  "name": "Layouting",
-  "style": "Warning",
-  "workflow_state_name": "Layouting"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-06-20 13:58:58.310609",
   "name": "Manufactured : Pending Count",
   "style": "",
   "workflow_state_name": "Manufactured : Pending Count"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-04-28 05:15:12.134310",
-  "name": "Draft",
-  "style": "",
-  "workflow_state_name": "Draft"
  },
  {
   "docstatus": 0,
@@ -236,6 +209,33 @@
  {
   "docstatus": 0,
   "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-20 10:26:34.368986",
+  "name": "BOM WIP",
+  "style": "",
+  "workflow_state_name": "BOM WIP"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-08-04 14:54:54.371813",
+  "name": "Production Concluded",
+  "style": "Success",
+  "workflow_state_name": "Production Concluded"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-28 05:15:12.134310",
+  "name": "Draft",
+  "style": "",
+  "workflow_state_name": "Draft"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
   "icon": "question-sign",
   "modified": "2025-08-04 14:53:46.132163",
   "name": "Pending",
@@ -246,18 +246,18 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-05-19 04:23:13.963387",
-  "name": "Production",
+  "modified": "2025-05-17 05:00:04.727905",
+  "name": "Layouting",
   "style": "Warning",
-  "workflow_state_name": "Production"
+  "workflow_state_name": "Layouting"
  },
  {
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-06-20 10:26:34.368986",
-  "name": "BOM WIP",
-  "style": "",
-  "workflow_state_name": "BOM WIP"
+  "modified": "2025-05-19 04:23:13.963387",
+  "name": "Production",
+  "style": "Warning",
+  "workflow_state_name": "Production"
  }
 ]
