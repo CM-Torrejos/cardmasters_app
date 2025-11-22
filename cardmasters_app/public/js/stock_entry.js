@@ -22,7 +22,29 @@ frappe.ui.form.on('Stock Entry', {
     });
   },
   
+  refresh: function(frm) {
+        // We check if the doc is new so we don't overwrite existing saved data unintentionally
+        if (frm.is_new()) {
+            toggle_batched_field(frm);
+        }
+  },
+
+  stock_entry_type: function(frm) {
+        toggle_batched_field(frm);
+    }
+  
 });
+
+
+function toggle_batched_field(frm) {
+    if (frm.doc.stock_entry_type === 'Manufacture') {
+        frm.set_value('custom_batched', 1);
+    } else {
+        // Optional: Uncheck if it's not Manufacture. 
+        // Remove the 'else' block if you want to allow it to remain checked manually.
+        frm.set_value('custom_batched', 0);
+    }
+}
 
 
 
