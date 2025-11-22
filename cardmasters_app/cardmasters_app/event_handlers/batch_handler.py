@@ -96,58 +96,83 @@ def set_batch_no_for_fg_on_manufacture_entry(doc, method):
 
 # --- FIXED: Delivery Note now follows the same convention and auto-fills if found ---
 def set_batch_no_for_delivery_note(doc, method):
-	"""
-	On submit/validate, assign batch numbers using the same convention used in PR/Manufacture:
-	    <Sales Order> - <Item Code>:<Item Specifics>
-	We DO NOT create new batches here; we only assign existing ones.
-	"""
-	missing_or_unmatched = []
+    """
+    Force strict Sales Order batch mapping. 
+    Overrides ERPNext FIFO if it picked a batch from a different Sales Order.
+    """
+    missing_or_unmatched = []
 
-	for d in doc.items:
-		item_code = d.get("item_code")
-		if not item_code:
-			continue
+    for d in doc.items:
+        item_code = d.get("item_code")
+        if not item_code:
+            continue
 
-		# Determine if this item requires a batch
-		has_batch_no = d.get("has_batch_no")
-		if has_batch_no is None:
-			has_batch_no = frappe.get_cached_value("Item", item_code, "has_batch_no")
+        # 1. Check if Item is batched
+        has_batch_no = d.get("has_batch_no")
+        if has_batch_no is None:
+            has_batch_no = frappe.get_cached_value("Item", item_code, "has_batch_no")
+        
+        if not has_batch_no:
+            continue
 
-		# Already assigned? leave it (don’t override manual picks)
-		if not has_batch_no or d.get("batch_no"):
-			continue
+        # 2. Get the STRICT Sales Order (No fallbacks)
+        so_name = d.get("against_sales_order")
+        
+        # If this line has no SO, we cannot enforce SO-specific logic. 
+        # We leave whatever ERPNext did (or didn't do) alone.
+        if not so_name:
+            continue
 
-		# Pull Sales Order & Specifics from the DN row, with sensible fallbacks
-		# Standard field on DN Item is 'against_sales_order'; some customizations use 'sales_order'
-		so_name = d.get("against_sales_order") or d.get("sales_order")
+        # --- CRITICAL FIX START ---
+        # 3. Check if a batch is already assigned
+        current_batch = d.get("batch_no")
+        
+        if current_batch:
+            # If a batch is assigned, check if it belongs to THIS Sales Order.
+            # We check if the Batch Name starts with the SO Name.
+            # NOTE: This assumes your batch naming convention always starts with the SO Name.
+            if not current_batch.startswith(so_name):
+                frappe.msgprint(
+                    f"Row {d.idx}: Overriding standard FIFO batch {current_batch} "
+                    f"because it does not match Sales Order {so_name}.",
+                    alert=True
+                )
+                d.batch_no = None # Clear it so we can find the right one below
+            else:
+                # The assigned batch is correct (matches this SO), so we skip.
+                continue
+        # --- CRITICAL FIX END ---
 
-		# Prefer specifics from the DN row, else from the linked SO Item, else "NA"
-		item_specifics = (d.get("custom_item_specifics") or "").strip()
-		if not item_specifics:
-			so_detail = d.get("so_detail")
-			if so_detail:
-				item_specifics = (frappe.db.get_value("Sales Order Item", so_detail, "custom_item_specifics") or "").strip()
-		if not item_specifics:
-			item_specifics = "NA"
+        # 4. Fetch Specifics
+        item_specifics = (d.get("custom_item_specifics") or "").strip()
+        if not item_specifics:
+            so_detail = d.get("so_detail")
+            if so_detail:
+                item_specifics = (frappe.db.get_value("Sales Order Item", so_detail, "custom_item_specifics") or "").strip()
+        
+        if not item_specifics:
+            item_specifics = "NA"
 
-		# Build the expected batch name and try to find it
-		expected_name = build_batch_name(so_name, item_code, item_specifics)
-		found_batch = _find_existing_batch_by_convention(expected_name)
+        # 5. Build Expected Name & Search
+        expected_name_full = build_batch_name(so_name, item_code, item_specifics)
+        found_batch = _find_existing_batch_by_convention(expected_name_full)
 
-		if found_batch:
-			d.batch_no = found_batch
-			# persist immediately so later hooks/validations see it
-			d.db_set("batch_no", found_batch)
-		else:
-			missing_or_unmatched.append(
-				f"Row {d.idx}: {item_code} — Qty {d.qty} {d.uom or ''} "
-				f"(expected batch: <b>{frappe.utils.escape_html(expected_name[:100])}</b>)"
-			)
+        if found_batch:
+            d.batch_no = found_batch
+            d.db_set("batch_no", found_batch)
+        else:
+            missing_or_unmatched.append(
+                f"Row {d.idx}: {item_code}<br>"
+                f"Target SO: <b>{so_name}</b><br>"
+                f"Expected Batch: {frappe.utils.escape_html(expected_name_full[:100])}"
+            )
 
-	if missing_or_unmatched:
-		message = (
-			"The following line items require a batch number but the expected batch "
-			"was not found. Please create/assign the correct batch first, using the same convention:<br><br>"
-			+ "<br>".join(missing_or_unmatched)
-		)
-		frappe.msgprint(msg=message, title="Missing or Unmatched Batch Numbers", indicator="orange")
+    if missing_or_unmatched:
+        # Optional: Only show this if you want to BLOCK submission when batch is missing.
+        # If you want to allow manual selection of other batches, remove the msgprint.
+        message = (
+            "<b>Batch Mismatch / Not Found:</b><br>"
+            "The system attempted to find a batch matching the Sales Order but failed.<br><br>"
+            + "<br><hr><br>".join(missing_or_unmatched)
+        )
+        frappe.msgprint(msg=message, title="Batch Logic Check", indicator="orange")
