@@ -2,7 +2,6 @@
 import frappe
 from frappe import _
 
-
 def inherit_item_details_on_insert(doc, method):
     # Only for Transfer for Manufacture with batching
     if doc.purpose != "Material Transfer for Manufacture" or not doc.custom_batched:
@@ -21,3 +20,45 @@ def inherit_item_details_on_insert(doc, method):
         detail = details_map.get(d.item_code)
         if detail:
             d.custom_item_details = detail
+
+def get_wip_warehouse_name():
+    try:
+        wip_warehouse = frappe.db.get_single_value("Manufacturing Settings", "default_wip_warehouse")
+
+        if wip_warehouse:
+            return wip_warehouse
+        
+        else:
+            frappe.log_error("No Warehouse found.")
+            return None
+            
+    except Exception as e:
+        frappe.log_error(f"Error querying Warehouse DocType: {e}")
+        return None
+
+def validate_manufacture_source_warehouse(doc, method):
+    """
+	Shows a warning if any item's source warehouse
+	is not 'Work In Progress - CM CDO'.
+	"""
+    
+    warehouse = get_wip_warehouse_name()
+
+    frappe.log_error("warehouse", warehouse)
+
+    if doc.stock_entry_type != "Manufacture":
+        return
+
+    for item in doc.items:
+        
+        if item.s_warehouse != warehouse:
+            if not item.s_warehouse:
+                continue
+
+            frappe.msgprint(
+                "The items' source warehouses are not Work In Progress (WIP) locations.",
+                title="Warehouse Warning",
+                indicator="orange"
+            )
+            
+            break
