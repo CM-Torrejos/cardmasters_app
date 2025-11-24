@@ -48,12 +48,15 @@ doctype_js = {
     "Sales Order": [
         "public/js/sales_order.js",
         "public/js/sales_order/grid_resize.js"
-        ],
+    ],
     "Quotation": "public/js/quotation.js",
     "Job Card": "public/js/job_card.js",
     "Petty Cash Count": "public/js/petty_cash_count.js",
     "Artist Card": "public/js/artist_card.js",
-    "Work Order": "public/js/work_order.js",
+    "Work Order": [
+        "public/js/work_order.js",
+        "public/js/work_order/skip_material_transfer.js"
+    ],
     "Petty Cash Request": "public/js/petty_cash_request.js",
     "Stock Entry": "public/js/stock_entry.js",
     "Purchase Order": "public/js/purchase_order.js",
