@@ -138,7 +138,7 @@ doc_events = {
         "validate": "cardmasters_app.cardmasters_app.event_handlers.batch_handler.set_batch_no_for_delivery_note"
     },
     "Purchase Order": {
-        # "validate": "cardmasters_app.cardmasters_app.event_handlers.purchase_order.validate_po_revolving"
+        "validate": "cardmasters_app.cardmasters_app.event_handlers.batch_handler.set_batch_no_for_purchase_order"
     },
     "Material Request": {
         "validate": ["cardmasters_app.cardmasters_app.event_handlers.material_request.validate_material_request"]
