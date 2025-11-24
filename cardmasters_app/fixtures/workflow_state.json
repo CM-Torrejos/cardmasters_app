@@ -93,24 +93,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-08-05 09:36:25.089086",
-  "name": "BOM Finished",
-  "style": "Success",
-  "workflow_state_name": "BOM Finished"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-08-05 09:36:15.935091",
-  "name": "Client Approved (BOM WIP)",
-  "style": "Info",
-  "workflow_state_name": "Client Approved (BOM WIP)"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-07-05 10:13:38.883581",
   "name": "For Approval",
   "style": "Warning",
@@ -192,15 +174,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-07-03 09:10:17.857134",
-  "name": "Awaiting Submission",
-  "style": "",
-  "workflow_state_name": "Awaiting Submission"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-05-19 04:21:43.010823",
   "name": "Artist",
   "style": "Info",
@@ -210,10 +183,19 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-06-20 10:26:34.368986",
-  "name": "BOM WIP",
-  "style": "",
-  "workflow_state_name": "BOM WIP"
+  "modified": "2025-08-05 09:36:25.089086",
+  "name": "BOM Finished",
+  "style": "Success",
+  "workflow_state_name": "BOM Finished"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-08-05 09:36:15.935091",
+  "name": "Client Approved (BOM WIP)",
+  "style": "Info",
+  "workflow_state_name": "Client Approved (BOM WIP)"
  },
  {
   "docstatus": 0,
@@ -246,10 +228,28 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
+  "modified": "2025-06-20 10:26:34.368986",
+  "name": "BOM WIP",
+  "style": "",
+  "workflow_state_name": "BOM WIP"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
   "modified": "2025-05-17 05:00:04.727905",
   "name": "Layouting",
   "style": "Warning",
   "workflow_state_name": "Layouting"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-07-03 09:10:17.857134",
+  "name": "Awaiting Submission",
+  "style": "",
+  "workflow_state_name": "Awaiting Submission"
  },
  {
   "docstatus": 0,
