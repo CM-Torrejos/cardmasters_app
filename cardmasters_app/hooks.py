@@ -165,9 +165,10 @@ override_whitelisted_methods = {
 }
 
 app_include_css = [
-    "/assets/cardmasters_app/css/cardmasters_app.css",
+    "/assets/cardmasters_app/css/onyx_theme.css",
+    "/assets/cardmasters_app/css/cotton_candy_theme.css",
     "/assets/cardmasters_app/css/sales_order_grid.css"
-    ]
+]
 
 # Apps
 # ------------------
