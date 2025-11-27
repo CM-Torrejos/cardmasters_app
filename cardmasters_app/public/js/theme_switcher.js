@@ -70,9 +70,14 @@ frappe.ui.ThemeSwitcher = class ThemeSwitcher {
 					info: __("Uses system's theme to switch between light and dark mode"),
 				},
                 {
-					name: "newdark",
-					label: __("NEW Dark Mode"),
-					info: __("Custom Dark Theme"),
+					name: "onyx",
+					label: __("Onyx"),
+					info: __("Onyx Theme"),
+				},
+				{
+					name: "cotton-candy",
+					label: __("Cotton Candy"),
+					info: __("Cotton Candy Theme"),
 				},
 			];
 
