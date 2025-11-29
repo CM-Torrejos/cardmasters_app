@@ -11,48 +11,11 @@ frappe.ui.form.on("Job Card", {
 	
 	refresh: function(frm) {
 
-		if (frm.doc.custom_sales_order) {
-			frappe.call({
-				method: 'cardmasters_app.cardmasters_app.event_handlers.get_sales_order.get_sales_order_html',
-				args: {
-					sales_order_name: frm.doc.custom_sales_order
-				},
-				callback: function(r) {
-					if (r.message) {
-						// … inside your callback …
-						const iframe = document.createElement("iframe");
-						iframe.src = "about:blank";      // ← add this!
-						iframe.style.width  = "800px";
-						iframe.style.height = "1000px";
-						iframe.style.border = "1px solid #ccc";
-						iframe.setAttribute("scrolling", "no");
-						
-						// install onload _before_ appending
-						iframe.onload = function() {
-							const doc = iframe.contentWindow.document;
-							doc.open();
-							doc.write(r.message);
-							doc.close();
-							
-							// hide the toolbar once content is in
-							setTimeout(() => {
-								const style = doc.createElement("style");
-								style.innerHTML = `
-								body { margin: 0; padding: 0; overflow: hidden; }
-								.print-format-toolbar { display: none !important; }
-								`;
-								doc.head.appendChild(style);
-							}, 100);
-						};
-						
-						frm.fields_dict.custom_sales_order_print.$wrapper
-						.empty()
-						.append(iframe);
-						
-					}
-				}
-			});
-		}
+		if (cardmasters.utils && cardmasters.utils.sales_order_print_preview) {
+            cardmasters.utils.sales_order_print_preview(frm);
+        } else {
+            console.error('Cardmasters Utils not loaded. Check hooks.py');
+        }
 
 		if (!frm.doc.__islocal) {
 			// frappe.show_alert("Fetching Work Orders..."); // Debugging message
