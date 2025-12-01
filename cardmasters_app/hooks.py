@@ -50,7 +50,10 @@ doctype_js = {
         "public/js/sales_order/grid_resize.js"
     ],
     "Quotation": "public/js/quotation.js",
-    "Job Card": "public/js/job_card.js",
+    "Job Card": [
+        "public/js/job_card.js",
+        "public/js/job_card/remove_assign_job_to_employee.js"
+    ],
     "Petty Cash Count": "public/js/petty_cash_count.js",
     "Artist Card": "public/js/artist_card.js",
     "Work Order": [
@@ -75,6 +78,7 @@ override_doctype_class = {
 # app_include_js = "/assets/cardmasters_app/js/chart_legend_filter.js"
 # app_include_css = "/assets/cardmasters_app/css/chart_legend_limit.css"
 app_include_js = [
+    "/assets/cardmasters_app/js/utils.js",
     "/assets/cardmasters_app/js/address_contact_quick_entry_patch.js",
     "/assets/cardmasters_app/js/theme_switcher.js",
 ]
