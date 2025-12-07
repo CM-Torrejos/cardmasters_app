@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-11-13 14:21:55.793070",
+ "modified": "2025-12-07 15:37:43.889744",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Heatpress",
@@ -172,8 +172,8 @@
    "color": "Grey",
    "doc_view": "List",
    "label": "Heatpress Jobs",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"HEATPRESS\",false],[\"Job Card\",\"workstation\",\"=\",\"MAIN - HEATPRESS\",false]]",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"Work Order\",\"status\",\"!=\",\"Completed\",false],[\"CM Jobs\",\"job\",\"=\",\"HEATPRESS\",false]]",
    "type": "DocType"
   }
  ],

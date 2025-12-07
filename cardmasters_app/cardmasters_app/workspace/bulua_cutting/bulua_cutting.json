@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-11-13 14:23:03.056405",
+ "modified": "2025-12-07 15:50:37.957166",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Bulua Cutting",
@@ -172,8 +172,8 @@
    "color": "Grey",
    "doc_view": "List",
    "label": "Plasma Cutting Jobs",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"PLASMA CUTTING\",false],[\"Job Card\",\"workstation\",\"=\",\"BULUA STATION\",false]]",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"CM Jobs\",\"job\",\"=\",\"PLASMA CUTTING\",false],[\"Work Order\",\"status\",\"!=\",\"Completed\",false]]",
    "type": "DocType"
   }
  ],

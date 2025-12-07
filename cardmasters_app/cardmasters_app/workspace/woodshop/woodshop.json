@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-11-13 14:22:19.540018",
+ "modified": "2025-12-07 15:47:54.836348",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Woodshop",
@@ -172,32 +172,32 @@
    "color": "Grey",
    "doc_view": "List",
    "label": "Fabrication",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"FABRICATION\",false],[\"Job Card\",\"workstation\",\"=\",\"MAIN - WOODSHOP\",false]]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "Woodworks Painting",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"WOODWORKS PAINTING\",false],[\"Job Card\",\"workstation\",\"=\",\"MAIN - WOODSHOP\",false]]",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"CM Jobs\",\"job\",\"=\",\"FABRICATION\",false],[\"Work Order\",\"status\",\"!=\",\"Completed\",false]]",
    "type": "DocType"
   },
   {
    "color": "Grey",
    "doc_view": "List",
    "label": "Woodworks",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"WOODWORKS\",false],[\"Job Card\",\"workstation\",\"=\",\"MAIN - WOODSHOP\",false]]",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"CM Jobs\",\"job\",\"=\",\"WOODWORKS\",false],[\"Work Order\",\"status\",\"!=\",\"Completed\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Woodworks Painting",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"CM Jobs\",\"job\",\"=\",\"WOODWORKS PAINTING\",false],[\"Work Order\",\"status\",\"!=\",\"Completed\",false]]",
    "type": "DocType"
   },
   {
    "color": "Grey",
    "doc_view": "List",
    "label": "Signage Assembly",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"SIGNAGE ASSEMBLY\",false],[\"Job Card\",\"workstation\",\"=\",\"MAIN - WOODSHOP\",false]]",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"CM Jobs\",\"job\",\"=\",\"SIGNAGE ASSEMBLY\",false],[\"Work Order\",\"status\",\"!=\",\"Completed\",false]]",
    "type": "DocType"
   }
  ],

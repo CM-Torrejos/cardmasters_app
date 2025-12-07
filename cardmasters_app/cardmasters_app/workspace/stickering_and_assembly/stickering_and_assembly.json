@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-11-13 14:22:46.511084",
+ "modified": "2025-12-07 15:49:30.726172",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Stickering and Assembly",
@@ -172,8 +172,8 @@
    "color": "Grey",
    "doc_view": "List",
    "label": "Stickering and Assembly Jobs",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"STICKERING AND ASSEMBLY\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - STICKERING AND ASSEMBLY\",false]]",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"CM Jobs\",\"job\",\"=\",\"STICKERING AND ASSEMBLY\",false],[\"Work Order\",\"status\",\"!=\",\"Completed\",false]]",
    "type": "DocType"
   }
  ],

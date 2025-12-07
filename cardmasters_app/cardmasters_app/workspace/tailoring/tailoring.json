@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-11-13 14:22:35.563170",
+ "modified": "2025-12-07 15:48:57.527100",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Tailoring",
@@ -172,8 +172,8 @@
    "color": "Grey",
    "doc_view": "List",
    "label": "Tailoring Jobs",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"TAILORING\",false],[\"Job Card\",\"workstation\",\"=\",\"TAILORING STATION\",false]]",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"CM Jobs\",\"job\",\"=\",\"TAILORING\",false],[\"Work Order\",\"status\",\"!=\",\"Completed\",false]]",
    "type": "DocType"
   }
  ],

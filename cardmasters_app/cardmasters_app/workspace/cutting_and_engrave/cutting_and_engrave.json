@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-11-13 14:22:10.888976",
+ "modified": "2025-12-07 15:45:56.097028",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Cutting and Engrave",
@@ -171,57 +171,57 @@
   {
    "color": "Grey",
    "doc_view": "List",
-   "label": "3D Printing",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"3D MACHINE PRINTING\",false]]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
    "label": "JWEI Cutting",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"JWEI\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - MACHINE STATION\",false]]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "Fiber Laser",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"FIBER LASER\",false]]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "Laser Engraving",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"LASER ENGRAVING\",false]]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "Laser Cutting",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"LASER CUTTING\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - MACHINE STATION\",false]]",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"Work Order\",\"status\",\"!=\",\"Completed\",false],[\"CM Jobs\",\"job\",\"=\",\"JWEI\",false]]",
    "type": "DocType"
   },
   {
    "color": "Grey",
    "doc_view": "List",
    "label": "CNC Cutting",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"CNC\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - MACHINE STATION\",false]]",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"Work Order\",\"status\",\"=\",\"Completed\",false],[\"CM Jobs\",\"job\",\"=\",\"CNC\",false]]",
    "type": "DocType"
   },
   {
    "color": "Grey",
    "doc_view": "List",
    "label": "Formech Operation",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"FORMECH\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - MACHINE STATION\",false]]",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"Work Order\",\"status\",\"!=\",\"Completed\",false],[\"CM Jobs\",\"job\",\"=\",\"FORMECH\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Laser Cutting",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"CM Jobs\",\"job\",\"=\",\"LASER CUTTING\",false],[\"Work Order\",\"status\",\"!=\",\"Completed\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Laser Engraving",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"CM Jobs\",\"job\",\"=\",\"LASER ENGRAVING\",false],[\"Work Order\",\"status\",\"!=\",\"Completed\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "3D Printing",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"CM Jobs\",\"job\",\"=\",\"3D MACHINE PRINTING\",false],[\"Work Order\",\"status\",\"!=\",\"Completed\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Fiber Laser",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"CM Jobs\",\"job\",\"=\",\"FIBER LASER\",false],[\"Work Order\",\"status\",\"!=\",\"Completed\",false]]",
    "type": "DocType"
   }
  ],

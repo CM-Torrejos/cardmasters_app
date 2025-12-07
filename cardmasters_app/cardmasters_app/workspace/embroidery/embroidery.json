@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-11-13 14:22:27.490804",
+ "modified": "2025-12-07 15:48:31.207874",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Embroidery",
@@ -172,8 +172,8 @@
    "color": "Grey",
    "doc_view": "List",
    "label": "Embroidery Jobs",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"EMBROIDERY\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - EMBROIDERY\",false]]",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"CM Jobs\",\"job\",\"=\",\"EMBROIDERY\",false],[\"Work Order\",\"status\",\"!=\",\"Completed\",false]]",
    "type": "DocType"
   }
  ],

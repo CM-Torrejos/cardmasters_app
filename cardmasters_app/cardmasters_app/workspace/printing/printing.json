@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"wNqzQqjcDe\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"cTV1dJdz0p\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Direct To Film Jobs\",\"col\":3}},{\"id\":\"jIKPySyyAm\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"UV Job Card\",\"col\":3}},{\"id\":\"oNpIBz4ZT-\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"UV Flatbed\",\"col\":3}},{\"id\":\"t0nwl8gMsm\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"UV Roll to Roll\",\"col\":3}},{\"id\":\"LOTXbE6f_w\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"UV Sticker Printing\",\"col\":3}},{\"id\":\"GedHElUQtl\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Tarpaulin Printing\",\"col\":3}},{\"id\":\"wAYcXtedu1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sublimation Printing\",\"col\":3}},{\"id\":\"mASDhsOsqu\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Large Format Printing\",\"col\":3}},{\"id\":\"DRDVghV-OK\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Foil Stamp\",\"col\":3}},{\"id\":\"hBl6D_wAFA\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Small Prints\",\"col\":3}},{\"id\":\"Iy_xezp7dm\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"cp9eqS8N0B\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"JDlVGU55fO\",\"type\":\"card\",\"data\":{\"card_name\":\"Production Data\",\"col\":4}},{\"id\":\"NdEzjohIEr\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}}]",
+ "content": "[{\"id\":\"wNqzQqjcDe\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"cTV1dJdz0p\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Direct To Film Jobs\",\"col\":3}},{\"id\":\"jIKPySyyAm\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"UV Job Card\",\"col\":3}},{\"id\":\"oNpIBz4ZT-\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"UV Flatbed\",\"col\":3}},{\"id\":\"t0nwl8gMsm\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"UV Roll to Roll\",\"col\":3}},{\"id\":\"LOTXbE6f_w\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"UV Sticker Printing\",\"col\":3}},{\"id\":\"GedHElUQtl\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Tarpaulin Printing\",\"col\":3}},{\"id\":\"wAYcXtedu1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sublimation Printing\",\"col\":3}},{\"id\":\"mASDhsOsqu\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Large Format Printing\",\"col\":3}},{\"id\":\"DRDVghV-OK\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Foil Stamp\",\"col\":3}},{\"id\":\"hBl6D_wAFA\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Small Prints\",\"col\":3}},{\"id\":\"-1fLJGEuFO\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Work Order\",\"col\":3}},{\"id\":\"Iy_xezp7dm\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"cp9eqS8N0B\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"JDlVGU55fO\",\"type\":\"card\",\"data\":{\"card_name\":\"Production Data\",\"col\":4}},{\"id\":\"NdEzjohIEr\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}}]",
  "creation": "2025-06-11 09:59:49.957004",
  "custom_blocks": [],
  "docstatus": 0,
@@ -151,7 +151,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-11-13 14:18:24.647360",
+ "modified": "2025-12-07 15:36:48.311227",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Printing",
@@ -171,80 +171,88 @@
    "color": "Grey",
    "doc_view": "List",
    "label": "Direct To Film Jobs",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"DIRECT TO FILM\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - PRINTS\",false]]",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"Work Order\",\"status\",\"!=\",\"Completed\",false],[\"CM Jobs\",\"job\",\"=\",\"DIRECT TO FILM\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Work Order",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"CM Jobs\",\"cm_workstation\",\"=\",\"ANNEX - PRINTS\",false]]",
    "type": "DocType"
   },
   {
    "color": "Grey",
    "doc_view": "List",
    "label": "UV Job Card",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"UV DIRECT TO FILM\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - PRINTS\",false]]",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"Work Order\",\"status\",\"!=\",\"Completed\",false],[\"CM Jobs\",\"job\",\"=\",\"UV DIRECT TO FILM\",false]]",
    "type": "DocType"
   },
   {
    "color": "Grey",
    "doc_view": "List",
    "label": "UV Flatbed",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"UV FLATBED\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - PRINTS\",false]]",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"Work Order\",\"status\",\"!=\",\"Completed\",false],[\"CM Jobs\",\"job\",\"=\",\"UV FLATBED\",false]]",
    "type": "DocType"
   },
   {
    "color": "Grey",
    "doc_view": "List",
    "label": "UV Roll to Roll",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"UV ROLL TO ROLL\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - PRINTS\",false]]",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"Work Order\",\"status\",\"!=\",\"Completed\",false],[\"CM Jobs\",\"job\",\"=\",\"UV ROLL TO ROLL\",false]]",
    "type": "DocType"
   },
   {
    "color": "Grey",
    "doc_view": "List",
    "label": "UV Sticker Printing",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"UV STICKER PRINTING\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - PRINTS\",false]]",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"Work Order\",\"status\",\"!=\",\"Completed\",false],[\"CM Jobs\",\"job\",\"=\",\"UV STICKER PRINTING\",false]]",
    "type": "DocType"
   },
   {
    "color": "Grey",
    "doc_view": "List",
    "label": "Tarpaulin Printing",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"TARPAULIN PRINTING\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - PRINTS\",false]]",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"Work Order\",\"status\",\"!=\",\"Completed\",false],[\"CM Jobs\",\"job\",\"=\",\"TARPAULIN PRINTING\",false]]",
    "type": "DocType"
   },
   {
    "color": "Grey",
    "doc_view": "List",
    "label": "Sublimation Printing",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"SUBLIMATION PRINTING\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - PRINTS\",false]]",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"Work Order\",\"status\",\"!=\",\"Completed\",false],[\"CM Jobs\",\"job\",\"=\",\"SUBLIMATION PRINTING\",false]]",
    "type": "DocType"
   },
   {
    "color": "Grey",
    "doc_view": "List",
    "label": "Large Format Printing",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"LARGE FORMAT PRINTING\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - PRINTS\",false]]",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"Work Order\",\"status\",\"!=\",\"Completed\",false],[\"CM Jobs\",\"job\",\"=\",\"LARGE FORMAT PRINTING\",false]]",
    "type": "DocType"
   },
   {
    "color": "Grey",
    "doc_view": "List",
    "label": "Foil Stamp",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"FOIL STAMP\",false],[\"Job Card\",\"workstation\",\"=\",\"ANNEX - PRINTS\",false]]",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"Work Order\",\"status\",\"!=\",\"Completed\",false],[\"CM Jobs\",\"job\",\"=\",\"FOIL STAMP\",false]]",
    "type": "DocType"
   },
   {
    "color": "Grey",
    "doc_view": "List",
    "label": "Small Prints",
-   "link_to": "Job Card",
-   "stats_filter": "[[\"Job Card\",\"operation\",\"=\",\"GENERAL PRINTING (CK, C2S, FUJI, PHOTCOPY)\",false],[\"Job Card\",\"workstation\",\"=\",\"MAIN - ARTIST\",false]]",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"Work Order\",\"status\",\"!=\",\"Completed\",false],[\"CM Jobs\",\"job\",\"=\",\"GENERAL PRINTING (CK, C2S, FUJI, PHOTCOPY)\",false]]",
    "type": "DocType"
   }
  ],
