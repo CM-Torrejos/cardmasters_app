@@ -7,20 +7,20 @@
  "engine": "InnoDB",
  "field_order": [
   "artist",
+  "artist_2",
+  "artist_3",
   "sales_order",
   "rush_order",
   "customer",
   "workflow_state",
   "company",
   "column_break_eojj",
+  "expected_total_time",
+  "difficulty",
   "naming_series",
   "date_created",
   "deadline",
-  "difficulty",
   "work_order_created",
-  "section_break_wifg",
-  "expected_total_time",
-  "column_break_fqkx",
   "section_break_ingn",
   "timesheet",
   "finished_total_time",
@@ -77,14 +77,6 @@
    "fieldtype": "Table",
    "label": "Timesheet",
    "options": "Artist Timesheet"
-  },
-  {
-   "fieldname": "section_break_wifg",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "column_break_fqkx",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "expected_total_time",
@@ -170,13 +162,25 @@
    "fieldname": "rush_order",
    "fieldtype": "Check",
    "label": "Rush Order"
+  },
+  {
+   "fieldname": "artist_2",
+   "fieldtype": "Link",
+   "label": "Artist 2",
+   "options": "Artist"
+  },
+  {
+   "fieldname": "artist_3",
+   "fieldtype": "Link",
+   "label": "Artist 3",
+   "options": "Artist"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
  "make_attachments_public": 1,
- "modified": "2025-11-14 13:19:00.936622",
+ "modified": "2025-12-07 15:53:13.873623",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Card",
