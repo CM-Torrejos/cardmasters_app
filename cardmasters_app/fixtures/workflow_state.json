@@ -102,15 +102,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-05-17 05:00:31.788551",
-  "name": "Pending Client Approval",
-  "style": "Danger",
-  "workflow_state_name": "Pending Client Approval"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-07-05 10:13:34.724257",
   "name": "In Progress",
   "style": "Info",
@@ -191,20 +182,11 @@
  {
   "docstatus": 0,
   "doctype": "Workflow State",
-  "icon": "question-sign",
-  "modified": "2025-08-04 14:53:46.132163",
-  "name": "Pending",
-  "style": "",
-  "workflow_state_name": "Pending"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-07-03 09:10:17.857134",
-  "name": "Awaiting Submission",
-  "style": "",
-  "workflow_state_name": "Awaiting Submission"
+  "modified": "2025-05-17 05:00:31.788551",
+  "name": "Pending Client Approval",
+  "style": "Danger",
+  "workflow_state_name": "Pending Client Approval"
  },
  {
   "docstatus": 0,
@@ -218,11 +200,11 @@
  {
   "docstatus": 0,
   "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-05-17 05:00:04.727905",
-  "name": "Layouting",
-  "style": "Warning",
-  "workflow_state_name": "Layouting"
+  "icon": "question-sign",
+  "modified": "2025-08-04 14:53:46.132163",
+  "name": "Pending",
+  "style": "",
+  "workflow_state_name": "Pending"
  },
  {
   "docstatus": 0,
@@ -250,6 +232,24 @@
   "name": "Artist",
   "style": "Info",
   "workflow_state_name": "Artist"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-17 05:00:04.727905",
+  "name": "Layouting",
+  "style": "Warning",
+  "workflow_state_name": "Layouting"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-07-03 09:10:17.857134",
+  "name": "Awaiting Submission",
+  "style": "",
+  "workflow_state_name": "Awaiting Submission"
  },
  {
   "docstatus": 0,
