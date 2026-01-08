@@ -1,0 +1,177 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-07-02 13:47:24.449966",
+  "name": "Review",
+  "workflow_action_name": "Review"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-04-28 05:20:43.534921",
+  "name": "Receive",
+  "workflow_action_name": "Receive"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-06-13 15:42:26.848845",
+  "name": "Request Reimbursement",
+  "workflow_action_name": "Request Reimbursement"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-05-19 04:18:07.302074",
+  "name": "To Claiming",
+  "workflow_action_name": "To Claiming"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-05-19 04:18:32.124218",
+  "name": "Claimed",
+  "workflow_action_name": "Claimed"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-04-28 05:20:15.010333",
+  "name": "Submit for Approval",
+  "workflow_action_name": "Submit for Approval"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-05-19 04:38:31.780076",
+  "name": "Save",
+  "workflow_action_name": "Save"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-07-03 08:44:51.893626",
+  "name": "Ready for Delivery",
+  "workflow_action_name": "Ready for Delivery"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-06-20 13:21:05.506289",
+  "name": "Skip Artist",
+  "workflow_action_name": "Skip Artist"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-06-20 14:01:58.008660",
+  "name": "BOM Finished",
+  "workflow_action_name": "BOM Finished"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-07-03 09:03:53.485209",
+  "name": "Conclude Production",
+  "workflow_action_name": "Conclude Production"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-05-21 13:25:13.566376",
+  "name": "Cancel",
+  "workflow_action_name": "Cancel"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-04-24 12:11:30.808592",
+  "name": "Approve",
+  "workflow_action_name": "Approve"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-06-19 14:41:39.832034",
+  "name": "Finish BOM",
+  "workflow_action_name": "Finish BOM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-04-24 12:11:30.810484",
+  "name": "Reject",
+  "workflow_action_name": "Reject"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-04-28 05:43:19.145725",
+  "name": "Modify Layout",
+  "workflow_action_name": "Modify Layout"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-06-25 14:19:00.592631",
+  "name": "Client Approved (Start BOM)",
+  "workflow_action_name": "Client Approved (Start BOM)"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-04-28 05:42:35.304733",
+  "name": "Begin Layout",
+  "workflow_action_name": "Begin Layout"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-05-19 04:17:40.309940",
+  "name": "Begin Production",
+  "workflow_action_name": "Begin Production"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-06-13 15:42:54.796601",
+  "name": "Reimbursed",
+  "workflow_action_name": "Reimbursed"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-06-13 15:41:52.910965",
+  "name": "Request Approval",
+  "workflow_action_name": "Request Approval"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-06-14 16:14:27.814532",
+  "name": "Submit",
+  "workflow_action_name": "Submit"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-07-18 10:19:34.882682",
+  "name": "Stop",
+  "workflow_action_name": "Stop"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-06-20 14:01:31.465891",
+  "name": "Count Finished",
+  "workflow_action_name": "Count Finished"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-06-20 10:29:47.603206",
+  "name": "Finish Item",
+  "workflow_action_name": "Finish Item"
+ }
+]

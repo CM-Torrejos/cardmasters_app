@@ -1,0 +1,263 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-19 04:22:33.354416",
+  "name": "Claimed",
+  "style": "Success",
+  "workflow_state_name": "Claimed"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-19 04:23:04.558194",
+  "name": "Claiming",
+  "style": "Inverse",
+  "workflow_state_name": "Claiming"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-07-03 08:44:05.766959",
+  "name": "Manufactured",
+  "style": "",
+  "workflow_state_name": "Manufactured"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-07-03 08:44:30.055454",
+  "name": "Ready for Delivery",
+  "style": "",
+  "workflow_state_name": "Ready for Delivery"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-07-05 10:13:49.959500",
+  "name": "For Reimbursement",
+  "style": "Warning",
+  "workflow_state_name": "For Reimbursement"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "remove",
+  "modified": "2025-04-24 12:11:30.786757",
+  "name": "Rejected",
+  "style": "Danger",
+  "workflow_state_name": "Rejected"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-19 15:15:37.722345",
+  "name": "Received by Requesting Party",
+  "style": "",
+  "workflow_state_name": "Received by Requesting Party"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-07-05 10:13:54.383850",
+  "name": "Reimbursed",
+  "style": "Success",
+  "workflow_state_name": "Reimbursed"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-08-04 14:54:40.231869",
+  "name": "No Artist - Pending Production",
+  "style": "Danger",
+  "workflow_state_name": "No Artist - Pending Production"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-09-26 13:09:42.312392",
+  "name": "Approved and Submitted",
+  "style": "",
+  "workflow_state_name": "Approved and Submitted"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-07-05 10:13:38.883581",
+  "name": "For Approval",
+  "style": "Warning",
+  "workflow_state_name": "For Approval"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-17 05:00:31.788551",
+  "name": "Pending Client Approval",
+  "style": "Danger",
+  "workflow_state_name": "Pending Client Approval"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-07-05 10:13:34.724257",
+  "name": "In Progress",
+  "style": "Info",
+  "workflow_state_name": "In Progress"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-17 04:59:56.120535",
+  "name": "Pending Approval",
+  "style": "Info",
+  "workflow_state_name": "Pending Approval"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-28 07:07:20.066013",
+  "name": "Cancelled",
+  "style": "",
+  "workflow_state_name": "Cancelled"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "ok-sign",
+  "modified": "2025-04-24 12:11:30.784826",
+  "name": "Approved",
+  "style": "Success",
+  "workflow_state_name": "Approved"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-20 10:28:19.225345",
+  "name": "Delivery Ready",
+  "style": "",
+  "workflow_state_name": "Delivery Ready"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-20 13:59:18.266820",
+  "name": "Claiming: Pending BOM",
+  "style": "",
+  "workflow_state_name": "Claiming: Pending BOM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-20 13:58:58.310609",
+  "name": "Manufactured : Pending Count",
+  "style": "",
+  "workflow_state_name": "Manufactured : Pending Count"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-08-05 09:36:25.089086",
+  "name": "BOM Finished",
+  "style": "Success",
+  "workflow_state_name": "BOM Finished"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-08-04 14:54:54.371813",
+  "name": "Production Concluded",
+  "style": "Success",
+  "workflow_state_name": "Production Concluded"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "question-sign",
+  "modified": "2025-08-04 14:53:46.132163",
+  "name": "Pending",
+  "style": "",
+  "workflow_state_name": "Pending"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-07-03 09:10:17.857134",
+  "name": "Awaiting Submission",
+  "style": "",
+  "workflow_state_name": "Awaiting Submission"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-08-05 09:36:15.935091",
+  "name": "Client Approved (BOM WIP)",
+  "style": "Info",
+  "workflow_state_name": "Client Approved (BOM WIP)"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-17 05:00:04.727905",
+  "name": "Layouting",
+  "style": "Warning",
+  "workflow_state_name": "Layouting"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-28 05:15:12.134310",
+  "name": "Draft",
+  "style": "",
+  "workflow_state_name": "Draft"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-20 10:26:34.368986",
+  "name": "BOM WIP",
+  "style": "",
+  "workflow_state_name": "BOM WIP"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-19 04:21:43.010823",
+  "name": "Artist",
+  "style": "Info",
+  "workflow_state_name": "Artist"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-19 04:23:13.963387",
+  "name": "Production",
+  "style": "Warning",
+  "workflow_state_name": "Production"
+ }
+]
