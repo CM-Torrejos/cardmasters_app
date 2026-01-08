@@ -79,7 +79,7 @@ override_doctype_class = {
 # app_include_css = "/assets/cardmasters_app/css/chart_legend_limit.css"
 app_include_js = [
     "/assets/cardmasters_app/js/utils.js",
-    # "/assets/cardmasters_app/js/address_contact_quick_entry_patch.js",
+    "/assets/cardmasters_app/js/address_contact_quick_entry_patch.js",
     "/assets/cardmasters_app/js/theme_switcher.js",
 ]
 

@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "format:{sales_order}-{blame}-{##}",
+ "autoname": "format:DNR-{####}",
  "creation": "2025-04-26 09:10:24.897133",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -141,7 +141,6 @@
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
- "is_submittable": 1,
  "links": [
   {
    "link_doctype": "Stock Entry",
@@ -152,7 +151,7 @@
    "link_fieldname": "custom_damages_and_returns"
   }
  ],
- "modified": "2025-08-19 16:22:20.211483",
+ "modified": "2026-01-08 08:20:51.692248",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damages and Returns",
@@ -169,7 +168,6 @@
    "report": 1,
    "role": "System Manager",
    "share": 1,
-   "submit": 1,
    "write": 1
   }
  ],
