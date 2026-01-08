@@ -69,6 +69,7 @@ def pull_sales_order_details(doc, method=None):
 	doc.custom_for_new_flow = so.get("custom_for_new_flow")
 	doc.custom_deadline = so.get("delivery_date")
 	doc.custom_rush_order = so.get("custom_rush_order")
+	doc.custom_for_branch = so.get("custom_for_branch")
 
 	# --- Pull and sets remarks
 	so_remarks = so.get("custom_remarks")
