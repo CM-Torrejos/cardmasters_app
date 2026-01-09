@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-12-07 15:37:43.889744",
+ "modified": "2026-01-09 13:34:28.073458",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Heatpress",
@@ -163,7 +163,7 @@
  "quick_lists": [],
  "roles": [
   {
-   "role": "CM Heatpress Workstation Leader"
+   "role": "CM WL Heatpress"
   }
  ],
  "sequence_id": 6.0,

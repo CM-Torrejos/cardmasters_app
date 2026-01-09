@@ -210,7 +210,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-11-13 14:18:24.342047",
+ "modified": "2026-01-09 11:44:00.317521",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Sales Department",
@@ -222,6 +222,15 @@
  "roles": [
   {
    "role": "CM Office Sales"
+  },
+  {
+   "role": "CM Sales Coordinator"
+  },
+  {
+   "role": "CM Sales Head"
+  },
+  {
+   "role": "CM Field Sales"
   }
  ],
  "sequence_id": 2.0,

@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-12-07 15:47:54.836348",
+ "modified": "2026-01-09 13:35:37.202156",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Woodshop",
@@ -163,7 +163,7 @@
  "quick_lists": [],
  "roles": [
   {
-   "role": "CM Woodshop Workstation Leader"
+   "role": "CM WL Woodshop"
   }
  ],
  "sequence_id": 8.0,

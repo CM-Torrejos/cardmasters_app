@@ -260,7 +260,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-11-13 14:18:46.231817",
+ "modified": "2026-01-09 15:25:32.434415",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Inventory",
@@ -271,7 +271,13 @@
  "quick_lists": [],
  "roles": [
   {
-   "role": "CM Inventory Custodian"
+   "role": "CM Inventory Associate"
+  },
+  {
+   "role": "CM Inventory Claiming Associate"
+  },
+  {
+   "role": "CM Inventory Coordinator"
   }
  ],
  "sequence_id": 14.0,

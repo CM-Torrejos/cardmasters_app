@@ -172,7 +172,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-11-13 14:23:44.414851",
+ "modified": "2026-01-09 14:37:22.208799",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Production Department",
@@ -184,6 +184,12 @@
  "roles": [
   {
    "role": "CM Production Coordinator"
+  },
+  {
+   "role": "CM Production Head"
+  },
+  {
+   "role": "CM Cost Accountant"
   }
  ],
  "sequence_id": 4.0,

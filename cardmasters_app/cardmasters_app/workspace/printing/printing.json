@@ -151,7 +151,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-12-07 15:36:48.311227",
+ "modified": "2026-01-09 13:31:41.830263",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Printing",
@@ -162,7 +162,7 @@
  "quick_lists": [],
  "roles": [
   {
-   "role": "CM Printing Workstation Leader"
+   "role": "CM WL Prints"
   }
  ],
  "sequence_id": 5.0,

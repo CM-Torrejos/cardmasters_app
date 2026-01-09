@@ -152,7 +152,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-12-07 15:50:05.536964",
+ "modified": "2026-01-09 13:37:21.737511",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Packaging and Labels",
@@ -163,7 +163,7 @@
  "quick_lists": [],
  "roles": [
   {
-   "role": "CM PNL Workstation Leader"
+   "role": "CM WL Packaging and Labels"
   }
  ],
  "sequence_id": 12.0,

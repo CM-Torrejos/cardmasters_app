@@ -172,7 +172,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-11-13 14:18:25.480867",
+ "modified": "2026-01-09 15:03:01.011369",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Payable",
@@ -181,7 +181,11 @@
  "parent_page": "Accounting Department",
  "public": 1,
  "quick_lists": [],
- "roles": [],
+ "roles": [
+  {
+   "role": "CM Disbursement Officer"
+  }
+ ],
  "sequence_id": 17.0,
  "shortcuts": [
   {
