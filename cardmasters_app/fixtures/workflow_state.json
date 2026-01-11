@@ -147,28 +147,10 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-06-20 13:59:18.266820",
-  "name": "Claiming: Pending BOM",
-  "style": "",
-  "workflow_state_name": "Claiming: Pending BOM"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-06-20 13:58:58.310609",
   "name": "Manufactured : Pending Count",
   "style": "",
   "workflow_state_name": "Manufactured : Pending Count"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-08-05 09:36:25.089086",
-  "name": "BOM Finished",
-  "style": "Success",
-  "workflow_state_name": "BOM Finished"
  },
  {
   "docstatus": 0,
@@ -187,6 +169,24 @@
   "name": "Pending Client Approval",
   "style": "Danger",
   "workflow_state_name": "Pending Client Approval"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-20 13:59:18.266820",
+  "name": "Claiming: Pending BOM",
+  "style": "",
+  "workflow_state_name": "Claiming: Pending BOM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-08-05 09:36:25.089086",
+  "name": "BOM Finished",
+  "style": "Success",
+  "workflow_state_name": "BOM Finished"
  },
  {
   "docstatus": 0,
@@ -232,6 +232,15 @@
   "name": "Artist",
   "style": "Info",
   "workflow_state_name": "Artist"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-01-09 13:12:37.032153",
+  "name": "Finished Consumption",
+  "style": "",
+  "workflow_state_name": "Finished Consumption"
  },
  {
   "docstatus": 0,

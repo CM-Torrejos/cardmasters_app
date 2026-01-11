@@ -72,13 +72,6 @@
  {
   "docstatus": 0,
   "doctype": "Workflow Action Master",
-  "modified": "2025-07-03 09:03:53.485209",
-  "name": "Conclude Production",
-  "workflow_action_name": "Conclude Production"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow Action Master",
   "modified": "2025-05-21 13:25:13.566376",
   "name": "Cancel",
   "workflow_action_name": "Cancel"
@@ -159,6 +152,27 @@
   "modified": "2025-07-18 10:19:34.882682",
   "name": "Stop",
   "workflow_action_name": "Stop"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-01-09 13:14:03.465622",
+  "name": "Finished Consumption Entry",
+  "workflow_action_name": "Finished Consumption Entry"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-01-09 13:14:20.270265",
+  "name": "Finished Manufacture Entry",
+  "workflow_action_name": "Finished Manufacture Entry"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-07-03 09:03:53.485209",
+  "name": "Conclude Production",
+  "workflow_action_name": "Conclude Production"
  },
  {
   "docstatus": 0,
