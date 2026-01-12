@@ -433,22 +433,6 @@
  },
  {
   "default_value": null,
-  "doc_type": "Item",
-  "docstatus": 0,
-  "doctype": "Property Setter",
-  "doctype_or_field": "DocType",
-  "field_name": null,
-  "is_system_generated": 0,
-  "modified": "2025-05-15 12:09:22.605273",
-  "module": null,
-  "name": "Item-main-field_order",
-  "property": "field_order",
-  "property_type": "Data",
-  "row_name": null,
-  "value": "[\"details\", \"naming_series\", \"item_code\", \"item_name\", \"item_group\", \"stock_uom\", \"column_break0\", \"disabled\", \"allow_alternative_item\", \"is_stock_item\", \"has_variants\", \"custom_requires_custom_batch\", \"opening_stock\", \"valuation_rate\", \"standard_rate\", \"is_fixed_asset\", \"auto_create_assets\", \"is_grouped_asset\", \"asset_category\", \"asset_naming_series\", \"over_delivery_receipt_allowance\", \"over_billing_allowance\", \"image\", \"section_break_11\", \"description\", \"brand\", \"unit_of_measure_conversion\", \"uoms\", \"dashboard_tab\", \"inventory_section\", \"inventory_settings_section\", \"shelf_life_in_days\", \"end_of_life\", \"default_material_request_type\", \"valuation_method\", \"column_break1\", \"warranty_period\", \"weight_per_unit\", \"weight_uom\", \"allow_negative_stock\", \"sb_barcodes\", \"barcodes\", \"reorder_section\", \"reorder_levels\", \"serial_nos_and_batches\", \"has_batch_no\", \"create_new_batch\", \"batch_number_series\", \"has_expiry_date\", \"retain_sample\", \"sample_quantity\", \"column_break_37\", \"has_serial_no\", \"serial_no_series\", \"variants_section\", \"variant_of\", \"variant_based_on\", \"attributes\", \"accounting\", \"deferred_accounting_section\", \"enable_deferred_expense\", \"no_of_months_exp\", \"column_break_9s9o\", \"enable_deferred_revenue\", \"no_of_months\", \"section_break_avcp\", \"item_defaults\", \"purchasing_tab\", \"purchase_uom\", \"min_order_qty\", \"safety_stock\", \"is_purchase_item\", \"purchase_details_cb\", \"lead_time_days\", \"last_purchase_rate\", \"is_customer_provided_item\", \"customer\", \"supplier_details\", \"delivered_by_supplier\", \"column_break2\", \"supplier_items\", \"foreign_trade_details\", \"country_of_origin\", \"column_break_59\", \"customs_tariff_number\", \"sales_details\", \"sales_uom\", \"grant_commission\", \"is_sales_item\", \"column_break3\", \"max_discount\", \"customer_details\", \"customer_items\", \"item_tax_section_break\", \"taxes\", \"quality_tab\", \"inspection_required_before_purchase\", \"quality_inspection_template\", \"inspection_required_before_delivery\", \"manufacturing\", \"include_item_in_manufacturing\", \"is_sub_contracted_item\", \"default_bom\", \"column_break_74\", \"customer_code\", \"default_item_manufacturer\", \"default_manufacturer_part_no\", \"total_projected_qty\"]"
- },
- {
-  "default_value": null,
   "doc_type": "Sales Order Item",
   "docstatus": 0,
   "doctype": "Property Setter",
@@ -4558,5 +4542,21 @@
   "property_type": "Data",
   "row_name": null,
   "value": "[\"entry_type_and_date\", \"is_system_generated\", \"title\", \"voucher_type\", \"naming_series\", \"finance_book\", \"process_deferred_accounting\", \"reversal_of\", \"tax_withholding_category\", \"column_break1\", \"from_template\", \"company\", \"posting_date\", \"apply_tds\", \"2_add_edit_gl_entries\", \"accounts\", \"section_break99\", \"cheque_no\", \"cheque_date\", \"custom_transaction_description\", \"user_remark\", \"column_break99\", \"total_debit\", \"total_credit\", \"difference\", \"get_balance\", \"multi_currency\", \"total_amount_currency\", \"total_amount\", \"total_amount_in_words\", \"reference\", \"clearance_date\", \"remark\", \"paid_loan\", \"inter_company_journal_entry_reference\", \"column_break98\", \"bill_no\", \"bill_date\", \"due_date\", \"write_off\", \"write_off_based_on\", \"get_outstanding_invoices\", \"column_break_30\", \"write_off_amount\", \"printing_settings\", \"pay_to_recd_from\", \"column_break_35\", \"letter_head\", \"select_print_heading\", \"addtional_info\", \"mode_of_payment\", \"payment_order\", \"party_not_required\", \"column_break3\", \"is_opening\", \"stock_entry\", \"is_opening_balance\", \"subscription_section\", \"auto_repeat\", \"amended_from\"]"
+ },
+ {
+  "default_value": null,
+  "doc_type": "Item",
+  "docstatus": 0,
+  "doctype": "Property Setter",
+  "doctype_or_field": "DocType",
+  "field_name": null,
+  "is_system_generated": 0,
+  "modified": "2026-01-12 16:32:52.277529",
+  "module": null,
+  "name": "Item-main-field_order",
+  "property": "field_order",
+  "property_type": "Data",
+  "row_name": null,
+  "value": "[\"details\", \"naming_series\", \"item_code\", \"item_name\", \"item_group\", \"stock_uom\", \"column_break0\", \"disabled\", \"allow_alternative_item\", \"is_stock_item\", \"has_variants\", \"custom_requires_custom_batch\", \"opening_stock\", \"valuation_rate\", \"standard_rate\", \"is_fixed_asset\", \"auto_create_assets\", \"is_grouped_asset\", \"asset_category\", \"asset_naming_series\", \"over_delivery_receipt_allowance\", \"over_billing_allowance\", \"image\", \"opening_reference\", \"section_break_11\", \"description\", \"brand\", \"unit_of_measure_conversion\", \"uoms\", \"dashboard_tab\", \"inventory_section\", \"inventory_settings_section\", \"shelf_life_in_days\", \"end_of_life\", \"default_material_request_type\", \"valuation_method\", \"column_break1\", \"warranty_period\", \"weight_per_unit\", \"weight_uom\", \"allow_negative_stock\", \"sb_barcodes\", \"barcodes\", \"reorder_section\", \"reorder_levels\", \"serial_nos_and_batches\", \"has_batch_no\", \"create_new_batch\", \"batch_number_series\", \"has_expiry_date\", \"retain_sample\", \"sample_quantity\", \"column_break_37\", \"has_serial_no\", \"serial_no_series\", \"variants_section\", \"variant_of\", \"variant_based_on\", \"attributes\", \"accounting\", \"deferred_accounting_section\", \"enable_deferred_expense\", \"no_of_months_exp\", \"column_break_9s9o\", \"enable_deferred_revenue\", \"no_of_months\", \"section_break_avcp\", \"item_defaults\", \"purchasing_tab\", \"purchase_uom\", \"min_order_qty\", \"safety_stock\", \"is_purchase_item\", \"purchase_details_cb\", \"lead_time_days\", \"last_purchase_rate\", \"is_customer_provided_item\", \"customer\", \"supplier_details\", \"delivered_by_supplier\", \"column_break2\", \"supplier_items\", \"foreign_trade_details\", \"country_of_origin\", \"column_break_59\", \"customs_tariff_number\", \"sales_details\", \"sales_uom\", \"grant_commission\", \"is_sales_item\", \"column_break3\", \"max_discount\", \"customer_details\", \"customer_items\", \"item_tax_section_break\", \"taxes\", \"quality_tab\", \"inspection_required_before_purchase\", \"quality_inspection_template\", \"inspection_required_before_delivery\", \"manufacturing\", \"include_item_in_manufacturing\", \"is_sub_contracted_item\", \"default_bom\", \"column_break_74\", \"customer_code\", \"default_item_manufacturer\", \"default_manufacturer_part_no\", \"total_projected_qty\"]"
  }
 ]
