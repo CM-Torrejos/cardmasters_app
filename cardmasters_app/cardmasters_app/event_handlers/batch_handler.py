@@ -335,12 +335,14 @@ def set_batch_no_for_delivery_note(doc, method):
     # --- THE FIX IS HERE ---
     if missing_or_unmatched:
         message = (
-            "<b>Cannot Submit Delivery Note:</b><br>"
-            "The following items require a batch matching their Sales Order, but none was found.<br>"
-            "Please manufacture or purchase the stock against the correct Sales Order first.<br><br>"
+            "<b>Batch Warning:</b><br>"
+            "The following items do not have a batch matching their Sales Order.<br>"
+            "The document will still be saved/submitted, but this may cause inventory issues.<br><br>"
             + "<br><hr><br>".join(missing_or_unmatched)
         )
-        
-        # frappe.throw raises an Exception. 
-        # It stops the code, rolls back the database, and shows a Red Error box.
-        frappe.throw(message, title="Missing Required Batches")
+
+    frappe.msgprint(
+        message,
+        title="Batch Mismatch Warning",
+        indicator="orange"
+    )
