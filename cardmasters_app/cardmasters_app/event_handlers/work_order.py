@@ -45,6 +45,9 @@ def pull_sales_order_details(doc, method=None):
 
 		so_item_specifics = so_item_row.get("custom_item_specifics")
 		so_item_particulars = so_item_row.get("custom_particulars")
+		so_has_advance_withdrawal = so_item_row.get("custom_has_advance_withdrawal")
+
+		doc.custom_has_advance_withdrawal = so_has_advance_withdrawal
 
 		# Checks if theres item specifics to pull
 		if not so_item_specifics:
