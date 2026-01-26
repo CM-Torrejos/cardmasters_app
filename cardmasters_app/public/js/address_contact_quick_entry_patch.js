@@ -43,13 +43,12 @@ frappe.ui.form.CustomerQEntryWithPerson = class CustomerQEntryWithPerson extends
 				fieldname: "map_to_first_name",
 				fieldtype: "Data",
 				reqd: 1,
-				depends_on: "eval:doc.customer_type=='Company' || doc.supplier_type=='Company'",
 			},
 			{
 				label: __("Last Name"),
 				fieldname: "map_to_last_name",
 				fieldtype: "Data",
-				depends_on: "eval:doc.customer_type=='Company' || doc.supplier_type=='Company'",
+				reqd: 1,
 			},
 			{
 				fieldtype: "Column Break",
