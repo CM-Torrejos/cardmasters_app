@@ -341,8 +341,8 @@ def set_batch_no_for_delivery_note(doc, method):
             + "<br><hr><br>".join(missing_or_unmatched)
         )
 
-    frappe.msgprint(
-        message,
-        title="Batch Mismatch Warning",
-        indicator="orange"
-    )
+        frappe.msgprint(
+            message,
+            title="Batch Mismatch Warning",
+            indicator="orange"
+        )
