@@ -62,3 +62,31 @@ def validate_manufacture_source_warehouse(doc, method):
             )
             
             break
+
+EXPENSE_ACCOUNT = "1504 - STOCK CONSUMPTION FOR FG - CM CDO"
+TARGET_WAREHOUSE = "MAIN - CLAIMING - CM CDO"
+
+def before_save_stock_entry(doc, method=None):
+    """
+    Rules:
+    1) If Stock Entry type/purpose is 'Material Transfer for Consumption' OR 'Manufacture':
+       - set expense_account on each row in items to EXPENSE_ACCOUNT
+    2) If type/purpose is 'Manufacture':
+       - for any row with t_warehouse == TARGET_WAREHOUSE, set allow_zero_valuation_rate = 1
+    """
+
+    # ERPNext commonly uses "purpose". Some setups may use/alias "stock_entry_type".
+    entry_type = (getattr(doc, "stock_entry_type", None) or getattr(doc, "purpose", None) or "").strip()
+
+    if entry_type in ("Material Consumption for Manufacture", "Manufacture"):
+        for row in (doc.items or []):
+            # set expense_account if field exists on the child row
+            if hasattr(row, "expense_account"):
+                row.expense_account = EXPENSE_ACCOUNT
+
+    if entry_type == "Manufacture":
+        for row in (doc.items or []):
+            # Only for target warehouse lines
+            if getattr(row, "t_warehouse", None) == TARGET_WAREHOUSE:
+                if hasattr(row, "allow_zero_valuation_rate"):
+                    row.allow_zero_valuation_rate = 1
