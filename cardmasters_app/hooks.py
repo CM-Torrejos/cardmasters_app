@@ -16,20 +16,6 @@ fixtures = [
         ]
     },
 
-    # Property Setters (overrides to native fields)
-    {
-        "doctype": "Property Setter",
-        "sync_on_migrate": True,
-        "filters": [
-            ["is_system_generated", "=", 0]
-        ]
-    },
-
-    # Workflow
-    {
-        "doctype": "Workflow", 
-        "sync_on_migrate": True
-    },
 
     # Workflow states
     {
@@ -104,7 +90,8 @@ doc_events = {
             "cardmasters_app.cardmasters_app.event_handlers.batch_handler.set_batch_no_for_fg_on_manufacture_entry"
         ],
         "validate": [
-            "cardmasters_app.cardmasters_app.event_handlers.batch_handler.set_batch_no_for_fg_on_manufacture_entry"
+            "cardmasters_app.cardmasters_app.event_handlers.batch_handler.set_batch_no_for_fg_on_manufacture_entry",
+            "cardmasters_app.cardmasters_app.event_handlers.stock_entry.before_save_stock_entry"
         ]
     },
     "Artist Card": {
