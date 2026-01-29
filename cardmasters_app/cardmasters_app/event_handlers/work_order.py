@@ -70,6 +70,7 @@ def pull_sales_order_details(doc, method=None):
 	# --- Pull and sets header values
 	doc.custom_customer = so.get("customer")
 	doc.custom_for_new_flow = so.get("custom_for_new_flow")
+	doc.custom_blue_order = so.get("custom_blue_order")
 	doc.custom_deadline = so.get("delivery_date")
 	doc.custom_rush_order = so.get("custom_rush_order")
 	doc.custom_for_branch = so.get("custom_for_branch")
