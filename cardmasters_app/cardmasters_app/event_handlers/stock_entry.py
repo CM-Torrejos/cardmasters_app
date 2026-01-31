@@ -1,92 +1,94 @@
 # this is to strictly update stock entry on item manufacture
 import frappe
+from frappe.utils import flt
 from frappe import _
 
 def inherit_item_details_on_insert(doc, method):
-    # Only for Transfer for Manufacture with batching
-    if doc.purpose != "Material Transfer for Manufacture" or not doc.custom_batched:
-        return
-    if not doc.work_order:
-        return
+	# Only for Transfer for Manufacture with batching
+	if doc.purpose != "Material Transfer for Manufacture" or not doc.custom_batched:
+		return
+	if not doc.work_order:
+		return
 
-    # Fetch Work Order and map item to its custom details
-    wo = frappe.get_doc("Work Order", doc.work_order)
-    details_map = {
-        r.item_code: (r.get("custom_item_details") or "").strip()
-        for r in wo.required_items
-    }
+	# Fetch Work Order and map item to its custom details
+	wo = frappe.get_doc("Work Order", doc.work_order)
+	details_map = {
+		r.item_code: (r.get("custom_item_details") or "").strip()
+		for r in wo.required_items
+	}
 
-    for d in doc.items:
-        detail = details_map.get(d.item_code)
-        if detail:
-            d.custom_item_details = detail
+	for d in doc.items:
+		detail = details_map.get(d.item_code)
+		if detail:
+			d.custom_item_details = detail
 
 def get_wip_warehouse_name():
-    try:
-        wip_warehouse = frappe.db.get_single_value("Manufacturing Settings", "default_wip_warehouse")
+	try:
+		wip_warehouse = frappe.db.get_single_value("Manufacturing Settings", "default_wip_warehouse")
 
-        if wip_warehouse:
-            return wip_warehouse
-        
-        else:
-            frappe.log_error("No Warehouse found.")
-            return None
-            
-    except Exception as e:
-        frappe.log_error(f"Error querying Warehouse DocType: {e}")
-        return None
+		if wip_warehouse:
+			return wip_warehouse
+		
+		else:
+			frappe.log_error("No Warehouse found.")
+			return None
+			
+	except Exception as e:
+		frappe.log_error(f"Error querying Warehouse DocType: {e}")
+		return None
 
 def validate_manufacture_source_warehouse(doc, method):
-    """
+	"""
 	Shows a warning if any item's source warehouse
 	is not 'Work In Progress - CM CDO'.
 	"""
-    
-    warehouse = get_wip_warehouse_name()
+	
+	warehouse = get_wip_warehouse_name()
 
-    frappe.log_error("warehouse", warehouse)
+	frappe.log_error("warehouse", warehouse)
 
-    if doc.stock_entry_type != "Manufacture":
-        return
+	if doc.stock_entry_type != "Manufacture":
+		return
 
-    for item in doc.items:
-        
-        if item.s_warehouse != warehouse:
-            if not item.s_warehouse:
-                continue
+	for item in doc.items:
+		
+		if item.s_warehouse != warehouse:
+			if not item.s_warehouse:
+				continue
 
-            frappe.msgprint(
-                "The items' source warehouses are not Work In Progress (WIP) locations.",
-                title="Warehouse Warning",
-                indicator="orange"
-            )
-            
-            break
+			frappe.msgprint(
+				"The items' source warehouses are not Work In Progress (WIP) locations.",
+				title="Warehouse Warning",
+				indicator="orange"
+			)
+			
+			break
 
 EXPENSE_ACCOUNT = "1504 - STOCK CONSUMPTION FOR FG - CM CDO"
 TARGET_WAREHOUSE = "MAIN - CLAIMING - CM CDO"
 
 def before_save_stock_entry(doc, method=None):
-    """
-    Rules:
-    1) If Stock Entry type/purpose is 'Material Transfer for Consumption' OR 'Manufacture':
-       - set expense_account on each row in items to EXPENSE_ACCOUNT
-    2) If type/purpose is 'Manufacture':
-       - for any row with t_warehouse == TARGET_WAREHOUSE, set allow_zero_valuation_rate = 1
-    """
+	"""
+	Rules:
+	1) If Stock Entry type/purpose is 'Material Transfer for Consumption' OR 'Manufacture':
+	   - set expense_account on each row in items to EXPENSE_ACCOUNT
+	2) If type/purpose is 'Manufacture':
+	   - for any row with t_warehouse == TARGET_WAREHOUSE, set allow_zero_valuation_rate = 1
+	"""
 
-    # ERPNext commonly uses "purpose". Some setups may use/alias "stock_entry_type".
-    entry_type = (getattr(doc, "stock_entry_type", None) or getattr(doc, "purpose", None) or "").strip()
+	# ERPNext commonly uses "purpose". Some setups may use/alias "stock_entry_type".
+	entry_type = (getattr(doc, "stock_entry_type", None) or getattr(doc, "purpose", None) or "").strip()
 
-    if entry_type in ("Material Consumption for Manufacture", "Manufacture"):
-        for row in (doc.items or []):
-            # set expense_account if field exists on the child row
-            if hasattr(row, "expense_account"):
-                row.expense_account = EXPENSE_ACCOUNT
+	if entry_type in ("Material Consumption for Manufacture", "Manufacture"):
+		for row in (doc.items or []):
+			# set expense_account if field exists on the child row
+			if hasattr(row, "expense_account"):
+				row.expense_account = EXPENSE_ACCOUNT
 
-    if entry_type == "Manufacture":
-        for row in (doc.items or []):
-            # Only for target warehouse lines
-            if getattr(row, "t_warehouse", None) == TARGET_WAREHOUSE:
-                if hasattr(row, "allow_zero_valuation_rate"):
-                    row.allow_zero_valuation_rate = 1
+	if entry_type == "Manufacture":
+		for row in (doc.items or []):
+			# 1. Check if the warehouse matches
+			# 2. Check if the basic_rate is actually 0
+			if getattr(row, "t_warehouse", None) == TARGET_WAREHOUSE and flt(row.basic_rate) == 0:
+				if hasattr(row, "allow_zero_valuation_rate"):
+					row.allow_zero_valuation_rate = 1
