@@ -79,16 +79,19 @@ def before_save_stock_entry(doc, method=None):
 	# ERPNext commonly uses "purpose". Some setups may use/alias "stock_entry_type".
 	entry_type = (getattr(doc, "stock_entry_type", None) or getattr(doc, "purpose", None) or "").strip()
 
-	if entry_type in ("Material Consumption for Manufacture", "Manufacture"):
-		for row in (doc.items or []):
-			# set expense_account if field exists on the child row
-			if hasattr(row, "expense_account"):
-				row.expense_account = EXPENSE_ACCOUNT
-
 	if entry_type == "Manufacture":
 		for row in (doc.items or []):
-			# 1. Check if the warehouse matches
-			# 2. Check if the basic_rate is actually 0
+			# Only for target warehouse lines where basic_rate is 0
 			if getattr(row, "t_warehouse", None) == TARGET_WAREHOUSE and flt(row.basic_rate) == 0:
 				if hasattr(row, "allow_zero_valuation_rate"):
 					row.allow_zero_valuation_rate = 1
+
+
+# def after_insert_stock_entry(doc, method=None):
+# 	entry_type = (getattr(doc, "stock_entry_type", None) or getattr(doc, "purpose", None) or "").strip()
+# 	if entry_type == "Manufacture":
+# 		for row in reversed(doc.items or []):
+# 		# --- EXTENSION: Delete row if Target Warehouse is empty ---
+# 			if not row.t_warehouse:
+# 				doc.remove(row)
+# 				continue
