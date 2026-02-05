@@ -16,6 +16,14 @@ fixtures = [
         ]
     },
 
+    # Property Setters (overrides to native fields)
+    {
+        "doctype": "Property Setter",
+        "sync_on_migrate": True,
+        "filters": [
+            ["is_system_generated", "=", 0]
+        ]
+    },
 
     # Workflow states
     {
