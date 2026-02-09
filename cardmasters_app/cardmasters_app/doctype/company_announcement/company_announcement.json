@@ -77,7 +77,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-02-09 14:02:11.218706",
+ "modified": "2026-02-09 15:52:50.610185",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Company Announcement",
@@ -101,5 +101,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
+ "title_field": "title",
  "track_changes": 1
 }
