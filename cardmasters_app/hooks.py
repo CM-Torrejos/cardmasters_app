@@ -38,6 +38,10 @@ fixtures = [
     }
 ]
 
+doctype_list_js = {
+    "Work Order" : "public/js/work_order/list_view.js"
+}
+
 doctype_js = {
     "Sales Order": [
         "public/js/sales_order.js",
