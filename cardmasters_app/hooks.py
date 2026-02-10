@@ -16,6 +16,14 @@ fixtures = [
         ]
     },
 
+    # Property Setters (overrides to native fields)
+    {
+        "doctype": "Property Setter",
+        "sync_on_migrate": True,
+        "filters": [
+            ["is_system_generated", "=", 0]
+        ]
+    },
 
     # Workflow states
     {
@@ -118,11 +126,19 @@ doc_events = {
         "validate": [
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.validate_alias_on_facebook_channel",
             # "cardmasters_app.cardmasters_app.event_handlers.tag_automation.automated_sales_order_tagging"
-            ],
+        ],
         "after_submit": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.check_artist_status"],
         "after_insert": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.automated_sales_order_tagging",
         # "on_update": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.automated_sales_order_tagging",
-        'on_update_after_submit': "cardmasters_app.cardmasters_app.event_handlers.tag_automation.automated_sales_order_tagging"
+        'on_update_after_submit': "cardmasters_app.cardmasters_app.event_handlers.tag_automation.automated_sales_order_tagging",
+        'before_insert': [
+            "cardmasters_app.cardmasters_app.event_handlers.sales_order.update_item_class_on_creation_from_quotation"
+        ]
+    },
+    "Sales Order Item": {
+        "before_save": [
+            "cardmasters_app.cardmasters_app.event_handlers.sales_order.update_item_class_on_update"
+        ]
     },
     "Job Card": {
         # "on_update": ["cardmasters_app.cardmasters_app.event_handlers.job_card.on_job_card_create_handler"],

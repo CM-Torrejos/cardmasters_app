@@ -3,6 +3,15 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
+  "modified": "2025-09-29 11:54:47.441747",
+  "name": "For Edit",
+  "style": "",
+  "workflow_state_name": "For Edit"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
   "modified": "2025-05-19 04:22:33.354416",
   "name": "Claimed",
   "style": "Success",
@@ -75,15 +84,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-08-04 14:54:40.231869",
-  "name": "No Artist - Pending Production",
-  "style": "Danger",
-  "workflow_state_name": "No Artist - Pending Production"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-09-26 13:09:42.312392",
   "name": "Approved and Submitted",
   "style": "",
@@ -106,15 +106,6 @@
   "name": "In Progress",
   "style": "Info",
   "workflow_state_name": "In Progress"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-05-17 04:59:56.120535",
-  "name": "Pending Approval",
-  "style": "Info",
-  "workflow_state_name": "Pending Approval"
  },
  {
   "docstatus": 0,
@@ -147,10 +138,91 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
+  "modified": "2025-06-20 13:59:18.266820",
+  "name": "Claiming: Pending BOM",
+  "style": "",
+  "workflow_state_name": "Claiming: Pending BOM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-20 10:26:34.368986",
+  "name": "BOM WIP",
+  "style": "",
+  "workflow_state_name": "BOM WIP"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-01-09 13:12:37.032153",
+  "name": "Finished Consumption",
+  "style": "",
+  "workflow_state_name": "Finished Consumption"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-17 04:59:56.120535",
+  "name": "Pending Approval",
+  "style": "Info",
+  "workflow_state_name": "Pending Approval"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-01-29 14:28:13.783932",
+  "name": "In Claiming",
+  "style": "",
+  "workflow_state_name": "In Claiming"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-08-04 14:54:40.231869",
+  "name": "No Artist - Pending Production",
+  "style": "Danger",
+  "workflow_state_name": "No Artist - Pending Production"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-28 07:07:20.066013",
+  "name": "Cancelled",
+  "style": "",
+  "workflow_state_name": "Cancelled"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-01-29 14:28:07.739805",
+  "name": "Pending Claiming",
+  "style": "",
+  "workflow_state_name": "Pending Claiming"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
   "modified": "2025-08-04 14:54:54.371813",
   "name": "Production Concluded",
   "style": "Success",
   "workflow_state_name": "Production Concluded"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-02-02 11:58:18.322773",
+  "name": "PC (PERMITTED BYPASS)",
+  "style": "",
+  "workflow_state_name": "PC (PERMITTED BYPASS)"
  },
  {
   "docstatus": 0,
@@ -165,6 +237,33 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
+  "modified": "2025-08-05 09:36:25.089086",
+  "name": "BOM Finished",
+  "style": "Success",
+  "workflow_state_name": "BOM Finished"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-01-29 14:27:25.594186",
+  "name": "In Production",
+  "style": "",
+  "workflow_state_name": "In Production"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-01-29 14:27:09.862910",
+  "name": "Not Started",
+  "style": "",
+  "workflow_state_name": "Not Started"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
   "modified": "2025-05-17 05:00:31.788551",
   "name": "Pending Client Approval",
   "style": "Danger",
@@ -174,19 +273,10 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-06-20 13:59:18.266820",
-  "name": "Claiming: Pending BOM",
+  "modified": "2025-07-03 09:10:17.857134",
+  "name": "Awaiting Submission",
   "style": "",
-  "workflow_state_name": "Claiming: Pending BOM"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-08-05 09:36:25.089086",
-  "name": "BOM Finished",
-  "style": "Success",
-  "workflow_state_name": "BOM Finished"
+  "workflow_state_name": "Awaiting Submission"
  },
  {
   "docstatus": 0,
@@ -210,10 +300,10 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-06-20 10:26:34.368986",
-  "name": "BOM WIP",
-  "style": "",
-  "workflow_state_name": "BOM WIP"
+  "modified": "2025-05-19 04:23:13.963387",
+  "name": "Production",
+  "style": "Warning",
+  "workflow_state_name": "Production"
  },
  {
   "docstatus": 0,
@@ -228,69 +318,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2026-01-09 13:12:37.032153",
-  "name": "Finished Consumption",
-  "style": "",
-  "workflow_state_name": "Finished Consumption"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-04-28 07:07:20.066013",
-  "name": "Cancelled",
-  "style": "",
-  "workflow_state_name": "Cancelled"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-05-17 05:00:04.727905",
-  "name": "Layouting",
-  "style": "Warning",
-  "workflow_state_name": "Layouting"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-07-03 09:10:17.857134",
-  "name": "Awaiting Submission",
-  "style": "",
-  "workflow_state_name": "Awaiting Submission"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-05-19 04:23:13.963387",
-  "name": "Production",
-  "style": "Warning",
-  "workflow_state_name": "Production"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2026-01-29 14:28:07.739805",
-  "name": "Pending Claiming",
-  "style": "",
-  "workflow_state_name": "Pending Claiming"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2026-01-29 14:28:13.783932",
-  "name": "In Claiming",
-  "style": "",
-  "workflow_state_name": "In Claiming"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-04-28 05:15:12.134310",
   "name": "Draft",
   "style": "",
@@ -300,18 +327,9 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2026-01-29 14:27:09.862910",
-  "name": "Not Started",
-  "style": "",
-  "workflow_state_name": "Not Started"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2026-01-29 14:27:25.594186",
-  "name": "In Production",
-  "style": "",
-  "workflow_state_name": "In Production"
+  "modified": "2025-05-17 05:00:04.727905",
+  "name": "Layouting",
+  "style": "Warning",
+  "workflow_state_name": "Layouting"
  }
 ]
