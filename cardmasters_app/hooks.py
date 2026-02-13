@@ -76,6 +76,8 @@ app_include_js = [
     "/assets/cardmasters_app/js/utils.js",
     "/assets/cardmasters_app/js/address_contact_quick_entry_patch.js",
     "/assets/cardmasters_app/js/theme_switcher.js",
+    "/assets/cardmasters_app/js/workstation_leader_log/listview_star_button.js",
+    "/assets/cardmasters_app/js/artist_card/multi_artist_filter.js"
 ]
 
 doc_events = {
@@ -181,6 +183,10 @@ app_include_css = [
     "/assets/cardmasters_app/css/cotton_candy_theme.css",
     "/assets/cardmasters_app/css/sales_order_grid.css"
 ]
+
+permission_query_conditions = {
+    "Artist Card": "cardmasters_app.cardmasters_app.api.artist_card.artist_filter_listview.get_artist_query"
+}
 
 # Apps
 # ------------------
