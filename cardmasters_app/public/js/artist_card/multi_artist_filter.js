@@ -9,7 +9,7 @@ frappe.listview_settings["Artist Card"] = {
             let args = original_get_args.call(this);
 
             // Find the filter
-            let custom_filter = args.filters.find(f => f[1] === "custom_any_artist_search");
+            let custom_filter = args.filters.find(f => f[1] === "any_artist_search");
             let artist_value = custom_filter ? custom_filter[3] : "";
 
             // Only call the server if the value changed
@@ -27,7 +27,7 @@ frappe.listview_settings["Artist Card"] = {
             }
 
             // SCRUB the filter so the DB doesn't see it
-            args.filters = args.filters.filter(f => f[1] !== "custom_any_artist_search");
+            args.filters = args.filters.filter(f => f[1] !== "any_artist_search");
 
             return args;
         };
