@@ -1,6 +1,6 @@
 import frappe
 
-def get_artist_query(user, doctype=None):
+def get_artist_query(user, _doctype=None):
     # Read the session variable we set in the JS callback
     artist = frappe.cache().get_value(f"search_artist_{user}")
     
