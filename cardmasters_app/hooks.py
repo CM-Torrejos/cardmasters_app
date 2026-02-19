@@ -114,7 +114,7 @@ doc_events = {
             "cardmasters_app.cardmasters_app.event_handlers.artist_card.calculate_time_difference"
         ],
         "before_insert": [
-            "cardmasters_app.cardmasters_app.event_handlers.artist_card.before_insert",
+            "cardmasters_app.cardmasters_app.event_handlers.artist_card.update_so_workflow_state",
             "cardmasters_app.cardmasters_app.event_handlers.artist_card.validate_submission",
             "cardmasters_app.cardmasters_app.event_handlers.artist_card.assign_artist_so"
         ],
