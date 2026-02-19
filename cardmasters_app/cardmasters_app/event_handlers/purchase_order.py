@@ -4,7 +4,7 @@ import frappe
 from frappe import _
 
 # TODO: fix logic for validating revolving fund
-def validate_po_revolving(doc, method):
+def validate_po_revolving(doc, _method):
     """
     If *all* linked Material Requests on the PO items
     have custom_from_revolving_fund=True, then require
