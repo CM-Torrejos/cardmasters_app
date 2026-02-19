@@ -43,10 +43,8 @@ def validate_submission(doc, _method):
 			)
 			
 def before_insert(doc, _method):
-	print('thsi runs')
 	so = frappe.get_doc("Sales Order", doc.sales_order)
 	if (so.workflow_state and so.workflow_state == 'Pending'):
-		print('thsi runs 2')
 		so = apply_workflow(so, "Begin Layout")
 		so.save()
 
