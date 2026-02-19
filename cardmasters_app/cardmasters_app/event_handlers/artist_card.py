@@ -2,7 +2,7 @@ import frappe
 from frappe.utils import nowdate
 from frappe.model.workflow import apply_workflow, get_transitions
 
-def calculate_time_difference(doc, method):
+def calculate_time_difference(doc, _method):
 	"""
 	Hooked into before_save of Artist Sheet.
 	When workflow_state == 'Client Approved',
@@ -20,12 +20,12 @@ def calculate_time_difference(doc, method):
 		# reset (optional—drop this line if you want to preserve old values)
 		doc.time_difference = None
 
-def assign_artist_so(doc, method):
+def assign_artist_so(doc, _method):
 	so = frappe.get_doc("Sales Order", doc.sales_order)
 	so.custom_artist = doc.artist
 	so.save() 
 
-def validate_submission(doc, method):
+def validate_submission(doc, _method):
 	"""
 	Prevent submitting an Artist Card if its linked Sales Order
 	already has any other Artist Card.
@@ -42,7 +42,7 @@ def validate_submission(doc, method):
 				.format(doc.sales_order, exists)
 			)
 			
-def before_insert(doc, method):
+def before_insert(doc, _method):
 	print('thsi runs')
 	so = frappe.get_doc("Sales Order", doc.sales_order)
 	if (so.workflow_state and so.workflow_state == 'Pending'):
