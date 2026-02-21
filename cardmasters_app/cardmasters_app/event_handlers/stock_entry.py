@@ -3,7 +3,7 @@ import frappe
 from frappe.utils import flt
 from frappe import _
 
-def inherit_item_details_on_insert(doc, method):
+def inherit_item_details_on_insert(doc, _method):
 	# Only for Transfer for Manufacture with batching
 	if doc.purpose != "Material Transfer for Manufacture" or not doc.custom_batched:
 		return
@@ -37,7 +37,7 @@ def get_wip_warehouse_name():
 		frappe.log_error(f"Error querying Warehouse DocType: {e}")
 		return None
 
-def validate_manufacture_source_warehouse(doc, method):
+def validate_manufacture_source_warehouse(doc, _method):
 	"""
 	Shows a warning if any item's source warehouse
 	is not 'Work In Progress - CM CDO'.
@@ -67,7 +67,7 @@ def validate_manufacture_source_warehouse(doc, method):
 EXPENSE_ACCOUNT = "1504 - STOCK CONSUMPTION FOR FG - CM CDO"
 TARGET_WAREHOUSE = "MAIN - CLAIMING - CM CDO"
 
-def before_save_stock_entry(doc, method=None):
+def before_save_stock_entry(doc, _method=None):
 	"""
 	Rules:
 	1) If Stock Entry type/purpose is 'Material Transfer for Consumption' OR 'Manufacture':

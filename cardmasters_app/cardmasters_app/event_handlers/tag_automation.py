@@ -3,6 +3,7 @@ from frappe.desk.doctype.tag.tag import check_user_tags
 
 frappe.utils.logger.set_log_level("INFO")
 logger = frappe.logger("automated_tagging", allow_site=True, with_more_info=False)
+tagging_error = "Automated Tagging Error"
 
 # ================================================================
 # Configuration
@@ -53,7 +54,7 @@ def get_linked_docs(source_doctype: str, source_name: str):
             if not meta.has_field(link_field):
                 logger.warning(f"Skipping {target_doctype}: Missing field '{link_field}'")
                 continue
-        except Exception as e:
+        except Exception:
             continue
 
         docs = frappe.get_all(target_doctype, filters=filters, fields=["name"])
@@ -81,7 +82,7 @@ def apply_tag_to_linked_docs(source_doctype, source_name, tag):
                 target_doc.add_tag(tag)
                 logger.info(f"Added tag '{tag}' to {target_doctype} '{linked.name}'.")
             except Exception as e:
-                frappe.log_error(f"Error adding tag to {target_doctype} {linked.name}: {e}", "Automated Tagging Error")
+                frappe.log_error(f"Error adding tag to {target_doctype} {linked.name}: {e}", tagging_error)
 
 def remove_tag_from_linked_docs(source_doctype, source_name, tag):
     """
@@ -127,7 +128,7 @@ def sync_linked_documents_on_master_document_tags_addition(doc, method):
         apply_tag_to_linked_docs(source_doctype, source_name, new_tag)
         logger.info(f"Finished syncing tag '{new_tag}' from {source_doctype} '{source_name}'.")
     except Exception:
-        frappe.log_error(title="Automated Tagging Error", message=frappe.get_traceback())
+        frappe.log_error(title=tagging_error, message=frappe.get_traceback())
 
 @frappe.whitelist()
 def sync_linked_documents_on_master_documemt_tags_removal(tag, dt, dn):
@@ -143,7 +144,7 @@ def sync_linked_documents_on_master_documemt_tags_removal(tag, dt, dn):
             remove_tag_from_linked_docs(dt, dn, tag)
             logger.info(f"Finished syncing removed tag '{tag}' from {dt} '{dn}'.")
         except Exception:
-            frappe.log_error(title="Automated Tagging Error", message=frappe.get_traceback())
+            frappe.log_error(title=tagging_error, message=frappe.get_traceback())
 
     # 2. Original Frappe tag deletion logic
     try:
@@ -227,7 +228,7 @@ def automated_sales_order_tagging(doc, method):
             logger.info(f"ACTION: No change needed.")
 
     except Exception as e:
-        frappe.log_error(title="Automated Tagging Error", message=frappe.get_traceback())
+        frappe.log_error(title=tagging_error, message=frappe.get_traceback())
 
 def sync_tags_from_master_on_creation(doc, method):
     """
@@ -280,4 +281,4 @@ def sync_tags_from_master_on_creation(doc, method):
             logger.debug(f"{doc.doctype} not found in any PROPAGATION_MAP target. Skipping tag sync.")
 
     except Exception:
-        frappe.log_error(title="Automated Tagging Error", message=frappe.get_traceback())
+        frappe.log_error(title=tagging_error, message=frappe.get_traceback())
