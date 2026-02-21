@@ -42,12 +42,12 @@ frappe.ui.form.on('Work Order', {
 		// }
 
 		// Call it on refresh
-		set_custom_pill();
+		// set_custom_pill();
 		
 		// Optional: re-run it after status changes dynamically
-		frm.fields_dict.status.df.onchange = function() {
-			set_custom_pill();
-		};
+		// frm.fields_dict.status.df.onchange = function() {
+		// 	set_custom_pill();
+		// };
 
 		if (cardmasters.utils && cardmasters.utils.sales_order_print_preview) {
             cardmasters.utils.sales_order_print_preview(frm);
@@ -97,8 +97,11 @@ frappe.ui.form.on('Work Order', {
 		// 		set_from_warehouse: 'MASTER WAREHOUSE - CM CDO'
 		// 	})
 		// })
+
+		// rename start button to withdraw
+		setTimeout(() => {
+            frm.change_custom_button_type('Start', null, 'primary');
+            $("[data-label='Start']").text(__("Withdraw"));
+        }, 10);
 	},
-
-	
-
 });
