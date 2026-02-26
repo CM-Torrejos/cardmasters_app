@@ -109,7 +109,7 @@ def remove_tag_from_linked_docs(source_doctype, source_name, tag):
 # ================================================================
 # Hook Functions
 # ================================================================
-def sync_linked_documents_on_master_document_tags_addition(doc, method):
+def sync_linked_documents_on_master_document_tags_addition(doc, _method):
     """
     Hook: Tag Link - after_insert
     Action: When a new tag is added to a source document, propagate it
@@ -196,17 +196,17 @@ def automated_sales_order_tagging(doc, method):
             customer_class = frappe.db.get_value("Customer", doc.customer, "custom_class")
             if customer_class == "A":
                 should_have_tag = True
-                logger.info(f"Condition 1 MET: Customer is Class A.")
+                logger.info("Condition 1 MET: Customer is Class A.")
 
         # Condition 2: Sponsored checkbox is ticked
         if not should_have_tag and getattr(doc, "custom_sponsored", 0): # doc.custom_sponsored == 1
             should_have_tag = True
-            logger.info(f"Condition 2 MET: Sponsored is ticked.")
+            logger.info("Condition 2 MET: Sponsored is ticked.")
 
         # Condition 3: Grand total is >= 80,000
         if not should_have_tag and doc.grand_total >= 80000:
             should_have_tag = True
-            logger.info(f"Condition 3 MET: Grand Total is >= 80000.")
+            logger.info("Condition 3 MET: Grand Total is >= 80000.")
 
         # --- 2. Apply or Remove Tag ---
         
@@ -225,12 +225,12 @@ def automated_sales_order_tagging(doc, method):
             logger.info(f"ACTION: REMOVED tag '{TAG_TO_APPLY}' from {doc.name}")
             
         else:
-            logger.info(f"ACTION: No change needed.")
+            logger.info("ACTION: No change needed.")
 
-    except Exception as e:
+    except Exception as _:
         frappe.log_error(title=tagging_error, message=frappe.get_traceback())
 
-def sync_tags_from_master_on_creation(doc, method):
+def sync_tags_from_master_on_creation(doc, _method):
     """
     Hook: after_insert
     Generic tag propagation for any document creation.
@@ -276,6 +276,7 @@ def sync_tags_from_master_on_creation(doc, method):
                     logger.info(f"Applied tag '{tag}' to {doc.doctype} '{doc.name}'")
 
                 logger.info(f"SUCCESS: Copied tags from {master_doctype} '{master_doc.name}' to {doc.doctype} '{doc.name}'")
+                break
 
         else:
             logger.debug(f"{doc.doctype} not found in any PROPAGATION_MAP target. Skipping tag sync.")
