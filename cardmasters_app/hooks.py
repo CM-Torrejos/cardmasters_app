@@ -170,6 +170,9 @@ doc_events = {
     },
     "Tag Link": {
         "after_insert": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_linked_documents_on_master_document_tags_addition"
+    },
+    "Raven Message": {
+        "after_insert": "cardmasters_app.cardmasters_app.api.raven.broadcast_raven_update"
     }
 }
 
