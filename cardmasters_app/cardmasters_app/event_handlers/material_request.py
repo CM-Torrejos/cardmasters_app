@@ -1,10 +1,9 @@
 import frappe
 from frappe import _
 
-def validate_material_request(doc, method):
+def validate_material_request(doc, _method):
     # look for any RMGEN lines
     has_rmgen = any(d.item_code == "RMGEN" for d in doc.items)
-    print(has_rmgen);
 
     if doc.material_request_type == "Purchase":
         if has_rmgen:
