@@ -1,6 +1,6 @@
 import frappe
 
-def broadcast_raven_update(doc, method)
+def broadcast_raven_update(doc, method):
     event_name = "raven:unread_channel_count_updated"
     
     recipients = frappe.get_all(
