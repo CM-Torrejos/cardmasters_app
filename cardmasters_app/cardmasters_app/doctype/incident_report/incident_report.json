@@ -15,7 +15,7 @@
   "date",
   "status",
   "reports_to",
-  "grievance_details_section",
+  "incident_details_section",
   "incident_against_party",
   "incident_report_against",
   "incident_type",
@@ -33,7 +33,6 @@
   "acknowledgement",
   "column_break_16",
   "action_detail",
-  "amended_from",
   "amended_from"
  ],
  "fields": [
@@ -95,11 +94,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "grievance_details_section",
-   "fieldtype": "Section Break",
-   "label": "Grievance Details"
-  },
-  {
+   "default": "Employee",
    "fieldname": "incident_against_party",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -204,9 +199,10 @@
    "fieldtype": "Link",
    "label": "Amended From",
    "no_copy": 1,
-   "options": "Employee Grievance",
+   "options": "Incident Report",
    "print_hide": 1,
-   "read_only": 1
+   "read_only": 1,
+   "search_index": 1
   },
   {
    "fieldname": "amended_from",
@@ -217,12 +213,17 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "fieldname": "incident_details_section",
+   "fieldtype": "Section Break",
+   "label": "Incident Details"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-02-28 15:26:39.764005",
+ "modified": "2026-03-04 17:16:51.614985",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Incident Report",
