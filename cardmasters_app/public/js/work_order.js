@@ -1,10 +1,15 @@
 frappe.ui.form.on('Work Order', {
 	refresh: function(frm) {
-		// rename start button to withdraw
 		setTimeout(() => {
-            frm.change_custom_button_type('Start', null, 'primary');
-            $("[data-label='Start']").text(__("Withdraw"));
-        }, 10);
+			if(frm.custom_buttons['Start']) {
+				frm.change_custom_button_type('Start', null, 'primary');
+				
+				let $btn = frm.page.get_custom_button('Start');
+				if($btn) {
+					$btn.text(__('Withdraw'));
+				}
+			}
+		}, 15);
 		
 		// function set_custom_pill(doc) {
 		// 	$('span.custom-state-pill').remove();
