@@ -75,15 +75,13 @@
   },
   {
    "fieldname": "prepared_by",
-   "fieldtype": "Link",
-   "label": "Prepared by",
-   "options": "Employee"
+   "fieldtype": "Data",
+   "label": "Prepared by"
   },
   {
    "fieldname": "designation",
-   "fieldtype": "Link",
-   "label": "Designation",
-   "options": "Designation"
+   "fieldtype": "Data",
+   "label": "Designation"
   },
   {
    "fieldname": "section_break_zfoz",
@@ -97,19 +95,19 @@
    "default": "0",
    "fieldname": "coo",
    "fieldtype": "Check",
-   "label": "Chief Operations Officer"
+   "label": "COO"
   },
   {
    "default": "0",
    "fieldname": "cfo",
    "fieldtype": "Check",
-   "label": "Chief Financial Officer"
+   "label": "CFO"
   },
   {
    "default": "0",
    "fieldname": "ceo",
    "fieldtype": "Check",
-   "label": "Chief Executive Officer"
+   "label": "CEO"
   },
   {
    "fieldname": "section_break_mnwo",
@@ -161,7 +159,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-04 09:23:21.523479",
+ "modified": "2026-02-28 15:01:04.206797",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Memorandum",
