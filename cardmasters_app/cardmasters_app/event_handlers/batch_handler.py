@@ -13,8 +13,11 @@ def get_or_create_batch(batch_name, item_code, posting_date):
 				"item": item_code,
 				"fifo_date": posting_date
 			}).insert(ignore_permissions=True)
-		except frappe.DuplicateEntryError:
-			frappe.db.rollback()
+		except Exception as e:
+			error = str(e)
+			error_title = f"Batch Error: {error}"[:140]
+			frappe.log_error(message=frappe.get_traceback(), title=error_title)
+			pass
 	return name
 
 def build_batch_name(so_name, item_code, item_specifics):
@@ -36,199 +39,196 @@ def _find_existing_batch_by_convention(batch_name: str) -> str | None:
 	return found
 
 def set_batch_no_for_purchase_order(doc, method):
-    """
-    CREATOR LOGIC:
-    On Purchase Order, we CREATE the batch ID pre-emptively 
-    based on the linked Sales Order + Item Specifics.
-    """
-    # If you have a flag to enable/disable this feature, check it here
-    # if not doc.custom_batched: return
+	"""
+	CREATOR LOGIC:
+	On Purchase Order, we CREATE the batch ID pre-emptively 
+	based on the linked Sales Order + Item Specifics.
+	"""
+	# If you have a flag to enable/disable this feature, check it here
+	# if not doc.custom_batched: return
 
-    for d in doc.items:
-        item_code = d.get("item_code")
-        if not item_code: continue
+	for d in doc.items:
+		item_code = d.get("item_code")
+		if not item_code: continue
 
-        # 1. Check if item is set to be batched
-        # (We check the Item Master because the PO row might not know yet)
-        has_batch_no = frappe.get_cached_value("Item", item_code, "has_batch_no")
-        if not has_batch_no:
-            continue
+		# 1. Check if item is set to be batched
+		# (We check the Item Master because the PO row might not know yet)
+		has_batch_no = frappe.get_cached_value("Item", item_code, "has_batch_no")
+		if not has_batch_no:
+			continue
 
-        # 2. Get Linked Sales Order
-        # Note: Ensure your PO Item has the 'sales_order' field mapped
-        sales_order = d.get("sales_order")
-        
-        if not sales_order:
-            # Option: Ignore non-SO items, OR throw error if strict
-            continue 
+		# 2. Get Linked Sales Order
+		# Note: Ensure your PO Item has the 'sales_order' field mapped
+		sales_order = d.get("sales_order")
+		
+		if not sales_order:
+			# Option: Ignore non-SO items, OR throw error if strict
+			continue 
 
-        # 3. Get Specifics (e.g., "Vacuum")
-        item_specifics = (d.get("custom_item_specifics") or "").strip()
-        
-        # Fallback: If PO row is empty, try fetching from the linked SO Item
-        if not item_specifics:
-            # We try to find the specific item in the SO to get its details
-            item_specifics = frappe.db.get_value("Sales Order Item", 
-                {"parent": sales_order, "item_code": item_code}, 
-                "custom_item_specifics"
-            ) or ""
-            item_specifics = item_specifics.strip()
-            
-        if not item_specifics:
-            item_specifics = "NA"
+		# 3. Get Specifics (e.g., "Vacuum")
+		item_specifics = (d.get("custom_item_specifics") or "").strip()
+		
+		# Fallback: If PO row is empty, try fetching from the linked SO Item
+		if not item_specifics:
+			# We try to find the specific item in the SO to get its details
+			item_specifics = frappe.db.get_value("Sales Order Item", 
+				{"parent": sales_order, "item_code": item_code}, 
+				"custom_item_specifics"
+			) or ""
+			item_specifics = item_specifics.strip()
+			
+		if not item_specifics:
+			item_specifics = "NA"
 
-        # 4. Build Name
-        batch_name = build_batch_name(sales_order, item_code, item_specifics)
-        
-        # 5. CREATE the Batch
-        # This ensures the batch exists in the system before the goods ever arrive.
-        new_batch = get_or_create_batch(batch_name, item_code, doc.posting_date)
-        
-        # 6. Stamp it on the PO (Optional, requires batch_no field on PO Item)
-        # This helps the supplier know which batch to label.
-        d.batch_no = new_batch 
-        d.db_set("batch_no", new_batch)
+		# 4. Build Name
+		batch_name = build_batch_name(sales_order, item_code, item_specifics)
+		
+		# 5. CREATE the Batch
+		# This ensures the batch exists in the system before the goods ever arrive.
+		new_batch = get_or_create_batch(batch_name, item_code, doc.posting_date)
+		
+		# 6. Stamp it on the PO (Optional, requires batch_no field on PO Item)
+		# This helps the supplier know which batch to label.
+		d.batch_no = new_batch 
 
 def set_batch_no_for_purchase_receipt(doc, method):
-    """
-    Strict assignment for Purchase Receipt.
-    Sanitizes pre-filled batches to ensure they match the Sales Order.
-    """
-    missing_or_unmatched = []
+	"""
+	Strict assignment for Purchase Receipt.
+	Sanitizes pre-filled batches to ensure they match the Sales Order.
+	"""
+	missing_or_unmatched = []
 
-    for d in doc.items:
-        item_code = d.get("item_code")
-        if not item_code: continue
+	for d in doc.items:
+		item_code = d.get("item_code")
+		if not item_code: continue
 
-        # 1. Check if Batch is required
-        # We check item master because PR row might not have 'has_batch_no' mapped yet
-        has_batch_no = frappe.get_cached_value("Item", item_code, "has_batch_no")
-        if not has_batch_no:
-            continue
+		# 1. Check if Batch is required
+		# We check item master because PR row might not have 'has_batch_no' mapped yet
+		has_batch_no = frappe.get_cached_value("Item", item_code, "has_batch_no")
+		if not has_batch_no:
+			continue
 
-        # 2. Get Sales Order (Critical for naming)
-        so_name = d.get("sales_order")
-        if not so_name:
-            # If strict:
-            # missing_or_unmatched.append(f"Row {d.idx}: {item_code} is missing a Sales Order link.")
-            continue 
+		# 2. Get Sales Order (Critical for naming)
+		so_name = d.get("sales_order")
+		if not so_name:
+			# If strict:
+			# missing_or_unmatched.append(f"Row {d.idx}: {item_code} is missing a Sales Order link.")
+			continue 
 
-        # --- THE FIX: SANITIZE PRE-FILLED DATA ---
-        # If ERPNext auto-mapped a batch, check if it's the right one.
-        current_batch = d.get("batch_no")
-        if current_batch:
-            # If the batch exists but doesn't start with 'SO-xxxxx', it's wrong.
-            if not current_batch.startswith(so_name):
-                # frappe.msgprint(f"Removing incorrect batch {current_batch} from Row {d.idx}") # Debug
-                d.batch_no = None 
-            else:
-                # It matches the SO, so we trust it and move to next item
-                continue
-        # -----------------------------------------
+		# --- THE FIX: SANITIZE PRE-FILLED DATA ---
+		# If ERPNext auto-mapped a batch, check if it's the right one.
+		current_batch = d.get("batch_no")
+		if current_batch:
+			# If the batch exists but doesn't start with 'SO-xxxxx', it's wrong.
+			if not current_batch.startswith(so_name):
+				# frappe.msgprint(f"Removing incorrect batch {current_batch} from Row {d.idx}") # Debug
+				d.batch_no = None 
+			else:
+				# It matches the SO, so we trust it and move to next item
+				continue
+		# -----------------------------------------
 
-        # 3. Get Specifics
-        item_specifics = (d.get("custom_item_specifics") or "").strip()
-        # Fallback: Check PO Item
-        if not item_specifics and d.get("purchase_order"):
-             item_specifics = frappe.db.get_value("Purchase Order Item", 
-                {"parent": d.purchase_order, "item_code": item_code}, 
-                "custom_item_specifics"
-             ) or ""
-        if not item_specifics: item_specifics = "NA"
+		# 3. Get Specifics
+		item_specifics = (d.get("custom_item_specifics") or "").strip()
+		# Fallback: Check PO Item
+		if not item_specifics and d.get("purchase_order"):
+			 item_specifics = frappe.db.get_value("Purchase Order Item", 
+				{"parent": d.purchase_order, "item_code": item_code}, 
+				"custom_item_specifics"
+			 ) or ""
+		if not item_specifics: item_specifics = "NA"
 
-        # 4. Find the Batch (Pre-created by PO)
-        expected_name = build_batch_name(so_name, item_code, item_specifics)
-        found_batch = _find_existing_batch_by_convention(expected_name)
+		# 4. Find the Batch (Pre-created by PO)
+		expected_name = build_batch_name(so_name, item_code, item_specifics)
+		found_batch = _find_existing_batch_by_convention(expected_name)
 
-        if found_batch:
-            d.batch_no = found_batch
-            d.db_set("batch_no", found_batch)
-        else:
-            # Ensure field is empty so we don't save junk
-            d.batch_no = None
-            missing_or_unmatched.append(
-                f"Row {d.idx}: {item_code}<br>"
-                f"Sales Order: <b>{so_name}</b><br>"
-                f"Expected Batch: {frappe.utils.escape_html(expected_name[:100])}"
-            )
+		if found_batch:
+			d.batch_no = found_batch
+		else:
+			# Ensure field is empty so we don't save junk
+			d.batch_no = None
+			missing_or_unmatched.append(
+				f"Row {d.idx}: {item_code}<br>"
+				f"Sales Order: <b>{so_name}</b><br>"
+				f"Expected Batch: {frappe.utils.escape_html(expected_name[:100])}"
+			)
 
-    # 5. HARD STOP
-    if missing_or_unmatched:
-        message = (
-            "<b>Cannot Submit Purchase Receipt:</b><br>"
-            "The required batches for these items were not found.<br>"
-            "Please ensure the <b>Purchase Order</b> was validated to create these batches.<br><br>"
-            + "<br><hr><br>".join(missing_or_unmatched)
-        )
-        frappe.throw(message, title="Batch Validation Failed")
+	# 5. HARD STOP
+	if missing_or_unmatched:
+		message = (
+			"<b>Cannot Submit Purchase Receipt:</b><br>"
+			"The required batches for these items were not found.<br>"
+			"Please ensure the <b>Purchase Order</b> was validated to create these batches.<br><br>"
+			+ "<br><hr><br>".join(missing_or_unmatched)
+		)
+		frappe.throw(message, title="Batch Validation Failed")
 
 def set_batch_no_for_purchase_invoice(doc, method):
-    """
-    Strict assignment for Purchase Invoice.
-    Sanitizes pre-filled batches to ensure they match the Sales Order.
-    """
-    missing_or_unmatched = []
+	"""
+	Strict assignment for Purchase Invoice.
+	Sanitizes pre-filled batches to ensure they match the Sales Order.
+	"""
+	missing_or_unmatched = []
 
-    for d in doc.items:
-        item_code = d.get("item_code")
-        if not item_code: continue
+	for d in doc.items:
+		item_code = d.get("item_code")
+		if not item_code: continue
 
-        has_batch_no = frappe.get_cached_value("Item", item_code, "has_batch_no")
-        if not has_batch_no:
-            continue
+		has_batch_no = frappe.get_cached_value("Item", item_code, "has_batch_no")
+		if not has_batch_no:
+			continue
 
-        # 1. Get Sales Order 
-        so_name = d.get("sales_order")
-        
-        # If not directly on PI row, try to fetch from PR link
-        if not so_name and d.get("pr_detail"):
-             so_name = frappe.db.get_value("Purchase Receipt Item", d.pr_detail, "sales_order")
+		# 1. Get Sales Order 
+		so_name = d.get("sales_order")
+		
+		# If not directly on PI row, try to fetch from PR link
+		if not so_name and d.get("pr_detail"):
+			 so_name = frappe.db.get_value("Purchase Receipt Item", d.pr_detail, "sales_order")
 
-        if not so_name:
-            continue
+		if not so_name:
+			continue
 
-        # --- THE FIX: SANITIZE PRE-FILLED DATA ---
-        current_batch = d.get("batch_no")
-        if current_batch:
-            if not current_batch.startswith(so_name):
-                d.batch_no = None 
-            else:
-                continue
-        # -----------------------------------------
+		# --- THE FIX: SANITIZE PRE-FILLED DATA ---
+		current_batch = d.get("batch_no")
+		if current_batch:
+			if not current_batch.startswith(so_name):
+				d.batch_no = None 
+			else:
+				continue
+		# -----------------------------------------
 
-        # 2. Get Specifics
-        item_specifics = (d.get("custom_item_specifics") or "").strip()
-        # Fallback chain: PI -> PR -> PO
-        if not item_specifics and d.get("pr_detail"):
-             item_specifics = frappe.db.get_value("Purchase Receipt Item", d.pr_detail, "custom_item_specifics") or ""
-        if not item_specifics and d.get("po_detail"):
-             item_specifics = frappe.db.get_value("Purchase Order Item", d.po_detail, "custom_item_specifics") or ""
-        
-        if not item_specifics: item_specifics = "NA"
+		# 2. Get Specifics
+		item_specifics = (d.get("custom_item_specifics") or "").strip()
+		# Fallback chain: PI -> PR -> PO
+		if not item_specifics and d.get("pr_detail"):
+			 item_specifics = frappe.db.get_value("Purchase Receipt Item", d.pr_detail, "custom_item_specifics") or ""
+		if not item_specifics and d.get("po_detail"):
+			 item_specifics = frappe.db.get_value("Purchase Order Item", d.po_detail, "custom_item_specifics") or ""
+		
+		if not item_specifics: item_specifics = "NA"
 
-        # 3. Find Batch
-        expected_name = build_batch_name(so_name, item_code, item_specifics)
-        found_batch = _find_existing_batch_by_convention(expected_name)
+		# 3. Find Batch
+		expected_name = build_batch_name(so_name, item_code, item_specifics)
+		found_batch = _find_existing_batch_by_convention(expected_name)
 
-        if found_batch:
-            d.batch_no = found_batch
-            d.db_set("batch_no", found_batch)
-        else:
-            d.batch_no = None
-            missing_or_unmatched.append(
-                f"Row {d.idx}: {item_code}<br>"
-                f"Sales Order: <b>{so_name}</b><br>"
-                f"Expected Batch: {frappe.utils.escape_html(expected_name[:100])}"
-            )
+		if found_batch:
+			d.batch_no = found_batch
+		else:
+			d.batch_no = None
+			missing_or_unmatched.append(
+				f"Row {d.idx}: {item_code}<br>"
+				f"Sales Order: <b>{so_name}</b><br>"
+				f"Expected Batch: {frappe.utils.escape_html(expected_name[:100])}"
+			)
 
-    # 4. HARD STOP
-    if missing_or_unmatched:
-        message = (
-            "<b>Cannot Submit Purchase Invoice:</b><br>"
-            "The required batches for these items were not found.<br><br>"
-            + "<br><hr><br>".join(missing_or_unmatched)
-        )
-        frappe.throw(message, title="Batch Validation Failed")
+	# 4. HARD STOP
+	if missing_or_unmatched:
+		message = (
+			"<b>Cannot Submit Purchase Invoice:</b><br>"
+			"The required batches for these items were not found.<br><br>"
+			+ "<br><hr><br>".join(missing_or_unmatched)
+		)
+		frappe.throw(message, title="Batch Validation Failed")
 
 def set_batch_no_for_fg_on_manufacture_entry(doc, method):
 	# Do not run if "Batched" is not checked, or purpose is not Manufacture
@@ -262,87 +262,85 @@ def set_batch_no_for_fg_on_manufacture_entry(doc, method):
 	
 	# Assign the batch_no field of the line item to its batch (or create one then assign)
 	fg_row.batch_no = get_or_create_batch(batch_name, fg_row.item_code, doc.posting_date)
-	fg_row.db_set("batch_no", fg_row.batch_no)  # Ensures it's saved
 
 # --- FIXED: Delivery Note now follows the same convention and auto-fills if found ---
 def set_batch_no_for_delivery_note(doc, method):
-    """
-    Assign existing batches to Delivery Note items.
-    BLOCKS submission if the specific Sales Order batch is missing.
-    """
-    missing_or_unmatched = []
+	"""
+	Assign existing batches to Delivery Note items.
+	BLOCKS submission if the specific Sales Order batch is missing.
+	"""
+	missing_or_unmatched = []
 
-    for d in doc.items:
-        item_code = d.get("item_code")
-        if not item_code:
-            continue
+	for d in doc.items:
+		item_code = d.get("item_code")
+		if not item_code:
+			continue
 
-        # 1. Check if Batch is required
-        has_batch_no = d.get("has_batch_no")
-        if has_batch_no is None:
-            has_batch_no = frappe.get_cached_value("Item", item_code, "has_batch_no")
-        
-        # If item doesn't need a batch, skip it
-        if not has_batch_no:
-            continue
+		# 1. Check if Batch is required
+		has_batch_no = d.get("has_batch_no")
+		if has_batch_no is None:
+			has_batch_no = frappe.get_cached_value("Item", item_code, "has_batch_no")
+		
+		# If item doesn't need a batch, skip it
+		if not has_batch_no:
+			continue
 
-        # 2. STRICT Sales Order Retrieval
-        so_name = d.get("against_sales_order")
-        
-        # If no SO, we skip custom logic (ERPNext standard behavior applies)
-        if not so_name:
-            continue
+		# 2. STRICT Sales Order Retrieval
+		so_name = d.get("against_sales_order")
+		
+		# If no SO, we skip custom logic (ERPNext standard behavior applies)
+		if not so_name:
+			continue
 
-        # 3. Check for FIFO Override (The "Wrong Batch" Fix)
-        current_batch = d.get("batch_no")
-        
-        if current_batch:
-            # If ERPNext assigned a batch that DOES NOT start with the SO Name, clear it.
-            if not current_batch.startswith(so_name):
-                d.batch_no = None # Clear the wrong batch
-            else:
-                # The assigned batch is correct, skip to next item
-                continue
+		# 3. Check for FIFO Override (The "Wrong Batch" Fix)
+		current_batch = d.get("batch_no")
+		
+		if current_batch:
+			# If ERPNext assigned a batch that DOES NOT start with the SO Name, clear it.
+			if not current_batch.startswith(so_name):
+				d.batch_no = None # Clear the wrong batch
+			else:
+				# The assigned batch is correct, skip to next item
+				continue
 
-        # 4. Determine Specifics
-        item_specifics = (d.get("custom_item_specifics") or "").strip()
-        if not item_specifics:
-            so_detail = d.get("so_detail")
-            if so_detail:
-                item_specifics = (frappe.db.get_value("Sales Order Item", so_detail, "custom_item_specifics") or "").strip()
-        if not item_specifics:
-            item_specifics = "NA"
+		# 4. Determine Specifics
+		item_specifics = (d.get("custom_item_specifics") or "").strip()
+		if not item_specifics:
+			so_detail = d.get("so_detail")
+			if so_detail:
+				item_specifics = (frappe.db.get_value("Sales Order Item", so_detail, "custom_item_specifics") or "").strip()
+		if not item_specifics:
+			item_specifics = "NA"
 
-        # 5. Build Expected Name & Search
-        expected_name_full = build_batch_name(so_name, item_code, item_specifics)
-        found_batch = _find_existing_batch_by_convention(expected_name_full)
+		# 5. Build Expected Name & Search
+		expected_name_full = build_batch_name(so_name, item_code, item_specifics)
+		found_batch = _find_existing_batch_by_convention(expected_name_full)
 
-        if found_batch:
-            d.batch_no = found_batch
-            d.db_set("batch_no", found_batch)
-        else:
-            # Batch NOT found. 
-            # We clear the batch field to ensure no wrong data is saved.
-            d.batch_no = None 
-            
-            # Add details to the error list
-            missing_or_unmatched.append(
-                f"Row {d.idx}: {item_code}<br>"
-                f"Sales Order: <b>{so_name}</b><br>"
-                f"Expected Batch: {frappe.utils.escape_html(expected_name_full[:100])}"
-            )
+		if found_batch:
+			d.batch_no = found_batch
+		else:
+			# Batch NOT found. 
+			# We clear the batch field to ensure no wrong data is saved.
+			d.batch_no = None 
+			
+			# Add details to the error list
+			missing_or_unmatched.append(
+				f"Row {d.idx}: {item_code}<br>"
+				f"Sales Order: <b>{so_name}</b><br>"
+				f"Expected Batch: {frappe.utils.escape_html(expected_name_full[:100])}"
+			)
 
-    # --- THE FIX IS HERE ---
-    if missing_or_unmatched:
-        message = (
-            "<b>Batch Warning:</b><br>"
-            "The following items do not have a batch matching their Sales Order.<br>"
-            "The document will still be saved/submitted, but this may cause inventory issues.<br><br>"
-            + "<br><hr><br>".join(missing_or_unmatched)
-        )
+	# --- THE FIX IS HERE ---
+	if missing_or_unmatched:
+		message = (
+			"<b>Batch Warning:</b><br>"
+			"The following items do not have a batch matching their Sales Order.<br>"
+			"The document will still be saved/submitted, but this may cause inventory issues.<br><br>"
+			+ "<br><hr><br>".join(missing_or_unmatched)
+		)
 
-        frappe.msgprint(
-            message,
-            title="Batch Mismatch Warning",
-            indicator="orange"
-        )
+		frappe.msgprint(
+			message,
+			title="Batch Mismatch Warning",
+			indicator="orange"
+		)
