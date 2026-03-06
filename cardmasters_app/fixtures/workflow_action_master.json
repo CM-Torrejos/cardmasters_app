@@ -2,6 +2,34 @@
  {
   "docstatus": 0,
   "doctype": "Workflow Action Master",
+  "modified": "2026-02-16 16:14:28.369059",
+  "name": "Convert to Bypass",
+  "workflow_action_name": "Convert to Bypass"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-02-16 16:15:07.448719",
+  "name": "Convert to Partial Bypass",
+  "workflow_action_name": "Convert to Partial Bypass"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-03-03 13:03:30.062039",
+  "name": "Revert to Draft",
+  "workflow_action_name": "Revert to Draft"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-03-04 11:14:24.649895",
+  "name": "Revert to Not Started",
+  "workflow_action_name": "Revert to Not Started"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
   "modified": "2025-09-22 13:49:31.526488",
   "name": "Redo BOM",
   "workflow_action_name": "Redo BOM"
