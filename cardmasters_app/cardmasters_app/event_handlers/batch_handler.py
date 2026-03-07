@@ -4,7 +4,7 @@ from frappe import _
 def get_or_create_batch(batch_name, item_code, posting_date):
 	"""Fetch existing Batch or create a new one."""
 	# truncate to 100 chars for name
-	name = batch_name[:100]
+	name = batch_name.strip()[:100]
 	if not frappe.db.exists("Batch", name):
 		try:
 			frappe.get_doc({
