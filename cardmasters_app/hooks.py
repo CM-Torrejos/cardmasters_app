@@ -133,7 +133,10 @@ doc_events = {
         "after_submit": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.check_artist_status"],
         "after_insert": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.automated_sales_order_tagging",
         # "on_update": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.automated_sales_order_tagging",
-        'on_update_after_submit': "cardmasters_app.cardmasters_app.event_handlers.tag_automation.automated_sales_order_tagging",
+        'on_update_after_submit': [
+            "cardmasters_app.cardmasters_app.event_handlers.tag_automation.automated_sales_order_tagging",
+            "cardmasters_app.cardmasters_app.event_handlers.sales_order.update_work_order_so_status"
+        ],
         'before_insert': [
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.update_item_class_on_creation_from_quotation"
         ]
