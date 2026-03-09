@@ -11,6 +11,7 @@ frappe.ui.form.on('Work Order', {
 			}
 		}, 15);
 		
+		update_wo_installation(frm);
 		// function set_custom_pill(doc) {
 		// 	$('span.custom-state-pill').remove();
 		// 	const state = frm.doc.workflow_state; // ← rename if needed
@@ -109,3 +110,28 @@ frappe.ui.form.on('Work Order', {
 		// })
 	},
 });
+
+frappe.ui.form.on('CM Jobs', {
+	job: function(frm, cdt, cdn) { 
+		update_wo_installation(frm);
+	},
+	custom_cm_jobs_add: function(frm) {
+		update_wo_installation(frm);
+	}
+});
+
+var update_wo_installation = function(frm) {
+	let is_installation = false;
+
+	(frm.doc.custom_cm_jobs || []).forEach(row => {
+		if (row.job === 'INSTALLATION') {
+			is_installation = true;
+		}
+	});
+
+	if (is_installation) {
+		frm.set_value('custom_installation', 'For Installation');
+	} else {
+		frm.set_value('custom_installation', 'No Installation'); 
+	}
+};
