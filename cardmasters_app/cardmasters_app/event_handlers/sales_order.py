@@ -58,3 +58,23 @@ def update_item_class_on_creation_from_quotation(doc, _method=None):
         # Force the Item-specific default into the mapped row
         if item_specific_default:
             item.cost_center = item_specific_default
+
+def update_work_order_so_status(doc, method=None):
+    """
+    Triggers on Sales Order update. 
+    Finds all linked Work Orders and updates their sales order status.
+    """
+    # Only proceed if the Sales Order has a workflow state
+    if not doc.workflow_state:
+        return
+
+    # Find all Work Orders linked to this Sales Order
+    work_orders = frappe.get_all("Work Order", 
+        filters={"sales_order": doc.name}, 
+        fields=["name", "custom_sales_order_state"]
+    )
+
+    for wo in work_orders:
+        # Only update if the value has actually changed
+        if wo.custom_sales_order_state != doc.workflow_state:
+            frappe.db.set_value("Work Order", wo.name, "custom_sales_order_state", doc.workflow_state)
