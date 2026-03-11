@@ -139,7 +139,14 @@ doc_events = {
         ],
         'before_insert': [
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.update_item_class_on_creation_from_quotation"
-        ]
+        ],
+        "on_submit": [
+            "cardmasters_app.cardmasters_app.event_handlers.sales_order.manage_grant_usage"
+        ],
+        "on_cancel": [
+            "cardmasters_app.cardmasters_app.event_handlers.sales_order.manage_grant_usage"
+        ],
+
     },
     "Sales Order Item": {
         "before_save": [

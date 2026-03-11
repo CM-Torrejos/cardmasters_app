@@ -162,6 +162,21 @@ frappe.ui.form.on('Sales Order', {
 				}
 			}
 		});
-	}
+	},
+
+	// Client Script for Sales Order
+    custom_grant: function(frm) {
+    if (frm.doc.custom_grant) {
+        frappe.db.get_value('Grant', frm.doc.custom_grant, 'available_balance', (r) => {
+            if (r && r.available_balance !== undefined) {
+                let available = r.available_balance;
+                let color = (available < frm.doc.grand_total) ? 'red' : 'blue';
+                frm.set_intro(`Current Grant Balance: ${format_currency(available)}`, color);
+            }
+        });
+    } else {
+        frm.set_intro(null);
+    }
+}
 	
 });

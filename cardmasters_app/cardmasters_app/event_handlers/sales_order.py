@@ -1,4 +1,48 @@
 import frappe
+from frappe import _  # <--- THIS WAS MISSING
+
+def manage_grant_usage(doc, method):
+    if not doc.custom_grant:
+        return
+
+    # Fetch the Grant Document
+    grant_doc = frappe.get_doc("Grant", doc.custom_grant)
+
+    # Security: Customer Match
+    if grant_doc.customer != doc.customer:
+        frappe.throw(_("Grant {0} belongs to {1}, not {2}")
+                     .format(doc.custom_grant, grant_doc.customer, doc.customer))
+
+    if method == "on_submit":
+        # Check balance BEFORE allowing the Sales Order to submit
+        if doc.grand_total > grant_doc.available_balance:
+            # Format numbers for better error messages
+            avail = frappe.format_value(grant_doc.available_balance, "Currency")
+            req = frappe.format_value(doc.grand_total, "Currency")
+            frappe.throw(_("Insufficient Grant Balance! Available: {0}, Required: {1}").format(avail, req))
+
+        # Add row to the child table
+        grant_doc.append("grant_entries", {
+            "sales_order": doc.name,
+            "transaction_date": doc.transaction_date,
+            "grand_total": doc.grand_total,
+            "author": frappe.session.user
+        })
+        
+        # This triggers Grant.validate() which handles redeemed_value and available_balance
+        grant_doc.save(ignore_permissions=True)
+
+    elif method == "on_cancel":
+        found = False
+        for row in grant_doc.get("grant_entries")[:]:
+            if row.sales_order == doc.name:
+                grant_doc.get("grant_entries").remove(row)
+                found = True
+        
+        if found:
+            # Again, saving triggers the recalculation automatically
+            grant_doc.save(ignore_permissions=True)
+
 
 # Customer must have an alias if its facebook
 def validate_alias_on_facebook_channel(doc, _method):

@@ -1,0 +1,108 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:{grant_name}",
+ "creation": "2026-03-11 10:50:33.457706",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "grant_name",
+  "customer",
+  "effective_by",
+  "effective_until",
+  "column_break_fioz",
+  "status",
+  "grant_amount",
+  "grant_summary_section",
+  "grant_entries",
+  "redeemed_value",
+  "available_balance"
+ ],
+ "fields": [
+  {
+   "fieldname": "grant_name",
+   "fieldtype": "Data",
+   "label": "Grant Name"
+  },
+  {
+   "fieldname": "effective_by",
+   "fieldtype": "Date",
+   "label": "Effective By"
+  },
+  {
+   "fieldname": "effective_until",
+   "fieldtype": "Date",
+   "label": "Effective Until"
+  },
+  {
+   "fieldname": "column_break_fioz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nActive\nNear Limit\nExhausted\nExpired\nClosed"
+  },
+  {
+   "fieldname": "grant_amount",
+   "fieldtype": "Currency",
+   "label": "Grant Amount"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "redeemed_value",
+   "fieldtype": "Currency",
+   "label": "Redeemed Value"
+  },
+  {
+   "fieldname": "available_balance",
+   "fieldtype": "Currency",
+   "label": "Available Balance"
+  },
+  {
+   "fieldname": "grant_entries",
+   "fieldtype": "Table",
+   "label": "Grant Entries",
+   "options": "Grant Entries"
+  },
+  {
+   "fieldname": "grant_summary_section",
+   "fieldtype": "Section Break",
+   "label": "Grant Summary"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-03-11 11:14:20.275257",
+ "modified_by": "Administrator",
+ "module": "Cardmasters App",
+ "name": "Grant",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
