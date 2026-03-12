@@ -60,11 +60,11 @@ frappe.ui.form.on('Work Order', {
 		// 	set_custom_pill();
 		// };
 
-		// if (cardmasters.utils && cardmasters.utils.sales_order_print_preview) {
-        //     cardmasters.utils.sales_order_print_preview(frm);
-        // } else {
-        //     console.error('Cardmasters Utils not loaded. Check hooks.py');
-        // }
+		if (cardmasters.utils && cardmasters.utils.sales_order_print_preview) {
+            cardmasters.utils.sales_order_print_preview(frm);
+        } else {
+            console.error('Cardmasters Utils not loaded. Check hooks.py');
+        }
 
     	// if (!frm.doc.__islocal) {
         // 	frappe.call({
