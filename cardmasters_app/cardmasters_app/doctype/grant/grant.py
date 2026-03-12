@@ -23,11 +23,3 @@ class Grant(Document):
         # 2. Update the parent fields
         self.redeemed_value = total_redeemed
         self.available_balance = self.grant_amount - self.redeemed_value
-
-        # 3. Auto-update Status
-        if self.available_balance <= 0:
-            self.status = "Exhausted"
-        elif self.redeemed_value > 0:
-            self.status = "Active"
-        else:
-            self.status = "Draft" 
