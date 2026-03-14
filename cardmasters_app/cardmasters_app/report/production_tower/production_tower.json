@@ -1,0 +1,304 @@
+{
+ "add_total_row": 0,
+ "add_translate_data": 0,
+ "columns": [],
+ "creation": "2026-03-14 09:19:15.613298",
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letter_head": null,
+ "modified": "2026-03-14 09:20:25.499815",
+ "modified_by": "Administrator",
+ "module": "Cardmasters App",
+ "name": "Production Tower",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "ref_doctype": "Sales Order",
+ "report_name": "Production Tower",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "Accounts User"
+  },
+  {
+   "role": "Sales User"
+  },
+  {
+   "role": "Sales Manager"
+  },
+  {
+   "role": "Stock User"
+  },
+  {
+   "role": "Maintenance User"
+  },
+  {
+   "role": "CM Office Sales"
+  },
+  {
+   "role": "CM Sales Head"
+  },
+  {
+   "role": "CM Controller"
+  },
+  {
+   "role": "CM Invoicing"
+  },
+  {
+   "role": "CM Disbursement"
+  },
+  {
+   "role": "CM Assembler"
+  },
+  {
+   "role": "CM Procurement"
+  },
+  {
+   "role": "CM Analyst"
+  },
+  {
+   "role": "CM Artist"
+  },
+  {
+   "role": "CM Artist Head"
+  },
+  {
+   "role": "CM Production Head"
+  },
+  {
+   "role": "CM Workstation Leader"
+  },
+  {
+   "role": "CM Cashier"
+  },
+  {
+   "role": "CM Claiming"
+  },
+  {
+   "role": "CM Inventory"
+  },
+  {
+   "role": "CM Print Workstation Leader"
+  },
+  {
+   "role": "CM Heatpress Workstation Leader"
+  },
+  {
+   "role": "CM Cutting and Engrave Workstation Leader"
+  },
+  {
+   "role": "CM Woodshop Workstation Leader"
+  },
+  {
+   "role": "CM Embroidery Workstation Leader"
+  },
+  {
+   "role": "CM Tailoring Workstation Leader"
+  },
+  {
+   "role": "CM Stickering and Assembly Workstation Leader"
+  },
+  {
+   "role": "CM Packaging and Labels Workstation Leader"
+  },
+  {
+   "role": "CM Bulua Cutting Workstation Leader"
+  },
+  {
+   "role": "CM Human Resources Officer"
+  },
+  {
+   "role": "Stock User"
+  },
+  {
+   "role": "Accounts User"
+  },
+  {
+   "role": "Maintenance User"
+  },
+  {
+   "role": "Sales Manager"
+  },
+  {
+   "role": "Sales User"
+  },
+  {
+   "role": "CM Human Resources Officer"
+  },
+  {
+   "role": "CM Bulua Cutting Workstation Leader"
+  },
+  {
+   "role": "CM Packaging and Labels Workstation Leader"
+  },
+  {
+   "role": "CM Stickering and Assembly Workstation Leader"
+  },
+  {
+   "role": "CM Tailoring Workstation Leader"
+  },
+  {
+   "role": "CM Embroidery Workstation Leader"
+  },
+  {
+   "role": "CM Woodshop Workstation Leader"
+  },
+  {
+   "role": "CM Cutting and Engrave Workstation Leader"
+  },
+  {
+   "role": "CM Heatpress Workstation Leader"
+  },
+  {
+   "role": "CM Print Workstation Leader"
+  },
+  {
+   "role": "CM Inventory"
+  },
+  {
+   "role": "CM Claiming"
+  },
+  {
+   "role": "CM Cashier"
+  },
+  {
+   "role": "CM Workstation Leader"
+  },
+  {
+   "role": "CM Production Head"
+  },
+  {
+   "role": "CM Artist Head"
+  },
+  {
+   "role": "CM Artist"
+  },
+  {
+   "role": "CM Analyst"
+  },
+  {
+   "role": "CM Procurement"
+  },
+  {
+   "role": "CM Assembler"
+  },
+  {
+   "role": "CM Disbursement"
+  },
+  {
+   "role": "CM Invoicing"
+  },
+  {
+   "role": "CM Controller"
+  },
+  {
+   "role": "CM Sales Head"
+  },
+  {
+   "role": "CM Office Sales"
+  },
+  {
+   "role": "CMv2 Office Sales"
+  },
+  {
+   "role": "CMv2 Sales Coordinator"
+  },
+  {
+   "role": "CMv2 Sales Head"
+  },
+  {
+   "role": "CMv2 Field Sales"
+  },
+  {
+   "role": "CMv2 Artist Head"
+  },
+  {
+   "role": "CMv2 Artist"
+  },
+  {
+   "role": "CMv2 Workstation Leader"
+  },
+  {
+   "role": "CMv2 Production Coordinator"
+  },
+  {
+   "role": "CMv2 Accounting Controller"
+  },
+  {
+   "role": "CMv2 Cost Accountant"
+  },
+  {
+   "role": "CMv2 Cashier"
+  },
+  {
+   "role": "CMv2 Revenue Accountant"
+  },
+  {
+   "role": "CMv2 Inventory Associate"
+  },
+  {
+   "role": "CMv2 Inventory Claiming Associate"
+  },
+  {
+   "role": "CMv2 Office Sales"
+  },
+  {
+   "role": "CMv2 Sales Coordinator"
+  },
+  {
+   "role": "CMv2 Sales Head"
+  },
+  {
+   "role": "CMv2 Field Sales"
+  },
+  {
+   "role": "CMv2 Artist Head"
+  },
+  {
+   "role": "CMv2 Artist"
+  },
+  {
+   "role": "CMv2 Workstation Leader"
+  },
+  {
+   "role": "CMv2 Production Coordinator"
+  },
+  {
+   "role": "CMv2 Accounting Controller"
+  },
+  {
+   "role": "CMv2 Cost Accountant"
+  },
+  {
+   "role": "CMv2 Cashier"
+  },
+  {
+   "role": "CMv2 Revenue Accountant"
+  },
+  {
+   "role": "CMv2 Inventory Associate"
+  },
+  {
+   "role": "CMv2 Inventory Claiming Associate"
+  },
+  {
+   "role": "CMv2 Financial Analyst"
+  },
+  {
+   "role": "CMv2 Procurement"
+  },
+  {
+   "role": "CMv2 Disbursement Officer"
+  },
+  {
+   "role": "CMv3 Artist"
+  },
+  {
+   "role": "CMv3 Artist Head"
+  }
+ ],
+ "timeout": 0
+}
