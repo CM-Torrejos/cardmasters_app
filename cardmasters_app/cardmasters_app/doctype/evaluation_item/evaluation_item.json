@@ -6,21 +6,41 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "evaluation"
+  "document",
+  "evaluation_period_column",
+  "from_date",
+  "to_date"
  ],
  "fields": [
   {
-   "fieldname": "evaluation",
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "From Date"
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "To Date"
+  },
+  {
+   "fieldname": "evaluation_period_column",
+   "fieldtype": "Column Break",
+   "label": "Evaluation Period"
+  },
+  {
+   "fieldname": "document",
    "fieldtype": "Attach",
    "in_list_view": 1,
-   "label": "Evaluation"
+   "label": "Document"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-03-19 09:16:13.565105",
+ "modified": "2026-03-19 10:33:38.606631",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Evaluation Item",
