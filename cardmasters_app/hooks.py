@@ -183,6 +183,9 @@ doc_events = {
     },
     "Raven Message": {
         "after_insert": "cardmasters_app.cardmasters_app.api.raven.broadcast_raven_update"
+    },
+    "Employee": {
+        "autoname": "cardmasters_app.cardmasters_app.overrides.employee.autoname"
     }
 }
 
