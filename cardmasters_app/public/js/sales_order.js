@@ -82,7 +82,6 @@ frappe.ui.form.on('Sales Order', {
 		
 		// Work Order Progress HTML block
 		if (!frm.doc.__islocal) {
-			// frappe.show_alert("Fetching Work Orders..."); // Debugging message
 			frappe.call({
 				method: 'frappe.client.get_list',
 				args: {
@@ -91,23 +90,39 @@ frappe.ui.form.on('Sales Order', {
 					fields: ['name', 'workflow_state', 'item_name', 'status']
 				},
 				callback: function(response) {
-					// frappe.show_alert("Work Orders fetched: " + response.message.length); // Debug message
-					console.log(response.message);
-					
-					if (response.message.length > 0) {
-						let html = '<table class="table table-bordered"><tr><th>Work Order</th><th>Item</th><th>Form Status</th><th>Progress</th></tr>';
+					if (response.message && response.message.length > 0) {
+						// Updated table headers
+						let html = `
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>Work Order</th>
+										<th>Item</th>
+										<th>Consumption Status</th>
+										<th>System Status</th>
+									</tr>
+								</thead>
+								<tbody>`;
+
 						response.message.forEach(wo => {
-							html += `<tr>
-                                    	<td><a href="/app/work-order/${wo.name}" target="_blank">${wo.name}</a></td>
-                                    	<td>${wo.item_name}</td>
-                                    	<td>${wo.status}</td>
-                                    	<td>${wo.workflow_state}</td>
-                                	</tr>`;
+							// Logic for Consumption Status text
+							let consumption_status = wo.status === "Completed" 
+								? "Consumption entry submitted" 
+								: "No consumption entry submitted";
+
+							html += `
+								<tr>
+									<td><a href="/app/work-order/${wo.name}" target="_blank">${wo.name}</a></td>
+									<td>${wo.item_name}</td>
+									<td>${consumption_status}</td>
+									<td>${wo.workflow_state || ""}</td>
+								</tr>`;
 						});
-						html += '</table>';
+
+						html += '</tbody></table>';
 						frm.fields_dict['custom_progress_summary'].$wrapper.html(html);
 					} else {
-						frm.fields_dict['custom_progress_summary'].$wrapper.html("<p>No Work Orders found.</p>");
+						frm.fields_dict['custom_progress_summary'].$wrapper.html("<p class='text-muted'>No Work Orders found.</p>");
 					}
 				}
 			});
