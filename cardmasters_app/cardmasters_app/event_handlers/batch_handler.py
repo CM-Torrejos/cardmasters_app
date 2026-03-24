@@ -267,8 +267,8 @@ def set_batch_no_for_fg_on_manufacture_entry(doc, method):
 # --- FIXED: Delivery Note now follows the same convention and auto-fills if found ---
 def set_batch_no_for_delivery_note(doc, method):
     """
-    Assign existing batches to Delivery Note items.
-    BLOCKS submission if the specific Sales Order batch is missing.
+    Assign batches to Delivery Note items.
+    Allows SAVING as draft with a warning, but BLOCKS submission if batch is missing.
     """
     missing_or_unmatched = []
 
@@ -282,67 +282,62 @@ def set_batch_no_for_delivery_note(doc, method):
         if has_batch_no is None:
             has_batch_no = frappe.get_cached_value("Item", item_code, "has_batch_no")
         
-        # If item doesn't need a batch, skip it
         if not has_batch_no:
             continue
 
-        # 2. STRICT Sales Order Retrieval
+        # 2. Identify linked Sales Order
         so_name = d.get("against_sales_order")
-        
-        # If no SO, we skip custom logic (ERPNext standard behavior applies)
         if not so_name:
             continue
 
-        # 3. Check for FIFO Override (The "Wrong Batch" Fix)
-        current_batch = d.get("batch_no")
-        
-        if current_batch:
-            # If ERPNext assigned a batch that DOES NOT start with the SO Name, clear it.
-            if not current_batch.startswith(so_name):
-                d.batch_no = None # Clear the wrong batch
-            else:
-                # The assigned batch is correct, skip to next item
-                continue
-
-        # 4. Determine Specifics
+        # 3. Determine Expected Batch Name
         item_specifics = (d.get("custom_item_specifics") or "").strip()
         if not item_specifics:
             so_detail = d.get("so_detail")
             if so_detail:
                 item_specifics = (frappe.db.get_value("Sales Order Item", so_detail, "custom_item_specifics") or "").strip()
+        
         if not item_specifics:
             item_specifics = "NA"
 
-        # 5. Build Expected Name & Search
         expected_name_full = build_batch_name(so_name, item_code, item_specifics)
         found_batch = _find_existing_batch_by_convention(expected_name_full)
 
+        # 4. Assignment & Validation
         if found_batch:
-            d.batch_no = found_batch
-            d.db_set("batch_no", found_batch)
+            # Auto-fill or Correct the batch if it exists
+            if d.batch_no != found_batch:
+                d.batch_no = found_batch
+                # Using db_set ensures it persists even if we don't 'save' again immediately
+                d.db_set("batch_no", found_batch)
         else:
-            # Batch NOT found. 
-            # We clear the batch field to ensure no wrong data is saved.
+            # Clear field if invalid data exists and log the error
             d.batch_no = None 
-            
-            # Add details to the error list
             missing_or_unmatched.append(
                 f"Row {d.idx}: {item_code}<br>"
                 f"Sales Order: <b>{so_name}</b><br>"
                 f"Expected Batch: {frappe.utils.escape_html(expected_name_full[:100])}"
             )
 
-    # --- THE FIX IS HERE ---
+    # --- THE CONDITIONAL BLOCK ---
     if missing_or_unmatched:
-        message = (
-            "<b>Batch Warning:</b><br>"
+        error_content = (
             "The following items do not have a batch matching their Sales Order.<br>"
-            "The document will still be saved/submitted, but this may cause inventory issues.<br><br>"
+            "Ensure the items have been received/manufactured into the correct batch.<br><br>"
             + "<br><hr><br>".join(missing_or_unmatched)
         )
 
-        frappe.msgprint(
-            message,
-            title="Batch Mismatch Warning",
-            indicator="orange"
-        )
+        # If User is clicking SUBMIT
+        if doc.docstatus == 1:
+            frappe.throw(
+                f"<b>Submission Blocked:</b><br>{error_content}", 
+                title="Missing Required Batch"
+            )
+        
+        # If User is just clicking SAVE
+        else:
+            frappe.msgprint(
+                f"<b>Batch Warning (Draft):</b><br>{error_content}", 
+                title="Batch Mismatch",
+                indicator="orange"
+            )
