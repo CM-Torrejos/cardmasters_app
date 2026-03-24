@@ -205,13 +205,6 @@
  {
   "docstatus": 0,
   "doctype": "Workflow Action Master",
-  "modified": "2026-01-29 14:29:50.755131",
-  "name": "For Consumption",
-  "workflow_action_name": "For Consumption"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow Action Master",
   "modified": "2025-07-03 09:03:53.485209",
   "name": "Conclude Production",
   "workflow_action_name": "Conclude Production"
@@ -254,13 +247,6 @@
  {
   "docstatus": 0,
   "doctype": "Workflow Action Master",
-  "modified": "2025-05-21 13:25:13.566376",
-  "name": "Cancel",
-  "workflow_action_name": "Cancel"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow Action Master",
   "modified": "2026-01-28 10:31:10.464255",
   "name": "Revert to Production",
   "workflow_action_name": "Revert to Production"
@@ -271,5 +257,19 @@
   "modified": "2026-02-02 11:58:33.371402",
   "name": "Bypass",
   "workflow_action_name": "Bypass"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-01-29 14:29:50.755131",
+  "name": "For Consumption",
+  "workflow_action_name": "For Consumption"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-05-21 13:25:13.566376",
+  "name": "Cancel",
+  "workflow_action_name": "Cancel"
  }
 ]

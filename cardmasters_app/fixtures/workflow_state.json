@@ -174,6 +174,15 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
+  "modified": "2026-02-05 10:08:34.541238",
+  "name": "Partial Production Concluded",
+  "style": "",
+  "workflow_state_name": "Partial Production Concluded"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
   "modified": "2026-02-05 13:28:40.405269",
   "name": "Cancelled",
   "style": "Danger",
@@ -201,19 +210,19 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2026-02-05 13:28:34.795946",
-  "name": "In Claiming",
-  "style": "Success",
-  "workflow_state_name": "In Claiming"
+  "modified": "2026-02-02 11:58:18.322773",
+  "name": "PC (PERMITTED BYPASS)",
+  "style": "",
+  "workflow_state_name": "PC (PERMITTED BYPASS)"
  },
  {
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2026-02-05 10:08:34.541238",
-  "name": "Partial Production Concluded",
-  "style": "",
-  "workflow_state_name": "Partial Production Concluded"
+  "modified": "2025-08-05 09:36:25.089086",
+  "name": "BOM Finished",
+  "style": "Success",
+  "workflow_state_name": "BOM Finished"
  },
  {
   "docstatus": 0,
@@ -228,10 +237,10 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2026-02-05 13:28:29.564372",
-  "name": "Pending Claiming",
+  "modified": "2025-05-17 05:00:31.788551",
+  "name": "Pending Client Approval",
   "style": "Danger",
-  "workflow_state_name": "Pending Claiming"
+  "workflow_state_name": "Pending Client Approval"
  },
  {
   "docstatus": 0,
@@ -241,6 +250,15 @@
   "name": "Pending",
   "style": "",
   "workflow_state_name": "Pending"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-07-03 09:10:17.857134",
+  "name": "Awaiting Submission",
+  "style": "",
+  "workflow_state_name": "Awaiting Submission"
  },
  {
   "docstatus": 0,
@@ -264,37 +282,19 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-08-05 09:36:25.089086",
-  "name": "BOM Finished",
-  "style": "Success",
-  "workflow_state_name": "BOM Finished"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-05-17 05:00:31.788551",
-  "name": "Pending Client Approval",
-  "style": "Danger",
-  "workflow_state_name": "Pending Client Approval"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-07-03 09:10:17.857134",
-  "name": "Awaiting Submission",
-  "style": "",
-  "workflow_state_name": "Awaiting Submission"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2026-02-05 13:27:53.190005",
   "name": "Pending Consumption",
   "style": "Danger",
   "workflow_state_name": "Pending Consumption"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-02-05 13:28:34.795946",
+  "name": "In Claiming",
+  "style": "Success",
+  "workflow_state_name": "In Claiming"
  },
  {
   "docstatus": 0,
@@ -309,10 +309,10 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2026-02-02 11:58:18.322773",
-  "name": "PC (PERMITTED BYPASS)",
-  "style": "",
-  "workflow_state_name": "PC (PERMITTED BYPASS)"
+  "modified": "2026-02-05 13:28:29.564372",
+  "name": "Pending Claiming",
+  "style": "Danger",
+  "workflow_state_name": "Pending Claiming"
  },
  {
   "docstatus": 0,
