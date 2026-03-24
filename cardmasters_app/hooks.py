@@ -137,6 +137,7 @@ doc_events = {
         'on_update_after_submit': [
             "cardmasters_app.cardmasters_app.event_handlers.tag_automation.automated_sales_order_tagging",
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.update_work_order_so_status",
+            "cardmasters_app.cardmasters_app.api.so_sync.sync_wo_with_so",
             "cardmasters_app.cardmasters_app.api.so_rate_validation.validate_item_rates"
         ],
         'before_insert': [
