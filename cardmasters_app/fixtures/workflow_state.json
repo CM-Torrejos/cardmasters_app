@@ -245,15 +245,6 @@
  {
   "docstatus": 0,
   "doctype": "Workflow State",
-  "icon": "question-sign",
-  "modified": "2025-08-04 14:53:46.132163",
-  "name": "Pending",
-  "style": "",
-  "workflow_state_name": "Pending"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
   "icon": "",
   "modified": "2025-07-03 09:10:17.857134",
   "name": "Awaiting Submission",
@@ -264,19 +255,28 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2026-02-05 13:27:25.992477",
-  "name": "Not Started",
+  "modified": "2025-08-05 09:36:15.935091",
+  "name": "Client Approved (BOM WIP)",
   "style": "Info",
-  "workflow_state_name": "Not Started"
+  "workflow_state_name": "Client Approved (BOM WIP)"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "question-sign",
+  "modified": "2025-08-04 14:53:46.132163",
+  "name": "Pending",
+  "style": "",
+  "workflow_state_name": "Pending"
  },
  {
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-08-05 09:36:15.935091",
-  "name": "Client Approved (BOM WIP)",
+  "modified": "2026-02-05 13:27:25.992477",
+  "name": "Not Started",
   "style": "Info",
-  "workflow_state_name": "Client Approved (BOM WIP)"
+  "workflow_state_name": "Not Started"
  },
  {
   "docstatus": 0,

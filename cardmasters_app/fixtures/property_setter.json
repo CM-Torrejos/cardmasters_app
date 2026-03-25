@@ -6305,22 +6305,6 @@
  },
  {
   "default_value": null,
-  "doc_type": "Project",
-  "docstatus": 0,
-  "doctype": "Property Setter",
-  "doctype_or_field": "DocType",
-  "field_name": null,
-  "is_system_generated": 0,
-  "modified": "2026-03-24 08:25:57.715441",
-  "module": null,
-  "name": "Project-main-field_order",
-  "property": "field_order",
-  "property_type": "Data",
-  "row_name": null,
-  "value": "[\"naming_series\", \"project_name\", \"status\", \"project_type\", \"is_active\", \"percent_complete_method\", \"percent_complete\", \"column_break_5\", \"project_template\", \"expected_start_date\", \"expected_end_date\", \"priority\", \"department\", \"custom_project_head\", \"customer_details\", \"customer\", \"column_break_14\", \"sales_order\", \"users_section\", \"users\", \"copied_from\", \"section_break0\", \"notes\", \"section_break_18\", \"actual_start_date\", \"actual_time\", \"column_break_20\", \"actual_end_date\", \"project_details\", \"estimated_costing\", \"total_costing_amount\", \"total_expense_claim\", \"total_purchase_cost\", \"company\", \"column_break_28\", \"total_sales_amount\", \"total_billable_amount\", \"total_billed_amount\", \"total_consumed_material_cost\", \"cost_center\", \"margin\", \"gross_margin\", \"column_break_37\", \"per_gross_margin\", \"monitor_progress\", \"collect_progress\", \"holiday_list\", \"frequency\", \"from_time\", \"to_time\", \"first_email\", \"second_email\", \"daily_time_to_send\", \"day_to_send\", \"weekly_time_to_send\", \"column_break_45\", \"subject\", \"message\"]"
- },
- {
-  "default_value": null,
   "doc_type": "Task",
   "docstatus": 0,
   "doctype": "Property Setter",
@@ -6334,5 +6318,37 @@
   "property_type": "Data",
   "row_name": null,
   "value": "[\"subject\", \"project\", \"issue\", \"type\", \"color\", \"is_group\", \"is_template\", \"column_break0\", \"status\", \"priority\", \"task_weight\", \"parent_task\", \"completed_by\", \"completed_on\", \"sb_timeline\", \"exp_start_date\", \"expected_time\", \"start\", \"column_break_11\", \"exp_end_date\", \"progress\", \"duration\", \"is_milestone\", \"sb_details\", \"description\", \"sb_depends_on\", \"depends_on\", \"depends_on_tasks\", \"sb_actual\", \"act_start_date\", \"actual_time\", \"column_break_15\", \"act_end_date\", \"sb_costing\", \"total_costing_amount\", \"total_expense_claim\", \"column_break_20\", \"total_billing_amount\", \"sb_more_info\", \"custom_task_owner\", \"review_date\", \"closing_date\", \"column_break_22\", \"department\", \"company\", \"lft\", \"rgt\", \"old_parent\", \"template_task\"]"
+ },
+ {
+  "default_value": null,
+  "doc_type": "Project",
+  "docstatus": 0,
+  "doctype": "Property Setter",
+  "doctype_or_field": "DocType",
+  "field_name": null,
+  "is_system_generated": 0,
+  "modified": "2026-03-25 08:56:30.478541",
+  "module": null,
+  "name": "Project-main-field_order",
+  "property": "field_order",
+  "property_type": "Data",
+  "row_name": null,
+  "value": "[\"custom_project_owner\", \"custom_project_head\", \"custom_column_break_wakyp\", \"department\", \"custom_project_details\", \"naming_series\", \"project_name\", \"project_type\", \"priority\", \"column_break_5\", \"expected_start_date\", \"expected_end_date\", \"project_template\", \"custom_project_status\", \"status\", \"is_active\", \"custom_assigned_artist\", \"custom_column_break_fibbn\", \"percent_complete_method\", \"percent_complete\", \"customer_details\", \"customer\", \"column_break_14\", \"sales_order\", \"users_section\", \"users\", \"copied_from\", \"section_break0\", \"notes\", \"section_break_18\", \"actual_start_date\", \"actual_time\", \"column_break_20\", \"actual_end_date\", \"project_details\", \"estimated_costing\", \"total_costing_amount\", \"total_expense_claim\", \"total_purchase_cost\", \"company\", \"column_break_28\", \"total_sales_amount\", \"total_billable_amount\", \"total_billed_amount\", \"total_consumed_material_cost\", \"cost_center\", \"margin\", \"gross_margin\", \"column_break_37\", \"per_gross_margin\", \"monitor_progress\", \"collect_progress\", \"holiday_list\", \"frequency\", \"from_time\", \"to_time\", \"first_email\", \"second_email\", \"daily_time_to_send\", \"day_to_send\", \"weekly_time_to_send\", \"column_break_45\", \"subject\", \"message\"]"
+ },
+ {
+  "default_value": null,
+  "doc_type": "Project",
+  "docstatus": 0,
+  "doctype": "Property Setter",
+  "doctype_or_field": "DocType",
+  "field_name": null,
+  "is_system_generated": 0,
+  "modified": "2026-03-25 08:56:36.825450",
+  "module": null,
+  "name": "Project-main-links_order",
+  "property": "links_order",
+  "property_type": "Small Text",
+  "row_name": null,
+  "value": "[\"n76cd6r4jm\"]"
  }
 ]

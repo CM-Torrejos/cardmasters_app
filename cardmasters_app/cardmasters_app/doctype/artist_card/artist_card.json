@@ -22,6 +22,7 @@
   "date_created",
   "deadline",
   "work_order_created",
+  "project",
   "section_break_ingn",
   "timesheet",
   "finished_total_time",
@@ -183,13 +184,20 @@
    "label": "Any Artist Search",
    "no_copy": 1,
    "options": "Artist"
+  },
+  {
+   "fetch_from": "sales_order.project",
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Project",
+   "options": "Project"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
  "make_attachments_public": 1,
- "modified": "2026-02-14 14:07:48.239312",
+ "modified": "2026-03-25 08:39:44.162202",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Card",
