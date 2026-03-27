@@ -94,6 +94,9 @@ doc_events = {
         ],
         "after_submit" : [
             "cardmasters_app.cardmasters_app.event_handlers.work_order.after_submit"
+        ],
+        "on_update_after_submit": [
+            "cardmasters_app.cardmasters_app.api.so_update.work_order_workflow_trigger"
         ]
     },
     "Stock Entry": {
