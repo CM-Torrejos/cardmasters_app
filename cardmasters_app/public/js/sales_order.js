@@ -90,7 +90,6 @@ frappe.ui.form.on('Sales Order', {
 						sales_order: frm.doc.name,
 						docstatus: ["!=", 2] // Exclude Cancelled
 					},
-					// Added 'sales_order_item' to link specifically to the SO row
 					fields: ['name', 'workflow_state', 'item_name', 'status', 'qty', 'custom_item_specifics', 'custom_particulars', 'custom_bypass', 'sales_order_item']
 				},
 				callback: function(response) {
@@ -103,12 +102,22 @@ frappe.ui.form.on('Sales Order', {
 								white-space: normal !important; 
 								word-wrap: break-word; 
 								vertical-align: top; 
-								padding: 8px;
+								padding: 10px 8px;
 								font-size: 0.9em;
+								border-bottom: 1px solid var(--border-color);
 							}
-							.status-concluded { color: #28a745; font-weight: bold; }
-							.no-wo-row { background-color: #fff5f5; color: #c62828; font-style: italic; }
-							.missing-label { font-weight: bold; color: #d32f2f; }
+							/* Standard row coloring */
+							.status-concluded { color: var(--green-600, #28a745); font-weight: bold; }
+							
+							/* No Work Order - Red Text only, No background */
+							.no-wo-row { 
+								color: #ff5858 !important; 
+								font-style: italic; 
+							}
+							.missing-label { 
+								font-weight: bold; 
+								color: #ff5858 !important; 
+							}
 						</style>
 						<table class="table table-bordered custom-wo-table">
 							<thead>
@@ -125,13 +134,11 @@ frappe.ui.form.on('Sales Order', {
 							</thead>
 							<tbody>`;
 
-					// Iterate through every Item row in the Sales Order
 					frm.doc.items.forEach(so_item => {
-						// Filter Work Orders that belong to this specific SO Item row
 						let linked_wos = work_orders.filter(wo => wo.sales_order_item === so_item.name);
 						let total_wo_qty = 0;
 
-						// 1. Render rows for existing Work Orders
+						// 1. Existing Work Orders
 						linked_wos.forEach(wo => {
 							total_wo_qty += wo.qty;
 
@@ -170,7 +177,7 @@ frappe.ui.form.on('Sales Order', {
 								</tr>`;
 						});
 
-						// 2. Render "Missing" row if SO Qty > Total WO Qty
+						// 2. Remaining/Missing Balance Row
 						let remaining_qty = so_item.qty - total_wo_qty;
 						if (remaining_qty > 0) {
 							html += `
