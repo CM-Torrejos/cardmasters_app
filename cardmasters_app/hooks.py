@@ -100,6 +100,9 @@ doc_events = {
         ],
         "on_cancel": [
             "cardmasters_app.cardmasters_app.api.so_update.work_order_workflow_trigger"
+        ],
+        "validate": [
+            "cardmasters_app.cardmasters_app.event_handlers.work_order.validate_so_workflow_state"
         ]
     },
     "Stock Entry": {

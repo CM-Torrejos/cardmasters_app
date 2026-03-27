@@ -1,5 +1,6 @@
 import frappe
 from frappe.model.workflow import apply_workflow  # get_transitions no longer used
+from frappe import _
 
 def pull_sales_order_details(doc, method=None):
 	"""Runs on Work Order (e.g., validate/before_save).
@@ -145,7 +146,18 @@ def before_work_order_submit(doc, method):
 			frappe.msgprint("Could not advance Sales Order workflow. Check state/permissions.",
 							alert=True, indicator="red")
 
+def validate_so_workflow_state(doc, method):
+    # Only check if there is a linked Sales Order
+    if doc.sales_order:
+        # Fetch the workflow state from the Sales Order
+        so_workflow_state = frappe.db.get_value("Sales Order", doc.sales_order, "workflow_state")
 
+        if so_workflow_state == "Pending":
+            frappe.throw(
+                _("Work Order cannot be created. Sales Order {0} is still in 'Pending' state.")
+                .format(frappe.bold(doc.sales_order))
+            )
+			
 def clear_child_rows(doc, method):
 	# Clean up child table rows for this Work Order as needed.
 	frappe.db.delete("Artist BOM table", {"parent": doc.name})
