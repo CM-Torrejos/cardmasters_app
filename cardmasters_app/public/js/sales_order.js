@@ -90,43 +90,67 @@ frappe.ui.form.on('Sales Order', {
 						sales_order: frm.doc.name,
 						docstatus: ["!=", 2] // Exclude Cancelled
 					},
-					fields: ['name', 'workflow_state', 'item_name', 'status', 'qty', 'custom_item_specifics', 'custom_particulars', 'custom_bypass']
+					// Added 'sales_order_item' to link specifically to the SO row
+					fields: ['name', 'workflow_state', 'item_name', 'status', 'qty', 'custom_item_specifics', 'custom_particulars', 'custom_bypass', 'sales_order_item']
 				},
 				callback: function(response) {
-					if (response.message && response.message.length > 0) {
-						let html = `
-							<style>
-								.custom-wo-table { table-layout: fixed; width: 100%; }
-								.custom-wo-table td, .custom-wo-table th { 
-									white-space: normal !important; 
-									word-wrap: break-word; 
-									vertical-align: top; 
-									padding: 8px;
-								}
-							</style>
-							<table class="table table-bordered custom-wo-table">
-								<thead>
-									<tr>
-										<th style="width: 14%;">Work Order</th>
-										<th style="width: 14%;">Item</th>
-										<th style="width: 7%;">Qty</th>
-										<th style="width: 15%;">Specifics</th>
-										<th style="width: 15%;">Particulars</th>
-										<th style="width: 15%;">Consumption</th>
-										<th style="width: 20%;">Claiming Status</th>
-									</tr>
-								</thead>
-								<tbody>`;
+					let work_orders = response.message || [];
+					
+					let html = `
+						<style>
+							.custom-wo-table { table-layout: fixed; width: 100%; border-collapse: collapse; }
+							.custom-wo-table td, .custom-wo-table th { 
+								white-space: normal !important; 
+								word-wrap: break-word; 
+								vertical-align: top; 
+								padding: 8px;
+								font-size: 0.9em;
+							}
+							.status-concluded { color: #28a745; font-weight: bold; }
+							.no-wo-row { background-color: #fff5f5; color: #c62828; font-style: italic; }
+							.missing-label { font-weight: bold; color: #d32f2f; }
+						</style>
+						<table class="table table-bordered custom-wo-table">
+							<thead>
+								<tr>
+									<th style="width: 12%;">Work Order</th>
+									<th style="width: 12%;">Item</th>
+									<th style="width: 6%;">Qty</th>
+									<th style="width: 13%;">Specifics</th>
+									<th style="width: 13%;">Particulars</th>
+									<th style="width: 14%;">Production Status</th>
+									<th style="width: 15%;">Consumption</th>
+									<th style="width: 15%;">Claiming Status</th>
+								</tr>
+							</thead>
+							<tbody>`;
 
-						response.message.forEach(wo => {
-							// Consumption Status Logic
-							let consumption_status = wo.status === "Completed" 
-								? "Consumption entry submitted" 
-								: "No consumption entry submitted";
+					// Iterate through every Item row in the Sales Order
+					frm.doc.items.forEach(so_item => {
+						// Filter Work Orders that belong to this specific SO Item row
+						let linked_wos = work_orders.filter(wo => wo.sales_order_item === so_item.name);
+						let total_wo_qty = 0;
 
-							// Claiming Status Logic with Bypass check
-							let claiming_status = "Not In Claiming";
+						// 1. Render rows for existing Work Orders
+						linked_wos.forEach(wo => {
+							total_wo_qty += wo.qty;
+
+							let production_status = wo.workflow_state || "";
+							const concluded_states = ["In Claiming", "Pending Claiming", "Pending Consumption"];
 							
+							if (concluded_states.includes(wo.workflow_state)) {
+								production_status = `<span class="status-concluded">Production Concluded</span>`;
+							} else if (wo.workflow_state === "In Production") {
+								production_status = "In Production";
+							} else if (wo.workflow_state === "Draft") {
+								production_status = "Draft";
+							} else if (wo.workflow_state === "Not Started") {
+								production_status = "Not Started";
+							}
+
+							let consumption_status = wo.status === "Completed" ? "Consumption entry submitted" : "No consumption entry submitted";
+							
+							let claiming_status = "Not In Claiming";
 							if (wo.custom_bypass == 1) {
 								claiming_status = "In Claiming (Bypassed)";
 							} else if (wo.workflow_state === "In Claiming") {
@@ -137,19 +161,34 @@ frappe.ui.form.on('Sales Order', {
 								<tr>
 									<td><a href="/app/work-order/${wo.name}" target="_blank"><b>${wo.name}</b></a></td>
 									<td>${wo.item_name || ""}</td>
-									<td>${wo.qty || 0}</td>
+									<td>${wo.qty}</td>
 									<td>${wo.custom_item_specifics || ""}</td>
 									<td>${wo.custom_particulars || ""}</td>
+									<td>${production_status}</td>
 									<td>${consumption_status}</td>
 									<td>${claiming_status}</td>
 								</tr>`;
 						});
 
-						html += '</tbody></table>';
-						frm.fields_dict['custom_progress_summary'].$wrapper.html(html);
-					} else {
-						frm.fields_dict['custom_progress_summary'].$wrapper.html("<p class='text-muted'>No active Work Orders found.</p>");
-					}
+						// 2. Render "Missing" row if SO Qty > Total WO Qty
+						let remaining_qty = so_item.qty - total_wo_qty;
+						if (remaining_qty > 0) {
+							html += `
+								<tr class="no-wo-row">
+									<td class="missing-label">No Work Order</td>
+									<td>${so_item.item_name}</td>
+									<td>${remaining_qty}</td>
+									<td>${so_item.custom_item_specifics || ""}</td>
+									<td>${so_item.custom_particulars || ""}</td>
+									<td>Pending Creation</td>
+									<td>N/A</td>
+									<td>N/A</td>
+								</tr>`;
+						}
+					});
+
+					html += '</tbody></table>';
+					frm.fields_dict['custom_progress_summary'].$wrapper.html(html);
 				}
 			});
 		}
