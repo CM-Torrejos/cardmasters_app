@@ -108,6 +108,57 @@ frappe.ui.form.on('Work Order', {
 		// 		set_from_warehouse: 'MASTER WAREHOUSE - CM CDO'
 		// 	})
 		// })
+
+		if (frm.doc.docstatus === 1) {
+            frm.add_custom_button(__('Update Details'), function() {
+                let d = new frappe.ui.Dialog({
+                    title: __('Update Work Order Details'),
+                    fields: [
+                        {
+                            label: 'Quantity',
+                            fieldname: 'qty',
+                            fieldtype: 'Float',
+                            default: frm.doc.qty,
+                            reqd: 1
+                        },
+                        {
+                            label: 'Item Specifics',
+                            fieldname: 'custom_item_specifics',
+                            fieldtype: 'Small Text',
+                            default: frm.doc.custom_item_specifics
+                        },
+                        {
+                            label: 'Particulars',
+                            fieldname: 'custom_particulars',
+                            fieldtype: 'Small Text',
+                            default: frm.doc.custom_particulars
+                        }
+                    ],
+                    primary_action_label: __('Update'),
+                    primary_action(values) {
+                        frappe.call({
+                            method: "cardmasters_app.cardmasters_app.api.update_work_order_details.update_work_order_details",
+                            args: {
+                                docname: frm.doc.name,
+                                qty: values.qty,
+                                item_specifics: values.custom_item_specifics,
+                                particulars: values.custom_particulars
+                            },
+                            callback: function(r) {
+                                if (r.message === "Success") {
+                                    frappe.show_alert({message: __('Details Updated'), indicator: 'green'});
+                                    frm.reload_doc();
+                                    d.hide();
+                                }
+                            }
+                        });
+                    }
+                });
+                d.show();
+            });
+
+            frm.change_custom_button_type(__('Update Details'), null, 'primary');
+        }
 	},
 });
 
