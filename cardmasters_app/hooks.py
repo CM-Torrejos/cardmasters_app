@@ -97,6 +97,9 @@ doc_events = {
         ],
         "on_update_after_submit": [
             "cardmasters_app.cardmasters_app.api.so_update.work_order_workflow_trigger"
+        ],
+        "on_cancel": [
+            "cardmasters_app.cardmasters_app.api.so_update.work_order_workflow_trigger"
         ]
     },
     "Stock Entry": {
