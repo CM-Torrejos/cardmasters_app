@@ -86,47 +86,73 @@ frappe.ui.form.on('Sales Order', {
 				method: 'frappe.client.get_list',
 				args: {
 					doctype: 'Work Order',
-					filters: { sales_order: frm.doc.name },
-					fields: ['name', 'workflow_state', 'item_name', 'status']
+					filters: {
+						sales_order: frm.doc.name,
+						docstatus: ["!=", 2] // Exclude Cancelled
+					},
+					fields: ['name', 'workflow_state', 'item_name', 'status', 'qty', 'custom_item_specifics', 'custom_particulars', 'custom_bypass']
 				},
 				callback: function(response) {
 					if (response.message && response.message.length > 0) {
-						// Updated table headers
 						let html = `
-							<table class="table table-bordered">
+							<style>
+								.custom-wo-table { table-layout: fixed; width: 100%; }
+								.custom-wo-table td, .custom-wo-table th { 
+									white-space: normal !important; 
+									word-wrap: break-word; 
+									vertical-align: top; 
+									padding: 8px;
+								}
+							</style>
+							<table class="table table-bordered custom-wo-table">
 								<thead>
 									<tr>
-										<th>Work Order</th>
-										<th>Item</th>
-										<th>Consumption Status</th>
-										<th>System Status</th>
+										<th style="width: 14%;">Work Order</th>
+										<th style="width: 14%;">Item</th>
+										<th style="width: 7%;">Qty</th>
+										<th style="width: 15%;">Specifics</th>
+										<th style="width: 15%;">Particulars</th>
+										<th style="width: 15%;">Consumption</th>
+										<th style="width: 20%;">Claiming Status</th>
 									</tr>
 								</thead>
 								<tbody>`;
 
 						response.message.forEach(wo => {
-							// Logic for Consumption Status text
+							// Consumption Status Logic
 							let consumption_status = wo.status === "Completed" 
 								? "Consumption entry submitted" 
 								: "No consumption entry submitted";
 
+							// Claiming Status Logic with Bypass check
+							let claiming_status = "Not In Claiming";
+							
+							if (wo.custom_bypass == 1) {
+								claiming_status = "In Claiming (Bypassed)";
+							} else if (wo.workflow_state === "In Claiming") {
+								claiming_status = "In Claiming";
+							}
+
 							html += `
 								<tr>
-									<td><a href="/app/work-order/${wo.name}" target="_blank">${wo.name}</a></td>
-									<td>${wo.item_name}</td>
+									<td><a href="/app/work-order/${wo.name}" target="_blank"><b>${wo.name}</b></a></td>
+									<td>${wo.item_name || ""}</td>
+									<td>${wo.qty || 0}</td>
+									<td>${wo.custom_item_specifics || ""}</td>
+									<td>${wo.custom_particulars || ""}</td>
 									<td>${consumption_status}</td>
-									<td>${wo.workflow_state || ""}</td>
+									<td>${claiming_status}</td>
 								</tr>`;
 						});
 
 						html += '</tbody></table>';
 						frm.fields_dict['custom_progress_summary'].$wrapper.html(html);
 					} else {
-						frm.fields_dict['custom_progress_summary'].$wrapper.html("<p class='text-muted'>No Work Orders found.</p>");
+						frm.fields_dict['custom_progress_summary'].$wrapper.html("<p class='text-muted'>No active Work Orders found.</p>");
 					}
 				}
 			});
-		}   
+		}
 
 		if (frm.doc.docstatus === 1) {
     		// Call our server-side python method
