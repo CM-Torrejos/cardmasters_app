@@ -210,24 +210,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2026-02-02 11:58:18.322773",
-  "name": "PC (PERMITTED BYPASS)",
-  "style": "",
-  "workflow_state_name": "PC (PERMITTED BYPASS)"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-08-05 09:36:25.089086",
-  "name": "BOM Finished",
-  "style": "Success",
-  "workflow_state_name": "BOM Finished"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-08-04 14:54:54.371813",
   "name": "Production Concluded",
   "style": "Success",
@@ -237,28 +219,10 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-05-17 05:00:31.788551",
-  "name": "Pending Client Approval",
-  "style": "Danger",
-  "workflow_state_name": "Pending Client Approval"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-07-03 09:10:17.857134",
   "name": "Awaiting Submission",
   "style": "",
   "workflow_state_name": "Awaiting Submission"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-08-05 09:36:15.935091",
-  "name": "Client Approved (BOM WIP)",
-  "style": "Info",
-  "workflow_state_name": "Client Approved (BOM WIP)"
  },
  {
   "docstatus": 0,
@@ -273,19 +237,28 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2026-02-05 13:27:25.992477",
-  "name": "Not Started",
-  "style": "Info",
-  "workflow_state_name": "Not Started"
+  "modified": "2025-08-05 09:36:25.089086",
+  "name": "BOM Finished",
+  "style": "Success",
+  "workflow_state_name": "BOM Finished"
  },
  {
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2026-02-05 13:27:53.190005",
-  "name": "Pending Consumption",
-  "style": "Danger",
-  "workflow_state_name": "Pending Consumption"
+  "modified": "2025-08-05 09:36:15.935091",
+  "name": "Client Approved (BOM WIP)",
+  "style": "Info",
+  "workflow_state_name": "Client Approved (BOM WIP)"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-02-05 13:27:25.992477",
+  "name": "Not Started",
+  "style": "Info",
+  "workflow_state_name": "Not Started"
  },
  {
   "docstatus": 0,
@@ -304,6 +277,33 @@
   "name": "In Production",
   "style": "Warning",
   "workflow_state_name": "In Production"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-02-02 11:58:18.322773",
+  "name": "PC (PERMITTED BYPASS)",
+  "style": "",
+  "workflow_state_name": "PC (PERMITTED BYPASS)"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-17 05:00:31.788551",
+  "name": "Pending Client Approval",
+  "style": "Danger",
+  "workflow_state_name": "Pending Client Approval"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-02-05 13:27:53.190005",
+  "name": "Pending Consumption",
+  "style": "Danger",
+  "workflow_state_name": "Pending Consumption"
  },
  {
   "docstatus": 0,
