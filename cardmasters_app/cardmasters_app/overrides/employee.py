@@ -16,7 +16,7 @@ def autoname(doc, method=None):
     sequence = full_series.split('-')[-1]
     
     # Set the final name
-    doc.name = f"CM-{abbr}{year}-{doc.grade or 'L0'}{sequence}"
+    doc.name = f"CM-{abbr}{year}-{doc.grade or 'UK'}{sequence}"
 
 def get_branch_abbr(branch_name):
     if not branch_name:
