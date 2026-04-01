@@ -17,6 +17,8 @@
   "column_break_esmj",
   "error_type",
   "blame",
+  "blame2",
+  "blame3",
   "reason_for_damage",
   "section_break_cxwc",
   "damaged_or_returned_item",
@@ -137,6 +139,24 @@
    "fieldtype": "Link",
    "label": "Company",
    "options": "Company"
+  },
+  {
+   "fieldname": "blame2",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Point Person 2",
+   "mandatory_depends_on": "eval:doc.error_type == \"Human\"",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "blame3",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Point Person 3",
+   "mandatory_depends_on": "eval:doc.error_type == \"Human\"",
+   "options": "Employee"
   }
  ],
  "grid_page_length": 50,
@@ -151,7 +171,7 @@
    "link_fieldname": "custom_damages_and_returns"
   }
  ],
- "modified": "2026-03-27 15:22:57.224093",
+ "modified": "2026-04-01 16:30:38.898798",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damages and Returns",
