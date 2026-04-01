@@ -65,7 +65,8 @@ doctype_js = {
 
 override_doctype_class = {
     "Job Card": "cardmasters_app.cardmasters_app.api.disable_job_card_validation.JobCard",
-    "Work Order": "cardmasters_app.cardmasters_app.overrides.work_order.CustomWorkOrder"
+    "Work Order": "cardmasters_app.cardmasters_app.overrides.work_order.CustomWorkOrder",
+    "Payroll Entry": "cardmasters_app.cardmasters_app.overrides.payroll_entry.CustomPayrollEntry"
 }
 
 # load Chart.js legend-filter everywhere
