@@ -35,7 +35,7 @@ frappe.ui.form.on('Sales Invoice', {
                     // 5. Add Row 2: Debit Employee (to transfer the debt)
                     let row2 = frappe.model.add_child(journal, 'Journal Entry Account', 'accounts');
                     frappe.model.set_value(row2.doctype, row2.name, {
-                        account: '1455 - ADVANCES TO EMPLOYEES - CM CDO',
+                        account: '1451 - ACCOUNTS RECEIVABLE - EMPLOYEE - CM CDO',
                         party_type: 'Employee',
                         party: '', // Left blank as requested
                         debit_in_account_currency: frm.doc.grand_total,
