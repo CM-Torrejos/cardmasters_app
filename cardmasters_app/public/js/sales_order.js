@@ -1,11 +1,9 @@
 frappe.ui.form.on('Sales Order', {
 	refresh: function(frm) {
-		
+		const invalid_statuses = ['On Hold', 'Cancelled', 'Closed'];
+
 		// Artist Sheet Button Creation
 		function set_artist_card_button() {
-			
-			const invalid_statuses = ['On Hold', 'Cancelled', 'Closed'];
-			
 			if (!invalid_statuses.includes(frm.doc.status)) {
 				frm.add_custom_button(__('Create Artist Card'), function() {
 					frappe.new_doc('Artist Card', {
@@ -19,6 +17,15 @@ frappe.ui.form.on('Sales Order', {
 			}
 		}
 
+		// Add Credit Memo in Create Button
+		if (!frm.is_new() && !invalid_statuses.includes(frm.doc.status)) {
+			frm.add_custom_button(__('Credit Memo'), function() {
+				frappe.new_doc('Credit Memo', {
+					sales_order: frm.doc.name,
+					customer: frm.doc.customer,
+				});
+			}, __('Create'));
+		}
 
 		// Custom Pill Append
 		function set_custom_pill(doc) {
@@ -253,17 +260,16 @@ frappe.ui.form.on('Sales Order', {
 
 	// Client Script for Sales Order
     custom_grant: function(frm) {
-    if (frm.doc.custom_grant) {
-        frappe.db.get_value('Grant', frm.doc.custom_grant, 'available_balance', (r) => {
-            if (r && r.available_balance !== undefined) {
-                let available = r.available_balance;
-                let color = (available < frm.doc.grand_total) ? 'red' : 'blue';
-                frm.set_intro(`Current Grant Balance: ${format_currency(available)}`, color);
-            }
-        });
-    } else {
-        frm.set_intro(null);
-    }
-}
-	
+		if (frm.doc.custom_grant) {
+			frappe.db.get_value('Grant', frm.doc.custom_grant, 'available_balance', (r) => {
+				if (r && r.available_balance !== undefined) {
+					let available = r.available_balance;
+					let color = (available < frm.doc.grand_total) ? 'red' : 'blue';
+					frm.set_intro(`Current Grant Balance: ${format_currency(available)}`, color);
+				}
+			});
+		} else {
+			frm.set_intro(null);
+		}
+	}
 });

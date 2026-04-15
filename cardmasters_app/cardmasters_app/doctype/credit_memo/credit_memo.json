@@ -12,6 +12,7 @@
   "sales_order",
   "address",
   "column_break_ibto",
+  "workflow_state",
   "naming_series",
   "date",
   "customer",
@@ -64,7 +65,8 @@
    "fieldtype": "Link",
    "label": "Sales Order",
    "options": "Sales Order",
-   "reqd": 1
+   "reqd": 1,
+   "search_index": 1
   },
   {
    "fieldname": "address",
@@ -104,23 +106,32 @@
    "fieldname": "reason",
    "fieldtype": "Link",
    "label": "Reason",
-   "options": "Credit Memo Reason"
+   "options": "Credit Memo Reason",
+   "reqd": 1
   },
   {
    "fieldname": "column_break_yteg",
    "fieldtype": "Column Break"
   },
   {
+   "default": "0",
    "fieldname": "amount",
    "fieldtype": "Currency",
-   "label": "Amount"
+   "label": "Amount",
+   "reqd": 1
+  },
+  {
+   "fieldname": "workflow_state",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Workflow State"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-28 15:26:46.697464",
+ "modified": "2026-04-15 14:24:57.824336",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Credit Memo",
