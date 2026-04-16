@@ -11,6 +11,7 @@
   "company",
   "sales_order",
   "address",
+  "address_display",
   "column_break_ibto",
   "workflow_state",
   "naming_series",
@@ -70,8 +71,9 @@
   },
   {
    "fieldname": "address",
-   "fieldtype": "Data",
-   "label": "Address"
+   "fieldtype": "Link",
+   "label": "Address",
+   "options": "Address"
   },
   {
    "fieldname": "column_break_ibto",
@@ -125,13 +127,19 @@
    "fieldtype": "Data",
    "hidden": 1,
    "label": "Workflow State"
+  },
+  {
+   "fieldname": "address_display",
+   "fieldtype": "Text",
+   "label": "Address Display",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-15 14:24:57.824336",
+ "modified": "2026-04-16 11:34:28.406122",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Credit Memo",

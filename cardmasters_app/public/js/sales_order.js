@@ -19,10 +19,23 @@ frappe.ui.form.on('Sales Order', {
 
 		// Add Credit Memo in Create Button
 		if (!frm.is_new() && !invalid_statuses.includes(frm.doc.status)) {
-			frm.add_custom_button(__('Credit Memo'), function() {
+			frm.add_custom_button(__('Issue Credit Memo'), function() {
+				// Get the address display string (or empty string if null)
+				let raw_address = frm.doc.address_display || "";
+				
+				// Clean HTML tags (replace <br> with comma, then strip other tags)
+				let clean_address = raw_address
+					.replace(/<br\s*[\/]?>/gi, ", ")       // 1. Replace all <br>, <br/>, or <BR> tags with a comma and space
+					.replace(/<\/?[^>]+(>|$)/g, "")        // 2. Strip all other HTML tags (like <div> or <span>)
+					.replace(/\s\s+/g, ' ')                // 3. Collapse multiple consecutive spaces into a single space
+					.trim()                                // 4. Remove whitespace and newlines from the start and end of the string
+					.replace(/,\s*$/, "");                 // 5. Remove a comma (and any trailing space) if it's at the very end
+
 				frappe.new_doc('Credit Memo', {
 					sales_order: frm.doc.name,
 					customer: frm.doc.customer,
+					address: frm.doc.customer_address,
+					address_display: clean_address,
 				});
 			}, __('Create'));
 		}
