@@ -1,7 +1,7 @@
 import frappe
 from frappe import _
 
-def get_or_create_batch(batch_name, item_code, posting_date):
+def get_or_create_batch(batch_name, item_code, posting_date, sales_order):
 	"""Fetch existing Batch or create a new one."""
 	# truncate to 100 chars for name
 	name = batch_name.strip()[:100]
@@ -11,14 +11,15 @@ def get_or_create_batch(batch_name, item_code, posting_date):
 				"doctype": "Batch",
 				"batch_id": name,
 				"item": item_code,
-				"fifo_date": posting_date
+				"fifo_date": posting_date,
+                "custom_sales_order": sales_order
 			}).insert(ignore_permissions=True)
 		except frappe.DuplicateEntryError:
 			frappe.db.rollback()
 	return name
 
 def build_batch_name(so_name, item_code, item_specifics):
-	return f"{so_name} - {item_code}:{item_specifics}"
+    return f"{so_name.strip()} - {item_code.strip()}:{item_specifics.strip()}"
 
 # --- NEW: shared finder for existing batches by our convention ---
 def _find_existing_batch_by_convention(batch_name: str) -> str | None:
@@ -75,14 +76,14 @@ def set_batch_no_for_purchase_order(doc, method):
             item_specifics = item_specifics.strip()
             
         if not item_specifics:
-            item_specifics = "NA"
+            item_specifics = "No Item Specifics"
 
         # 4. Build Name
         batch_name = build_batch_name(sales_order, item_code, item_specifics)
         
         # 5. CREATE the Batch
         # This ensures the batch exists in the system before the goods ever arrive.
-        new_batch = get_or_create_batch(batch_name, item_code, doc.posting_date)
+        new_batch = get_or_create_batch(batch_name, item_code, doc.posting_date, sales_order)
         
         # 6. Stamp it on the PO (Optional, requires batch_no field on PO Item)
         # This helps the supplier know which batch to label.
@@ -134,7 +135,7 @@ def set_batch_no_for_purchase_receipt(doc, method):
                 {"parent": d.purchase_order, "item_code": item_code}, 
                 "custom_item_specifics"
              ) or ""
-        if not item_specifics: item_specifics = "NA"
+        if not item_specifics: item_specifics = "No Item Specifics"
 
         # 4. Find the Batch (Pre-created by PO)
         expected_name = build_batch_name(so_name, item_code, item_specifics)
@@ -204,7 +205,7 @@ def set_batch_no_for_purchase_invoice(doc, method):
         if not item_specifics and d.get("po_detail"):
              item_specifics = frappe.db.get_value("Purchase Order Item", d.po_detail, "custom_item_specifics") or ""
         
-        if not item_specifics: item_specifics = "NA"
+        if not item_specifics: item_specifics = "No Item Specifics"
 
         # 3. Find Batch
         expected_name = build_batch_name(so_name, item_code, item_specifics)
@@ -254,14 +255,14 @@ def set_batch_no_for_fg_on_manufacture_entry(doc, method):
 
 	# Acquire all necessary parameters for building/assigning batch
 	sales_order_ref = wo.sales_order
-	item_specifics_ref = wo.get("custom_item_specifics") or "NA"
+	item_specifics_ref = wo.get("custom_item_specifics") or "No Item Specifics"
 	item_code_ref = wo.production_item
 
 	# Call the batch name builder function
 	batch_name = build_batch_name(sales_order_ref, item_code_ref, item_specifics_ref)
 	
 	# Assign the batch_no field of the line item to its batch (or create one then assign)
-	fg_row.batch_no = get_or_create_batch(batch_name, fg_row.item_code, doc.posting_date)
+	fg_row.batch_no = get_or_create_batch(batch_name, fg_row.item_code, doc.posting_date, sales_order_ref)
 	fg_row.db_set("batch_no", fg_row.batch_no)  # Ensures it's saved
 
 # --- FIXED: Delivery Note now follows the same convention and auto-fills if found ---
@@ -298,7 +299,7 @@ def set_batch_no_for_delivery_note(doc, method):
                 item_specifics = (frappe.db.get_value("Sales Order Item", so_detail, "custom_item_specifics") or "").strip()
         
         if not item_specifics:
-            item_specifics = "NA"
+            item_specifics = "No Item Specifics"
 
         expected_name_full = build_batch_name(so_name, item_code, item_specifics)
         found_batch = _find_existing_batch_by_convention(expected_name_full)
@@ -341,3 +342,24 @@ def set_batch_no_for_delivery_note(doc, method):
                 title="Batch Mismatch",
                 indicator="orange"
             )
+
+def set_batch_received_date_on_population(doc, method):
+    if doc.docstatus != 1 or doc.purpose != "Manufacture":
+        return
+
+    # Get the name of the person who submitted
+    user_name = frappe.db.get_value("User", doc.modified_by, "full_name") or doc.modified_by
+
+    for item in doc.items:
+        if item.batch_no:
+            # check if the date is already set. 
+            current_date = frappe.db.get_value("Batch", item.batch_no, "custom_date_received")
+
+            if not current_date:
+                # Update the date
+                frappe.db.set_value("Batch", item.batch_no, "custom_date_received", doc.posting_date)
+                
+                # Add comment
+                comment_text = f"set received date set via {doc.doctype} <b>{doc.name}</b>"
+                batch_doc = frappe.get_doc("Batch", item.batch_no)
+                batch_doc.add_comment("Info", comment_text)
