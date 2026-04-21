@@ -1,18 +1,47 @@
 {
  "charts": [],
- "content": "[{\"id\":\"I7HzioZU6b\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Quick Access</span>\",\"col\":12}},{\"id\":\"y1etxHDN-K\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Employee\",\"col\":3}},{\"id\":\"g99LPPjoXp\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Payroll Entry\",\"col\":3}},{\"id\":\"Tvfwp5nZ_D\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Salary Slip\",\"col\":3}},{\"id\":\"7yTrVNN_y6\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"emXBTs-y_5\",\"type\":\"card\",\"data\":{\"card_name\":\"Employee\",\"col\":4}},{\"id\":\"Zs6Z4R1Dtb\",\"type\":\"card\",\"data\":{\"card_name\":\"Components and Structure\",\"col\":4}},{\"id\":\"TU3cBGI0GW\",\"type\":\"card\",\"data\":{\"card_name\":\"Payroll\",\"col\":4}}]",
+ "content": "[{\"id\":\"I7HzioZU6b\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Quick Access</span>\",\"col\":12}},{\"id\":\"ksE-YJQX5i\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Memorandum\",\"col\":3}},{\"id\":\"y1etxHDN-K\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Employee\",\"col\":3}},{\"id\":\"g99LPPjoXp\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Payroll Entry\",\"col\":3}},{\"id\":\"Tvfwp5nZ_D\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Salary Slip\",\"col\":3}},{\"id\":\"x_ls1LWj6W\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Quick Generate Employee Report\",\"col\":3}},{\"id\":\"7yTrVNN_y6\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"emXBTs-y_5\",\"type\":\"card\",\"data\":{\"card_name\":\"Employee\",\"col\":4}},{\"id\":\"QhB8GGK8Sb\",\"type\":\"card\",\"data\":{\"card_name\":\"Grievances, Incident Reports, Memos\",\"col\":4}},{\"id\":\"2FbYFFhKEG\",\"type\":\"card\",\"data\":{\"card_name\":\"Talent Acquisition\",\"col\":4}},{\"id\":\"XIg1jel005\",\"type\":\"card\",\"data\":{\"card_name\":\"Onboarding\",\"col\":4}},{\"id\":\"Zs6Z4R1Dtb\",\"type\":\"card\",\"data\":{\"card_name\":\"Components and Structure\",\"col\":4}},{\"id\":\"TU3cBGI0GW\",\"type\":\"card\",\"data\":{\"card_name\":\"Payroll\",\"col\":4}}]",
  "creation": "2025-08-08 13:14:48.952255",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
  "for_user": "",
- "hide_custom": 0,
+ "hide_custom": 1,
  "icon": "users",
  "idx": 0,
  "indicator_color": "green",
  "is_hidden": 0,
  "label": "HR Department",
  "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Payroll",
+   "link_count": 2,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Payroll Entry",
+   "link_count": 0,
+   "link_to": "Payroll Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Salary Slip",
+   "link_count": 0,
+   "link_to": "Salary Slip",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
   {
    "hidden": 0,
    "is_query_report": 0,
@@ -134,7 +163,66 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Payroll",
+   "label": "Grievances, Incident Reports, Memos",
+   "link_count": 5,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Memorandums",
+   "link_count": 0,
+   "link_to": "Memorandum",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Incident Report",
+   "link_count": 0,
+   "link_to": "Incident Report",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Grievance",
+   "link_count": 0,
+   "link_to": "Employee Grievance",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Incident Type",
+   "link_count": 0,
+   "link_to": "Incident Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Grievance Type",
+   "link_count": 0,
+   "link_to": "Grievance Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Talent Acquisition",
    "link_count": 3,
    "link_type": "DocType",
    "onboard": 0,
@@ -143,9 +231,9 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Employee Advance",
+   "label": "Job Opening",
    "link_count": 0,
-   "link_to": "Employee Advance",
+   "link_to": "Job Opening",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -153,9 +241,9 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Payroll Entry",
+   "label": "Job Applicant",
    "link_count": 0,
-   "link_to": "Payroll Entry",
+   "link_to": "Job Applicant",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -163,15 +251,44 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Salary Slip",
+   "label": "Job Offer",
    "link_count": 0,
-   "link_to": "Salary Slip",
+   "link_to": "Job Offer",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Onboarding",
+   "link_count": 2,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Onboarding",
+   "link_count": 0,
+   "link_to": "Employee Onboarding",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Customer",
+   "link_count": 0,
+   "link_to": "Customer",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
   }
  ],
- "modified": "2026-01-09 14:15:03.661782",
+ "modified": "2026-04-18 13:37:57.990469",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "HR Department",
@@ -182,13 +299,10 @@
  "quick_lists": [],
  "roles": [
   {
-   "role": "CM HR Head"
-  },
-  {
-   "role": "CM HR Officer"
+   "role": "CMv3 HR Head"
   }
  ],
- "sequence_id": 15.0,
+ "sequence_id": 22.0,
  "shortcuts": [
   {
    "color": "Grey",
@@ -197,6 +311,22 @@
    "link_to": "Employee",
    "stats_filter": "[]",
    "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "New",
+   "label": "Create Memorandum",
+   "link_to": "Memorandum",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Quick Generate Employee Report",
+   "link_to": "Easy Employee Report",
+   "report_ref_doctype": "Employee",
+   "type": "Report"
   },
   {
    "color": "Grey",

@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"MvSPBclQ80\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"eWpRrNoOFh\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Stock Entry\",\"col\":3}},{\"id\":\"YqNDFGtcF5\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Item\",\"col\":3}},{\"id\":\"p6XQCEJ0GJ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create DNR\",\"col\":3}},{\"id\":\"__sXHjnWvk\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"AoDjoaUKk9\",\"type\":\"card\",\"data\":{\"card_name\":\"Item Settings\",\"col\":4}},{\"id\":\"boEN4-Pod9\",\"type\":\"card\",\"data\":{\"card_name\":\"Receive, Release, and Claim\",\"col\":4}},{\"id\":\"ApNdj5N0V8\",\"type\":\"card\",\"data\":{\"card_name\":\"Stock Tools\",\"col\":4}},{\"id\":\"yUR5Uke9dD\",\"type\":\"card\",\"data\":{\"card_name\":\"Reference\",\"col\":4}},{\"id\":\"nN59YiNTTN\",\"type\":\"card\",\"data\":{\"card_name\":\"Stock Monitoring and Reports\",\"col\":4}}]",
+ "content": "[{\"id\":\"MvSPBclQ80\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"eWpRrNoOFh\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Stock Entry\",\"col\":3}},{\"id\":\"YqNDFGtcF5\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Item\",\"col\":3}},{\"id\":\"p6XQCEJ0GJ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create DNR\",\"col\":3}},{\"id\":\"-wJUmT82WC\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"General Monitoring\",\"col\":3}},{\"id\":\"0qdXqKPEEB\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Order Stock Entries\",\"col\":3}},{\"id\":\"__sXHjnWvk\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"AoDjoaUKk9\",\"type\":\"card\",\"data\":{\"card_name\":\"Item Settings\",\"col\":4}},{\"id\":\"boEN4-Pod9\",\"type\":\"card\",\"data\":{\"card_name\":\"Receive, Release, and Claim\",\"col\":4}},{\"id\":\"o83u73-fIu\",\"type\":\"card\",\"data\":{\"card_name\":\"Claiming\",\"col\":4}},{\"id\":\"ApNdj5N0V8\",\"type\":\"card\",\"data\":{\"card_name\":\"Stock Tools\",\"col\":4}},{\"id\":\"yUR5Uke9dD\",\"type\":\"card\",\"data\":{\"card_name\":\"Reference\",\"col\":4}},{\"id\":\"nN59YiNTTN\",\"type\":\"card\",\"data\":{\"card_name\":\"Stock Monitoring and Reports\",\"col\":4}}]",
  "creation": "2025-06-11 15:13:47.841880",
  "custom_blocks": [],
  "docstatus": 0,
@@ -202,8 +202,27 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Claiming",
+   "link_count": 1,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Stock Entries",
+   "link_count": 0,
+   "link_to": "Stock Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Stock Monitoring and Reports",
-   "link_count": 5,
+   "link_count": 6,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -258,9 +277,19 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "INVENTORY STOCK BALANCE",
+   "link_count": 0,
+   "link_to": "INVENTORY STOCK BALANCE",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2026-01-09 15:25:32.434415",
+ "modified": "2026-04-20 09:20:15.977503",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Inventory",
@@ -271,17 +300,31 @@
  "quick_lists": [],
  "roles": [
   {
-   "role": "CM Inventory Associate"
+   "role": "CM Inventory"
   },
   {
-   "role": "CM Inventory Claiming Associate"
+   "role": "CMv2 Inventory Coordinator"
   },
   {
-   "role": "CM Inventory Coordinator"
+   "role": "CMv2 Inventory Associate"
+  },
+  {
+   "role": "CMv2 Inventory Claiming Associate"
+  },
+  {
+   "role": "CMv3 Warehouse Associate"
   }
  ],
- "sequence_id": 14.0,
+ "sequence_id": 15.0,
  "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "General Monitoring",
+   "link_to": "General Monitoring",
+   "report_ref_doctype": "Sales Order",
+   "type": "Report"
+  },
   {
    "color": "Grey",
    "doc_view": "New",
@@ -289,6 +332,14 @@
    "link_to": "Item",
    "stats_filter": "[]",
    "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Sales Order Stock Entries",
+   "link_to": "Sales Order Stock Movement Monitoring",
+   "report_ref_doctype": "Stock Entry",
+   "type": "Report"
   },
   {
    "color": "Grey",
