@@ -7,6 +7,7 @@
  "field_order": [
   "snapshot_date",
   "company",
+  "is_latest_monthly_snapshot",
   "section_break_naah",
   "range_1",
   "range_2",
@@ -89,12 +90,18 @@
    "fieldname": "total_overdue",
    "fieldtype": "Currency",
    "label": "Total Overdue"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_latest_monthly_snapshot",
+   "fieldtype": "Check",
+   "label": "Is Latest Snapshot"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-22 10:21:16.703473",
+ "modified": "2026-04-24 17:02:47.972180",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "AR Global Snapshot",
