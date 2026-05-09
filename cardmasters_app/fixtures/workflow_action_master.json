@@ -219,13 +219,6 @@
  {
   "docstatus": 0,
   "doctype": "Workflow Action Master",
-  "modified": "2026-02-16 16:15:07.448719",
-  "name": "Convert to Partial Bypass",
-  "workflow_action_name": "Convert to Partial Bypass"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow Action Master",
   "modified": "2026-02-05 10:11:10.261901",
   "name": "Partial Bypass",
   "workflow_action_name": "Partial Bypass"
@@ -233,23 +226,9 @@
  {
   "docstatus": 0,
   "doctype": "Workflow Action Master",
-  "modified": "2025-04-28 05:42:35.304733",
-  "name": "Begin Layout",
-  "workflow_action_name": "Begin Layout"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow Action Master",
   "modified": "2025-05-19 04:17:40.309940",
   "name": "Begin Production",
   "workflow_action_name": "Begin Production"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow Action Master",
-  "modified": "2025-06-14 16:14:27.814532",
-  "name": "Submit",
-  "workflow_action_name": "Submit"
  },
  {
   "docstatus": 0,
@@ -275,23 +254,9 @@
  {
   "docstatus": 0,
   "doctype": "Workflow Action Master",
-  "modified": "2026-01-28 10:31:10.464255",
-  "name": "Revert to Production",
-  "workflow_action_name": "Revert to Production"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow Action Master",
   "modified": "2026-02-02 11:58:33.371402",
   "name": "Bypass",
   "workflow_action_name": "Bypass"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow Action Master",
-  "modified": "2025-05-21 13:25:13.566376",
-  "name": "Cancel",
-  "workflow_action_name": "Cancel"
  },
  {
   "docstatus": 0,
@@ -313,5 +278,40 @@
   "modified": "2026-05-09 11:04:38.283503",
   "name": "Declare Lost",
   "workflow_action_name": "Declare Lost"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-02-16 16:15:07.448719",
+  "name": "Convert to Partial Bypass",
+  "workflow_action_name": "Convert to Partial Bypass"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-04-28 05:42:35.304733",
+  "name": "Begin Layout",
+  "workflow_action_name": "Begin Layout"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-06-14 16:14:27.814532",
+  "name": "Submit",
+  "workflow_action_name": "Submit"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-05-21 13:25:13.566376",
+  "name": "Cancel",
+  "workflow_action_name": "Cancel"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-01-28 10:31:10.464255",
+  "name": "Revert to Production",
+  "workflow_action_name": "Revert to Production"
  }
 ]
