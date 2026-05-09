@@ -40,6 +40,25 @@ frappe.ui.form.on('Sales Order', {
 			}, __('Create'));
 		}
 
+		if (!frm.is_new() && !invalid_statuses.includes(frm.doc.status)) {
+			frm.add_custom_button(__('Issue Complaint'), function() {
+				frappe.new_doc('Complaint', {
+					sales_order: frm.doc.name,
+					customer: frm.doc.customer,
+				});
+			}, __('Create'));
+		}
+
+		if (!frm.is_new() && !invalid_statuses.includes(frm.doc.status)) {
+			frm.add_custom_button(__('Issue Damages/Returns'), function() {
+				frappe.new_doc('Damages and Returns', {
+					sales_order: frm.doc.name,
+					date: 'Today',
+					date_of_damage_or_return: 'Today'
+				});
+			}, __('Create'));
+		}
+
 		// Custom Pill Append
 		function set_custom_pill(doc) {
 			$('span.custom-state-pill').remove();
