@@ -284,5 +284,48 @@ frappe.ui.form.on('Sales Order', {
 		} else {
 			frm.set_intro(null);
 		}
-	}
+	},
+
+	before_workflow_action: async (frm) => {
+        // Replace 'Approve' with your exact workflow action/transition name
+        if (frm.selected_workflow_action === 'Declare Lost') {
+            
+            // Return a Promise to pause the workflow execution until the dialog is handled
+            return new Promise((resolve, reject) => {
+				frappe.dom.unfreeze();
+                frappe.prompt([
+                    {
+                        // Define the field inside the popup dialog
+                        label: 'Input Lost Reason',
+                        fieldname: 'custom_lost_reason',
+                        fieldtype: 'Link', // Can be Data, Text, Select, etc.
+						options: 'Sales Order Lost Reason',
+                        reqd: 1 // 1 means mandatory, 0 means optional
+                    }
+                ],
+                function(values){
+                    frappe.db.set_value(frm.doctype, frm.docname, 'custom_lost_reason', values.custom_lost_reason)
+                        .then(() => {
+                            // 2. Update the local form so it doesn't look out of sync
+                            frm.set_value('custom_lost_reason', values.custom_lost_reason);
+                            
+                            // 3. Resolve the promise to let the workflow finish its transition
+                            resolve();
+                        })
+                        .catch(() => {
+                            frappe.msgprint(__('Failed to save to database.'));
+                            reject(); // Stop workflow if the DB write fails
+                        });
+                },
+                'Input Required', // Title of the Dialog Box
+                'Submit' // Text on the Dialog Button
+                );
+                
+                // If the user closes the dialog box without submitting, cancel the workflow action
+                $('.frappe-control[data-fieldname="custom_lost_reason"]').closest('.modal').on('hidden.bs.modal', function() {
+                    reject(); 
+                });
+            });
+        }
+    }
 });
