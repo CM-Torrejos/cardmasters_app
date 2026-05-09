@@ -376,5 +376,14 @@
   "name": "Layouting",
   "style": "Warning",
   "workflow_state_name": "Layouting"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-05-09 11:04:01.474738",
+  "name": "Lost",
+  "style": "",
+  "workflow_state_name": "Lost"
  }
 ]
