@@ -299,5 +299,19 @@
   "modified": "2025-07-03 09:03:53.485209",
   "name": "Conclude Production",
   "workflow_action_name": "Conclude Production"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-05-09 11:04:26.085616",
+  "name": "Declar Lost",
+  "workflow_action_name": "Declar Lost"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-05-09 11:04:38.283503",
+  "name": "Declare Lost",
+  "workflow_action_name": "Declare Lost"
  }
 ]
