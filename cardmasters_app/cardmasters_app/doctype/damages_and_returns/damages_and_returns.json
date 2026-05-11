@@ -10,6 +10,7 @@
   "company",
   "sales_order",
   "work_order",
+  "customer",
   "column_break_pgtg",
   "date",
   "date_of_damage_or_return",
@@ -50,7 +51,7 @@
    "search_index": 1
   },
   {
-   "depends_on": "eval:doc.type == 'Return'",
+   "fetch_from": "work_order.sales_order",
    "fieldname": "sales_order",
    "fieldtype": "Link",
    "label": "Sales Order",
@@ -204,6 +205,13 @@
    "fieldname": "value_of_damages",
    "fieldtype": "Currency",
    "label": "Total Value of Damages"
+  },
+  {
+   "fetch_from": "sales_order.customer",
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
   }
  ],
  "grid_page_length": 50,
@@ -219,7 +227,7 @@
    "link_fieldname": "custom_damages_and_returns"
   }
  ],
- "modified": "2026-04-16 14:24:28.382455",
+ "modified": "2026-05-11 09:46:43.330910",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damages and Returns",
