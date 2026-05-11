@@ -7,13 +7,13 @@
  "engine": "InnoDB",
  "field_order": [
   "type",
-  "company",
+  "customer",
   "sales_order",
   "work_order",
-  "customer",
   "column_break_pgtg",
   "date",
   "date_of_damage_or_return",
+  "company",
   "department",
   "section_break_cxwc",
   "damaged_or_returned_item",
@@ -227,7 +227,7 @@
    "link_fieldname": "custom_damages_and_returns"
   }
  ],
- "modified": "2026-05-11 09:46:43.330910",
+ "modified": "2026-05-11 09:56:31.533617",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damages and Returns",
