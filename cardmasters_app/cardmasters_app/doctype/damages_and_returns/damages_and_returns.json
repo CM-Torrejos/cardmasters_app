@@ -32,6 +32,8 @@
   "investigation_details",
   "column_break_yivy",
   "action_details",
+  "section_break_cvch",
+  "audit_remarks",
   "section_break_egrm",
   "value_of_damages"
  ],
@@ -81,7 +83,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Error Type",
-   "options": "N/A\nHuman\nMachine"
+   "options": "For Investigation\nHuman\nMachine"
   },
   {
    "allow_on_submit": 1,
@@ -212,6 +214,15 @@
    "fieldtype": "Link",
    "label": "Customer",
    "options": "Customer"
+  },
+  {
+   "fieldname": "section_break_cvch",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "audit_remarks",
+   "fieldtype": "Text",
+   "label": "Audit Remarks"
   }
  ],
  "grid_page_length": 50,
@@ -227,7 +238,7 @@
    "link_fieldname": "custom_damages_and_returns"
   }
  ],
- "modified": "2026-05-11 09:56:31.533617",
+ "modified": "2026-05-11 11:06:24.488034",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damages and Returns",
