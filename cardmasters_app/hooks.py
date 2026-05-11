@@ -200,6 +200,9 @@ doc_events = {
     },
     "Employee": {
         "autoname": "cardmasters_app.cardmasters_app.overrides.employee.autoname"
+    },
+    "Quotation": {
+        "on_update": "cardmasters_app.cardmasters_app.api.sales_order.link_so_to_qtn"
     }
 }
 

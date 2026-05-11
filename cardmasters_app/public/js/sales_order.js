@@ -59,6 +59,15 @@ frappe.ui.form.on('Sales Order', {
 			}, __('Create'));
 		}
 
+		if (!frm.is_new() && !invalid_statuses.includes(frm.doc.status)) {
+			frm.add_custom_button(__('Create Quotation'), function() {
+                frappe.model.open_mapped_doc({
+                    method: "cardmasters_app.cardmasters_app.api.sales_order.make_quotation_from_so",
+                    frm: frm
+                });
+            }, __("Create"));
+		}
+
 		// Custom Pill Append
 		function set_custom_pill(doc) {
 			$('span.custom-state-pill').remove();
