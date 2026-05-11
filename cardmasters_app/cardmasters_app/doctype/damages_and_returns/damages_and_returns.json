@@ -83,7 +83,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Error Type",
-   "options": "For Investigation\nHuman\nMachine"
+   "options": "For Investigation\nFactory Defect\nHuman\nMachine"
   },
   {
    "allow_on_submit": 1,
@@ -238,7 +238,7 @@
    "link_fieldname": "custom_damages_and_returns"
   }
  ],
- "modified": "2026-05-11 11:06:24.488034",
+ "modified": "2026-05-11 13:37:01.100602",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damages and Returns",
