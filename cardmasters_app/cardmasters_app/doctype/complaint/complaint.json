@@ -110,8 +110,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Item Code",
-   "options": "Item",
-   "reqd": 1
+   "options": "Item"
   },
   {
    "fieldname": "item_specifics",
@@ -157,7 +156,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-05-09 14:18:15.566293",
+ "modified": "2026-05-11 09:52:23.607566",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Complaint",

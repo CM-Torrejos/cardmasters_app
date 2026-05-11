@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letter_head": null,
- "modified": "2026-05-04 15:46:55.709419",
+ "modified": "2026-05-11 11:21:02.044578",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Custom Gross Profit",
@@ -25,6 +25,9 @@
   },
   {
    "role": "Accounts User"
+  },
+  {
+   "role": "Custom Gross Profit Report Access"
   }
  ],
  "timeout": 0
