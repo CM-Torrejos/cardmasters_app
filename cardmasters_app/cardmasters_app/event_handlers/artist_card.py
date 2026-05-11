@@ -22,10 +22,10 @@ def calculate_time_difference(doc, _method):
 
 def assign_artist_so(doc, _method):
 	if not doc.sales_order:
-        return
+		return
 
-    # 2. Directly update the field in the database
-    frappe.db.set_value("Sales Order", doc.sales_order, "custom_artist", doc.artist)
+	# 2. Directly update the field in the database
+	frappe.db.set_value("Sales Order", doc.sales_order, "custom_artist", doc.artist)
 
 def validate_submission(doc, _method):
 	"""
