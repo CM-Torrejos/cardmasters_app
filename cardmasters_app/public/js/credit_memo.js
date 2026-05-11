@@ -7,10 +7,11 @@ frappe.ui.form.on('Credit Memo', {
                 .then(r => {
                     // Check if the value exists and is not checked (0 or false)
                     if (r.message && !r.message.custom_sponsored) {
-                        frappe.show_alert({
-                            message: __('Notice: The linked Sales Order is not marked as Sponsored.'),
-                            indicator: 'orange'
-                        }, 7); // The alert will display for 7 seconds
+                        frappe.msgprint({
+                            title: __('Notice'),
+                            indicator: 'orange',
+                            message: __('The linked Sales Order is not marked as Sponsored.')
+                        });
                     }
                 });
         }

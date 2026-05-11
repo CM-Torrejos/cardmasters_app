@@ -61,7 +61,8 @@ doctype_js = {
     "Payment Entry": "public/js/payment_entry.js",
     "Material Request": "public/js/material_request.js",
     "Employee": "public/js/employee.js",
-    "Sales Invoice": "public/js/sales_invoice.js"
+    "Sales Invoice": "public/js/sales_invoice.js",
+    "Credit Memo": "public/js/credit_memo.js"
 }
 
 override_doctype_class = {
