@@ -104,12 +104,12 @@ frappe.ui.form.on('Sales Order', {
 
 		// TODO: This shit dont work blud
 		// if (!frappe.user.has_role('CM Head Approver') && !frappe.user.has_role('System Manager')) {
-        //     frm.remove_custom_button('Update Items');
-        // }
+		//     frm.remove_custom_button('Update Items');
+		// }
 
 		if (frappe.user.has_role('CM Artist Assigner') || frappe.user.has_role('System Manager')) {
-            set_artist_card_button();
-        }
+			set_artist_card_button();
+		}
 
 		
 		// Optional: re-run it after status changes dynamically
@@ -240,7 +240,7 @@ frappe.ui.form.on('Sales Order', {
 		}
 
 		if (frm.doc.docstatus === 1) {
-    		// Call our server-side python method
+			// Call our server-side python method
 			frappe.call({
 				method: 'cardmasters_app.cardmasters_app.api.outstanding_balance.get_sales_order_outstanding',
 				args: {
@@ -291,7 +291,7 @@ frappe.ui.form.on('Sales Order', {
 	},
 
 	// Client Script for Sales Order
-    custom_grant: function(frm) {
+	custom_grant: function(frm) {
 		if (frm.doc.custom_grant) {
 			frappe.db.get_value('Grant', frm.doc.custom_grant, 'available_balance', (r) => {
 				if (r && r.available_balance !== undefined) {
@@ -306,45 +306,62 @@ frappe.ui.form.on('Sales Order', {
 	},
 
 	before_workflow_action: async (frm) => {
-        // Replace 'Approve' with your exact workflow action/transition name
-        if (frm.selected_workflow_action === 'Declare Lost') {
-            
-            // Return a Promise to pause the workflow execution until the dialog is handled
-            return new Promise((resolve, reject) => {
+		// Replace 'Approve' with your exact workflow action/transition name
+		if (frm.selected_workflow_action === 'Declare Lost') {
+			
+			// Return a Promise to pause the workflow execution until the dialog is handled
+			return new Promise((resolve, reject) => {
 				frappe.dom.unfreeze();
-                frappe.prompt([
-                    {
-                        // Define the field inside the popup dialog
-                        label: 'Input Lost Reason',
-                        fieldname: 'custom_lost_reason',
-                        fieldtype: 'Link', // Can be Data, Text, Select, etc.
+				frappe.prompt([
+					{
+						// Define the field inside the popup dialog
+						label: 'Input Lost Reason',
+						fieldname: 'custom_lost_reason',
+						fieldtype: 'Link', // Can be Data, Text, Select, etc.
 						options: 'Sales Order Lost Reason',
-                        reqd: 1 // 1 means mandatory, 0 means optional
-                    }
-                ],
-                function(values){
-                    frappe.db.set_value(frm.doctype, frm.docname, 'custom_lost_reason', values.custom_lost_reason)
-                        .then(() => {
-                            // 2. Update the local form so it doesn't look out of sync
-                            frm.set_value('custom_lost_reason', values.custom_lost_reason);
-                            
-                            // 3. Resolve the promise to let the workflow finish its transition
-                            resolve();
-                        })
-                        .catch(() => {
-                            frappe.msgprint(__('Failed to save to database.'));
-                            reject(); // Stop workflow if the DB write fails
-                        });
-                },
-                'Input Required', // Title of the Dialog Box
-                'Submit' // Text on the Dialog Button
-                );
-                
-                // If the user closes the dialog box without submitting, cancel the workflow action
-                $('.frappe-control[data-fieldname="custom_lost_reason"]').closest('.modal').on('hidden.bs.modal', function() {
-                    reject(); 
-                });
-            });
-        }
-    }
+						reqd: 1 // 1 means mandatory, 0 means optional
+					}
+				],
+				function(values){
+					frappe.db.set_value(frm.doctype, frm.docname, 'custom_lost_reason', values.custom_lost_reason)
+						.then(() => {
+							// 2. Update the local form so it doesn't look out of sync
+							frm.set_value('custom_lost_reason', values.custom_lost_reason);
+							
+							// 3. Resolve the promise to let the workflow finish its transition
+							resolve();
+						})
+						.catch(() => {
+							frappe.msgprint(__('Failed to save to database.'));
+							reject(); // Stop workflow if the DB write fails
+						});
+				},
+				'Input Required', // Title of the Dialog Box
+				'Submit' // Text on the Dialog Button
+				);
+				
+				// If the user closes the dialog box without submitting, cancel the workflow action
+				$('.frappe-control[data-fieldname="custom_lost_reason"]').closest('.modal').on('hidden.bs.modal', function() {
+					reject(); 
+				});
+			});
+		}
+	},
+
+	before_save: function(frm) {
+		// Check if a sales order is actually linked
+		if (frm.doc.sales_order) {
+			// Fetch the custom_sponsored field value from the linked Sales Order
+			frappe.db.get_value('Sales Order', frm.doc.sales_order, 'custom_sponsored')
+				.then(r => {
+					// Check if the value exists and is not checked (0 or false)
+					if (r.message && !r.message.custom_sponsored) {
+						frappe.show_alert({
+							message: __('Notice: The linked Sales Order is not marked as Sponsored.'),
+							indicator: 'orange'
+						}, 7); // The alert will display for 7 seconds
+					}
+				});
+		}
+	}
 });
