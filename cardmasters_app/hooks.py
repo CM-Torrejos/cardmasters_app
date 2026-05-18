@@ -106,7 +106,10 @@ doc_events = {
         ],
         "validate": [
             "cardmasters_app.cardmasters_app.event_handlers.work_order.validate_so_workflow_state"
-        ]
+        ],
+        "onload": [
+            "cardmasters_app.cardmasters_app.event_handlers.work_order.warn_data_mismatch"
+        ],
     },
     "Stock Entry": {
         "after_insert": [
@@ -143,7 +146,7 @@ doc_events = {
     "Sales Order": {
         "validate": [
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.validate_alias_on_facebook_channel",
-            "cardmasters_app.cardmasters_app.api.so_rate_validation.validate_item_rates"
+            "cardmasters_app.cardmasters_app.api.so_rate_validation.validate_item_rates",
             # "cardmasters_app.cardmasters_app.event_handlers.tag_automation.automated_sales_order_tagging"
         ],
         "after_submit": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.check_artist_status"],
@@ -164,6 +167,12 @@ doc_events = {
         "on_cancel": [
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.manage_grant_usage"
         ],
+        "before_save": [
+            "cardmasters_app.cardmasters_app.event_handlers.sales_order.strip_item_specifics_particulars_spaces"
+        ],
+        "before_update_after_submit": [
+            "cardmasters_app.cardmasters_app.event_handlers.sales_order.strip_item_specifics_particulars_spaces"
+        ]
 
     },
     "Sales Order Item": {
