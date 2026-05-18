@@ -273,6 +273,63 @@ frappe.ui.form.on('Sales Order', {
 			
 			// REMOVED: doc.save(ignore_permissions=true)
 		}
+
+		if (frm.doc.docstatus === 1 && !frm.custom_update_overridden) {
+            
+            // 1. Store a copy of Frappe's original save function
+            const original_save = frm.save.bind(frm);
+            
+            // 2. Overwrite the save function with our custom logic
+            frm.save = function(action, callback, btn, on_error) {
+                
+                // When clicking the yellow 'Update' button, the action is usually 'Update'
+                // If it is an Update, we pause and check for discrepancies
+                let is_update = action === 'Update' || (!action && frm.doc.docstatus === 1);
+                
+                if (is_update) {
+                    // Return a promise so the UI loading state behaves normally
+                    return new Promise((resolve, reject) => {
+                        frappe.call({
+                            method: "cardmasters_app.cardmasters_app.api.sales_order.check_wo_discrepancy",
+                            args: {
+                                so_name: frm.doc.name,
+                                items: JSON.stringify(frm.doc.items)
+                            },
+                            callback: function(r) {
+                                if (r.message) {
+                                    // Discrepancy found! Show the prompt.
+                                    frappe.confirm(
+                                        r.message,
+                                        function() {
+                                            // User clicked "Yes": Proceed with the original Update
+                                            resolve(original_save(action, callback, btn, on_error));
+                                        },
+                                        function() {
+                                            // User clicked "No": Cancel the Update process entirely
+                                            reject();
+                                        }
+                                    );
+                                } else {
+                                    // No discrepancies found: Proceed with the Update silently
+                                    resolve(original_save(action, callback, btn, on_error));
+                                }
+                            },
+                            error: function() {
+                                // If the Python API fails, reject the save to be safe
+                                reject();
+                            }
+                        });
+                    });
+                } else {
+                    // If it's not an update (e.g., Cancel), just run the normal save
+                    return original_save(action, callback, btn, on_error);
+                }
+            };
+            
+            // Flag it so we don't accidentally override the override if refresh() runs twice
+            frm.custom_update_overridden = true;
+        }
+
 	},
 	
 	custom_sales_channel: function(frm){
