@@ -119,6 +119,9 @@ doc_events = {
         "validate": [
             # "cardmasters_app.cardmasters_app.event_handlers.batch_handler.set_batch_no_for_fg_on_manufacture_entry",
             "cardmasters_app.cardmasters_app.event_handlers.stock_entry.before_save_stock_entry"
+        ],
+        "on_submit": [
+            "cardmasters_app.cardmasters_app.event_handlers.batch_handler.set_batch_received_date_on_population"
         ]
     },
     "Artist Card": {
