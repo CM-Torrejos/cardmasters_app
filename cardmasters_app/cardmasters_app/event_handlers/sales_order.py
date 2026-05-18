@@ -122,3 +122,15 @@ def update_work_order_so_status(doc, method=None):
         # Only update if the value has actually changed
         if wo.custom_sales_order_state != doc.workflow_state:
             frappe.db.set_value("Work Order", wo.name, "custom_sales_order_state", doc.workflow_state)
+
+def strip_item_specifics_particulars_spaces(doc, method):
+    """
+    Strips leading and trailing spaces from custom_item_specifics 
+    in Sales Order Items before submission.
+    """
+    for item in doc.items:
+        if item.custom_item_specifics:
+            item.custom_item_specifics = str(item.custom_item_specifics).strip()
+        
+        if item.custom_particulars:
+            item.custom_particulars = str(item.custom_particulars).strip()
