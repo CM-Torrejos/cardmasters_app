@@ -19,6 +19,8 @@ def validate_item_rates(doc, method=None):
             break
             
     if has_mismatch:
+        is_admin = (frappe.session.user == "Administrator")
+        
         if doc.docstatus == 0: # Draft / Save
             frappe.msgprint(
                 msg=_("Sales order is saved but you cannot submit until price list rate issue is addressed"),
@@ -26,6 +28,13 @@ def validate_item_rates(doc, method=None):
                 indicator="orange"
             )
         elif doc.docstatus >= 1: # Submit or Update after Submit
-            frappe.throw(
-                _("Rate and price list rate are not the same. This will affect accounting, please forward this to the system administrator.")
-            )
+            if is_admin:
+                frappe.msgprint(
+                    msg=_("Rate and price list rate are not the same. This will affect accounting."),
+                    title=_("Admin Override"),
+                    indicator="blue"
+                )
+            else:    
+                frappe.throw(
+                    _("Rate and price list rate are not the same. This will affect accounting, please forward this to the system administrator.")
+                )

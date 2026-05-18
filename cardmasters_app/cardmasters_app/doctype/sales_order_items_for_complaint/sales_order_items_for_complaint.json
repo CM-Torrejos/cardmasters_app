@@ -1,0 +1,82 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-05-09 13:39:13.013455",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "item_code",
+  "quantity",
+  "rate",
+  "total_amount",
+  "complaint",
+  "sales_order_item",
+  "column_break_xkvx",
+  "item_specifics",
+  "particulars"
+ ],
+ "fields": [
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "label": "Item Code",
+   "options": "Item"
+  },
+  {
+   "fieldname": "quantity",
+   "fieldtype": "Float",
+   "label": "Quantity"
+  },
+  {
+   "fieldname": "rate",
+   "fieldtype": "Currency",
+   "label": "Rate"
+  },
+  {
+   "fieldname": "total_amount",
+   "fieldtype": "Currency",
+   "label": "Total Amount"
+  },
+  {
+   "fieldname": "complaint",
+   "fieldtype": "Text",
+   "label": "Complaint"
+  },
+  {
+   "fieldname": "column_break_xkvx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "item_specifics",
+   "fieldtype": "Text",
+   "label": "Item Specifics"
+  },
+  {
+   "fieldname": "particulars",
+   "fieldtype": "Text",
+   "label": "Particulars"
+  },
+  {
+   "fieldname": "sales_order_item",
+   "fieldtype": "Link",
+   "label": "Sales Order Item",
+   "options": "Sales Order Item"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-05-09 13:46:31.648922",
+ "modified_by": "Administrator",
+ "module": "Cardmasters App",
+ "name": "Sales Order Items for Complaint",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

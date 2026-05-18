@@ -1,11 +1,9 @@
 frappe.ui.form.on('Sales Order', {
 	refresh: function(frm) {
-		
+		const invalid_statuses = ['On Hold', 'Cancelled', 'Closed'];
+
 		// Artist Sheet Button Creation
 		function set_artist_card_button() {
-			
-			const invalid_statuses = ['On Hold', 'Cancelled', 'Closed'];
-			
 			if (!invalid_statuses.includes(frm.doc.status)) {
 				frm.add_custom_button(__('Create Artist Card'), function() {
 					frappe.new_doc('Artist Card', {
@@ -19,6 +17,56 @@ frappe.ui.form.on('Sales Order', {
 			}
 		}
 
+		// Add Credit Memo in Create Button
+		if (!frm.is_new() && !invalid_statuses.includes(frm.doc.status)) {
+			frm.add_custom_button(__('Issue Credit Memo'), function() {
+				// Get the address display string (or empty string if null)
+				let raw_address = frm.doc.address_display || "";
+				
+				// Clean HTML tags (replace <br> with comma, then strip other tags)
+				let clean_address = raw_address
+					.replace(/<br\s*[\/]?>/gi, ", ")       // 1. Replace all <br>, <br/>, or <BR> tags with a comma and space
+					.replace(/<\/?[^>]+(>|$)/g, "")        // 2. Strip all other HTML tags (like <div> or <span>)
+					.replace(/\s\s+/g, ' ')                // 3. Collapse multiple consecutive spaces into a single space
+					.trim()                                // 4. Remove whitespace and newlines from the start and end of the string
+					.replace(/,\s*$/, "");                 // 5. Remove a comma (and any trailing space) if it's at the very end
+
+				frappe.new_doc('Credit Memo', {
+					sales_order: frm.doc.name,
+					customer: frm.doc.customer,
+					address: frm.doc.customer_address,
+					address_display: clean_address,
+				});
+			}, __('Create'));
+		}
+
+		if (!frm.is_new() && !invalid_statuses.includes(frm.doc.status)) {
+			frm.add_custom_button(__('Issue Complaint'), function() {
+				frappe.new_doc('Complaint', {
+					sales_order: frm.doc.name,
+					customer: frm.doc.customer,
+				});
+			}, __('Create'));
+		}
+
+		if (!frm.is_new() && !invalid_statuses.includes(frm.doc.status)) {
+			frm.add_custom_button(__('Issue Damages/Returns'), function() {
+				frappe.new_doc('Damages and Returns', {
+					sales_order: frm.doc.name,
+					date: 'Today',
+					date_of_damage_or_return: 'Today'
+				});
+			}, __('Create'));
+		}
+
+		if (!frm.is_new() && !invalid_statuses.includes(frm.doc.status)) {
+			frm.add_custom_button(__('Create Quotation'), function() {
+                frappe.model.open_mapped_doc({
+                    method: "cardmasters_app.cardmasters_app.api.sales_order.make_quotation_from_so",
+                    frm: frm
+                });
+            }, __("Create"));
+		}
 
 		// Custom Pill Append
 		function set_custom_pill(doc) {
@@ -65,12 +113,12 @@ frappe.ui.form.on('Sales Order', {
 
 		// TODO: This shit dont work blud
 		// if (!frappe.user.has_role('CM Head Approver') && !frappe.user.has_role('System Manager')) {
-        //     frm.remove_custom_button('Update Items');
-        // }
+		//     frm.remove_custom_button('Update Items');
+		// }
 
 		if (frappe.user.has_role('CM Artist Assigner') || frappe.user.has_role('System Manager')) {
-            set_artist_card_button();
-        }
+			set_artist_card_button();
+		}
 
 		
 		// Optional: re-run it after status changes dynamically
@@ -201,7 +249,7 @@ frappe.ui.form.on('Sales Order', {
 		}
 
 		if (frm.doc.docstatus === 1) {
-    		// Call our server-side python method
+			// Call our server-side python method
 			frappe.call({
 				method: 'cardmasters_app.cardmasters_app.api.outstanding_balance.get_sales_order_outstanding',
 				args: {
@@ -252,18 +300,61 @@ frappe.ui.form.on('Sales Order', {
 	},
 
 	// Client Script for Sales Order
-    custom_grant: function(frm) {
-    if (frm.doc.custom_grant) {
-        frappe.db.get_value('Grant', frm.doc.custom_grant, 'available_balance', (r) => {
-            if (r && r.available_balance !== undefined) {
-                let available = r.available_balance;
-                let color = (available < frm.doc.grand_total) ? 'red' : 'blue';
-                frm.set_intro(`Current Grant Balance: ${format_currency(available)}`, color);
-            }
-        });
-    } else {
-        frm.set_intro(null);
-    }
-}
-	
+	custom_grant: function(frm) {
+		if (frm.doc.custom_grant) {
+			frappe.db.get_value('Grant', frm.doc.custom_grant, 'available_balance', (r) => {
+				if (r && r.available_balance !== undefined) {
+					let available = r.available_balance;
+					let color = (available < frm.doc.grand_total) ? 'red' : 'blue';
+					frm.set_intro(`Current Grant Balance: ${format_currency(available)}`, color);
+				}
+			});
+		} else {
+			frm.set_intro(null);
+		}
+	},
+
+	before_workflow_action: async (frm) => {
+		// Replace 'Approve' with your exact workflow action/transition name
+		if (frm.selected_workflow_action === 'Declare Lost') {
+			
+			// Return a Promise to pause the workflow execution until the dialog is handled
+			return new Promise((resolve, reject) => {
+				frappe.dom.unfreeze();
+				frappe.prompt([
+					{
+						// Define the field inside the popup dialog
+						label: 'Input Lost Reason',
+						fieldname: 'custom_lost_reason',
+						fieldtype: 'Link', // Can be Data, Text, Select, etc.
+						options: 'Sales Order Lost Reason',
+						reqd: 1 // 1 means mandatory, 0 means optional
+					}
+				],
+				function(values){
+					frappe.db.set_value(frm.doctype, frm.docname, 'custom_lost_reason', values.custom_lost_reason)
+						.then(() => {
+							// 2. Update the local form so it doesn't look out of sync
+							frm.set_value('custom_lost_reason', values.custom_lost_reason);
+							
+							// 3. Resolve the promise to let the workflow finish its transition
+							resolve();
+						})
+						.catch(() => {
+							frappe.msgprint(__('Failed to save to database.'));
+							reject(); // Stop workflow if the DB write fails
+						});
+				},
+				'Input Required', // Title of the Dialog Box
+				'Submit' // Text on the Dialog Button
+				);
+				
+				// If the user closes the dialog box without submitting, cancel the workflow action
+				$('.frappe-control[data-fieldname="custom_lost_reason"]').closest('.modal').on('hidden.bs.modal', function() {
+					reject(); 
+				});
+			});
+		}
+	},
+
 });

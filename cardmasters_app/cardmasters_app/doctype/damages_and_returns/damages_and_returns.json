@@ -7,25 +7,35 @@
  "engine": "InnoDB",
  "field_order": [
   "type",
-  "company",
+  "customer",
   "sales_order",
   "work_order",
   "column_break_pgtg",
   "date",
   "date_of_damage_or_return",
+  "company",
   "department",
-  "column_break_esmj",
-  "error_type",
-  "blame",
-  "blame2",
-  "blame3",
-  "reason_for_damage",
   "section_break_cxwc",
   "damaged_or_returned_item",
   "section_break_kydy",
   "remarks",
   "section_break_6ovu",
-  "amended_from"
+  "amended_from",
+  "investigation_tab",
+  "error_type",
+  "reason_for_damage",
+  "column_break_gzpj",
+  "blame",
+  "blame2",
+  "blame3",
+  "section_break_qunf",
+  "investigation_details",
+  "column_break_yivy",
+  "action_details",
+  "section_break_cvch",
+  "audit_remarks",
+  "section_break_egrm",
+  "value_of_damages"
  ],
  "fields": [
   {
@@ -43,7 +53,7 @@
    "search_index": 1
   },
   {
-   "depends_on": "eval:doc.type == 'Return'",
+   "fetch_from": "work_order.sales_order",
    "fieldname": "sales_order",
    "fieldtype": "Link",
    "label": "Sales Order",
@@ -67,19 +77,16 @@
    "reqd": 1
   },
   {
-   "fieldname": "column_break_esmj",
-   "fieldtype": "Column Break"
-  },
-  {
+   "allow_on_submit": 1,
    "fieldname": "error_type",
    "fieldtype": "Select",
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Error Type",
-   "options": "Human\nMachine\nN/A",
-   "reqd": 1
+   "options": "For Investigation\nFactory Defect\nHuman\nMachine"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "blame",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -123,6 +130,7 @@
    "search_index": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "reason_for_damage",
    "fieldtype": "Link",
    "label": "Reason for Damage",
@@ -135,12 +143,14 @@
    "options": "Department"
   },
   {
+   "default": "CARDMASTERS CDO",
    "fieldname": "company",
    "fieldtype": "Link",
    "label": "Company",
    "options": "Company"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "blame2",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -150,6 +160,7 @@
    "options": "Employee"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "blame3",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -157,10 +168,66 @@
    "label": "Point Person 3",
    "mandatory_depends_on": "eval:doc.error_type == \"Human\"",
    "options": "Employee"
+  },
+  {
+   "fieldname": "investigation_tab",
+   "fieldtype": "Tab Break",
+   "label": "Investigation"
+  },
+  {
+   "fieldname": "column_break_gzpj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_qunf",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "investigation_details",
+   "fieldtype": "Text",
+   "label": "Investigation Details"
+  },
+  {
+   "fieldname": "column_break_yivy",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "action_details",
+   "fieldtype": "Text",
+   "label": "Action Details"
+  },
+  {
+   "fieldname": "section_break_egrm",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "value_of_damages",
+   "fieldtype": "Currency",
+   "label": "Total Value of Damages"
+  },
+  {
+   "fetch_from": "sales_order.customer",
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "section_break_cvch",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "audit_remarks",
+   "fieldtype": "Text",
+   "label": "Audit Remarks"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [
   {
    "link_doctype": "Stock Entry",
@@ -171,7 +238,7 @@
    "link_fieldname": "custom_damages_and_returns"
   }
  ],
- "modified": "2026-04-01 16:30:38.898798",
+ "modified": "2026-05-11 13:37:01.100602",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damages and Returns",

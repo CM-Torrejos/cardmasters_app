@@ -233,6 +233,9 @@ def set_batch_no_for_purchase_invoice(doc, method):
 
 def set_batch_no_for_fg_on_manufacture_entry(doc, method):
 	# Do not run if "Batched" is not checked, or purpose is not Manufacture
+	if doc.custom_batched != 1:
+		return
+
 	if doc.purpose != "Manufacture":
 		return
 

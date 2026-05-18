@@ -1,5 +1,26 @@
 frappe.ui.form.on('Work Order', {
+	setup: function(frm) {
+        // Cache the original button builder
+        const original_add_button = frm.add_custom_button.bind(frm);
+        
+        // Hijack it to look for the "Start" button
+        frm.add_custom_button = function(label, action, group) {
+            
+            // When the core script tries to build "Start", intercept it
+            if (label === 'Start' || label === __('Start')) {
+                // Pass 'Withdraw' instead, but keep the core action (the Material Transfer)
+                let $btn = original_add_button(__('Withdraw'), action, group);
+                $btn.removeClass('btn-default').addClass('btn-primary');
+                return $btn;
+            }
+            
+            // Build all other buttons normally
+            return original_add_button(label, action, group);
+        };
+    },
+	
 	refresh: function(frm) {
+		const invalid_statuses = ['On Hold', 'Cancelled', 'Closed'];
 		setTimeout(() => {
 			if(frm.custom_buttons['Start']) {
 				frm.change_custom_button_type('Start', null, 'primary');
@@ -155,10 +176,20 @@ frappe.ui.form.on('Work Order', {
                     }
                 });
                 d.show();
-            });
+            }, __('Options'));
 
             frm.change_custom_button_type(__('Update Details'), null, 'primary');
         }
+
+		if (!frm.is_new() && !invalid_statuses.includes(frm.doc.status)) {
+			frm.add_custom_button(__('Issue Damages/Returns'), function() {
+				frappe.new_doc('Damages and Returns', {
+					work_order: frm.doc.name,
+					date: 'Today',
+					date_of_damage_or_return: 'Today'
+				});
+			}, __('Options'));
+		}
 	},
 });
 
