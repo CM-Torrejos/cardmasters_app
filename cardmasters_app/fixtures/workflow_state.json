@@ -264,28 +264,10 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2026-02-05 13:27:25.992477",
-  "name": "Not Started",
-  "style": "Info",
-  "workflow_state_name": "Not Started"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-05-17 05:00:31.788551",
   "name": "Pending Client Approval",
   "style": "Danger",
   "workflow_state_name": "Pending Client Approval"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-04-28 05:15:12.134310",
-  "name": "Draft",
-  "style": "",
-  "workflow_state_name": "Draft"
  },
  {
   "docstatus": 0,
@@ -313,6 +295,15 @@
   "name": "No Artist - Pending Production",
   "style": "Danger",
   "workflow_state_name": "No Artist - Pending Production"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-02-05 13:27:25.992477",
+  "name": "Not Started",
+  "style": "Info",
+  "workflow_state_name": "Not Started"
  },
  {
   "docstatus": 0,
@@ -385,5 +376,14 @@
   "name": "Production",
   "style": "Warning",
   "workflow_state_name": "Production"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-28 05:15:12.134310",
+  "name": "Draft",
+  "style": "",
+  "workflow_state_name": "Draft"
  }
 ]
