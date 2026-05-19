@@ -414,4 +414,84 @@ frappe.ui.form.on('Sales Order', {
 		}
 	},
 
+	validate: function(frm) {
+        // 1. If a project is already linked, proceed with save normally
+        if (frm.doc.project) {
+            return;
+        }
+
+        let needs_project = false;
+
+        // 2. Loop through items to check conditions
+        if (frm.doc.items && frm.doc.items.length > 0) {
+            for (let item of frm.doc.items) {
+                // Check if amount is 100k+ OR item_code ends with '-PRJ'
+                if (item.amount >= 100000 || (item.item_code && item.item_code.endsWith('-PRJ'))) {
+                    needs_project = true;
+                    break;
+                }
+            }
+        }
+
+        // 3. If condition is met and we aren't already processing a prompt
+        if (needs_project && !frm.doc.__project_creation_in_progress) {
+            
+            // Halt the standard save process so we can wait for user input
+            frappe.validated = false; 
+
+            // Show prompt to the user
+            frappe.prompt([
+                {
+                    // Adding an HTML field to display the message
+                    fieldtype: 'HTML',
+                    fieldname: 'instruction_message',
+                    options: '<div style="margin-bottom: 15px; font-size: 13px; color: var(--text-muted);">This Sales Order contains high-value items (100K+) or project-specific items.<br><br><b>A Project is required to proceed.</b> Please enter a unique name below to automatically create and link the project.</div>'
+                },
+                {
+                    label: 'Project Name',
+                    fieldname: 'project_name',
+                    fieldtype: 'Data',
+                    reqd: 1
+                }
+            ], function(values){
+                // ON CONFIRM: Set a flag to prevent infinite loops
+                frm.doc.__project_creation_in_progress = true; 
+                
+                // Show a loading indicator
+                frappe.show_progress('Creating Project', 50, 100, 'Please wait');
+
+                // Create the Project document via API
+                frappe.call({
+                    method: "frappe.client.insert",
+                    args: {
+                        doc: {
+                            doctype: "Project",
+                            project_name: values.project_name
+                        }
+                    },
+                    callback: function(r) {
+                        frappe.hide_progress();
+                        if (r.message) {
+                            // Link the newly created Project to the Sales Order
+                            frm.set_value('project', r.message.name);
+                            frappe.show_alert({message: `Project ${r.message.name} created and linked.`, indicator: 'green'});
+                            
+                            // Reset the flag right before saving so the system is clean
+                            frm.doc.__project_creation_in_progress = false;
+                            
+                            // Trigger the save process again
+                            frm.save();
+                        }
+                    },
+                    // ERROR HANDLER: Closes the loophole for duplicate names
+                    error: function(r) {
+                        frappe.hide_progress();
+                        // Reset flag if project creation fails so the prompt can trigger again
+                        frm.doc.__project_creation_in_progress = false; 
+                    }
+                });
+            }, 'Project Required', 'Create & Save');
+        }
+    }
+
 });
