@@ -84,6 +84,7 @@ app_include_js = [
 ]
 
 doc_events = {
+    
 	"Petty Cash Voucher": {
     	"after_submit": "cardmasters_app.cardmasters_app.event_handlers.petty_cash_voucher.update_pcr_onpcv"
     },
@@ -201,9 +202,13 @@ doc_events = {
         "on_submit": "cardmasters_app.cardmasters_app.api.outstanding_balance.update_so_balance_on_payment",
         "on_cancel": "cardmasters_app.cardmasters_app.api.outstanding_balance.update_so_balance_on_payment"
     },
+    "Unreconcile Payment": {
+        "on_submit": "cardmasters_app.cardmasters_app.api.reverse_payment_entry.clear_reversal_on_unreconcile_tool"
+    },
     "Journal Entry": {
         "on_submit": "cardmasters_app.cardmasters_app.api.outstanding_balance.update_so_balance_on_payment",
-        "on_cancel": "cardmasters_app.cardmasters_app.api.outstanding_balance.update_so_balance_on_payment"
+        "on_cancel": "cardmasters_app.cardmasters_app.api.outstanding_balance.update_so_balance_on_payment",
+        "on_cancel": "cardmasters_app.cardmasters_app.api.reverse_payment_entry.clear_reversal_on_je_cancel"
     },
     "Tag Link": {
         "after_insert": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_linked_documents_on_master_document_tags_addition"
