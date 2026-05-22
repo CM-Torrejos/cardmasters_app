@@ -105,37 +105,37 @@ def reverse_payment_entry(payment_entry_name, reversal_date):
 	return je.name
 
 def clear_reversal_on_unreconcile_tool(doc, method):
-    if doc.voucher_type == "Payment Entry":
-        pe_name = doc.voucher_no
-        reversal_je = frappe.db.get_value("Payment Entry", pe_name, "custom_reversal_journal_entry")
-        
-        if reversal_je:
-            for row in doc.allocations:
-                if row.reference_doctype == "Journal Entry" and row.reference_name == reversal_je:
-                    
-                    frappe.db.set_value("Payment Entry", pe_name, {
-                        "custom_is_reversed": 0,
-                        "custom_reversal_journal_entry": None
-                    })
-                    
-                    pe = frappe.get_doc("Payment Entry", pe_name)
-                    pe.add_comment("Comment", f"Automated Out-of-Period Reversal link cleared due to Unreconciliation ({doc.name}).")
-                    
-                    # NEW: Push a real-time event to the frontend
-                    frappe.publish_realtime("reversal_cleared", {"docname": pe_name}, user=frappe.session.user)
-                    break
+	if doc.voucher_type == "Payment Entry":
+		pe_name = doc.voucher_no
+		reversal_je = frappe.db.get_value("Payment Entry", pe_name, "custom_reversal_journal_entry")
+		
+		if reversal_je:
+			for row in doc.allocations:
+				if row.reference_doctype == "Journal Entry" and row.reference_name == reversal_je:
+					
+					frappe.db.set_value("Payment Entry", pe_name, {
+						"custom_is_reversed": 0,
+						"custom_reversal_journal_entry": None
+					})
+					
+					pe = frappe.get_doc("Payment Entry", pe_name)
+					pe.add_comment("Comment", f"Automated Out-of-Period Reversal link cleared due to Unreconciliation ({doc.name}).")
+					
+					# NEW: Push a real-time event to the frontend
+					frappe.publish_realtime("reversal_cleared", {"docname": pe_name}, user=frappe.session.user)
+					break
 
 def clear_reversal_on_je_cancel(doc, method):
-    pe_name = frappe.db.get_value("Payment Entry", {"custom_reversal_journal_entry": doc.name}, "name")
-    
-    if pe_name:
-        frappe.db.set_value("Payment Entry", pe_name, {
-            "custom_is_reversed": 0,
-            "custom_reversal_journal_entry": None
-        })
-        
-        pe = frappe.get_doc("Payment Entry", pe_name)
-        pe.add_comment("Comment", "Automated Out-of-Period Reversal link cleared because the Reversal Journal Entry was cancelled.")
-        
-        # NEW: Push a real-time event to the frontend
-        frappe.publish_realtime("reversal_cleared", {"docname": pe_name}, user=frappe.session.user)
+	pe_name = frappe.db.get_value("Payment Entry", {"custom_reversal_journal_entry": doc.name}, "name")
+	
+	if pe_name:
+		frappe.db.set_value("Payment Entry", pe_name, {
+			"custom_is_reversed": 0,
+			"custom_reversal_journal_entry": None
+		})
+		
+		pe = frappe.get_doc("Payment Entry", pe_name)
+		pe.add_comment("Comment", "Automated Out-of-Period Reversal link cleared because the Reversal Journal Entry was cancelled.")
+		
+		# NEW: Push a real-time event to the frontend
+		frappe.publish_realtime("reversal_cleared", {"docname": pe_name}, user=frappe.session.user)
