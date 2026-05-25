@@ -69,46 +69,9 @@ frappe.ui.form.on('Sales Order', {
 		}
 
 		// Custom Pill Append
-		function set_custom_pill(doc) {
-			$('span.custom-state-pill').remove();
-			const state = frm.doc.workflow_state; // ← rename if needed
-			if (!state) {
-				console.log('[your_app] no workflow_state, skipping');
-				return;
-			}
-			console.log('[your_app] custom workflow state:', state);
-			
-			// Map state → Frappe colour class
-			const colorMap = {
-				'Claiming':			'light-blue',
-				'Pending':			'yellow',
-				'Artist':				'blue',
-				'Production':			'orange',
-				'Claimed':			'green',
-				'Rejected':			'red',
-				'Production Concluded': 	'green'
-				// …etc
-			};
-			const color = colorMap[state] || 'gray';
-			
-			// Build pill using the *exact* same core classes
-			const $pill = $('<span>')
-			.addClass(`indicator-pill no-indicator-dot whitespace-nowrap custom-state-pill ${color}`)
-			.text(state);
-			
-			const $native = $('span.indicator-pill.no-indicator-dot.whitespace-nowrap').first();
-			
-			if ($native.length) {
-				$native.after($pill);
-			} else {
-				// fallback: stick it next to the title
-				$('.page-head .title-area .flex').first().append($pill);
-				console.log('[your_app] native pill not found, appended to title-area');
-			}
-		}
-		
-		// Call it on refresh
-		set_custom_pill();
+		setTimeout(() => {
+            set_custom_pill(frm);
+        }, 100);
 
 
 		// TODO: This shit dont work blud
@@ -495,3 +458,45 @@ frappe.ui.form.on('Sales Order', {
     }
 
 });
+
+
+function set_custom_pill(frm) {
+    // 1. SCOPE TO CURRENT FORM: This prevents the pill from bleeding into other pages
+    const $wrapper = frm.page.wrapper;
+    
+    // 2. Remove existing custom pill (within this wrapper only) to prevent duplicates
+    $wrapper.find('.custom-state-pill').remove();
+    
+    const state = frm.doc.workflow_state; 
+    if (!state) {
+        // console.log('[your_app] no workflow_state, skipping');
+        return;
+    }
+    
+    // Map state -> Frappe color class
+    const colorMap = {
+        'Claiming':             'light-blue',
+        'Pending':              'yellow',
+        'Artist':               'blue',
+        'Production':           'orange',
+        'Claimed':              'green',
+        'Rejected':             'red',
+        'Production Concluded': 'green'
+    };
+    const color = colorMap[state] || 'gray';
+    
+    // Build pill (Added 'ml-2' for a slight left margin so it doesn't stick to the native pill)
+    const $pill = $('<span>')
+        .addClass(`indicator-pill no-indicator-dot whitespace-nowrap ml-2 custom-state-pill ${color}`)
+        .text(state);
+    
+    // 3. Find the native pill ONLY within this specific form's wrapper
+    const $native = $wrapper.find('span.indicator-pill.no-indicator-dot.whitespace-nowrap').first();
+    
+    if ($native.length) {
+        $native.after($pill);
+    } else {
+        // Fallback: append to title area of THIS specific wrapper
+        $wrapper.find('.page-head .title-area .flex').first().append($pill);
+    }
+}
