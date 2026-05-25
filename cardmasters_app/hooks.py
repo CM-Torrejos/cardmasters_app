@@ -80,7 +80,8 @@ app_include_js = [
     "/assets/cardmasters_app/js/address_contact_quick_entry_patch.js",
     "/assets/cardmasters_app/js/theme_switcher.js",
     "/assets/cardmasters_app/js/workstation_leader_log/listview_star_button.js",
-    "/assets/cardmasters_app/js/artist_card/multi_artist_filter.js"
+    "/assets/cardmasters_app/js/artist_card/multi_artist_filter.js",
+    # "/assets/cardmasters_app/js/update_child_items.js"
 ]
 
 doc_events = {
