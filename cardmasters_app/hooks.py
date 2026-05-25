@@ -158,7 +158,7 @@ doc_events = {
             "cardmasters_app.cardmasters_app.event_handlers.tag_automation.automated_sales_order_tagging",
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.update_work_order_so_status",
             # "cardmasters_app.cardmasters_app.api.so_sync.sync_wo_from_so_master",
-            "cardmasters_app.cardmasters_app.api.so_rate_validation.validate_item_rates"
+            "cardmasters_app.cardmasters_app.api.so_rate_validation.validate_item_rates",
         ],
         'before_insert': [
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.update_item_class_on_creation_from_quotation"
@@ -166,6 +166,9 @@ doc_events = {
         "on_submit": [
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.manage_grant_usage"
         ],
+        # "on_update_after_submit":[
+        #     "cardmasters_app.cardmasters_app.event_handlers.sales_order.manage_grant_usage"
+        # ],
         "on_cancel": [
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.manage_grant_usage"
         ],
@@ -173,8 +176,12 @@ doc_events = {
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.strip_item_specifics_particulars_spaces"
         ],
         "before_update_after_submit": [
-            "cardmasters_app.cardmasters_app.event_handlers.sales_order.strip_item_specifics_particulars_spaces"
-        ]
+            "cardmasters_app.cardmasters_app.event_handlers.sales_order.strip_item_specifics_particulars_spaces",
+            "cardmasters_app.cardmasters_app.event_handlers.sales_order.manage_grant_update_on_submitted_doc"
+        ],
+        # "on_update": [
+        #     "cardmasters_app.cardmasters_app.event_handlers.sales_order.manage_grant_update_on_submitted_doc"
+        # ]
 
     },
     "Sales Order Item": {

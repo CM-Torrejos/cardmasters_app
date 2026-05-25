@@ -43,6 +43,42 @@ def manage_grant_usage(doc, method):
             # Again, saving triggers the recalculation automatically
             grant_doc.save(ignore_permissions=True)
 
+def manage_grant_update_on_submitted_doc(doc, method):
+    # Only care if the document is already submitted
+    if doc.docstatus != 1:
+        return
+        
+    # Check what the database held BEFORE this save event
+    db_values = frappe.db.get_value("Sales Order", doc.name, ["custom_grant"], as_dict=True)
+    old_grant = db_values.custom_grant if db_values else None
+    new_grant = doc.custom_grant
+
+    # Case 1: Grant was added retroactively
+    if not old_grant and new_grant:
+        grant_doc = frappe.get_doc("Grant", new_grant)
+        
+        # Run standard safety balance check
+        if doc.grand_total > grant_doc.available_balance:
+            frappe.throw(_("Cannot link Grant! Insufficient balance. Available: {0}")
+                         .format(frappe.format_value(grant_doc.available_balance, "Currency")))
+            
+        grant_doc.append("grant_entries", {
+            "sales_order": doc.name,
+            "transaction_date": doc.transaction_date,
+            "grand_total": doc.grand_total,
+            "author": frappe.session.user
+        })
+        grant_doc.save(ignore_permissions=True)
+        frappe.msgprint(_("Grant {0} ledger updated retroactively.").format(new_grant))
+
+    # Case 2: Grant was removed retroactively
+    elif old_grant and not new_grant:
+        grant_doc = frappe.get_doc("Grant", old_grant)
+        for row in grant_doc.get("grant_entries")[:]:
+            if row.sales_order == doc.name:
+                grant_doc.get("grant_entries").remove(row)
+        grant_doc.save(ignore_permissions=True)
+        frappe.msgprint(_("Ledger entry removed from Grant {0}.").format(old_grant))
 
 # Customer must have an alias if its facebook
 def validate_alias_on_facebook_channel(doc, _method):

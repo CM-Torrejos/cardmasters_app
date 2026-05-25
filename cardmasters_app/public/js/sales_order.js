@@ -1,7 +1,7 @@
 frappe.ui.form.on('Sales Order', {
 	refresh: function(frm) {
 		const invalid_statuses = ['On Hold', 'Cancelled', 'Closed'];
-
+		
 		// New Update Items Button
 		if (frm.doc.docstatus === 1) {
 			
@@ -157,8 +157,20 @@ frappe.ui.form.on('Sales Order', {
 					},
 					
 					update_items: function () {
-						const trans_items = this.get_values()["trans_items"].filter((item) => !!item.item_code);
+						// const trans_items = this.get_values()["trans_items"].filter((item) => !!item.item_code);
 						
+						const trans_items = this.get_values()["trans_items"]
+						.filter((item) => !!item.item_code)
+						.map((item) => {
+							// Strip leading and trailing whitespace exactly like your Python script does
+							if (item.custom_item_specifics) {
+								item.custom_item_specifics = String(item.custom_item_specifics).trim();
+							}
+							if (item.custom_particulars) {
+								item.custom_particulars = String(item.custom_particulars).trim();
+							}
+							return item;
+						});
 						// PHASE 3: Define final execution API (Helper Function)
 						const proceed_with_update = (project_name = null) => {
 							frappe.call({
@@ -302,6 +314,7 @@ frappe.ui.form.on('Sales Order', {
 			}, __('Create'));
 		}
 		
+		// Complaint
 		if (!frm.is_new() && !invalid_statuses.includes(frm.doc.status)) {
 			frm.add_custom_button(__('Issue Complaint'), function() {
 				frappe.new_doc('Complaint', {
@@ -311,6 +324,7 @@ frappe.ui.form.on('Sales Order', {
 			}, __('Create'));
 		}
 		
+		// Damages and returns
 		if (!frm.is_new() && !invalid_statuses.includes(frm.doc.status)) {
 			frm.add_custom_button(__('Issue Damages/Returns'), function() {
 				frappe.new_doc('Damages and Returns', {
@@ -321,6 +335,7 @@ frappe.ui.form.on('Sales Order', {
 			}, __('Create'));
 		}
 		
+		// Quotation 
 		if (!frm.is_new() && !invalid_statuses.includes(frm.doc.status)) {
 			frm.add_custom_button(__('Create Quotation'), function() {
 				frappe.model.open_mapped_doc({
@@ -473,6 +488,7 @@ frappe.ui.form.on('Sales Order', {
 			});
 		}
 		
+		// Outstanding balance
 		if (frm.doc.docstatus === 1) {
 			frappe.call({
 				method: 'cardmasters_app.cardmasters_app.api.outstanding_balance.get_sales_order_outstanding',
@@ -487,6 +503,7 @@ frappe.ui.form.on('Sales Order', {
 			});
 		}
 		
+		// Validation check (may no longer be needed since specifics and particulars cna only be updated in update items now)
 		if (frm.doc.docstatus === 1 && !frm.custom_update_overridden) {
 			
 			// 1. Store a copy of Frappe's original save function
@@ -545,6 +562,7 @@ frappe.ui.form.on('Sales Order', {
 		
 	},
 	
+	// Sales Channels
 	custom_sales_channel: function(frm){
 		frappe.call({
 			method: "frappe.client.get_value",
@@ -569,7 +587,7 @@ frappe.ui.form.on('Sales Order', {
 		});
 	},
 	
-	// Client Script for Sales Order
+	// Grant stuff
 	custom_grant: function(frm) {
 		if (frm.doc.custom_grant) {
 			frappe.db.get_value('Grant', frm.doc.custom_grant, 'available_balance', (r) => {
@@ -584,6 +602,7 @@ frappe.ui.form.on('Sales Order', {
 		}
 	},
 	
+	// Declare lost
 	before_workflow_action: async (frm) => {
 		// Replace 'Approve' with your exact workflow action/transition name
 		if (frm.selected_workflow_action === 'Declare Lost') {
@@ -625,91 +644,92 @@ frappe.ui.form.on('Sales Order', {
 			});
 		});
 	}
-},
+	},
 
-validate: function(frm) {
-	// 1. If a project is already linked, proceed with save normally
-	if (frm.doc.project) {
-		return;
-	}
-	
-	let needs_project = false;
-	
-	// 2. Loop through items to check conditions
-	if (frm.doc.items && frm.doc.items.length > 0) {
-		for (let item of frm.doc.items) {
-			// Check if amount is 100k+ OR item_code ends with '-PRJ'
-			if (item.amount >= 100000 || (item.item_code && item.item_code.endsWith('-PRJ'))) {
-				needs_project = true;
-				break;
+	// Project Validation
+	validate: function(frm) {
+		// 1. If a project is already linked, proceed with save normally
+		if (frm.doc.project) {
+			return;
+		}
+		
+		let needs_project = false;
+		
+		// 2. Loop through items to check conditions
+		if (frm.doc.items && frm.doc.items.length > 0) {
+			for (let item of frm.doc.items) {
+				// Check if amount is 100k+ OR item_code ends with '-PRJ'
+				if (item.amount >= 100000 || (item.item_code && item.item_code.endsWith('-PRJ'))) {
+					needs_project = true;
+					break;
+				}
 			}
 		}
-	}
-	
-	// 3. If condition is met and we aren't already processing a prompt
-	if (needs_project && !frm.doc.__project_creation_in_progress) {
 		
-		// Halt the standard save process so we can wait for user input
-		frappe.validated = false; 
-		
-		// Show prompt to the user
-		frappe.prompt([
-			{
-				// Adding an HTML field to display the message
-				fieldtype: 'HTML',
-				fieldname: 'instruction_message',
-				options: '<div style="margin-bottom: 15px; font-size: 13px; color: var(--text-muted);">This Sales Order contains high-value items (100K+) or project-specific items.<br><br><b>A Project is required to proceed.</b> Please enter a unique name below to automatically create and link the project.</div>'
-			},
-			{
-				label: 'Project Name',
-				fieldname: 'project_name',
-				fieldtype: 'Data',
-				reqd: 1
-			}
-		], function(values){
-			// ON CONFIRM: Set a flag to prevent infinite loops
-			frm.doc.__project_creation_in_progress = true; 
+		// 3. If condition is met and we aren't already processing a prompt
+		if (needs_project && !frm.doc.__project_creation_in_progress) {
 			
-			// Show a loading indicator
-			frappe.show_progress('Creating Project', 50, 100, 'Please wait');
+			// Halt the standard save process so we can wait for user input
+			frappe.validated = false; 
 			
-			// Create the Project document via API
-			frappe.call({
-				method: "frappe.client.insert",
-				args: {
-					doc: {
-						doctype: "Project",
-						project_name: values.project_name
-					}
+			// Show prompt to the user
+			frappe.prompt([
+				{
+					// Adding an HTML field to display the message
+					fieldtype: 'HTML',
+					fieldname: 'instruction_message',
+					options: '<div style="margin-bottom: 15px; font-size: 13px; color: var(--text-muted);">This Sales Order contains high-value items (100K+) or project-specific items.<br><br><b>A Project is required to proceed.</b> Please enter a unique name below to automatically create and link the project.</div>'
 				},
-				callback: function(r) {
-					frappe.hide_progress();
-					if (r.message) {
-						// Link the newly created Project to the Sales Order
-						frm.set_value('project', r.message.name);
-						frappe.show_alert({message: `Project ${r.message.name} created and linked.`, indicator: 'green'});
-						
-						// Reset the flag right before saving so the system is clean
-						frm.doc.__project_creation_in_progress = false;
-						
-						// Trigger the save process again
-						frm.save();
-					}
-				},
-				// ERROR HANDLER: Closes the loophole for duplicate names
-				error: function(r) {
-					frappe.hide_progress();
-					// Reset flag if project creation fails so the prompt can trigger again
-					frm.doc.__project_creation_in_progress = false; 
+				{
+					label: 'Project Name',
+					fieldname: 'project_name',
+					fieldtype: 'Data',
+					reqd: 1
 				}
-			});
-		}, 'Project Required', 'Create & Save');
+			], function(values){
+				// ON CONFIRM: Set a flag to prevent infinite loops
+				frm.doc.__project_creation_in_progress = true; 
+				
+				// Show a loading indicator
+				frappe.show_progress('Creating Project', 50, 100, 'Please wait');
+				
+				// Create the Project document via API
+				frappe.call({
+					method: "frappe.client.insert",
+					args: {
+						doc: {
+							doctype: "Project",
+							project_name: values.project_name
+						}
+					},
+					callback: function(r) {
+						frappe.hide_progress();
+						if (r.message) {
+							// Link the newly created Project to the Sales Order
+							frm.set_value('project', r.message.name);
+							frappe.show_alert({message: `Project ${r.message.name} created and linked.`, indicator: 'green'});
+							
+							// Reset the flag right before saving so the system is clean
+							frm.doc.__project_creation_in_progress = false;
+							
+							// Trigger the save process again
+							frm.save();
+						}
+					},
+					// ERROR HANDLER: Closes the loophole for duplicate names
+					error: function(r) {
+						frappe.hide_progress();
+						// Reset flag if project creation fails so the prompt can trigger again
+						frm.doc.__project_creation_in_progress = false; 
+					}
+				});
+			}, 'Project Required', 'Create & Save');
+		}
 	}
-}
 
 });
 
-
+// Custom Pill
 function set_custom_pill(frm) {
 	// 1. SCOPE TO CURRENT FORM: This prevents the pill from bleeding into other pages
 	const $wrapper = frm.page.wrapper;
