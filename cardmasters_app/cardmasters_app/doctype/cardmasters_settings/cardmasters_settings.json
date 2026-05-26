@@ -11,7 +11,7 @@
   "project_automation_section",
   "project_automation_disabled",
   "item_price_threshold",
-  "table_hsft",
+  "project_items_table",
   "item_details_validation_section",
   "item_details_validation_disabled",
   "sales_order_price_list_rate_and_rate_validation_section",
@@ -67,13 +67,6 @@
    "fieldname": "item_details_validation_section",
    "fieldtype": "Section Break",
    "label": "Sales Order Item Details Validation"
-  },
-  {
-   "description": "If a sales order has at least one of these items: Trigger Project Automation",
-   "fieldname": "table_hsft",
-   "fieldtype": "Table",
-   "label": "Project Items",
-   "options": "Project Items"
   },
   {
    "fieldname": "custom_pill_color_map",
@@ -213,13 +206,20 @@
    "fieldtype": "Link",
    "label": "Permitted Role to Bypass Rate Validation",
    "options": "Role"
+  },
+  {
+   "description": "If a sales order has at least one of these items: Trigger Project Automation",
+   "fieldname": "project_items_table",
+   "fieldtype": "Table",
+   "label": "Project Items",
+   "options": "Project Items"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-05-26 11:49:58.164322",
+ "modified": "2026-05-26 13:09:53.701422",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Cardmasters Settings",
