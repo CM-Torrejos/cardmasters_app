@@ -1,0 +1,245 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-05-26 08:59:20.044470",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "sales_configurations",
+  "custom_pill_color_map",
+  "workflow_state_color_matrix",
+  "project_automation_section",
+  "project_automation_disabled",
+  "item_price_threshold",
+  "project_items_table",
+  "item_details_validation_section",
+  "item_details_validation_disabled",
+  "sales_order_price_list_rate_and_rate_validation_section",
+  "bypass_rate_validation_role",
+  "production_configurations",
+  "work_order_creation_validation_section",
+  "so_workflow_action_for_pending",
+  "transition_to_production_automation_section",
+  "artist_workflow_states_column",
+  "so_layout_workflow_state",
+  "to_production_transitions_column",
+  "so_transition_to_production_workflow_action",
+  "sales_order_production_status_transition_automation_section",
+  "production_workflow_states_column",
+  "so_production_completed_status",
+  "so_partial_production_completed_status",
+  "so_production_status",
+  "work_order_finished_items_workflow_state",
+  "from_production_transitions_column",
+  "so_production_to_completed_transition",
+  "so_partial_to_completed_transition",
+  "so_completed_to_partial_transition",
+  "so_revert_to_production_transition"
+ ],
+ "fields": [
+  {
+   "description": "If a sales order line item is equals or exceeds this amount: Trigger Project Automation.",
+   "fieldname": "item_price_threshold",
+   "fieldtype": "Currency",
+   "label": "Item Price Threshold",
+   "mandatory_depends_on": "eval:doc.disabled == '0'"
+  },
+  {
+   "default": "0",
+   "description": "If checked, the project automation for sales orders will be disabled.",
+   "fieldname": "project_automation_disabled",
+   "fieldtype": "Check",
+   "label": "Disabled"
+  },
+  {
+   "default": "0",
+   "description": "If checked, the item details validation for sales orders and work orders will be disabled.",
+   "fieldname": "item_details_validation_disabled",
+   "fieldtype": "Check",
+   "label": "Disabled"
+  },
+  {
+   "fieldname": "project_automation_section",
+   "fieldtype": "Section Break",
+   "label": "Sales Order Project Automation"
+  },
+  {
+   "fieldname": "item_details_validation_section",
+   "fieldtype": "Section Break",
+   "label": "Sales Order Item Details Validation"
+  },
+  {
+   "fieldname": "custom_pill_color_map",
+   "fieldtype": "Section Break",
+   "label": "Sales Order Custom Pill Color Map"
+  },
+  {
+   "description": "The secondary pill in the sales order is a custom feature and does not follow native color assignments. Colors mapped here will only affect the secondary status pill in the Sales Order",
+   "fieldname": "workflow_state_color_matrix",
+   "fieldtype": "Table",
+   "label": "Workflow State Color Matrix",
+   "options": "Workflow Pill Color Map"
+  },
+  {
+   "fieldname": "sales_configurations",
+   "fieldtype": "Tab Break",
+   "label": "Sales"
+  },
+  {
+   "fieldname": "production_configurations",
+   "fieldtype": "Tab Break",
+   "label": "Production"
+  },
+  {
+   "fieldname": "transition_to_production_automation_section",
+   "fieldtype": "Section Break",
+   "label": "Sales Order Transition to Production Automation"
+  },
+  {
+   "fieldname": "work_order_creation_validation_section",
+   "fieldtype": "Section Break",
+   "label": "Sales Order Validation for Work Order"
+  },
+  {
+   "description": "Input the sales order workflow state that describes the sales order pending for further details. Work orders are blocked from creation under this status.",
+   "fieldname": "so_workflow_action_for_pending",
+   "fieldtype": "Link",
+   "label": "Pending Workflow State",
+   "options": "Workflow State"
+  },
+  {
+   "fieldname": "artist_workflow_states_column",
+   "fieldtype": "Column Break",
+   "label": "Artist Workflow States"
+  },
+  {
+   "description": "Input the workflow state that describes the sales order currently under the design/layout.",
+   "fieldname": "so_layout_workflow_state",
+   "fieldtype": "Link",
+   "label": "Sales Order Layout Workflow State",
+   "options": "Workflow State"
+  },
+  {
+   "fieldname": "to_production_transitions_column",
+   "fieldtype": "Column Break",
+   "label": "To Production Transitions"
+  },
+  {
+   "description": "Input the workflow action that transitions the sales order from design/layout to production.",
+   "fieldname": "so_transition_to_production_workflow_action",
+   "fieldtype": "Link",
+   "label": "Sales Order Transition to Production Workflow Action",
+   "options": "Workflow Action Master"
+  },
+  {
+   "fieldname": "sales_order_production_status_transition_automation_section",
+   "fieldtype": "Section Break",
+   "label": "Sales Order Production Status Transition Automation"
+  },
+  {
+   "fieldname": "production_workflow_states_column",
+   "fieldtype": "Column Break",
+   "label": "Production Workflow States"
+  },
+  {
+   "fieldname": "so_production_completed_status",
+   "fieldtype": "Link",
+   "label": "Sales Order Completed Production Workflow State",
+   "options": "Workflow State"
+  },
+  {
+   "fieldname": "so_partial_production_completed_status",
+   "fieldtype": "Link",
+   "label": "Sales Order Partial Completed Production Workflow State",
+   "options": "Workflow State"
+  },
+  {
+   "fieldname": "so_production_status",
+   "fieldtype": "Link",
+   "label": "Sales Order Production Workflow State",
+   "options": "Workflow State"
+  },
+  {
+   "fieldname": "from_production_transitions_column",
+   "fieldtype": "Column Break",
+   "label": "From Production Transitions"
+  },
+  {
+   "fieldname": "so_production_to_completed_transition",
+   "fieldtype": "Link",
+   "label": "Sales Order Production to Completed Workflow Action",
+   "options": "Workflow Action Master"
+  },
+  {
+   "fieldname": "so_partial_to_completed_transition",
+   "fieldtype": "Link",
+   "label": "Sales Order Partial to Completed Workflow Action",
+   "options": "Workflow Action Master"
+  },
+  {
+   "fieldname": "so_completed_to_partial_transition",
+   "fieldtype": "Link",
+   "label": "Sales Order Completed to Partial Workflow Action",
+   "options": "Workflow Action Master"
+  },
+  {
+   "fieldname": "so_revert_to_production_transition",
+   "fieldtype": "Link",
+   "label": "Sales Order Revert to Production Workflow Action",
+   "options": "Workflow Action Master"
+  },
+  {
+   "description": "List the work order workflow states wherein the physical items are already produced in their entirety.",
+   "fieldname": "work_order_finished_items_workflow_state",
+   "fieldtype": "Table MultiSelect",
+   "label": "Work Order Finished Items Workflow State",
+   "options": "Work Order Workflow State with Finished Goods",
+   "placeholder": "Work Order Workflow State. Not Sales Order!"
+  },
+  {
+   "fieldname": "sales_order_price_list_rate_and_rate_validation_section",
+   "fieldtype": "Section Break",
+   "label": "Sales Order Price List Rate and Rate Validation"
+  },
+  {
+   "fieldname": "bypass_rate_validation_role",
+   "fieldtype": "Link",
+   "label": "Permitted Role to Bypass Rate Validation",
+   "options": "Role"
+  },
+  {
+   "description": "If a sales order has at least one of these items: Trigger Project Automation",
+   "fieldname": "project_items_table",
+   "fieldtype": "Table",
+   "label": "Project Items",
+   "options": "Project Items"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-05-26 13:09:53.701422",
+ "modified_by": "Administrator",
+ "module": "Cardmasters App",
+ "name": "Cardmasters Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
