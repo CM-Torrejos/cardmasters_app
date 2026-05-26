@@ -851,7 +851,7 @@
 			}, 'Project Required', 'Create & Save');
 		}
 	}
-
+	
 	// This is a helper function to check items for projects
 	function item_requires_project(item) {
 		// Called by check_project_and_proceed in set_update_items button, and validate_project function
