@@ -5,19 +5,19 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "project_automation_tab",
+  "sales_order_item_configuration",
+  "custom_pill_color_map",
+  "workflow_state_color_matrix",
+  "project_automation_section",
   "project_automation_disabled",
   "item_price_threshold",
-  "suffix",
-  "item_details_validation_tab",
-  "item_details_validation_disabled"
+  "table_hsft",
+  "item_details_validation_section",
+  "item_details_validation_disabled",
+  "sales_order_configuration",
+  "tab_3_tab"
  ],
  "fields": [
-  {
-   "fieldname": "project_automation_tab",
-   "fieldtype": "Tab Break",
-   "label": "Project Automation"
-  },
   {
    "description": "If a sales order line item is equals or exceeds this amount: Trigger Project Automation.",
    "fieldname": "item_price_threshold",
@@ -26,35 +26,69 @@
    "mandatory_depends_on": "eval:doc.disabled == '0'"
   },
   {
-   "description": "If a sales order line item's item code is suffixed with this string: Trigger Project Automation.",
-   "fieldname": "suffix",
-   "fieldtype": "Data",
-   "label": "Suffix"
-  },
-  {
-   "default": "1",
+   "default": "0",
    "description": "If checked, the project automation for sales orders will be disabled.",
    "fieldname": "project_automation_disabled",
    "fieldtype": "Check",
    "label": "Disabled"
   },
   {
-   "fieldname": "item_details_validation_tab",
-   "fieldtype": "Tab Break",
-   "label": "Item Details Validation"
-  },
-  {
    "default": "0",
+   "description": "If checked, the item details validation for sales orders and work orders will be disabled.",
    "fieldname": "item_details_validation_disabled",
    "fieldtype": "Check",
    "label": "Disabled"
+  },
+  {
+   "fieldname": "project_automation_section",
+   "fieldtype": "Section Break",
+   "label": "Project Automation"
+  },
+  {
+   "fieldname": "item_details_validation_section",
+   "fieldtype": "Section Break",
+   "label": "Item Details Validation"
+  },
+  {
+   "description": "If a sales order has at least one of these items: Trigger Project Automation",
+   "fieldname": "table_hsft",
+   "fieldtype": "Table",
+   "label": "Project Items",
+   "options": "Project Items"
+  },
+  {
+   "fieldname": "sales_order_item_configuration",
+   "fieldtype": "Tab Break",
+   "label": "Sales Order"
+  },
+  {
+   "fieldname": "sales_order_configuration",
+   "fieldtype": "Tab Break",
+   "label": "Sales Order"
+  },
+  {
+   "fieldname": "custom_pill_color_map",
+   "fieldtype": "Section Break",
+   "label": "Custom Pill Color Map"
+  },
+  {
+   "description": "The secondary pill in the sales order is a custom feature and does not follow native color assignments. Colors mapped here will only affect the secondary status pill in the Sales Order",
+   "fieldname": "workflow_state_color_matrix",
+   "fieldtype": "Table",
+   "label": "Workflow State Color Matrix",
+   "options": "Workflow Pill Color Map"
+  },
+  {
+   "fieldname": "tab_3_tab",
+   "fieldtype": "Tab Break",
+   "label": "Tab 3"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-05-26 09:10:31.864557",
+ "modified": "2026-05-26 10:09:27.459672",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Cardmasters Settings",
