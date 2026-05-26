@@ -1,5 +1,85 @@
 (function() {
+	// For Project Automation
+	let PROJECT_AUTOMATION_DISABLED = 0;
+	let PROJECT_THRESHOLD = 100000; 
+	let PROJECT_ITEMS = [];
+	
+	// For Color Mapping for Custom Pill
+	let WORKFLOW_COLOR_MAP = {};
+	
+	// For Custom Work Order Pill
+	let WO_CONCLUDED_STATES = [];
+	let WO_DRAFT_STATUS = 'Draft';
+	let WO_NOT_STARTED_STATUS = 'Not Started';
+	let WO_IN_PRODUCTION_STATUS = 'In Production';
+	let WO_IN_CLAIMING_STATUS = 'In Claiming';
+	
 	frappe.ui.form.on('Sales Order', {
+		setup: function(frm) {
+			frappe.call({
+				method: 'frappe.client.get',
+				args: {
+					doctype: 'Cardmasters Settings',
+					name: 'Cardmasters Settings'
+				},
+				callback: function(r) {
+					if (r.message) {
+						let settings = r.message;
+						
+						// 1. Check Kill Switch
+						PROJECT_AUTOMATION_DISABLED = settings.project_automation_disabled || 0;
+						
+						// 2. Set Magic Number
+						if (settings.item_price_threshold) {
+							PROJECT_THRESHOLD = settings.item_price_threshold;
+						}
+						
+						// 3. Populate Child Table Items
+						// *Note: I am assuming the fieldname inside the 'Project Items' child DocType is 'item_code'
+						if (settings.project_items_table) {
+							PROJECT_ITEMS = settings.project_items_table.map(row => row.item_code);
+						}
+						
+						// Build the Custom Pill Color Map dynamically
+						if (settings.workflow_state_color_matrix) {
+							settings.workflow_state_color_matrix.forEach(row => {
+								if (row.workflow_state && row.color) {
+									// This takes "Light Blue" and converts it to "light-blue"
+									let formatted_color = row.color.toLowerCase().replace(/\s+/g, '-');
+									
+									WORKFLOW_COLOR_MAP[row.workflow_state] = formatted_color; 
+								}
+							});
+						}
+						
+						if (settings.wo_finished_items_workflow_state) {
+							WO_CONCLUDED_STATES = settings.wo_finished_items_workflow_state.map(row => row.workflow_state);
+						}
+						if (settings.wo_draft_status) {
+							WO_DRAFT_STATUS = settings.wo_draft_status;
+						}
+						if (settings.wo_not_started_status) {
+							WO_NOT_STARTED_STATUS = settings.wo_not_started_status;
+						}
+						if (settings.wo_in_production_status) {
+							WO_IN_PRODUCTION_STATUS = settings.wo_in_production_status;
+						}
+						if (settings.wo_in_claiming_status) {
+							WO_IN_CLAIMING_STATUS = settings.wo_in_claiming_status; // <-- Added!
+						}
+						
+						// Re-draw the pill right now, just in case 'refresh' 
+						// ran faster than this database call
+						if (frm.doc.workflow_state) {
+							set_custom_pill(frm);
+						}
+
+						render_wo_html_block(frm);
+					}
+				}
+			});
+		},
+		
 		refresh: function(frm) {
 			const invalid_statuses = ['On Hold', 'Cancelled', 'Closed', 'Draft'];
 			
@@ -7,10 +87,6 @@
 			setTimeout(() => {
 				set_custom_pill(frm);
 			}, 100);
-			
-			frm.fields_dict.status.df.onchange = function() {
-				set_custom_pill(frm);
-			};
 			
 			// Render Work Order Progress HTML block
 			render_wo_html_block(frm);
@@ -34,11 +110,16 @@
 			
 			// Render Outstanding balance
 			render_outstanding_balance(frm)
-
+			
 			// Validation check (may no longer be needed since specifics and particulars cna only be updated in update items now)
 			validate_discrepancy_against_wo(frm)
 		},
-		
+
+		workflow_state: function(frm) {
+			// This supposedly listen to changes to the status
+			set_custom_pill(frm);
+		},
+	
 		// Sales Channels
 		custom_sales_channel: function(frm){
 			validate_sales_partner(frm);
@@ -59,9 +140,7 @@
 			// If a project is already linked, proceed with save normally
 			validate_project(frm);
 		}
-		
 	});
-	
 	
 	function set_custom_pill(frm) {
 		// 1. SCOPE TO CURRENT FORM: This prevents the pill from bleeding into other pages
@@ -72,21 +151,12 @@
 		
 		const state = frm.doc.workflow_state; 
 		if (!state) {
-			// console.log('[your_app] no workflow_state, skipping');
 			return;
 		}
 		
-		// Map state -> Frappe color class
-		const colorMap = {
-			'Claiming':             'light-blue',
-			'Pending':              'yellow',
-			'Artist':               'blue',
-			'Production':           'orange',
-			'Claimed':              'green',
-			'Rejected':             'red',
-			'Production Concluded': 'green'
-		};
-		const color = colorMap[state] || 'gray';
+		// No more hardcoding. We pull straight from the database mapping.
+		// If the state isn't in the settings, it defaults to 'gray'
+		const color = WORKFLOW_COLOR_MAP[state] || 'gray';
 		
 		// Build pill (Added 'ml-2' for a slight left margin so it doesn't stick to the native pill)
 		const $pill = $('<span>')
@@ -438,116 +508,118 @@
 	}
 	
 	function render_wo_html_block(frm) {
-		if (!frm.doc.__islocal) {
+		if (!frm.is_new()) {
 			frappe.call({
 				method: 'frappe.client.get_list',
 				args: {
 					doctype: 'Work Order',
 					filters: {
 						sales_order: frm.doc.name,
-						docstatus: ["!=", 2] // Exclude Cancelled
+						docstatus: ["!=", 2]
 					},
-					fields: ['name', 'workflow_state', 'item_name', 'status', 'qty', 'custom_item_specifics', 'custom_particulars', 'custom_bypass', 'sales_order_item']
+					fields: ['name', 'workflow_state', 'item_name', 'status', 'qty', 'custom_item_specifics', 'custom_particulars', 'custom_bypass', 'sales_order_item'],
+					limit: 0
 				},
 				callback: function(response) {
 					let work_orders = response.message || [];
 					
 					let html = `
-						<style>
-							.custom-wo-table { table-layout: fixed; width: 100%; border-collapse: collapse; }
-							.custom-wo-table td, .custom-wo-table th { 
-								white-space: normal !important; 
-								word-wrap: break-word; 
-								vertical-align: top; 
-								padding: 10px 8px;
-								font-size: 0.9em;
-								border-bottom: 1px solid var(--border-color);
-							}
-							/* Standard row coloring */
-							.status-concluded { color: var(--green-600, #28a745); font-weight: bold; }
-							
-							/* No Work Order - Red Text only, No background */
-							.no-wo-row { 
-								color: #ff5858 !important; 
-								font-style: italic; 
-							}
-							.missing-label { 
-								font-weight: bold; 
-								color: #ff5858 !important; 
-							}
-						</style>
-						<table class="table table-bordered custom-wo-table">
-							<thead>
-								<tr>
-									<th style="width: 12%;">Work Order</th>
-									<th style="width: 12%;">Item</th>
-									<th style="width: 6%;">Qty</th>
-									<th style="width: 13%;">Specifics</th>
-									<th style="width: 13%;">Particulars</th>
-									<th style="width: 14%;">Production Status</th>
-									<th style="width: 15%;">Consumption</th>
-									<th style="width: 15%;">Claiming Status</th>
-								</tr>
-							</thead>
-							<tbody>`;
+							<style>
+								.custom-wo-table { table-layout: fixed; width: 100%; border-collapse: collapse; }
+								.custom-wo-table td, .custom-wo-table th { 
+									white-space: normal !important; 
+									word-wrap: break-word; 
+									vertical-align: top; 
+									padding: 10px 8px;
+									font-size: 0.9em;
+									border-bottom: 1px solid var(--border-color);
+								}
+								.status-concluded { color: var(--green-600, #28a745); font-weight: bold; }
+								
+								.no-wo-row { 
+									color: #ff5858 !important; 
+									font-style: italic; 
+								}
+								.missing-label { 
+									font-weight: bold; 
+									color: #ff5858 !important; 
+								}
+							</style>
+							<table class="table table-bordered custom-wo-table">
+								<thead>
+									<tr>
+										<th style="width: 12%;">Work Order</th>
+										<th style="width: 12%;">Item</th>
+										<th style="width: 6%;">Qty</th>
+										<th style="width: 13%;">Specifics</th>
+										<th style="width: 13%;">Particulars</th>
+										<th style="width: 14%;">Production Status</th>
+										<th style="width: 15%;">Consumption</th>
+										<th style="width: 15%;">Claiming Status</th>
+									</tr>
+								</thead>
+								<tbody>`;
 					
 					frm.doc.items.forEach(so_item => {
 						let linked_wos = work_orders.filter(wo => wo.sales_order_item === so_item.name);
 						let total_wo_qty = 0;
 						
-						// 1. Existing Work Orders
+						let safe_so_specifics = frappe.utils.escape_html(so_item.custom_item_specifics || "");
+						let safe_so_particulars = frappe.utils.escape_html(so_item.custom_particulars || "");
+						
 						linked_wos.forEach(wo => {
 							total_wo_qty += wo.qty;
 							
 							let production_status = wo.workflow_state || "";
-							const concluded_states = ["In Claiming", "Pending Claiming", "Pending Consumption"];
 							
-							if (concluded_states.includes(wo.workflow_state)) {
+							if (WO_CONCLUDED_STATES.includes(wo.workflow_state)) {
 								production_status = `<span class="status-concluded">Production Concluded</span>`;
-							} else if (wo.workflow_state === "In Production") {
-								production_status = "In Production";
-							} else if (wo.workflow_state === "Draft") {
-								production_status = "Draft";
-							} else if (wo.workflow_state === "Not Started") {
-								production_status = "Not Started";
+							} else if (wo.workflow_state === WO_IN_PRODUCTION_STATUS) {
+								production_status = WO_IN_PRODUCTION_STATUS;
+							} else if (wo.workflow_state === WO_DRAFT_STATUS) {
+								production_status = WO_DRAFT_STATUS;
+							} else if (wo.workflow_state === WO_NOT_STARTED_STATUS) {
+								production_status = WO_NOT_STARTED_STATUS;
 							}
 							
 							let consumption_status = wo.status === "Completed" ? "Consumption entry submitted" : "No consumption entry submitted";
 							
 							let claiming_status = "Not In Claiming";
 							if (wo.custom_bypass == 1) {
-								claiming_status = "In Claiming (Bypassed)";
-							} else if (wo.workflow_state === "In Claiming") {
-								claiming_status = "In Claiming";
+								claiming_status = `${WO_IN_CLAIMING_STATUS} (Bypassed)`;
+							} else if (wo.workflow_state === WO_IN_CLAIMING_STATUS) { 
+								claiming_status = WO_IN_CLAIMING_STATUS; 
 							}
 							
+							let safe_wo_specifics = frappe.utils.escape_html(wo.custom_item_specifics || "");
+							let safe_wo_particulars = frappe.utils.escape_html(wo.custom_particulars || "");
+							
 							html += `
-								<tr>
-									<td><a href="/app/work-order/${wo.name}" target="_blank"><b>${wo.name}</b></a></td>
-									<td>${wo.item_name || ""}</td>
-									<td>${wo.qty}</td>
-									<td>${wo.custom_item_specifics || ""}</td>
-									<td>${wo.custom_particulars || ""}</td>
-									<td>${production_status}</td>
-									<td>${consumption_status}</td>
-									<td>${claiming_status}</td>
-								</tr>`;
+									<tr>
+										<td><a href="/app/work-order/${wo.name}" target="_blank"><b>${wo.name}</b></a></td>
+										<td>${wo.item_name || ""}</td>
+										<td>${wo.qty}</td>
+										<td>${safe_wo_specifics}</td>
+										<td>${safe_wo_particulars}</td>
+										<td>${production_status}</td>
+										<td>${consumption_status}</td>
+										<td>${claiming_status}</td>
+									</tr>`;
 						});
 						
-						// 2. Remaining/Missing Balance Row
 						let remaining_qty = so_item.qty - total_wo_qty;
 						if (remaining_qty > 0) {
 							html += `
-								<tr class="no-wo-row">
-									<td class="missing-label">No Work Order</td>
-									<td>${so_item.item_name}</td>
-									<td>${remaining_qty}</td>
-									<td>${so_item.custom_item_specifics || ""}</td>
-									<td>${so_item.custom_particulars || ""}</td>
-									<td>Pending Creation</td>
-									<td>N/A</td>
-									<td>N/A</td>
-								</tr>`;
+									<tr class="no-wo-row">
+										<td class="missing-label">No Work Order</td>
+										<td>${so_item.item_name}</td>
+										<td>${remaining_qty}</td>
+										<td>${safe_so_specifics}</td>
+										<td>${safe_so_particulars}</td>
+										<td>Pending Creation</td>
+										<td>N/A</td>
+										<td>N/A</td>
+									</tr>`;
 						}
 					});
 					
@@ -573,7 +645,7 @@
 			});
 		}
 	}
-
+	
 	function validate_discrepancy_against_wo(frm) {
 		// This is a monkey-patch for the frm.save. Currently there is no present before update after submit hook frontend.
 		if (frm.doc.docstatus === 1 && !frm.custom_update_overridden) {
@@ -783,9 +855,20 @@
 	// This is a helper function to check items for projects
 	function item_requires_project(item) {
 		// Called by check_project_and_proceed in set_update_items button, and validate_project function
+		
+		// 1. If the admin disabled the feature, immediately return false
+		if (PROJECT_AUTOMATION_DISABLED) {
+			return false;
+		}
+		
+		// 2. If the item is in the settings child table, immediately return true
+		if (PROJECT_ITEMS.includes(item.item_code)) {
+			return true;
+		}
+		
+		// 3. Fallback to logic/math checks (Threshold check only)
 		let amount = item.amount !== undefined ? item.amount : (item.qty || 0) * (item.rate || 0);
-    
-    	return amount >= 100000 || (item.item_code && item.item_code.endsWith('-PRJ'));
+		
+		return amount >= PROJECT_THRESHOLD;
 	}
 })();
-
