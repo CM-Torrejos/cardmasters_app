@@ -14,6 +14,8 @@
   "table_hsft",
   "item_details_validation_section",
   "item_details_validation_disabled",
+  "sales_order_price_list_rate_and_rate_validation_section",
+  "bypass_rate_validation_role",
   "production_configurations",
   "work_order_creation_validation_section",
   "so_workflow_action_for_pending",
@@ -110,7 +112,7 @@
    "fieldname": "so_workflow_action_for_pending",
    "fieldtype": "Link",
    "label": "Pending Workflow State",
-   "options": "Workflow Action"
+   "options": "Workflow State"
   },
   {
    "fieldname": "artist_workflow_states_column",
@@ -200,13 +202,24 @@
    "label": "Work Order Finished Items Workflow State",
    "options": "Work Order Workflow State with Finished Goods",
    "placeholder": "Work Order Workflow State. Not Sales Order!"
+  },
+  {
+   "fieldname": "sales_order_price_list_rate_and_rate_validation_section",
+   "fieldtype": "Section Break",
+   "label": "Sales Order Price List Rate and Rate Validation"
+  },
+  {
+   "fieldname": "bypass_rate_validation_role",
+   "fieldtype": "Link",
+   "label": "Permitted Role to Bypass Rate Validation",
+   "options": "Role"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-05-26 11:28:37.788718",
+ "modified": "2026-05-26 11:49:58.164322",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Cardmasters Settings",
@@ -227,5 +240,6 @@
  "rows_threshold_for_grid_search": 20,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1
 }
