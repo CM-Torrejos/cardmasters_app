@@ -29,12 +29,17 @@
   "so_production_completed_status",
   "so_partial_production_completed_status",
   "so_production_status",
-  "work_order_finished_items_workflow_state",
   "from_production_transitions_column",
   "so_production_to_completed_transition",
   "so_partial_to_completed_transition",
   "so_completed_to_partial_transition",
-  "so_revert_to_production_transition"
+  "so_revert_to_production_transition",
+  "section_break_icvf",
+  "wo_finished_items_workflow_state",
+  "wo_draft_status",
+  "wo_not_started_status",
+  "wo_in_production_status",
+  "wo_in_claiming_status"
  ],
  "fields": [
   {
@@ -189,14 +194,6 @@
    "options": "Workflow Action Master"
   },
   {
-   "description": "List the work order workflow states wherein the physical items are already produced in their entirety.",
-   "fieldname": "work_order_finished_items_workflow_state",
-   "fieldtype": "Table MultiSelect",
-   "label": "Work Order Finished Items Workflow State",
-   "options": "Work Order Workflow State with Finished Goods",
-   "placeholder": "Work Order Workflow State. Not Sales Order!"
-  },
-  {
    "fieldname": "sales_order_price_list_rate_and_rate_validation_section",
    "fieldtype": "Section Break",
    "label": "Sales Order Price List Rate and Rate Validation"
@@ -213,13 +210,49 @@
    "fieldtype": "Table",
    "label": "Project Items",
    "options": "Project Items"
+  },
+  {
+   "fieldname": "section_break_icvf",
+   "fieldtype": "Section Break"
+  },
+  {
+   "description": "List the work order workflow states wherein the physical items are already produced in their entirety.",
+   "fieldname": "wo_finished_items_workflow_state",
+   "fieldtype": "Table MultiSelect",
+   "label": "Work Order Finished Items Workflow State",
+   "options": "Work Order Workflow State with Finished Goods",
+   "placeholder": "Work Order Workflow State. Not Sales Order!"
+  },
+  {
+   "fieldname": "wo_draft_status",
+   "fieldtype": "Link",
+   "label": "Work Order Draft Workflow State",
+   "options": "Workflow State"
+  },
+  {
+   "fieldname": "wo_not_started_status",
+   "fieldtype": "Link",
+   "label": "Work Order Not Started Workflow State",
+   "options": "Workflow State"
+  },
+  {
+   "fieldname": "wo_in_production_status",
+   "fieldtype": "Link",
+   "label": "Work Order In Production Workflow State",
+   "options": "Workflow State"
+  },
+  {
+   "fieldname": "wo_in_claiming_status",
+   "fieldtype": "Link",
+   "label": "Work Order In Claiming Workflow State",
+   "options": "Workflow State"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-05-26 13:09:53.701422",
+ "modified": "2026-05-26 13:51:49.185472",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Cardmasters Settings",
