@@ -1,0 +1,79 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-05-26 08:59:20.044470",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "project_automation_tab",
+  "project_automation_disabled",
+  "item_price_threshold",
+  "suffix",
+  "item_details_validation_tab",
+  "item_details_validation_disabled"
+ ],
+ "fields": [
+  {
+   "fieldname": "project_automation_tab",
+   "fieldtype": "Tab Break",
+   "label": "Project Automation"
+  },
+  {
+   "description": "If a sales order line item is equals or exceeds this amount: Trigger Project Automation.",
+   "fieldname": "item_price_threshold",
+   "fieldtype": "Currency",
+   "label": "Item Price Threshold",
+   "mandatory_depends_on": "eval:doc.disabled == '0'"
+  },
+  {
+   "description": "If a sales order line item's item code is suffixed with this string: Trigger Project Automation.",
+   "fieldname": "suffix",
+   "fieldtype": "Data",
+   "label": "Suffix"
+  },
+  {
+   "default": "1",
+   "description": "If checked, the project automation for sales orders will be disabled.",
+   "fieldname": "project_automation_disabled",
+   "fieldtype": "Check",
+   "label": "Disabled"
+  },
+  {
+   "fieldname": "item_details_validation_tab",
+   "fieldtype": "Tab Break",
+   "label": "Item Details Validation"
+  },
+  {
+   "default": "0",
+   "fieldname": "item_details_validation_disabled",
+   "fieldtype": "Check",
+   "label": "Disabled"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-05-26 09:10:31.864557",
+ "modified_by": "Administrator",
+ "module": "Cardmasters App",
+ "name": "Cardmasters Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
