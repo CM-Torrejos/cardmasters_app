@@ -40,7 +40,7 @@ fixtures = [
 
 doctype_js = {
     "Sales Order": [
-        "public/js/sales_order.js",
+        "public/js/sales_order_refactored.js",
         "public/js/sales_order/grid_resize.js"
     ],
     "Quotation": "public/js/quotation.js",
