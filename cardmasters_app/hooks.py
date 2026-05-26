@@ -78,7 +78,6 @@ override_doctype_class = {
 app_include_js = [
     "/assets/cardmasters_app/js/utils.js",
     "/assets/cardmasters_app/js/address_contact_quick_entry_patch.js",
-    "/assets/cardmasters_app/js/theme_switcher.js",
     "/assets/cardmasters_app/js/workstation_leader_log/listview_star_button.js",
     "/assets/cardmasters_app/js/artist_card/multi_artist_filter.js",
     # "/assets/cardmasters_app/js/update_child_items.js"
@@ -233,13 +232,10 @@ doc_events = {
 }
 
 override_whitelisted_methods = {
-    "frappe.desk.doctype.tag.tag.remove_tag": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_linked_documents_on_master_documemt_tags_removal",
-    "frappe.core.doctype.user.user.switch_theme": "cardmasters_app.cardmasters_app.overrides.user.switch_theme"
+    "frappe.desk.doctype.tag.tag.remove_tag": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_linked_documents_on_master_documemt_tags_removal"
 }
 
 app_include_css = [
-    "/assets/cardmasters_app/css/onyx_theme.css",
-    "/assets/cardmasters_app/css/cotton_candy_theme.css",
     "/assets/cardmasters_app/css/sales_order_grid.css"
 ]
 
