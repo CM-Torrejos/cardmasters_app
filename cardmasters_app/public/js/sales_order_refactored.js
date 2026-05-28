@@ -18,41 +18,41 @@
 		setup: function(frm) {
 
 			// 1. Access the bootinfo dictionary synchronously
-            let settings = frappe.boot.cardmasters_settings;
-            
-            if (settings) {
-                // 2. Hydrate Kill Switch
-                PROJECT_AUTOMATION_DISABLED = settings.project_automation_disabled || 0;
-                
-                // 3. Hydrate Magic Number
-                if (settings.item_price_threshold) {
-                    PROJECT_THRESHOLD = settings.item_price_threshold;
-                }
-                
-                // 4. Populate Child Table Items
-                if (settings.project_items_table) {
-                    PROJECT_ITEMS = settings.project_items_table.map(row => row.item_code);
-                }
-                
-                // 5. Build the Custom Pill Color Map dynamically
-                if (settings.workflow_state_color_matrix) {
-                    settings.workflow_state_color_matrix.forEach(row => {
-                        if (row.workflow_state && row.color) {
-                            let formatted_color = row.color.toLowerCase().replace(/\s+/g, '-');
-                            WORKFLOW_COLOR_MAP[row.workflow_state] = formatted_color; 
-                        }
-                    });
-                }
-                
-                // 6. Hydrate Work Order Statuses
-                if (settings.wo_finished_items_workflow_state) {
-                    WO_CONCLUDED_STATES = settings.wo_finished_items_workflow_state.map(row => row.workflow_state);
-                }
-                if (settings.wo_draft_status) { WO_DRAFT_STATUS = settings.wo_draft_status; }
-                if (settings.wo_not_started_status) { WO_NOT_STARTED_STATUS = settings.wo_not_started_status; }
-                if (settings.wo_in_production_status) { WO_IN_PRODUCTION_STATUS = settings.wo_in_production_status; }
-                if (settings.wo_in_claiming_status) { WO_IN_CLAIMING_STATUS = settings.wo_in_claiming_status; }
-            }
+			let settings = frappe.boot.cardmasters_settings;
+			
+			if (settings) {
+				// 2. Hydrate Kill Switch
+				PROJECT_AUTOMATION_DISABLED = settings.project_automation_disabled || 0;
+				
+				// 3. Hydrate Magic Number
+				if (settings.item_price_threshold) {
+					PROJECT_THRESHOLD = settings.item_price_threshold;
+				}
+				
+				// 4. Populate Child Table Items
+				if (settings.project_items_table) {
+					PROJECT_ITEMS = settings.project_items_table.map(row => row.item_code);
+				}
+				
+				// 5. Build the Custom Pill Color Map dynamically
+				if (settings.workflow_state_color_matrix) {
+					settings.workflow_state_color_matrix.forEach(row => {
+						if (row.workflow_state && row.color) {
+							let formatted_color = row.color.toLowerCase().replace(/\s+/g, '-');
+							WORKFLOW_COLOR_MAP[row.workflow_state] = formatted_color; 
+						}
+					});
+				}
+				
+				// 6. Hydrate Work Order Statuses
+				if (settings.wo_finished_items_workflow_state) {
+					WO_CONCLUDED_STATES = settings.wo_finished_items_workflow_state.map(row => row.workflow_state);
+				}
+				if (settings.wo_draft_status) { WO_DRAFT_STATUS = settings.wo_draft_status; }
+				if (settings.wo_not_started_status) { WO_NOT_STARTED_STATUS = settings.wo_not_started_status; }
+				if (settings.wo_in_production_status) { WO_IN_PRODUCTION_STATUS = settings.wo_in_production_status; }
+				if (settings.wo_in_claiming_status) { WO_IN_CLAIMING_STATUS = settings.wo_in_claiming_status; }
+			}
 		},
 		
 		refresh: function(frm) {
@@ -537,6 +537,7 @@
 						let linked_wos = work_orders.filter(wo => wo.sales_order_item === so_item.name);
 						let total_wo_qty = 0;
 						
+						let safe_so_item_name = frappe.utils.escape_html(so_item.item_name || "");
 						let safe_so_specifics = frappe.utils.escape_html(so_item.custom_item_specifics || "");
 						let safe_so_particulars = frappe.utils.escape_html(so_item.custom_particulars || "");
 						
@@ -564,13 +565,14 @@
 								claiming_status = WO_IN_CLAIMING_STATUS; 
 							}
 							
+							let safe_wo_item_name = frappe.utils.escape_html(wo.item_name || "");
 							let safe_wo_specifics = frappe.utils.escape_html(wo.custom_item_specifics || "");
 							let safe_wo_particulars = frappe.utils.escape_html(wo.custom_particulars || "");
 							
 							html += `
 									<tr>
 										<td><a href="/app/work-order/${wo.name}" target="_blank"><b>${wo.name}</b></a></td>
-										<td>${wo.item_name || ""}</td>
+										<td>${safe_wo_item_name}</td>
 										<td>${wo.qty}</td>
 										<td>${safe_wo_specifics}</td>
 										<td>${safe_wo_particulars}</td>
@@ -585,7 +587,7 @@
 							html += `
 									<tr class="no-wo-row">
 										<td class="missing-label">No Work Order</td>
-										<td>${so_item.item_name}</td>
+										<td>${safe_so_item_name}</td>
 										<td>${remaining_qty}</td>
 										<td>${safe_so_specifics}</td>
 										<td>${safe_so_particulars}</td>
