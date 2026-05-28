@@ -857,18 +857,19 @@
 		// Called by check_project_and_proceed in set_update_items button, and validate_project function
 		
 		// 1. If the admin disabled the feature, immediately return false
-		if (PROJECT_AUTOMATION_DISABLED) {
+		if (typeof PROJECT_AUTOMATION_DISABLED !== 'undefined' && PROJECT_AUTOMATION_DISABLED) {
 			return false;
 		}
 		
 		// 2. If the item is in the settings child table, immediately return true
-		if (PROJECT_ITEMS.includes(item.item_code)) {
+		if (typeof PROJECT_ITEMS !== 'undefined' && PROJECT_ITEMS.includes(item.item_code)) {
 			return true;
 		}
 		
-		// 3. Fallback to logic/math checks (Threshold check only)
-		let amount = item.amount !== undefined ? item.amount : (item.qty || 0) * (item.rate || 0);
+		// 3. Fallback to logic/math checks (Entire Document Threshold check)
+		// Grab the grand total of the current Sales Order
+		let total_amount = cur_frm && cur_frm.doc ? cur_frm.doc.grand_total : 0;
 		
-		return amount >= PROJECT_THRESHOLD;
+		return total_amount >= PROJECT_THRESHOLD;
 	}
 })();
