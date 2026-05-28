@@ -830,7 +830,7 @@
 	// This is a helper function to check items for projects
 	function item_requires_project(item, frm) {
 		// Called by check_project_and_proceed in set_update_items button, and validate_project function
-	
+
 		// 1. If the admin disabled the feature, immediately return false
 		if (typeof PROJECT_AUTOMATION_DISABLED !== 'undefined' && PROJECT_AUTOMATION_DISABLED) {
 			return false;
@@ -841,11 +841,10 @@
 			return true;
 		}
 		
-		// 3. Fallback to logic/math checks (Entire Document Threshold check)
-		// Grab the grand total of the current Sales Order
-		// Safely use the explicitly passed frm
-		let total_amount = frm && frm.doc ? frm.doc.grand_total : 0;
+		// 3. New logic: Check if the INDIVIDUAL ITEM's amount meets the threshold
+		// Using item.amount (which is qty * rate for that specific row)
+		let item_amount = item.amount || 0;
 		
-		return total_amount >= PROJECT_THRESHOLD;
+		return item_amount >= PROJECT_THRESHOLD;
 	}
 })();
