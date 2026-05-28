@@ -16,7 +16,7 @@
 	
 	frappe.ui.form.on('Sales Order', {
 		setup: function(frm) {
-
+			
 			// 1. Access the bootinfo dictionary synchronously
 			let settings = frappe.boot.cardmasters_settings;
 			
@@ -87,12 +87,12 @@
 			// Validation check (may no longer be needed since specifics and particulars cna only be updated in update items now)
 			validate_discrepancy_against_wo(frm)
 		},
-
+		
 		workflow_state: function(frm) {
 			// This supposedly listen to changes to the status
 			set_custom_pill(frm);
 		},
-	
+		
 		// Sales Channels
 		custom_sales_channel: function(frm){
 			validate_sales_partner(frm);
@@ -339,7 +339,7 @@
 						// PHASE 2: Define Project Check Logic (Helper Function)
 						const check_project_and_proceed = () => {
 							if (!frm.doc.project) {
-								let needs_project = trans_items.some(item_requires_project);
+								let needs_project = trans_items.some(item => item_requires_project(item, frm));
 								
 								if (needs_project) {
 									let project_prompt = frappe.prompt([
@@ -757,14 +757,14 @@
 			});
 		});
 	}
-	}
+}
 
 	function validate_project(frm) {
 		if (frm.doc.project) {
 			return;
 		}
 		
-		let needs_project = frm.doc.items && frm.doc.items.some(item_requires_project);
+		let needs_project = frm.doc.items && frm.doc.items.some(item => item_requires_project(item, frm));
 		
 		// 3. If condition is met and we aren't already processing a prompt
 		if (needs_project && !frm.doc.__project_creation_in_progress) {
@@ -826,11 +826,11 @@
 			}, 'Project Required', 'Create & Save');
 		}
 	}
-	
+
 	// This is a helper function to check items for projects
-	function item_requires_project(item) {
+	function item_requires_project(item, frm) {
 		// Called by check_project_and_proceed in set_update_items button, and validate_project function
-		
+	
 		// 1. If the admin disabled the feature, immediately return false
 		if (typeof PROJECT_AUTOMATION_DISABLED !== 'undefined' && PROJECT_AUTOMATION_DISABLED) {
 			return false;
@@ -843,7 +843,8 @@
 		
 		// 3. Fallback to logic/math checks (Entire Document Threshold check)
 		// Grab the grand total of the current Sales Order
-		let total_amount = cur_frm && cur_frm.doc ? cur_frm.doc.grand_total : 0;
+		// Safely use the explicitly passed frm
+		let total_amount = frm && frm.doc ? frm.doc.grand_total : 0;
 		
 		return total_amount >= PROJECT_THRESHOLD;
 	}
