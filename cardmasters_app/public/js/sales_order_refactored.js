@@ -16,77 +16,50 @@
 	
 	frappe.ui.form.on('Sales Order', {
 		setup: function(frm) {
-			frappe.call({
-				method: 'frappe.client.get',
-				args: {
-					doctype: 'Cardmasters Settings',
-					name: 'Cardmasters Settings'
-				},
-				callback: function(r) {
-					if (r.message) {
-						let settings = r.message;
-						
-						// 1. Check Kill Switch
-						PROJECT_AUTOMATION_DISABLED = settings.project_automation_disabled || 0;
-						
-						// 2. Set Magic Number
-						if (settings.item_price_threshold) {
-							PROJECT_THRESHOLD = settings.item_price_threshold;
-						}
-						
-						// 3. Populate Child Table Items
-						// *Note: I am assuming the fieldname inside the 'Project Items' child DocType is 'item_code'
-						if (settings.project_items_table) {
-							PROJECT_ITEMS = settings.project_items_table.map(row => row.item_code);
-						}
-						
-						// Build the Custom Pill Color Map dynamically
-						if (settings.workflow_state_color_matrix) {
-							settings.workflow_state_color_matrix.forEach(row => {
-								if (row.workflow_state && row.color) {
-									// This takes "Light Blue" and converts it to "light-blue"
-									let formatted_color = row.color.toLowerCase().replace(/\s+/g, '-');
-									
-									WORKFLOW_COLOR_MAP[row.workflow_state] = formatted_color; 
-								}
-							});
-						}
-						
-						if (settings.wo_finished_items_workflow_state) {
-							WO_CONCLUDED_STATES = settings.wo_finished_items_workflow_state.map(row => row.workflow_state);
-						}
-						if (settings.wo_draft_status) {
-							WO_DRAFT_STATUS = settings.wo_draft_status;
-						}
-						if (settings.wo_not_started_status) {
-							WO_NOT_STARTED_STATUS = settings.wo_not_started_status;
-						}
-						if (settings.wo_in_production_status) {
-							WO_IN_PRODUCTION_STATUS = settings.wo_in_production_status;
-						}
-						if (settings.wo_in_claiming_status) {
-							WO_IN_CLAIMING_STATUS = settings.wo_in_claiming_status; // <-- Added!
-						}
-						
-						// Re-draw the pill right now, just in case 'refresh' 
-						// ran faster than this database call
-						if (frm.doc.workflow_state) {
-							set_custom_pill(frm);
-						}
 
-						render_wo_html_block(frm);
-					}
-				}
-			});
+			// 1. Access the bootinfo dictionary synchronously
+            let settings = frappe.boot.cardmasters_settings;
+            
+            if (settings) {
+                // 2. Hydrate Kill Switch
+                PROJECT_AUTOMATION_DISABLED = settings.project_automation_disabled || 0;
+                
+                // 3. Hydrate Magic Number
+                if (settings.item_price_threshold) {
+                    PROJECT_THRESHOLD = settings.item_price_threshold;
+                }
+                
+                // 4. Populate Child Table Items
+                if (settings.project_items_table) {
+                    PROJECT_ITEMS = settings.project_items_table.map(row => row.item_code);
+                }
+                
+                // 5. Build the Custom Pill Color Map dynamically
+                if (settings.workflow_state_color_matrix) {
+                    settings.workflow_state_color_matrix.forEach(row => {
+                        if (row.workflow_state && row.color) {
+                            let formatted_color = row.color.toLowerCase().replace(/\s+/g, '-');
+                            WORKFLOW_COLOR_MAP[row.workflow_state] = formatted_color; 
+                        }
+                    });
+                }
+                
+                // 6. Hydrate Work Order Statuses
+                if (settings.wo_finished_items_workflow_state) {
+                    WO_CONCLUDED_STATES = settings.wo_finished_items_workflow_state.map(row => row.workflow_state);
+                }
+                if (settings.wo_draft_status) { WO_DRAFT_STATUS = settings.wo_draft_status; }
+                if (settings.wo_not_started_status) { WO_NOT_STARTED_STATUS = settings.wo_not_started_status; }
+                if (settings.wo_in_production_status) { WO_IN_PRODUCTION_STATUS = settings.wo_in_production_status; }
+                if (settings.wo_in_claiming_status) { WO_IN_CLAIMING_STATUS = settings.wo_in_claiming_status; }
+            }
 		},
 		
 		refresh: function(frm) {
 			const invalid_statuses = ['On Hold', 'Cancelled', 'Closed', 'Draft'];
 			
 			// Set Secondary Status Pill
-			setTimeout(() => {
-				set_custom_pill(frm);
-			}, 100);
+			set_custom_pill(frm);
 			
 			// Render Work Order Progress HTML block
 			render_wo_html_block(frm);
