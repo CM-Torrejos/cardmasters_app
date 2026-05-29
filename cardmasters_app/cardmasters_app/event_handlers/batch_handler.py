@@ -74,8 +74,7 @@ def _get_or_create_batch(
 					"custom_work_orders": [
 						{
 							"work_order": work_order,
-							"qty": wo_qty,
-							"posting_date": posting_date,
+							"qty": wo_qty
 						}
 					],
 				}
@@ -89,17 +88,16 @@ def _get_or_create_batch(
 			"""
 			INSERT INTO `tabBatch Work Order`
 				(name, parent, parenttype, parentfield,
-				 work_order, qty, posting_date)
+				 work_order, qty)
 			VALUES
 				(%s, %s, 'Batch', 'custom_work_orders',
-				 %s, %s, %s)
+				 %s, %s)
 			""",
 			(
 				frappe.generate_hash(length=10),
 				batch_name,
 				work_order,
 				wo_qty,
-				posting_date,
 			),
 		)
 
