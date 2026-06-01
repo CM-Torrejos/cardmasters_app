@@ -13,7 +13,6 @@
   "address",
   "address_display",
   "column_break_ibto",
-  "workflow_state",
   "naming_series",
   "date",
   "customer",
@@ -123,12 +122,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "workflow_state",
-   "fieldtype": "Data",
-   "hidden": 1,
-   "label": "Workflow State"
-  },
-  {
    "fieldname": "address_display",
    "fieldtype": "Text",
    "label": "Address Display",
@@ -139,7 +132,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-16 11:34:28.406122",
+ "modified": "2026-06-01 14:13:24.002638",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Credit Memo",
