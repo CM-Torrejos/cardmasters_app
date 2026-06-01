@@ -55,13 +55,13 @@ def pull_sales_order_details(doc, method=None):
 
 		# Checks if theres item specifics to pull
 		if not so_item_specifics:
-			doc.custom_item_specifics = "No Item Specifics"
+			doc.custom_item_specifics = ""
 		else:
 			doc.custom_item_specifics = so_item_specifics
 
 		# Checks if theres item particulars to pull
 		if not so_item_particulars:
-			doc.custom_particulars = "No Item Particulars"
+			doc.custom_particulars = ""
 		else:
 			doc.custom_particulars = so_item_particulars
 
