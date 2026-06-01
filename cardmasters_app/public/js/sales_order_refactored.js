@@ -85,7 +85,7 @@
 			render_outstanding_balance(frm)
 			
 			// Validation check (may no longer be needed since specifics and particulars cna only be updated in update items now)
-			validate_discrepancy_against_wo(frm)
+			// validate_discrepancy_against_wo(frm)
 		},
 		
 		workflow_state: function(frm) {
@@ -148,6 +148,14 @@
 	}
 	
 	function set_update_items_button(frm) {
+		
+		let settings = frappe.boot.cardmasters_settings;
+		
+		// 2. Check the kill switch: If disabled, exit the function immediately
+		if (settings && settings.item_details_validation_disabled) {
+			return; 
+		}
+		
 		if (frm.doc.docstatus === 1) {
 			
 			// 1. Remove the standard core button so users can't click it
@@ -158,7 +166,7 @@
 				
 				// --- NO MORE 'opts' --- 
 				// We hardcode the Sales Order specific parameters instead
-				const cannot_add_row = true;
+				const cannot_add_row = false;
 				const child_docname = "items";
 				const child_meta = frappe.get_meta(`${frm.doc.doctype} Item`);
 				
@@ -830,7 +838,7 @@
 	// This is a helper function to check items for projects
 	function item_requires_project(item, frm) {
 		// Called by check_project_and_proceed in set_update_items button, and validate_project function
-
+		
 		// 1. If the admin disabled the feature, immediately return false
 		if (typeof PROJECT_AUTOMATION_DISABLED !== 'undefined' && PROJECT_AUTOMATION_DISABLED) {
 			return false;
