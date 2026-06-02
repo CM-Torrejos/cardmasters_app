@@ -5,171 +5,143 @@ app_description = "Contains custom DocTypes and customizations for native DocTyp
 app_email = "storrejos@cardmastersph.com"
 app_license = "mit"
 
+# Hydrate specific settings and configurations to JS session boot
 boot_session = "cardmasters_app.boot.boot_session"
 
+# Fixtures to export custom fields, workflow structures, and property setters
 fixtures = [
-    # Custom Fields 
     {
         "doctype": "Custom Field",
         "sync_on_migrate": True,
-        "filters": [
-            ["is_system_generated", "=", 0]
-        ]
+        "filters": [["is_system_generated", "=", 0]]
     },
-
-    # Property Setters (overrides to native fields)
     {
         "doctype": "Property Setter",
         "sync_on_migrate": True,
-        "filters": [
-            ["is_system_generated", "=", 0]
-        ]
+        "filters": [["is_system_generated", "=", 0]]
     },
-
-    # Workflow states
     {
         "doctype": "Workflow State", 
         "sync_on_migrate": True
     },
-
-    # Workflow action master
     {
         "doctype": "Workflow Action Master",
         "sync_on_migrate": True
     }
 ]
 
+# Client Scripts mapping per DocType
 doctype_js = {
     "Sales Order": [
-        "public/js/sales_order_refactored.js",
-        "public/js/sales_order/grid_resize.js"
+        "public/js/sales_order_refactored.js", # SO client validations, edits, and discrepancy warning logic
+        "public/js/sales_order/grid_resize.js"  # UI Grid resizing enhancement
     ],
     "Quotation": "public/js/quotation.js",
     "Job Card": [
-        # "public/js/job_card.js",
-        "public/js/job_card/remove_assign_job_to_employee.js"
+        "public/js/job_card/remove_assign_job_to_employee.js" # Remove employee assignment restrictions
     ],
-    # "Petty Cash Count": "public/js/petty_cash_count.js",
     "Artist Card": "public/js/artist_card.js",
     "Work Order": [
-        "public/js/work_order.js",
-        "public/js/work_order/skip_material_transfer.js"
+        "public/js/work_order.js", # Controlled qty edit form
+        "public/js/work_order/skip_material_transfer.js" # Quick action to skip transfers
     ],
     "Petty Cash Request": "public/js/petty_cash_request.js",
     "Stock Entry": "public/js/stock_entry.js",
-    # "Purchase Order": "public/js/purchase_order.js",
     "Purchase Invoice": "public/js/purchase_invoice.js",
-    "Payment Entry": "public/js/payment_entry.js",
-    # "Material Request": "public/js/material_request.js",
-    # "Employee": "public/js/employee.js",
+    "Payment Entry": "public/js/payment_entry.js", # Payment reversal out-of-period trigger button
     "Sales Invoice": "public/js/sales_invoice.js",
     "Credit Memo": "public/js/credit_memo.js"
 }
 
+# Override core classes for custom calculations and accounting entry injections
 override_doctype_class = {
-    # "Job Card": "cardmasters_app.cardmasters_app.api.disable_job_card_validation.JobCard",
     "Work Order": "cardmasters_app.cardmasters_app.overrides.work_order.CustomWorkOrder",
     "Payroll Entry": "cardmasters_app.cardmasters_app.overrides.payroll_entry.CustomPayrollEntry"
 }
 
-# load Chart.js legend-filter everywhere
-# RIGHT
-# app_include_js = "/assets/cardmasters_app/js/chart_legend_filter.js"
-# app_include_css = "/assets/cardmasters_app/css/chart_legend_limit.css"
+# Global JS files loaded in Desk
 app_include_js = [
     "/assets/cardmasters_app/js/utils.js",
-    "/assets/cardmasters_app/js/address_contact_quick_entry_patch.js",
-    "/assets/cardmasters_app/js/workstation_leader_log/listview_star_button.js",
-    "/assets/cardmasters_app/js/artist_card/multi_artist_filter.js",
-    # "/assets/cardmasters_app/js/update_child_items.js"
+    "/assets/cardmasters_app/js/address_contact_quick_entry_patch.js", # Address patching
+    "/assets/cardmasters_app/js/workstation_leader_log/listview_star_button.js", # Star/prioritize work order list rows
+    "/assets/cardmasters_app/js/artist_card/multi_artist_filter.js" # Custom list filter for assigned artists
 ]
 
+# Global CSS files loaded in Desk
+app_include_css = [
+    "/assets/cardmasters_app/css/sales_order_grid.css"
+]
+
+# Server-side document hooks and handlers
 doc_events = {
-    
 	"Petty Cash Voucher": {
     	"after_submit": "cardmasters_app.cardmasters_app.event_handlers.petty_cash_voucher.update_pcr_onpcv"
     },
     "Work Order": {
         "after_insert" : [
-            "cardmasters_app.cardmasters_app.event_handlers.work_order.pull_sales_order_details",
-            "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_tags_from_master_on_creation"
+            "cardmasters_app.cardmasters_app.event_handlers.work_order.pull_sales_order_details", # Inherit SO info
+            "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_tags_from_master_on_creation" # Tag copy logic
         ],
         "before_submit" : [
-            "cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_submit"
+            "cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_submit" # Transition SO state to "Begin Production"
         ],
-        # "after_submit" : [
-        #     "cardmasters_app.cardmasters_app.event_handlers.work_order.after_submit"
-        # ],
         "on_update_after_submit": [
-            "cardmasters_app.cardmasters_app.event_handlers.work_order.work_order_workflow_trigger"
+            "cardmasters_app.cardmasters_app.event_handlers.work_order.work_order_workflow_trigger" # Track completed manufacturing progress
         ],
         "on_cancel": [
-            "cardmasters_app.cardmasters_app.event_handlers.work_order.work_order_workflow_trigger"
+            "cardmasters_app.cardmasters_app.event_handlers.work_order.work_order_workflow_trigger" # Revert workflow status if cancelled
         ],
         "validate": [
-            "cardmasters_app.cardmasters_app.event_handlers.work_order.validate_so_workflow_state"
+            "cardmasters_app.cardmasters_app.event_handlers.work_order.validate_so_workflow_state" # Block if parent SO is 'Pending'
         ],
         "onload": [
-            "cardmasters_app.cardmasters_app.event_handlers.work_order.warn_data_mismatch"
-        ],
+            "cardmasters_app.cardmasters_app.event_handlers.work_order.warn_data_mismatch" # Alert if SO Item vs WO details mismatch
+        ]
     },
     "Stock Entry": {
-        "after_insert": [
-            # batch_handler removed from here — batch assignment requires submission
-        ],
-        "before_validate": [
-            # "cardmasters_app.cardmasters_app.event_handlers.stock_entry.after_insert_stock_entry",
-        ],
         "validate": [
-            "cardmasters_app.cardmasters_app.event_handlers.stock_entry.before_save_stock_entry"
+            "cardmasters_app.cardmasters_app.event_handlers.stock_entry.before_save_stock_entry" # Set stock consumption accounts
         ],
         "on_submit": [
-            "cardmasters_app.cardmasters_app.services.batch_handler.set_batch_received_date_on_population"
+            "cardmasters_app.cardmasters_app.services.batch_handler.set_batch_received_date_on_population" # Timestamp batch receive date
         ],
         "before_save": [
-            "cardmasters_app.cardmasters_app.services.batch_handler.set_batch_no_for_fg_on_manufacture_entry"
+            "cardmasters_app.cardmasters_app.services.batch_handler.set_batch_no_for_fg_on_manufacture_entry" # Automatically generate/assign SO-based Batch Name
         ]
     },
     "Artist Card": {
         "before_save": [
-            "cardmasters_app.cardmasters_app.event_handlers.artist_card.calculate_time_difference"
+            "cardmasters_app.cardmasters_app.event_handlers.artist_card.calculate_time_difference" # Time evaluation calculation
         ],
         "before_insert": [
             "cardmasters_app.cardmasters_app.event_handlers.artist_card.update_so_workflow_state",
-            "cardmasters_app.cardmasters_app.event_handlers.artist_card.validate_submission",
-            "cardmasters_app.cardmasters_app.event_handlers.artist_card.assign_artist_so"
+            "cardmasters_app.cardmasters_app.event_handlers.artist_card.validate_submission", # Force 1 active card rule
+            "cardmasters_app.cardmasters_app.event_handlers.artist_card.assign_artist_so" # Map layout artist back to SO
         ],
         "after_insert": [
             "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_tags_from_master_on_creation"
         ]
-        # "after_save" : [
-        #     "cardmasters_app.cardmasters_app.event_handlers.artist_card.assign_artist_so"
-        # ]
     },
     "Sales Order": {
         "validate": [
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.validate_alias_on_facebook_channel",
-            "cardmasters_app.cardmasters_app.event_handlers.sales_order.validate_item_rates",
-            # "cardmasters_app.cardmasters_app.event_handlers.tag_automation.automated_sales_order_tagging"
+            "cardmasters_app.cardmasters_app.event_handlers.sales_order.validate_item_rates" # Enforce price list matching
         ],
-        "after_submit": ["cardmasters_app.cardmasters_app.event_handlers.sales_order.check_artist_status"],
-        "after_insert": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.automated_sales_order_tagging",
-        # "on_update": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.automated_sales_order_tagging",
+        "after_submit": [
+            "cardmasters_app.cardmasters_app.event_handlers.sales_order.check_artist_status"
+        ],
+        "after_insert": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.automated_sales_order_tagging", # Condition-based auto-tagging
         'on_update_after_submit': [
-            "cardmasters_app.cardmasters_app.event_handlers.tag_automation.automated_sales_order_tagging",
-            "cardmasters_app.cardmasters_app.event_handlers.sales_order.update_work_order_so_status",
-            # "cardmasters_app.cardmasters_app.api.so_sync.sync_wo_from_so_master",
-            "cardmasters_app.cardmasters_app.event_handlers.sales_order.validate_item_rates",
+            "cardmasters_app.cardmasters_app.tag_automation.automated_sales_order_tagging",
+            "cardmasters_app.cardmasters_app.event_handlers.sales_order.update_work_order_so_status", # Sync workflow state to WO fields
+            "cardmasters_app.cardmasters_app.event_handlers.sales_order.validate_item_rates"
         ],
         'before_insert': [
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.update_item_class_on_creation_from_quotation"
         ],
         "on_submit": [
-            "cardmasters_app.cardmasters_app.event_handlers.sales_order.manage_grant_usage"
+            "cardmasters_app.cardmasters_app.event_handlers.sales_order.manage_grant_usage" # Grant allocation ledger logic
         ],
-        # "on_update_after_submit":[
-        #     "cardmasters_app.cardmasters_app.event_handlers.sales_order.manage_grant_usage"
-        # ],
         "on_cancel": [
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.manage_grant_usage"
         ],
@@ -178,41 +150,28 @@ doc_events = {
         ],
         "before_update_after_submit": [
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.strip_item_specifics_particulars_spaces",
-            "cardmasters_app.cardmasters_app.event_handlers.sales_order.manage_grant_update_on_submitted_doc"
-        ],
-        # "on_update": [
-        #     "cardmasters_app.cardmasters_app.event_handlers.sales_order.manage_grant_update_on_submitted_doc"
-        # ]
-
+            "cardmasters_app.cardmasters_app.event_handlers.sales_order.manage_grant_update_on_submitted_doc" # Sync grant ledger updates retroactively
+        ]
     },
     "Sales Order Item": {
         "before_save": [
-            "cardmasters_app.cardmasters_app.event_handlers.sales_order.update_item_class_on_update"
+            "cardmasters_app.cardmasters_app.event_handlers.sales_order.update_item_class_on_update" # Auto-fill default cost center
         ]
     },
     "Job Card": {
-        # "on_update": ["cardmasters_app.cardmasters_app.event_handlers.job_card.on_job_card_create_handler"],
-        # "before_save": ["cardmasters_app.cardmasters_app.event_handlers.job_card.before_job_card_save"],
-        # "before_submit" : ["cardmasters_app.cardmasters_app.event_handlers.job_card.check_all_job_cards_submitted"],
         "after_insert" : [
             "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_tags_from_master_on_creation"
-        ],
+        ]
     },
     "Delivery Note": {
-        "validate": "cardmasters_app.cardmasters_app.services.batch_handler.set_batch_no_for_delivery_note"
-    },
-    "Purchase Order": {
-        # "validate": "cardmasters_app.cardmasters_app.services.batch_handler.set_batch_no_for_purchase_order"
-    },
-    "Material Request": {
-        # "validate": ["cardmasters_app.cardmasters_app.event_handlers.material_request.validate_material_request"]
+        "validate": "cardmasters_app.cardmasters_app.services.batch_handler.set_batch_no_for_delivery_note" # Automatically query and assign matches
     },
     "Payment Entry": {
-        "on_submit": "cardmasters_app.cardmasters_app.services.outstanding_balance.update_so_balance_on_payment",
+        "on_submit": "cardmasters_app.cardmasters_app.services.outstanding_balance.update_so_balance_on_payment", # Recalculate true outstanding
         "on_cancel": "cardmasters_app.cardmasters_app.services.outstanding_balance.update_so_balance_on_payment"
     },
     "Unreconcile Payment": {
-        "on_submit": "cardmasters_app.cardmasters_app.event_handlers.payment_entry.clear_reversal_on_unreconcile_tool"
+        "on_submit": "cardmasters_app.cardmasters_app.event_handlers.payment_entry.clear_reversal_on_unreconcile_tool" # Clean out-of-period links
     },
     "Journal Entry": {
         "on_submit": "cardmasters_app.cardmasters_app.services.outstanding_balance.update_so_balance_on_payment",
@@ -222,35 +181,31 @@ doc_events = {
         ]
     },
     "Tag Link": {
-        "after_insert": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_linked_documents_on_master_document_tags_addition"
+        "after_insert": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_linked_documents_on_master_document_tags_addition" # Sync added tags to WO, Job, Artist Card
     },
     "Raven Message": {
-        "after_insert": "cardmasters_app.cardmasters_app.event_handlers.raven.broadcast_raven_update"
+        "after_insert": "cardmasters_app.cardmasters_app.event_handlers.raven.broadcast_raven_update" # Real-time chat sound notification alerts
     },
     "Employee": {
-        "autoname": "cardmasters_app.cardmasters_app.overrides.employee.autoname"
+        "autoname": "cardmasters_app.cardmasters_app.overrides.employee.autoname" # Override Employee naming patterns
     },
     "Quotation": {
         "on_update": "cardmasters_app.cardmasters_app.event_handlers.quotation.link_so_to_qtn"
     }
 }
 
+# Override whitelisted endpoints to support propagation rules on Tag removals
 override_whitelisted_methods = {
     "frappe.desk.doctype.tag.tag.remove_tag": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_linked_documents_on_master_document_tags_removal"
 }
 
-app_include_css = [
-    "/assets/cardmasters_app/css/sales_order_grid.css"
-]
-
+# Restrict Artist Cards to only show cards where the artist profile is matching the logged-in user
 permission_query_conditions = {
     "Artist Card": "cardmasters_app.cardmasters_app.api.artist_card.artist_filter_listview.get_artist_query"
 }
 
-# Apps
-# ------------------
-
 required_apps = ["frappe/hrms"]
+
 
 # Each item in the list will be shown as an app in the apps page
 # add_to_apps_screen = [
