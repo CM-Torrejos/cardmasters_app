@@ -327,7 +327,7 @@
 						// PHASE 3: Define final execution API (Helper Function)
 						const proceed_with_update = (project_name = null) => {
 							frappe.call({
-								method: "cardmasters_app.cardmasters_app.api.override_update_child_qty_rate.update_custom_child_fields",
+								method: "cardmasters_app.cardmasters_app.api.sales_order.update_custom_child_fields",
 								freeze: true,
 								args: {
 									parent_doctype: frm.doc.doctype,
@@ -851,7 +851,7 @@
 		
 		// 3. New logic: Check if the INDIVIDUAL ITEM's amount meets the threshold
 		// Using item.amount (which is qty * rate for that specific row)
-		let item_amount = item.amount || 0;
+		let item_amount = item.amount || ((item.qty || 0) * (item.rate || 0)) || 0;
 		
 		return item_amount >= PROJECT_THRESHOLD;
 	}

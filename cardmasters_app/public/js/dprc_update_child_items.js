@@ -175,7 +175,7 @@ erpnext.utils.update_child_items = function (opts) {
             // PHASE 3: Define final execution API (Helper Function)
             const proceed_with_update = (project_name = null) => {
                 frappe.call({
-                    method: "cardmasters_app.cardmasters_app.api.override_update_child_qty_rate.update_custom_child_fields",
+                    method: "cardmasters_app.cardmasters_app.api.sales_order.update_custom_child_fields",
                     freeze: true,
                     args: {
                         parent_doctype: frm.doc.doctype,
