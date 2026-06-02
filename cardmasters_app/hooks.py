@@ -192,8 +192,8 @@ doc_events = {
     },
     "Job Card": {
         # "on_update": ["cardmasters_app.cardmasters_app.event_handlers.job_card.on_job_card_create_handler"],
-        "before_save": ["cardmasters_app.cardmasters_app.event_handlers.job_card.before_job_card_save"],
-        "before_submit" : ["cardmasters_app.cardmasters_app.event_handlers.job_card.check_all_job_cards_submitted"],
+        # "before_save": ["cardmasters_app.cardmasters_app.event_handlers.job_card.before_job_card_save"],
+        # "before_submit" : ["cardmasters_app.cardmasters_app.event_handlers.job_card.check_all_job_cards_submitted"],
         "after_insert" : [
             "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_tags_from_master_on_creation"
         ],
@@ -205,7 +205,7 @@ doc_events = {
         # "validate": "cardmasters_app.cardmasters_app.event_handlers.batch_handler.set_batch_no_for_purchase_order"
     },
     "Material Request": {
-        "validate": ["cardmasters_app.cardmasters_app.event_handlers.material_request.validate_material_request"]
+        # "validate": ["cardmasters_app.cardmasters_app.event_handlers.material_request.validate_material_request"]
     },
     "Payment Entry": {
         "on_submit": "cardmasters_app.cardmasters_app.api.outstanding_balance.update_so_balance_on_payment",
