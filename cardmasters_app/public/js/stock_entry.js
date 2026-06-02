@@ -37,11 +37,17 @@ frappe.ui.form.on('Stock Entry', {
 
 
 function toggle_batched_field(frm) {
-    if (frm.doc.stock_entry_type === 'Manufacture') {
-        frm.set_value('custom_batched', 1);
+    if (frm.doc.stock_entry_type === 'Manufacture' && frm.doc.work_order) {
+        frappe.db.get_value('Work Order', frm.doc.work_order, 'sales_order')
+            .then(r => {
+                let so = r.message ? r.message.sales_order : null;
+                if (so) {
+                    frm.set_value('custom_batched', 1);
+                } else {
+                    frm.set_value('custom_batched', 0);
+                }
+            });
     } else {
-        // Optional: Uncheck if it's not Manufacture. 
-        // Remove the 'else' block if you want to allow it to remain checked manually.
         frm.set_value('custom_batched', 0);
     }
 }
