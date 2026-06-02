@@ -50,12 +50,18 @@ cardmasters.utils.sales_order_print_preview = function(frm) {
                     // SMART RESIZE: Use ResizeObserver instead of setTimeout
                     // This watches the content. If an image loads 1 second later, this detects it and resizes.
                     if (window.ResizeObserver) {
+                        // Disconnect any previous observer attached to this iframe to prevent memory leaks
+                        if (iframe._resizeObserver) {
+                            iframe._resizeObserver.disconnect();
+                        }
                         const resizeObserver = new ResizeObserver(entries => {
                             // Calculate height (body + buffer)
                             const newHeight = doc.body.scrollHeight + 50; 
                             iframe.style.height = newHeight + "px";
                         });
                         resizeObserver.observe(doc.body);
+                        // Store reference for cleanup on next call
+                        iframe._resizeObserver = resizeObserver;
                     } else {
                         // Fallback for very old browsers (unlikely needed, but safe)
                         iframe.onload = function() {

@@ -97,9 +97,9 @@ doc_events = {
         "before_submit" : [
             "cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_submit"
         ],
-        "after_submit" : [
-            "cardmasters_app.cardmasters_app.event_handlers.work_order.after_submit"
-        ],
+        # "after_submit" : [
+        #     "cardmasters_app.cardmasters_app.event_handlers.work_order.after_submit"
+        # ],
         "on_update_after_submit": [
             "cardmasters_app.cardmasters_app.event_handlers.work_order.work_order_workflow_trigger"
         ],
@@ -124,10 +124,10 @@ doc_events = {
             "cardmasters_app.cardmasters_app.event_handlers.stock_entry.before_save_stock_entry"
         ],
         "on_submit": [
-            "cardmasters_app.cardmasters_app.event_handlers.batch_handler.set_batch_received_date_on_population"
+            "cardmasters_app.cardmasters_app.services.batch_handler.set_batch_received_date_on_population"
         ],
         "before_save": [
-            "cardmasters_app.cardmasters_app.event_handlers.batch_handler.set_batch_no_for_fg_on_manufacture_entry"
+            "cardmasters_app.cardmasters_app.services.batch_handler.set_batch_no_for_fg_on_manufacture_entry"
         ]
     },
     "Artist Card": {
@@ -199,42 +199,44 @@ doc_events = {
         ],
     },
     "Delivery Note": {
-        "validate": "cardmasters_app.cardmasters_app.event_handlers.batch_handler.set_batch_no_for_delivery_note"
+        "validate": "cardmasters_app.cardmasters_app.services.batch_handler.set_batch_no_for_delivery_note"
     },
     "Purchase Order": {
-        # "validate": "cardmasters_app.cardmasters_app.event_handlers.batch_handler.set_batch_no_for_purchase_order"
+        # "validate": "cardmasters_app.cardmasters_app.services.batch_handler.set_batch_no_for_purchase_order"
     },
     "Material Request": {
         # "validate": ["cardmasters_app.cardmasters_app.event_handlers.material_request.validate_material_request"]
     },
     "Payment Entry": {
-        "on_submit": "cardmasters_app.cardmasters_app.api.outstanding_balance.update_so_balance_on_payment",
-        "on_cancel": "cardmasters_app.cardmasters_app.api.outstanding_balance.update_so_balance_on_payment"
+        "on_submit": "cardmasters_app.cardmasters_app.services.outstanding_balance.update_so_balance_on_payment",
+        "on_cancel": "cardmasters_app.cardmasters_app.services.outstanding_balance.update_so_balance_on_payment"
     },
     "Unreconcile Payment": {
-        "on_submit": "cardmasters_app.cardmasters_app.api.reverse_payment_entry.clear_reversal_on_unreconcile_tool"
+        "on_submit": "cardmasters_app.cardmasters_app.event_handlers.payment_entry.clear_reversal_on_unreconcile_tool"
     },
     "Journal Entry": {
-        "on_submit": "cardmasters_app.cardmasters_app.api.outstanding_balance.update_so_balance_on_payment",
-        "on_cancel": "cardmasters_app.cardmasters_app.api.outstanding_balance.update_so_balance_on_payment",
-        "on_cancel": "cardmasters_app.cardmasters_app.api.reverse_payment_entry.clear_reversal_on_je_cancel"
+        "on_submit": "cardmasters_app.cardmasters_app.services.outstanding_balance.update_so_balance_on_payment",
+        "on_cancel": [
+            "cardmasters_app.cardmasters_app.services.outstanding_balance.update_so_balance_on_payment",
+            "cardmasters_app.cardmasters_app.event_handlers.payment_entry.clear_reversal_on_je_cancel"
+        ]
     },
     "Tag Link": {
         "after_insert": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_linked_documents_on_master_document_tags_addition"
     },
     "Raven Message": {
-        "after_insert": "cardmasters_app.cardmasters_app.api.raven.broadcast_raven_update"
+        "after_insert": "cardmasters_app.cardmasters_app.event_handlers.raven.broadcast_raven_update"
     },
     "Employee": {
         "autoname": "cardmasters_app.cardmasters_app.overrides.employee.autoname"
     },
     "Quotation": {
-        "on_update": "cardmasters_app.cardmasters_app.api.sales_order.link_so_to_qtn"
+        "on_update": "cardmasters_app.cardmasters_app.event_handlers.quotation.link_so_to_qtn"
     }
 }
 
 override_whitelisted_methods = {
-    "frappe.desk.doctype.tag.tag.remove_tag": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_linked_documents_on_master_documemt_tags_removal"
+    "frappe.desk.doctype.tag.tag.remove_tag": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_linked_documents_on_master_document_tags_removal"
 }
 
 app_include_css = [

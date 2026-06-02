@@ -45,8 +45,6 @@ def validate_manufacture_source_warehouse(doc, _method):
 	
 	warehouse = get_wip_warehouse_name()
 
-	frappe.log_error("warehouse", warehouse)
-
 	if doc.stock_entry_type != "Manufacture":
 		return
 

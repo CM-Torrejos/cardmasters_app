@@ -355,13 +355,13 @@
 										{ label: 'Project Name', fieldname: 'project_name', fieldtype: 'Data', reqd: 1 }
 									], function(values) {
 										frappe.call({
-											method: "frappe.client.insert",
-											args: { doc: { doctype: "Project", project_name: values.project_name } },
+											method: "cardmasters_app.cardmasters_app.api.sales_order.create_project_for_sales_order",
+											args: { project_name: values.project_name },
 											callback: function(r) {
 												if (r.message) {
 													frappe.hide_progress();
-													frappe.show_alert({message: `Project ${r.message.name} created and will be linked.`, indicator: 'green'});
-													proceed_with_update(r.message.name);
+													frappe.show_alert({message: `Project ${r.message} created and will be linked.`, indicator: 'green'});
+													proceed_with_update(r.message);
 												} else {
 													frappe.hide_progress();
 												}
@@ -616,7 +616,7 @@
 	function render_outstanding_balance(frm) {
 		if (frm.doc.docstatus === 1) {
 			frappe.call({
-				method: 'cardmasters_app.cardmasters_app.api.outstanding_balance.get_sales_order_outstanding',
+				method: 'cardmasters_app.cardmasters_app.api.sales_order.get_sales_order_outstanding',
 				args: { so_name: frm.doc.name },
 				callback: function(r) {
 					if (r.message !== undefined && r.message !== frm.doc.custom_outstanding_balance) {
@@ -699,9 +699,7 @@
 			callback: function(response) {
 				if (response.message) {
 					let has_sales_partner = response.message.has_sales_partner;
-					console.log(has_sales_partner)
 					if (has_sales_partner){
-						console.log('im supposed to set req to 1')
 						frm.set_df_property('sales_partner', 'reqd', 1);
 					}else{
 						frm.set_df_property('sales_partner', 'reqd', 0);
@@ -742,17 +740,18 @@
 					}
 				],
 				function(values){
-					frappe.db.set_value(frm.doctype, frm.docname, 'custom_lost_reason', values.custom_lost_reason)
+					// 1. Set value on the form model (does NOT bypass server hooks)
+					frm.set_value('custom_lost_reason', values.custom_lost_reason);
+					
+					// 2. Save the form so the value persists through the proper save lifecycle
+					frm.save()
 					.then(() => {
-						// 2. Update the local form so it doesn't look out of sync
-						frm.set_value('custom_lost_reason', values.custom_lost_reason);
-						
 						// 3. Resolve the promise to let the workflow finish its transition
 						resolve();
 					})
 					.catch(() => {
 						frappe.msgprint(__('Failed to save to database.'));
-						reject(); // Stop workflow if the DB write fails
+						reject(); // Stop workflow if the save fails
 					});
 				},
 				'Input Required', // Title of the Dialog Box
@@ -803,19 +802,16 @@
 				
 				// Create the Project document via API
 				frappe.call({
-					method: "frappe.client.insert",
+					method: "cardmasters_app.cardmasters_app.api.sales_order.create_project_for_sales_order",
 					args: {
-						doc: {
-							doctype: "Project",
-							project_name: values.project_name
-						}
+						project_name: values.project_name
 					},
 					callback: function(r) {
 						frappe.hide_progress();
 						if (r.message) {
 							// Link the newly created Project to the Sales Order
-							frm.set_value('project', r.message.name);
-							frappe.show_alert({message: `Project ${r.message.name} created and linked.`, indicator: 'green'});
+							frm.set_value('project', r.message);
+							frappe.show_alert({message: `Project ${r.message} created and linked.`, indicator: 'green'});
 							
 							// Reset the flag right before saving so the system is clean
 							frm.doc.__project_creation_in_progress = false;

@@ -4,9 +4,6 @@ from frappe.utils import flt  # Import float converter
 
 class Grant(Document):
     def validate(self):
-        # DEBUG: This will pop up a message when you hit Save
-        frappe.msgprint("Grant Controller is Triggering!")
-
         # 1. Sum up child table with float safety
         total_redeemed = 0
         for entry in self.get("grant_entries") or []:

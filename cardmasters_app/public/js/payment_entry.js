@@ -1,12 +1,16 @@
 frappe.ui.form.on('Payment Entry', {
-    refresh: function(frm) {
+    setup: function(frm) {
+        // Register realtime listener ONCE in setup (not refresh) to prevent accumulation.
+        // If registered in refresh, a new listener stacks on every form refresh.
         frappe.realtime.on("reversal_cleared", function(data) {
             // Only reload if the broadcast is talking about THIS specific record
             if (data.docname === frm.doc.name) {
                 frm.reload_doc();
             }
         });
+    },
 
+    refresh: function(frm) {
         // Only show button if submitted AND NOT reversed AND user has the Accounts Manager role
         if (frm.doc.docstatus === 1 && !frm.doc.custom_is_reversed) {
             
@@ -36,7 +40,7 @@ frappe.ui.form.on('Payment Entry', {
                     
                     // Action triggered when the user clicks 'Submit' on the prompt
                     frappe.call({
-                        method: 'cardmasters_app.cardmasters_app.api.reverse_payment_entry.reverse_payment_entry', 
+                        method: 'cardmasters_app.cardmasters_app.api.payment_entry.reverse_payment_entry', 
                         args: {
                             payment_entry_name: frm.doc.name,
                             reversal_date: values.reversal_date 

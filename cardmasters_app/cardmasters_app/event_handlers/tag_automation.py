@@ -131,7 +131,7 @@ def sync_linked_documents_on_master_document_tags_addition(doc, _method):
         frappe.log_error(title=tagging_error, message=frappe.get_traceback())
 
 @frappe.whitelist()
-def sync_linked_documents_on_master_documemt_tags_removal(tag, dt, dn):
+def sync_linked_documents_on_master_document_tags_removal(tag, dt, dn):
     """
     Overrides Frappe's remove_tag logic to also remove tags from linked documents
     before performing the actual Tag Link deletion.

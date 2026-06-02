@@ -158,7 +158,7 @@ frappe.ui.form.on('Work Order', {
                     primary_action_label: __('Update'),
                     primary_action(values) {
                         frappe.call({
-                            method: "cardmasters_app.cardmasters_app.api.update_work_order_details.update_work_order_details",
+                            method: "cardmasters_app.cardmasters_app.api.work_order.update_work_order_details",
                             args: {
                                 docname: frm.doc.name,
                                 qty: values.qty,

@@ -89,10 +89,12 @@ def validate_alias_on_facebook_channel(doc, _method):
             frappe.throw(("The selected Sales Channel requires you to input the Customer's alias in the Customer Masters"))
 
 def check_artist_status(doc, _method):
-	so = frappe.get_doc("Sales Order", doc.sales_order)
-	if so.custom_artist:
-		so = apply_workflow(doc, "Begin Layout")
-		so.save()
+	from frappe.model.workflow import apply_workflow
+	# doc IS the Sales Order — no need to re-fetch it
+	if doc.custom_artist:
+		apply_workflow(doc, "Begin Layout")
+		doc.save(ignore_permissions=True)
+
 
 def update_item_class_on_update(doc, _method=None):
     """

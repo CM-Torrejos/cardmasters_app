@@ -24,16 +24,20 @@ def make_quotation_from_so(source_name):
     
     return target_doc
 
-def link_so_to_qtn(doc, method=None):
+@frappe.whitelist()
+def create_project_for_sales_order(project_name):
     """
-    Runs on Quotation Save. 
-    Takes the ID from the Quotation's 'custom_so_link' 
-    and writes the Quotation ID back to the Sales Order.
+    Creates a Project document server-side so that all before_insert/after_insert
+    hooks on Project fire correctly. Returns the new Project name.
     """
-    so_id = doc.get("custom_sales_order_ref")
-    if so_id:
-        # Update the Sales Order's link field
-        frappe.db.set_value("Sales Order", so_id, "custom_quotation_ref", doc.name)
+    if not project_name:
+        frappe.throw("Project name is required.")
+
+    project = frappe.new_doc("Project")
+    project.project_name = project_name
+    project.insert()
+    return project.name
+
 
 @frappe.whitelist()
 def check_wo_discrepancy(so_name, items):
@@ -167,3 +171,8 @@ def get_default_print_format(doctype):
         return meta.default_print_format
     
     return meta.default_print_format or "Standard"
+
+@frappe.whitelist()
+def get_sales_order_outstanding(so_name):
+    from cardmasters_app.cardmasters_app.services.outstanding_balance import get_sales_order_outstanding as get_outstanding
+    return get_outstanding(so_name)
