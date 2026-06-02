@@ -10,7 +10,7 @@ cardmasters.utils.sales_order_print_preview = function(frm) {
 
     if (frm.doc.sales_order) {
         frappe.call({
-            method: 'cardmasters_app.cardmasters_app.event_handlers.get_sales_order.get_sales_order_html',
+            method: 'cardmasters_app.cardmasters_app.api.sales_order.get_sales_order_html',
             args: {
                 sales_order_name: frm.doc.sales_order
             },
