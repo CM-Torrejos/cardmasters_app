@@ -46,10 +46,10 @@ doctype_js = {
     ],
     "Quotation": "public/js/quotation.js",
     "Job Card": [
-        "public/js/job_card.js",
+        # "public/js/job_card.js",
         "public/js/job_card/remove_assign_job_to_employee.js"
     ],
-    "Petty Cash Count": "public/js/petty_cash_count.js",
+    # "Petty Cash Count": "public/js/petty_cash_count.js",
     "Artist Card": "public/js/artist_card.js",
     "Work Order": [
         "public/js/work_order.js",
@@ -57,17 +57,17 @@ doctype_js = {
     ],
     "Petty Cash Request": "public/js/petty_cash_request.js",
     "Stock Entry": "public/js/stock_entry.js",
-    "Purchase Order": "public/js/purchase_order.js",
+    # "Purchase Order": "public/js/purchase_order.js",
     "Purchase Invoice": "public/js/purchase_invoice.js",
     "Payment Entry": "public/js/payment_entry.js",
-    "Material Request": "public/js/material_request.js",
-    "Employee": "public/js/employee.js",
+    # "Material Request": "public/js/material_request.js",
+    # "Employee": "public/js/employee.js",
     "Sales Invoice": "public/js/sales_invoice.js",
     "Credit Memo": "public/js/credit_memo.js"
 }
 
 override_doctype_class = {
-    "Job Card": "cardmasters_app.cardmasters_app.api.disable_job_card_validation.JobCard",
+    # "Job Card": "cardmasters_app.cardmasters_app.api.disable_job_card_validation.JobCard",
     "Work Order": "cardmasters_app.cardmasters_app.overrides.work_order.CustomWorkOrder",
     "Payroll Entry": "cardmasters_app.cardmasters_app.overrides.payroll_entry.CustomPayrollEntry"
 }
