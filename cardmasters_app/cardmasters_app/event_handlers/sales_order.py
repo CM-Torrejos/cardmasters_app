@@ -175,9 +175,18 @@ def strip_item_specifics_particulars_spaces(doc, method):
 
 def validate_item_rates(doc, method=None):
     """
-    Validation: rate must match price_list_rate UNLESS price_list_rate is 0.
+    Validation: rate must match price_list_rate.
+    Before save or submit, if a difference is detected, automatically correct the price list rate to be equal to the rate.
     """
     from frappe.utils import flt
+    
+    # Auto-correct price_list_rate to match rate if there is a mismatch
+    for item in doc.items:
+        rate = flt(item.rate)
+        p_rate = flt(item.price_list_rate)
+        if rate != p_rate:
+            item.price_list_rate = rate
+            
     has_mismatch = False
     
     for item in doc.items:
@@ -185,8 +194,8 @@ def validate_item_rates(doc, method=None):
         rate = flt(item.rate)
         p_rate = flt(item.price_list_rate)
         
-        # Check: If price list rate exists (is not 0) and doesn't match the rate
-        if p_rate != 0 and rate != p_rate:
+        # Check: price list rate MUST be the same as the rate
+        if rate != p_rate:
             has_mismatch = True
             break
             

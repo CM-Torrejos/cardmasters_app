@@ -322,6 +322,7 @@
 							if (item.custom_particulars) {
 								item.custom_particulars = String(item.custom_particulars).trim();
 							}
+							item.price_list_rate = item.rate;
 							return item;
 						});
 						// PHASE 3: Define final execution API (Helper Function)
