@@ -1,0 +1,60 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - '**' # Triggers on a new branch or any update to an existing branch
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Sanitize branch name (replaces / with - just like your bash script)
+      - name: Sanitize branch name for Docker tag
+        id: vars
+        run: |
+          CLEAN_TAG=$(echo "${{ github.ref_name }}" | sed 's/\//-/g')
+          echo "tag=${CLEAN_TAG}" >> $GITHUB_OUTPUT
+
+      # 3. Encode apps.json to Base64
+      - name: Base64 encode apps.json
+        id: encode-apps
+        run: |
+          if [ ! -f apps.json ]; then
+            echo "Error: apps.json not found in the root directory!"
+            exit 1
+          fi
+          # Encodes and saves it to the environment for subsequent steps
+          echo "APPS_JSON_BASE64=$(cat apps.json | base64 -w 0)" >> $GITHUB_ENV
+
+      # 4. Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # 5. Log in to Docker Hub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # 6. Build and Push the image
+      - name: Build and Push Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ../../../../images/custom/Containerfile
+          push: true
+          no-cache: true
+          tags: creyescardmasters/cardmastersph-production:${{ steps.vars.outputs.tag }}
+          build-args: |
+            FRAPPE_PATH=https://github.com/frappe/frappe
+            FRAPPE_BRANCH=version-15
+            PYTHON_VERSION=3.11.9
+            NODE_VERSION=18.20.2
+            APPS_JSON_BASE64=${{ env.APPS_JSON_BASE64 }}
