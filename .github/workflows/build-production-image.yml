@@ -6,7 +6,7 @@ on:
       image_tag:
         description: "Image tag to publish"
         required: true
-        default: "v1"
+        default: "v2"
 
 permissions:
   contents: read
@@ -33,7 +33,7 @@ jobs:
 
       - name: Create apps.json
         run: |
-          cat > apps.json <<'EOF'
+          cat > frappe_docker/apps.json <<'EOF'
           [
             {
               "url": "https://github.com/frappe/erpnext",
@@ -58,23 +58,22 @@ jobs:
           ]
           EOF
 
-      - name: Encode apps.json
-        run: |
-          echo "APPS_JSON_BASE64=$(base64 -w 0 apps.json)" >> "$GITHUB_ENV"
-
       - name: Build and push image
         uses: docker/build-push-action@v6
         with:
           context: ./frappe_docker
           file: ./frappe_docker/images/custom/Containerfile
           push: true
+          no-cache: true
           tags: ghcr.io/cm-torrejos/marcommax-production:${{ inputs.image_tag }}
+          secret-files: |
+            apps_json=./frappe_docker/apps.json
           build-args: |
             FRAPPE_PATH=https://github.com/frappe/frappe
             FRAPPE_BRANCH=version-15
             PYTHON_VERSION=3.11.9
             NODE_VERSION=18.20.2
-            APPS_JSON_BASE64=${{ env.APPS_JSON_BASE64 }}
+            CACHE_BUST=${{ github.run_id }}
 
       - name: Show image
         run: |
