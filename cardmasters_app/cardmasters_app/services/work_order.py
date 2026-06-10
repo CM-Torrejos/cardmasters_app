@@ -4,6 +4,8 @@ from frappe import _
 def update_work_order_details(docname, qty, item_specifics=None, particulars=None):
     # 1. Load the document and basic variables
     doc = frappe.get_doc("Work Order", docname)
+    doc.check_permission("write")
+
     qty = float(qty)
     old_qty = float(doc.qty)
     

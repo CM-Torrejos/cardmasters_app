@@ -130,7 +130,7 @@ frappe.ui.form.on('Work Order', {
 		// 	})
 		// })
 
-		if (frm.doc.docstatus === 1) {
+		if (frm.doc.docstatus === 1 && frm.has_perm('write')) {
             frm.add_custom_button(__('Update Details'), function() {
                 let d = new frappe.ui.Dialog({
                     title: __('Update Work Order Details'),
