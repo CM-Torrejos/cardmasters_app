@@ -1,0 +1,182 @@
+name: Build Production ERPNext Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      app_ref:
+        description: "cardmasters_app git ref to build, e.g. v1.0.1 or develop"
+        required: true
+        default: "v1.0.0"
+      image_tag:
+        description: "GHCR image tag to publish, e.g. v1.0.1"
+        required: true
+        default: "v1.0.0"
+      no_cache:
+        description: "Build without Docker cache"
+        required: true
+        type: boolean
+        default: false
+
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: build-production-erpnext-image
+  cancel-in-progress: false
+
+env:
+  IMAGE_NAME: ghcr.io/cm-torrejos/marcommax-production
+
+jobs:
+  build:
+    name: Build and Push Production Image
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Resolve build refs
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ "${{ github.event_name }}" = "push" ]; then
+            APP_REF="${{ github.ref_name }}"
+            IMAGE_TAG="${{ github.ref_name }}"
+            NO_CACHE="false"
+          else
+            APP_REF="${{ inputs.app_ref }}"
+            IMAGE_TAG="${{ inputs.image_tag }}"
+            NO_CACHE="${{ inputs.no_cache }}"
+          fi
+
+          if [ -z "$APP_REF" ]; then
+            echo "APP_REF is empty."
+            exit 1
+          fi
+
+          if [ -z "$IMAGE_TAG" ]; then
+            echo "IMAGE_TAG is empty."
+            exit 1
+          fi
+
+          if [ "$IMAGE_TAG" = "latest" ]; then
+            echo "Do not publish production images as latest."
+            exit 1
+          fi
+
+          echo "APP_REF=$APP_REF" >> "$GITHUB_ENV"
+          echo "IMAGE_TAG=$IMAGE_TAG" >> "$GITHUB_ENV"
+          echo "NO_CACHE=$NO_CACHE" >> "$GITHUB_ENV"
+
+          echo "Building cardmasters_app ref: $APP_REF"
+          echo "Publishing image tag: $IMAGE_TAG"
+          echo "No cache: $NO_CACHE"
+
+      - name: Checkout frappe_docker
+        uses: actions/checkout@v4
+        with:
+          repository: frappe/frappe_docker
+          ref: main
+          path: frappe_docker
+
+      - name: Create apps.json
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          cat > frappe_docker/apps.json <<EOF
+          [
+            {
+              "url": "https://github.com/frappe/erpnext",
+              "branch": "version-15"
+            },
+            {
+              "url": "https://github.com/frappe/hrms",
+              "branch": "version-15"
+            },
+            {
+              "url": "https://github.com/CM-Torrejos/cardmasters_app",
+              "branch": "${APP_REF}"
+            },
+            {
+              "url": "https://github.com/frappe/insights",
+              "branch": "version-3"
+            },
+            {
+              "url": "https://github.com/The-Commit-Company/raven",
+              "branch": "main"
+            }
+          ]
+          EOF
+
+          cat frappe_docker/apps.json
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frappe_docker
+          file: ./frappe_docker/images/custom/Containerfile
+          push: true
+          no-cache: ${{ env.NO_CACHE }}
+          tags: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+          secret-files: |
+            apps_json=./frappe_docker/apps.json
+          build-args: |
+            FRAPPE_PATH=https://github.com/frappe/frappe
+            FRAPPE_BRANCH=version-15
+            PYTHON_VERSION=3.11.9
+            NODE_VERSION=18.20.2
+            CACHE_BUST=${{ github.run_id }}
+
+      - name: Verify image contents
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          IMAGE="${IMAGE_NAME}:${IMAGE_TAG}"
+
+          docker pull "$IMAGE"
+
+          docker image inspect "$IMAGE" \
+            --format 'RepoDigests={{json .RepoDigests}} RepoTags={{json .RepoTags}} Created={{.Created}}'
+
+          docker run --rm --entrypoint bash "$IMAGE" -lc '
+            set -e
+            echo "Installed apps:"
+            ls -1 /home/frappe/frappe-bench/apps
+            echo
+            echo "Bench versions:"
+            cd /home/frappe/frappe-bench
+            bench version
+          '
+
+      - name: Build summary
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          {
+            echo "## Production ERPNext Image Build"
+            echo
+            echo "| Field | Value |"
+            echo "| --- | --- |"
+            echo "| cardmasters_app ref | \`${APP_REF}\` |"
+            echo "| image tag | \`${IMAGE_NAME}:${IMAGE_TAG}\` |"
+            echo "| image digest | \`${{ steps.build.outputs.digest }}\` |"
+            echo "| no cache | \`${NO_CACHE}\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
