@@ -132,7 +132,7 @@ doc_events = {
         ],
         "after_insert": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.automated_sales_order_tagging", # Condition-based auto-tagging
         'on_update_after_submit': [
-            "cardmasters_app.cardmasters_app.tag_automation.automated_sales_order_tagging",
+            "cardmasters_app.cardmasters_app.event_handlers.tag_automation.automated_sales_order_tagging",
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.update_work_order_so_status", # Sync workflow state to WO fields
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.validate_item_rates"
         ],
