@@ -1,5 +1,17 @@
 frappe.ui.form.on('Credit Memo', {
+    refresh: function(frm) {
+        set_sales_order_grand_total(frm);
+        set_credit_memo_totals(frm);
+    },
+
+    sales_order: function(frm) {
+        set_sales_order_grand_total(frm);
+    },
+
     validate: function(frm) {
+        validate_sponsored_quantities(frm);
+        set_credit_memo_totals(frm);
+
         if (frm.doc.sales_order) {
             
             // 1. Return an explicit Promise so Frappe halts the save sequence
@@ -34,3 +46,64 @@ frappe.ui.form.on('Credit Memo', {
         }
     }
 });
+
+frappe.ui.form.on('Credit Memo Sponsored Item', {
+    sponsored_quantity: function(frm, cdt, cdn) {
+        set_sponsored_item_amount(frm, cdt, cdn);
+    },
+
+    sponsored_rate: function(frm, cdt, cdn) {
+        set_sponsored_item_amount(frm, cdt, cdn);
+    },
+
+    sponsored_items_table_remove: function(frm) {
+        set_credit_memo_totals(frm);
+    }
+});
+
+function set_sponsored_item_amount(frm, cdt, cdn) {
+    let row = locals[cdt][cdn];
+
+    if (flt(row.sponsored_quantity) > flt(row.quantity)) {
+        frappe.model.set_value(cdt, cdn, 'sponsored_quantity', row.quantity);
+        frappe.throw(__('Sponsored Quantity cannot be greater than Quantity for item {0}.', [row.item_code || row.idx]));
+        return;
+    }
+
+    let sponsored_amount = flt(row.sponsored_quantity) * flt(row.sponsored_rate);
+
+    frappe.model.set_value(cdt, cdn, 'sponsored_amount', sponsored_amount)
+        .then(() => set_credit_memo_totals(frm));
+}
+
+function set_credit_memo_totals(frm) {
+    let sponsored_total = (frm.doc.sponsored_items_table || []).reduce(function(sum, row) {
+        return sum + flt(row.sponsored_amount);
+    }, 0);
+    let sales_order_grand_total = flt(frm._sales_order_grand_total);
+
+    frm.set_value('sponsored_amount', sponsored_total);
+    frm.set_value('commercial_amount', sales_order_grand_total - sponsored_total);
+}
+
+function set_sales_order_grand_total(frm) {
+    if (!frm.doc.sales_order) {
+        frm._sales_order_grand_total = 0;
+        set_credit_memo_totals(frm);
+        return;
+    }
+
+    frappe.db.get_value('Sales Order', frm.doc.sales_order, 'grand_total')
+        .then(function(r) {
+            frm._sales_order_grand_total = flt(r.message && r.message.grand_total);
+            set_credit_memo_totals(frm);
+        });
+}
+
+function validate_sponsored_quantities(frm) {
+    (frm.doc.sponsored_items_table || []).forEach(function(row) {
+        if (flt(row.sponsored_quantity) > flt(row.quantity)) {
+            frappe.throw(__('Sponsored Quantity cannot be greater than Quantity for item {0}.', [row.item_code || row.idx]));
+        }
+    });
+}

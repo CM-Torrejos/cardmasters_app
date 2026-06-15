@@ -476,8 +476,30 @@
 				customer: frm.doc.customer,
 				address: frm.doc.customer_address,
 				address_display: clean_address,
+			}, function(credit_memo) {
+				set_credit_memo_sponsored_items(frm, credit_memo);
 			});
 		}, __('Create'));
+	}
+
+	function set_credit_memo_sponsored_items(frm, credit_memo) {
+		(credit_memo.sponsored_items_table || []).splice(0);
+
+		(frm.doc.items || []).forEach(function(item) {
+			let row = frappe.model.add_child(
+				credit_memo,
+				'Credit Memo Sponsored Item',
+				'sponsored_items_table'
+			);
+
+			row.item_code = item.item_code;
+			row.particulars = item.custom_particulars || item.description || item.item_name;
+			row.quantity = item.qty;
+			row.rate = item.rate;
+			row.amount = item.amount;
+			row.sponsored_rate = item.rate;
+			row.sales_order_item = item.name;
+		});
 	}
 	
 	function set_quotation_button(frm) {

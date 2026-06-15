@@ -7,15 +7,16 @@
  "engine": "InnoDB",
  "field_order": [
   "section_break_jtdq",
-  "amended_from",
+  "naming_series",
   "company",
+  "customer",
   "sales_order",
+  "reason",
+  "column_break_ibto",
+  "date",
   "address",
   "address_display",
-  "column_break_ibto",
-  "naming_series",
-  "date",
-  "customer",
+  "amended_from",
   "section_break_pkby",
   "sponsored_items_table",
   "sponsored_amount",
@@ -23,7 +24,7 @@
   "section_break_beal",
   "remarks_items",
   "section_break_xcyz",
-  "reason",
+  "column_break_olif",
   "column_break_yteg",
   "amount"
  ],
@@ -122,6 +123,7 @@
    "default": "0",
    "fieldname": "amount",
    "fieldtype": "Currency",
+   "hidden": 1,
    "label": "Amount",
    "reqd": 1
   },
@@ -138,25 +140,31 @@
   {
    "fieldname": "sponsored_amount",
    "fieldtype": "Currency",
-   "label": "Sponsored Amount"
+   "label": "Sponsored Amount",
+   "read_only": 1
   },
   {
    "fieldname": "commercial_amount",
    "fieldtype": "Currency",
-   "label": "Commercial Amount"
+   "label": "Commercial Amount",
+   "read_only": 1
   },
   {
    "fieldname": "sponsored_items_table",
    "fieldtype": "Table",
    "label": "Sponsored Items Table",
    "options": "Credit Memo Sponsored Item"
+  },
+  {
+   "fieldname": "column_break_olif",
+   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-06-11 14:58:47.826548",
+ "modified": "2026-06-11 15:54:59.708138",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Credit Memo",
