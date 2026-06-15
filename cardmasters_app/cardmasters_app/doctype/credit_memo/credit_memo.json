@@ -16,6 +16,10 @@
   "naming_series",
   "date",
   "customer",
+  "section_break_pkby",
+  "sponsored_items_table",
+  "sponsored_amount",
+  "commercial_amount",
   "section_break_beal",
   "remarks_items",
   "section_break_xcyz",
@@ -126,13 +130,33 @@
    "fieldtype": "Text",
    "label": "Address Display",
    "read_only": 1
+  },
+  {
+   "fieldname": "section_break_pkby",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "sponsored_amount",
+   "fieldtype": "Currency",
+   "label": "Sponsored Amount"
+  },
+  {
+   "fieldname": "commercial_amount",
+   "fieldtype": "Currency",
+   "label": "Commercial Amount"
+  },
+  {
+   "fieldname": "sponsored_items_table",
+   "fieldtype": "Table",
+   "label": "Sponsored Items Table",
+   "options": "Credit Memo Sponsored Item"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-06-01 14:13:24.002638",
+ "modified": "2026-06-11 14:58:47.826548",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Credit Memo",
