@@ -16,6 +16,15 @@ def get_work_order_operation_workstations(doc):
     return list(dict.fromkeys(workstations))
 
 
+def get_work_order_operation_workstations_by_hidden_state(doc, hidden):
+    workstations = []
+    for row in doc.get("operations") or []:
+        if row.workstation and cint(row.custom_workstation_hidden) == cint(hidden):
+            workstations.append(row.workstation)
+
+    return list(dict.fromkeys(workstations))
+
+
 def get_current_employee_workstations():
     employee_name = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "name")
     if not employee_name:
@@ -53,7 +62,7 @@ def get_current_employee_workstations():
     }
 
 
-def get_workstation_completion_options(docname):
+def get_workstation_completion_options(docname, action=None):
     if not docname:
         frappe.throw(_("Work Order is required."))
 
@@ -63,12 +72,30 @@ def get_workstation_completion_options(docname):
     if doc.docstatus != 1:
         return {"can_show": False, "workstations": []}
 
+    target_hidden = None
+    if action == "complete":
+        target_hidden = 0
+    elif action == "undo":
+        target_hidden = 1
+
+    if target_hidden is None:
+        operation_workstations = get_work_order_operation_workstations(doc)
+    else:
+        operation_workstations = get_work_order_operation_workstations_by_hidden_state(doc, target_hidden)
+
+    completable_workstations = get_work_order_operation_workstations_by_hidden_state(doc, 0)
+    undoable_workstations = get_work_order_operation_workstations_by_hidden_state(doc, 1)
+
     if can_bypass_workstation_leader_check():
-        workstations = get_work_order_operation_workstations(doc)
+        all_accessible_workstations = get_work_order_operation_workstations(doc)
         return {
-            "can_show": bool(workstations),
+            "can_show": bool(operation_workstations),
             "is_privileged": True,
-            "workstations": workstations,
+            "workstations": operation_workstations,
+            "prompt_required": len(all_accessible_workstations) > 1,
+            "can_complete": bool(completable_workstations),
+            "can_undo": bool(undoable_workstations),
+            "message": get_no_workstation_completion_options_message(action),
         }
 
     employee_workstations = get_current_employee_workstations()
@@ -79,14 +106,59 @@ def get_workstation_completion_options(docname):
             "message": employee_workstations.get("message"),
         }
 
+    workstations = employee_workstations.get("workstations") or []
+    all_accessible_workstations = workstations
+    if target_hidden is not None:
+        workstations = [workstation for workstation in workstations if workstation in operation_workstations]
+
+    assigned_completable_workstations = [
+        workstation for workstation in employee_workstations.get("workstations") or []
+        if workstation in completable_workstations
+    ]
+    assigned_undoable_workstations = [
+        workstation for workstation in employee_workstations.get("workstations") or []
+        if workstation in undoable_workstations
+    ]
+
     return {
-        "can_show": True,
+        "can_show": bool(workstations),
         "is_privileged": False,
-        "workstations": employee_workstations.get("workstations") or [],
+        "workstations": workstations,
+        "prompt_required": len(all_accessible_workstations) > 1,
+        "can_complete": bool(assigned_completable_workstations),
+        "can_undo": bool(assigned_undoable_workstations),
+        "message": get_no_workstation_completion_options_message(action),
     }
 
 
-def mark_workstation_jobs_complete(docname, workstation):
+def get_no_workstation_completion_options_message(action):
+    if action == "complete":
+        return _("No workstation responsibilities are currently available to mark complete.")
+    if action == "undo":
+        return _("No completed workstation responsibilities are currently available to undo.")
+    return None
+
+
+def validate_workstation_completion_access(doc, workstation):
+    if can_bypass_workstation_leader_check():
+        operation_workstations = get_work_order_operation_workstations(doc)
+        if workstation not in operation_workstations:
+            frappe.throw(_("No operations found for the selected workstation."))
+        return
+
+    employee_workstations = get_current_employee_workstations()
+    if not employee_workstations.get("employee"):
+        frappe.throw(_("No Employee record found for current user."))
+
+    assigned_workstations = employee_workstations.get("workstations") or []
+    if not assigned_workstations:
+        frappe.throw(_("You are not assigned as a workstation leader."))
+
+    if workstation not in assigned_workstations:
+        frappe.throw(_("You are not assigned as a workstation leader for {0}.").format(frappe.bold(workstation)))
+
+
+def set_workstation_jobs_hidden(docname, workstation, hidden, action_label):
     if not docname:
         frappe.throw(_("Work Order is required."))
     if not workstation:
@@ -94,27 +166,12 @@ def mark_workstation_jobs_complete(docname, workstation):
 
     doc = frappe.get_doc("Work Order", docname)
     doc.check_permission("read")
-
-    if can_bypass_workstation_leader_check():
-        operation_workstations = get_work_order_operation_workstations(doc)
-        if workstation not in operation_workstations:
-            frappe.throw(_("No operations found for the selected workstation."))
-    else:
-        employee_workstations = get_current_employee_workstations()
-        if not employee_workstations.get("employee"):
-            frappe.throw(_("No Employee record found for current user."))
-
-        assigned_workstations = employee_workstations.get("workstations") or []
-        if not assigned_workstations:
-            frappe.throw(_("You are not assigned as a workstation leader."))
-
-        if workstation not in assigned_workstations:
-            frappe.throw(_("You are not assigned as a workstation leader for {0}.").format(frappe.bold(workstation)))
+    validate_workstation_completion_access(doc, workstation)
 
     updated_count = 0
     for row in doc.get("operations") or []:
-        if row.workstation == workstation:
-            row.custom_workstation_hidden = 1
+        if row.workstation == workstation and cint(row.custom_workstation_hidden) != cint(hidden):
+            row.custom_workstation_hidden = hidden
             updated_count += 1
 
     if not updated_count:
@@ -125,11 +182,28 @@ def mark_workstation_jobs_complete(docname, workstation):
 
     doc.flags.ignore_validate_update_after_submit = True
     doc.save(ignore_permissions=True)
+    doc.add_comment(
+        "Edit",
+        text=_("{0} operation(s) for {1} {2} by {3}.").format(
+            cint(updated_count),
+            frappe.bold(workstation),
+            action_label,
+            frappe.bold(frappe.session.user),
+        ),
+    )
 
     return {
         "updated_count": cint(updated_count),
         "workstation": workstation,
     }
+
+
+def mark_workstation_jobs_complete(docname, workstation):
+    return set_workstation_jobs_hidden(docname, workstation, 1, _("hidden from workstation queue"))
+
+
+def undo_workstation_jobs_complete(docname, workstation):
+    return set_workstation_jobs_hidden(docname, workstation, 0, _("restored to workstation queue"))
 
 def update_work_order_details(docname, qty, item_specifics=None, particulars=None):
     # 1. Load the document and basic variables

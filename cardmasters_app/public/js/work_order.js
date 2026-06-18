@@ -265,23 +265,39 @@ var add_workstation_completion_button = function(frm) {
 				return;
 			}
 
-			if (frm.custom_buttons[__('Mark Workstation Jobs Complete')]) {
-				return;
-			}
-
-			let $btn = frm.add_custom_button(__('Mark Workstation Jobs Complete'), function() {
-				mark_workstation_jobs_complete(frm);
-			});
-			$btn.removeClass('btn-default').addClass('btn-primary');
+			add_workstation_completion_action_buttons(frm, result);
 		}
 	});
 };
 
+var add_workstation_completion_action_buttons = function(frm, options) {
+	if (options.can_complete && !frm.custom_buttons[__('Mark Workstation Jobs Complete')]) {
+		frm.add_custom_button(__('Mark Workstation Jobs Complete'), function() {
+			mark_workstation_jobs_complete(frm);
+		}, __('Jobs'));
+	}
+
+	if (options.can_undo && !frm.custom_buttons[__('Undo Workstation Jobs Complete')]) {
+		frm.add_custom_button(__('Undo Workstation Jobs Complete'), function() {
+			undo_workstation_jobs_complete(frm);
+		}, __('Jobs'));
+	}
+};
+
 var mark_workstation_jobs_complete = function(frm) {
+	select_workstation_for_completion_action(frm, 'complete', confirm_mark_workstation_jobs_complete);
+};
+
+var undo_workstation_jobs_complete = function(frm) {
+	select_workstation_for_completion_action(frm, 'undo', confirm_undo_workstation_jobs_complete);
+};
+
+var select_workstation_for_completion_action = function(frm, action, confirmation_handler) {
 	frappe.call({
 		method: 'cardmasters_app.cardmasters_app.api.work_order.get_workstation_completion_options',
 		args: {
-			docname: frm.doc.name
+			docname: frm.doc.name,
+			action: action
 		},
 		freeze: true,
 		freeze_message: __('Checking workstation assignments...'),
@@ -296,17 +312,17 @@ var mark_workstation_jobs_complete = function(frm) {
 				return;
 			}
 
-			if (workstations.length === 1) {
-				confirm_mark_workstation_jobs_complete(frm, workstations[0]);
+			if (!result.prompt_required && workstations.length === 1) {
+				confirmation_handler(frm, workstations[0]);
 				return;
 			}
 
-			show_workstation_selection_dialog(frm, workstations);
+			show_workstation_selection_dialog(frm, workstations, confirmation_handler);
 		}
 	});
 };
 
-var show_workstation_selection_dialog = function(frm, workstations) {
+var show_workstation_selection_dialog = function(frm, workstations, confirmation_handler) {
 	let d = new frappe.ui.Dialog({
 		title: __('Select Workstation'),
 		fields: [
@@ -321,7 +337,57 @@ var show_workstation_selection_dialog = function(frm, workstations) {
 		primary_action_label: __('Select'),
 		primary_action(values) {
 			d.hide();
-			confirm_mark_workstation_jobs_complete(frm, values.workstation);
+			confirmation_handler(frm, values.workstation);
+		}
+	});
+
+	d.show();
+};
+
+var confirm_undo_workstation_jobs_complete = function(frm, workstation) {
+	let escaped_workstation = frappe.utils.escape_html(workstation);
+	let d = new frappe.ui.Dialog({
+		title: __('Confirm'),
+		fields: [
+			{
+				fieldtype: 'HTML',
+				options: `
+					<p>${__('Undo completion for all responsibilities for {0}?', [escaped_workstation])}</p>
+					<p>${__('This will show this Work Order again in the selected workstation queue.')}</p>
+				`
+			}
+		],
+		primary_action_label: __('Confirm'),
+		primary_action() {
+			d.hide();
+			frappe.call({
+				method: 'cardmasters_app.cardmasters_app.api.work_order.undo_workstation_jobs_complete',
+				args: {
+					docname: frm.doc.name,
+					workstation: workstation
+				},
+				freeze: true,
+				freeze_message: __('Undoing workstation jobs complete...'),
+				callback: function(r) {
+					const result = r.message || {};
+
+					if (!result.updated_count) {
+						frappe.msgprint(__('No operations found for the selected workstation.'));
+						return;
+					}
+
+					frm.reload_doc().then(() => {
+						frappe.msgprint(__('{0} operation(s) for {1} restored to workstation queue.', [
+							result.updated_count,
+							result.workstation || workstation
+						]));
+					});
+				}
+			});
+		},
+		secondary_action_label: __('Cancel'),
+		secondary_action() {
+			d.hide();
 		}
 	});
 
