@@ -6,7 +6,8 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "workstation_leader"
+  "workstation_leader",
+  "workstation"
  ],
  "fields": [
   {
@@ -15,31 +16,25 @@
    "fieldtype": "Data",
    "label": "Workstation Leader",
    "unique": 1
+  },
+  {
+   "fieldname": "workstation",
+   "fieldtype": "Link",
+   "label": "Workstation",
+   "options": "Workstation"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
+ "istable": 1,
  "links": [],
- "modified": "2026-02-12 14:06:01.047138",
+ "modified": "2026-06-16 14:10:43.538287",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Workstation Leader",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
- "permissions": [
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "System Manager",
-   "share": 1,
-   "write": 1
-  }
- ],
+ "permissions": [],
  "quick_entry": 1,
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,

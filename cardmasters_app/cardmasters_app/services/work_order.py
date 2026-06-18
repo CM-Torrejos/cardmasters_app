@@ -1,5 +1,84 @@
 import frappe
 from frappe import _
+from frappe.utils import cint
+
+
+def get_current_employee_workstations():
+    employee_name = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "name")
+    if not employee_name:
+        return {
+            "employee": None,
+            "workstations": [],
+            "message": _("No Employee record found for current user."),
+        }
+
+    employee = frappe.get_doc("Employee", employee_name)
+    workstations = []
+
+    workstation_leader_rows = employee.get("custom_workstation_leader")
+    if isinstance(workstation_leader_rows, list):
+        for row in workstation_leader_rows:
+            if row.get("workstation"):
+                workstations.append(row.workstation)
+    elif workstation_leader_rows:
+        workstation = frappe.db.get_value("Workstation Leader", workstation_leader_rows, "workstation")
+        if workstation:
+            workstations.append(workstation)
+
+    workstations = list(dict.fromkeys(workstations))
+
+    if not workstations:
+        return {
+            "employee": employee_name,
+            "workstations": [],
+            "message": _("You are not assigned as a workstation leader."),
+        }
+
+    return {
+        "employee": employee_name,
+        "workstations": workstations,
+    }
+
+
+def mark_workstation_jobs_complete(docname, workstation):
+    if not docname:
+        frappe.throw(_("Work Order is required."))
+    if not workstation:
+        frappe.throw(_("Workstation is required."))
+
+    employee_workstations = get_current_employee_workstations()
+    if not employee_workstations.get("employee"):
+        frappe.throw(_("No Employee record found for current user."))
+
+    assigned_workstations = employee_workstations.get("workstations") or []
+    if not assigned_workstations:
+        frappe.throw(_("You are not assigned as a workstation leader."))
+
+    if workstation not in assigned_workstations:
+        frappe.throw(_("You are not assigned as a workstation leader for {0}.").format(frappe.bold(workstation)))
+
+    doc = frappe.get_doc("Work Order", docname)
+    doc.check_permission("read")
+
+    updated_count = 0
+    for row in doc.get("operations") or []:
+        if row.workstation == workstation:
+            row.custom_workstation_hidden = 1
+            updated_count += 1
+
+    if not updated_count:
+        return {
+            "updated_count": 0,
+            "message": _("No operations found for the selected workstation."),
+        }
+
+    doc.flags.ignore_validate_update_after_submit = True
+    doc.save(ignore_permissions=True)
+
+    return {
+        "updated_count": cint(updated_count),
+        "workstation": workstation,
+    }
 
 def update_work_order_details(docname, qty, item_specifics=None, particulars=None):
     # 1. Load the document and basic variables

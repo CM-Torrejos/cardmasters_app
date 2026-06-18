@@ -181,6 +181,12 @@ frappe.ui.form.on('Work Order', {
             frm.change_custom_button_type(__('Update Details'), null, 'primary');
         }
 
+		if (frm.doc.docstatus === 1) {
+			frm.add_custom_button(__('Mark Workstation Jobs Complete'), function() {
+				mark_workstation_jobs_complete(frm);
+			}, __('Options'));
+		}
+
 		if (!frm.is_new() && !invalid_statuses.includes(frm.doc.status)) {
 			frm.add_custom_button(__('Issue Damages/Returns'), function() {
 				frappe.new_doc('Damages and Returns', {
@@ -192,6 +198,102 @@ frappe.ui.form.on('Work Order', {
 		}
 	},
 });
+
+var mark_workstation_jobs_complete = function(frm) {
+	frappe.call({
+		method: 'cardmasters_app.cardmasters_app.api.work_order.get_current_employee_workstations',
+		freeze: true,
+		freeze_message: __('Checking workstation assignments...'),
+		callback: function(r) {
+			const result = r.message || {};
+			const workstations = result.workstations || [];
+
+			if (result.message) {
+				frappe.msgprint(__(result.message));
+				return;
+			}
+
+			if (workstations.length === 1) {
+				confirm_mark_workstation_jobs_complete(frm, workstations[0]);
+				return;
+			}
+
+			show_workstation_selection_dialog(frm, workstations);
+		}
+	});
+};
+
+var show_workstation_selection_dialog = function(frm, workstations) {
+	let d = new frappe.ui.Dialog({
+		title: __('Select Workstation'),
+		fields: [
+			{
+				label: __('Workstation'),
+				fieldname: 'workstation',
+				fieldtype: 'Select',
+				options: workstations.join('\n'),
+				reqd: 1
+			}
+		],
+		primary_action_label: __('Select'),
+		primary_action(values) {
+			d.hide();
+			confirm_mark_workstation_jobs_complete(frm, values.workstation);
+		}
+	});
+
+	d.show();
+};
+
+var confirm_mark_workstation_jobs_complete = function(frm, workstation) {
+	let escaped_workstation = frappe.utils.escape_html(workstation);
+	let d = new frappe.ui.Dialog({
+		title: __('Confirm'),
+		fields: [
+			{
+				fieldtype: 'HTML',
+				options: `
+					<p>${__('Mark all responsibilities for {0} as complete?', [escaped_workstation])}</p>
+					<p>${__('This will hide this Work Order from the selected workstation queue.')}</p>
+				`
+			}
+		],
+		primary_action_label: __('Confirm'),
+		primary_action() {
+			d.hide();
+			frappe.call({
+				method: 'cardmasters_app.cardmasters_app.api.work_order.mark_workstation_jobs_complete',
+				args: {
+					docname: frm.doc.name,
+					workstation: workstation
+				},
+				freeze: true,
+				freeze_message: __('Marking workstation jobs complete...'),
+				callback: function(r) {
+					const result = r.message || {};
+
+					if (!result.updated_count) {
+						frappe.msgprint(__('No operations found for the selected workstation.'));
+						return;
+					}
+
+					frm.reload_doc().then(() => {
+						frappe.msgprint(__('{0} operation(s) for {1} marked complete.', [
+							result.updated_count,
+							result.workstation || workstation
+						]));
+					});
+				}
+			});
+		},
+		secondary_action_label: __('Cancel'),
+		secondary_action() {
+			d.hide();
+		}
+	});
+
+	d.show();
+};
 
 frappe.ui.form.on('CM Jobs', {
 	job: function(frm, cdt, cdn) { 
