@@ -17,6 +17,8 @@
   "sales_order_price_list_rate_and_rate_validation_section",
   "bypass_rate_validation_role",
   "production_configurations",
+  "job_cards_section",
+  "disable_job_cards",
   "work_order_creation_validation_section",
   "so_workflow_action_for_pending",
   "transition_to_production_automation_section",
@@ -246,13 +248,24 @@
    "fieldtype": "Link",
    "label": "Work Order In Claiming Workflow State",
    "options": "Workflow State"
+  },
+  {
+   "fieldname": "job_cards_section",
+   "fieldtype": "Section Break",
+   "label": "Job Cards"
+  },
+  {
+   "default": "0",
+   "fieldname": "disable_job_cards",
+   "fieldtype": "Check",
+   "label": "Disable Job Cards"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-05-26 13:51:49.185472",
+ "modified": "2026-06-18 11:43:46.316739",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Cardmasters Settings",

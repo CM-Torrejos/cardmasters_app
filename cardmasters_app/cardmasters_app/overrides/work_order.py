@@ -1,8 +1,14 @@
 import frappe
 from erpnext.manufacturing.doctype.work_order.work_order import WorkOrder
-from frappe.utils import flt
+from frappe.utils import cint, flt
 
 class CustomWorkOrder(WorkOrder):
+    def create_job_card(self):
+        if cint(frappe.db.get_single_value("Cardmasters Settings", "disable_job_cards")):
+            return
+
+        super().create_job_card()
+
     def update_work_order_qty_in_so(self):
         if not self.sales_order and not self.sales_order_item:
             return
