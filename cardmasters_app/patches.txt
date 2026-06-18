@@ -4,3 +4,4 @@
 
 [post_model_sync]
 # Patches added in this section will be executed after doctypes are migrated
+cardmasters_app.cardmasters_app.patches.remove_work_order_star_customization

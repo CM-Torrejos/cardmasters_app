@@ -63,7 +63,6 @@ override_doctype_class = {
 app_include_js = [
     "/assets/cardmasters_app/js/utils.js",
     "/assets/cardmasters_app/js/address_contact_quick_entry_patch.js", # Address patching
-    "/assets/cardmasters_app/js/workstation_leader_log/listview_star_button.js", # Star/prioritize work order list rows
     "/assets/cardmasters_app/js/artist_card/multi_artist_filter.js" # Custom list filter for assigned artists
 ]
 
@@ -438,4 +437,3 @@ required_apps = ["frappe/hrms"]
 # default_log_clearing_doctypes = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
-
