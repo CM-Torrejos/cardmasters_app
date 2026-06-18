@@ -3,6 +3,19 @@ from frappe import _
 from frappe.utils import cint
 
 
+def can_bypass_workstation_leader_check():
+    return frappe.session.user == "Administrator" or "System Manager" in frappe.get_roles()
+
+
+def get_work_order_operation_workstations(doc):
+    workstations = []
+    for row in doc.get("operations") or []:
+        if row.workstation:
+            workstations.append(row.workstation)
+
+    return list(dict.fromkeys(workstations))
+
+
 def get_current_employee_workstations():
     employee_name = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "name")
     if not employee_name:
@@ -40,25 +53,63 @@ def get_current_employee_workstations():
     }
 
 
+def get_workstation_completion_options(docname):
+    if not docname:
+        frappe.throw(_("Work Order is required."))
+
+    doc = frappe.get_doc("Work Order", docname)
+    doc.check_permission("read")
+
+    if doc.docstatus != 1:
+        return {"can_show": False, "workstations": []}
+
+    if can_bypass_workstation_leader_check():
+        workstations = get_work_order_operation_workstations(doc)
+        return {
+            "can_show": bool(workstations),
+            "is_privileged": True,
+            "workstations": workstations,
+        }
+
+    employee_workstations = get_current_employee_workstations()
+    if employee_workstations.get("message"):
+        return {
+            "can_show": False,
+            "workstations": [],
+            "message": employee_workstations.get("message"),
+        }
+
+    return {
+        "can_show": True,
+        "is_privileged": False,
+        "workstations": employee_workstations.get("workstations") or [],
+    }
+
+
 def mark_workstation_jobs_complete(docname, workstation):
     if not docname:
         frappe.throw(_("Work Order is required."))
     if not workstation:
         frappe.throw(_("Workstation is required."))
 
-    employee_workstations = get_current_employee_workstations()
-    if not employee_workstations.get("employee"):
-        frappe.throw(_("No Employee record found for current user."))
-
-    assigned_workstations = employee_workstations.get("workstations") or []
-    if not assigned_workstations:
-        frappe.throw(_("You are not assigned as a workstation leader."))
-
-    if workstation not in assigned_workstations:
-        frappe.throw(_("You are not assigned as a workstation leader for {0}.").format(frappe.bold(workstation)))
-
     doc = frappe.get_doc("Work Order", docname)
     doc.check_permission("read")
+
+    if can_bypass_workstation_leader_check():
+        operation_workstations = get_work_order_operation_workstations(doc)
+        if workstation not in operation_workstations:
+            frappe.throw(_("No operations found for the selected workstation."))
+    else:
+        employee_workstations = get_current_employee_workstations()
+        if not employee_workstations.get("employee"):
+            frappe.throw(_("No Employee record found for current user."))
+
+        assigned_workstations = employee_workstations.get("workstations") or []
+        if not assigned_workstations:
+            frappe.throw(_("You are not assigned as a workstation leader."))
+
+        if workstation not in assigned_workstations:
+            frappe.throw(_("You are not assigned as a workstation leader for {0}.").format(frappe.bold(workstation)))
 
     updated_count = 0
     for row in doc.get("operations") or []:

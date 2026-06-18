@@ -1,31 +1,51 @@
 frappe.ui.form.on('Work Order', {
 	setup: function(frm) {
-        // Cache the original button builder
-        const original_add_button = frm.add_custom_button.bind(frm);
-        
-        // Hijack it to look for the "Start" button
-        frm.add_custom_button = function(label, action, group) {
-            
-            // When the core script tries to build "Start", intercept it
-            if (label === 'Start' || label === __('Start')) {
-                // Pass 'Withdraw' instead, but keep the core action (the Material Transfer)
-                let $btn = original_add_button(__('Withdraw'), action, group);
-                $btn.removeClass('btn-default').addClass('btn-primary');
-                return $btn;
-            }
-            
-            // Build all other buttons normally
-            return original_add_button(label, action, group);
-        };
-    },
+		filter_work_order_make_buttons(frm);
+
+		// Cache the original button builder
+		const original_add_button = frm.add_custom_button.bind(frm);
+
+		// Gate standard Work Order buttons and rename allowed material transfer action.
+		frm.add_custom_button = function(label, action, group) {
+			if (is_work_order_button(label, 'Create Pick List')) {
+				return $();
+			}
+
+			if (is_work_order_button_group(group, 'Status') && !has_work_order_status_action_permissions(frm)) {
+				return $();
+			}
+
+			if (
+				is_work_order_button(label, 'Create Job Card') &&
+				(!frappe.model.can_create('Job Card') || cardmasters_job_cards_disabled())
+			) {
+				return $();
+			}
+
+			if (is_work_order_button(label, 'Start')) {
+				if (!frm.has_perm('read') || !frappe.model.can_create('Stock Entry')) {
+					return $();
+				}
+
+				let $btn = original_add_button(__('Withdraw'), action, group);
+				$btn.removeClass('btn-default').addClass('btn-primary');
+				return $btn;
+			}
+
+			// Build all other buttons normally
+			return original_add_button(label, action, group);
+		};
+	},
 	
 	refresh: function(frm) {
 		const invalid_statuses = ['On Hold', 'Cancelled', 'Closed'];
+		filter_work_order_make_buttons(frm);
+
 		setTimeout(() => {
-			if(frm.custom_buttons['Start']) {
-				frm.change_custom_button_type('Start', null, 'primary');
+			if(frm.custom_buttons['Withdraw']) {
+				frm.change_custom_button_type('Withdraw', null, 'primary');
 				
-				let $btn = frm.page.get_custom_button('Start');
+				let $btn = frm.page.get_custom_button('Withdraw');
 				if($btn) {
 					$btn.text(__('Withdraw'));
 				}
@@ -130,7 +150,7 @@ frappe.ui.form.on('Work Order', {
 		// 	})
 		// })
 
-		if (frm.doc.docstatus === 1 && frm.has_perm('write')) {
+		if (frm.doc.docstatus === 1 && has_work_order_status_action_permissions(frm)) {
             frm.add_custom_button(__('Update Details'), function() {
                 let d = new frappe.ui.Dialog({
                     title: __('Update Work Order Details'),
@@ -181,11 +201,7 @@ frappe.ui.form.on('Work Order', {
             frm.change_custom_button_type(__('Update Details'), null, 'primary');
         }
 
-		if (frm.doc.docstatus === 1) {
-			frm.add_custom_button(__('Mark Workstation Jobs Complete'), function() {
-				mark_workstation_jobs_complete(frm);
-			}, __('Options'));
-		}
+		add_workstation_completion_button(frm);
 
 		if (!frm.is_new() && !invalid_statuses.includes(frm.doc.status)) {
 			frm.add_custom_button(__('Issue Damages/Returns'), function() {
@@ -199,17 +215,84 @@ frappe.ui.form.on('Work Order', {
 	},
 });
 
+var is_work_order_button = function(label, expected) {
+	return label === expected || label === __(expected);
+};
+
+var is_work_order_button_group = function(group, expected) {
+	return group === expected || group === __(expected);
+};
+
+var has_work_order_status_action_permissions = function(frm) {
+	return frm.has_perm('write') && frm.has_perm('cancel') && frm.has_perm('delete');
+};
+
+var cardmasters_job_cards_disabled = function() {
+	const settings = frappe.boot.cardmasters_settings || {};
+	return Boolean(Number(settings.disable_job_cards || 0));
+};
+
+var filter_work_order_make_buttons = function(frm) {
+	if (!frm.custom_make_buttons) {
+		return;
+	}
+
+	delete frm.custom_make_buttons['Pick List'];
+
+	if (cardmasters_job_cards_disabled() || !frappe.model.can_create('Job Card')) {
+		delete frm.custom_make_buttons['Job Card'];
+	}
+
+	if (!frm.has_perm('read') || !frappe.model.can_create('Stock Entry')) {
+		delete frm.custom_make_buttons['Stock Entry'];
+	}
+};
+
+var add_workstation_completion_button = function(frm) {
+	if (frm.doc.docstatus !== 1) {
+		return;
+	}
+
+	frappe.call({
+		method: 'cardmasters_app.cardmasters_app.api.work_order.get_workstation_completion_options',
+		args: {
+			docname: frm.doc.name
+		},
+		callback: function(r) {
+			const result = r.message || {};
+
+			if (!result.can_show) {
+				return;
+			}
+
+			if (frm.custom_buttons[__('Mark Workstation Jobs Complete')]) {
+				return;
+			}
+
+			let $btn = frm.add_custom_button(__('Mark Workstation Jobs Complete'), function() {
+				mark_workstation_jobs_complete(frm);
+			});
+			$btn.removeClass('btn-default').addClass('btn-primary');
+		}
+	});
+};
+
 var mark_workstation_jobs_complete = function(frm) {
 	frappe.call({
-		method: 'cardmasters_app.cardmasters_app.api.work_order.get_current_employee_workstations',
+		method: 'cardmasters_app.cardmasters_app.api.work_order.get_workstation_completion_options',
+		args: {
+			docname: frm.doc.name
+		},
 		freeze: true,
 		freeze_message: __('Checking workstation assignments...'),
 		callback: function(r) {
 			const result = r.message || {};
 			const workstations = result.workstations || [];
 
-			if (result.message) {
-				frappe.msgprint(__(result.message));
+			if (!result.can_show) {
+				if (result.message) {
+					frappe.msgprint(__(result.message));
+				}
 				return;
 			}
 
