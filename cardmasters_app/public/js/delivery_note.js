@@ -1,12 +1,79 @@
 frappe.ui.form.on('Delivery Note', {
+	setup(frm) {
+		frm.set_query('custom_damages_and_returns', () => {
+			return {
+				filters: {
+					type: 'Return'
+				}
+			};
+		});
+	},
+
 	refresh(frm) {
+		toggle_damages_and_returns_requirement(frm);
+
 		if (frm.doc.docstatus === 1 && frm.doc.is_return) {
 			frm.add_custom_button(__('Process Returned Item'), () => {
 				process_returned_item(frm);
 			});
 		}
+	},
+
+	is_return(frm) {
+		toggle_damages_and_returns_requirement(frm);
 	}
 });
+
+function toggle_damages_and_returns_requirement(frm) {
+	if (!frm.fields_dict.custom_damages_and_returns) {
+		return;
+	}
+
+	frm.toggle_reqd('custom_damages_and_returns', Boolean(cint(frm.doc.is_return)));
+	frm.toggle_display('custom_damages_and_returns', Boolean(cint(frm.doc.is_return)));
+}
+
+function prompt_for_damages_and_returns(frm) {
+	const dialog = new frappe.ui.Dialog({
+		title: __('Create Sales Return'),
+		fields: [
+			{
+				fieldname: 'custom_damages_and_returns',
+				fieldtype: 'Link',
+				label: __('Damages and Returns'),
+				options: 'Damages and Returns',
+				reqd: 1,
+				get_query: () => {
+					return {
+						filters: {
+							type: 'Return'
+						}
+					};
+				}
+			}
+		],
+		primary_action_label: __('Create Sales Return'),
+		primary_action(values) {
+			dialog.hide();
+			frappe.model.open_mapped_doc({
+				method: 'cardmasters_app.cardmasters_app.api.return_processing.make_sales_return_with_damages_and_returns',
+				frm,
+				run_link_triggers: true,
+				args: {
+					damages_and_returns: values.custom_damages_and_returns
+				}
+			});
+		}
+	});
+
+	dialog.show();
+}
+
+if (window.erpnext && erpnext.stock && erpnext.stock.DeliveryNoteController) {
+	erpnext.stock.DeliveryNoteController.prototype.make_sales_return = function() {
+		prompt_for_damages_and_returns(this.frm);
+	};
+}
 
 function process_returned_item(frm) {
 	const pending_rows = (frm.doc.items || []).filter(row => {

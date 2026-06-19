@@ -54,6 +54,8 @@ def enforce_return_master_warehouse(doc, _method=None):
 			doc.custom_return_processing_status = "Not Applicable"
 		return
 
+	validate_damages_and_returns_reference(doc)
+
 	settings = get_cardmasters_return_warehouses()
 	for row in get_processable_return_rows(doc):
 		row.warehouse = settings.return_warehouse
@@ -61,6 +63,28 @@ def enforce_return_master_warehouse(doc, _method=None):
 			row.custom_return_processing_status = PENDING_STATUS
 
 	update_delivery_note_return_processing_status(doc)
+
+
+def validate_damages_and_returns_reference(doc):
+	if not _has_field(doc, "custom_damages_and_returns"):
+		return
+
+	if not doc.get("custom_damages_and_returns"):
+		frappe.throw(
+			_("Damages and Returns is required for Sales Return Delivery Notes."),
+			title=_("Missing Damages and Returns"),
+		)
+
+	damages_and_returns_type = frappe.db.get_value(
+		"Damages and Returns", doc.custom_damages_and_returns, "type"
+	)
+	if damages_and_returns_type and damages_and_returns_type != "Return":
+		frappe.throw(
+			_("Damages and Returns {0} must have Type set to Return.").format(
+				doc.custom_damages_and_returns
+			),
+			title=_("Invalid Damages and Returns"),
+		)
 
 
 def get_processable_return_rows(doc):
@@ -160,6 +184,38 @@ def process_returned_item(delivery_note, delivery_note_item, outcome, target_row
 		"status": status,
 		"delivery_note_status": doc.get("custom_return_processing_status"),
 	}
+
+
+@frappe.whitelist()
+def make_sales_return_with_damages_and_returns(source_name, target_doc=None):
+	args = getattr(frappe.flags, "args", None) or frappe._dict()
+	damages_and_returns = args.get("damages_and_returns")
+	if not damages_and_returns:
+		frappe.throw(
+			_("Damages and Returns is required to create a Sales Return Delivery Note."),
+			title=_("Missing Damages and Returns"),
+		)
+
+	if not frappe.db.exists("Damages and Returns", damages_and_returns):
+		frappe.throw(
+			_("Damages and Returns {0} does not exist.").format(damages_and_returns),
+			title=_("Invalid Damages and Returns"),
+		)
+
+	damages_and_returns_type = frappe.db.get_value("Damages and Returns", damages_and_returns, "type")
+	if damages_and_returns_type and damages_and_returns_type != "Return":
+		frappe.throw(
+			_("Damages and Returns {0} must have Type set to Return.").format(damages_and_returns),
+			title=_("Invalid Damages and Returns"),
+		)
+
+	from erpnext.stock.doctype.delivery_note.delivery_note import make_sales_return
+
+	doc = make_sales_return(source_name, target_doc)
+	if _has_field(doc, "custom_damages_and_returns"):
+		doc.custom_damages_and_returns = damages_and_returns
+
+	return doc
 
 
 def handle_return_processing_stock_entry_cancel(doc, _method=None):

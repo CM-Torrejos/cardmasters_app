@@ -6,12 +6,20 @@ def execute():
 	custom_fields = {
 		"Delivery Note": [
 			{
+				"fieldname": "custom_damages_and_returns",
+				"label": "Damages and Returns",
+				"fieldtype": "Link",
+				"options": "Damages and Returns",
+				"insert_after": "is_return",
+				"mandatory_depends_on": "eval:doc.is_return",
+			},
+			{
 				"fieldname": "custom_return_processing_status",
 				"label": "Return Processing Status",
 				"fieldtype": "Select",
 				"options": "Not Applicable\nPending\nPartially Processed\nProcessed",
 				"default": "Not Applicable",
-				"insert_after": "custom_reference_no",
+				"insert_after": "custom_damages_and_returns",
 				"read_only": 1,
 				"allow_on_submit": 1,
 			},
