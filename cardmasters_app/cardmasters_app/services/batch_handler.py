@@ -293,6 +293,9 @@ def set_batch_no_for_delivery_note(doc, method):
 	- Missing batch on SAVE  → orange warning, does not block.
 	- Missing batch on SUBMIT → hard error, blocks submission.
 	"""
+	if doc.get("is_return"):
+		return
+
 	missing_or_unmatched = []
 
 	for d in doc.items:

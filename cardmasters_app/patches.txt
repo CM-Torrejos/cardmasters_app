@@ -5,3 +5,6 @@
 [post_model_sync]
 # Patches added in this section will be executed after doctypes are migrated
 cardmasters_app.cardmasters_app.patches.remove_work_order_star_customization
+cardmasters_app.cardmasters_app.patches.add_return_processing_custom_fields
+cardmasters_app.cardmasters_app.patches.make_return_processing_stock_entry_reference_non_link
+cardmasters_app.cardmasters_app.patches.make_return_processing_delivery_note_item_reference_non_link

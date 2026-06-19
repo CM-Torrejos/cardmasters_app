@@ -41,7 +41,11 @@
   "wo_draft_status",
   "wo_not_started_status",
   "wo_in_production_status",
-  "wo_in_claiming_status"
+  "wo_in_claiming_status",
+  "inventory_tab",
+  "damage_warehouse",
+  "master_warehouse",
+  "return_warehouse"
  ],
  "fields": [
   {
@@ -259,13 +263,36 @@
    "fieldname": "disable_job_cards",
    "fieldtype": "Check",
    "label": "Disable Job Cards"
+  },
+  {
+   "fieldname": "inventory_tab",
+   "fieldtype": "Tab Break",
+   "label": "Inventory"
+  },
+  {
+   "fieldname": "damage_warehouse",
+   "fieldtype": "Link",
+   "label": "Damage Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "master_warehouse",
+   "fieldtype": "Link",
+   "label": "Master Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "return_warehouse",
+   "fieldtype": "Link",
+   "label": "Return Warehouse",
+   "options": "Warehouse"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-06-18 11:43:46.316739",
+ "modified": "2026-06-19 11:07:24.298407",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Cardmasters Settings",

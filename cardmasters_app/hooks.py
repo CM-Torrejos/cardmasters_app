@@ -47,6 +47,7 @@ doctype_js = {
     ],
     "Petty Cash Request": "public/js/petty_cash_request.js",
     "Stock Entry": "public/js/stock_entry.js",
+    "Delivery Note": "public/js/delivery_note.js",
     "Purchase Invoice": "public/js/purchase_invoice.js",
     "Payment Entry": "public/js/payment_entry.js", # Payment reversal out-of-period trigger button
     "Sales Invoice": "public/js/sales_invoice.js",
@@ -103,6 +104,9 @@ doc_events = {
         ],
         "on_submit": [
             "cardmasters_app.cardmasters_app.services.batch_handler.set_batch_received_date_on_population" # Timestamp batch receive date
+        ],
+        "on_cancel": [
+            "cardmasters_app.cardmasters_app.api.return_processing.handle_return_processing_stock_entry_cancel" # Reopen returned item processing status when linked entry is cancelled
         ],
         "before_save": [
             "cardmasters_app.cardmasters_app.services.batch_handler.set_batch_no_for_fg_on_manufacture_entry" # Automatically generate/assign SO-based Batch Name
@@ -163,7 +167,13 @@ doc_events = {
         ]
     },
     "Delivery Note": {
-        "validate": "cardmasters_app.cardmasters_app.services.batch_handler.set_batch_no_for_delivery_note" # Automatically query and assign matches
+        "validate": [
+            "cardmasters_app.cardmasters_app.api.return_processing.enforce_return_master_warehouse", # Receive Sales Returns into Cardmasters return warehouse
+            "cardmasters_app.cardmasters_app.services.batch_handler.set_batch_no_for_delivery_note" # Automatically query and assign matches
+        ],
+        "before_submit": [
+            "cardmasters_app.cardmasters_app.api.return_processing.enforce_return_master_warehouse" # Server-side enforcement before stock ledger posting
+        ]
     },
     "Payment Entry": {
         "on_submit": "cardmasters_app.cardmasters_app.services.outstanding_balance.update_so_balance_on_payment", # Recalculate true outstanding
