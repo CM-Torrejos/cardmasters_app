@@ -8,8 +8,10 @@ from frappe.utils import flt, now
 PENDING_STATUS = "Pending"
 CONVERTED_STATUS = "Converted to RM"
 DAMAGE_STATUS = "Issued as Damage"
-PROCESSED_STATUSES = {CONVERTED_STATUS, DAMAGE_STATUS}
+MIXED_STATUS = "Converted to RM and Issued as Damage"
+PROCESSED_STATUSES = {CONVERTED_STATUS, DAMAGE_STATUS, MIXED_STATUS}
 VALUATION_TOLERANCE = 0.01
+QTY_TOLERANCE = 0.000001
 
 
 def get_cardmasters_return_warehouses(require_master=False, require_damage=False):
@@ -130,7 +132,7 @@ def update_delivery_note_return_processing_status(doc):
 
 
 @frappe.whitelist()
-def get_return_item_processing_defaults(delivery_note, delivery_note_item, target_qty=None):
+def get_return_item_processing_defaults(delivery_note, delivery_note_item, target_qty=None, damage_qty=None):
 	doc, row, settings = _get_valid_return_context(delivery_note, delivery_note_item)
 	source_qty = _get_source_qty(row)
 	source_valuation_rate = _get_source_valuation_rate(
@@ -140,7 +142,10 @@ def get_return_item_processing_defaults(delivery_note, delivery_note_item, targe
 
 	default_rate = 0
 	if target_qty:
-		default_rate = flt(source_total_value / flt(target_qty), 6)
+		conversion_qty = source_qty - flt(damage_qty)
+		if conversion_qty > 0:
+			allocation = _get_value_allocation(source_qty, source_valuation_rate, damage_qty)
+			default_rate = flt(allocation.conversion_value / flt(target_qty), 6)
 
 	return {
 		"source_qty": source_qty,
@@ -153,29 +158,54 @@ def get_return_item_processing_defaults(delivery_note, delivery_note_item, targe
 
 
 @frappe.whitelist()
-def process_returned_item(delivery_note, delivery_note_item, outcome, target_rows=None, remarks=None):
+def process_returned_item(
+	delivery_note,
+	delivery_note_item,
+	outcome=None,
+	target_rows=None,
+	remarks=None,
+	rm_rows=None,
+	damage_rows=None,
+):
 	_enforce_processing_permission()
 
-	if isinstance(target_rows, str):
-		target_rows = json.loads(target_rows or "[]")
-	target_rows = target_rows or []
+	rm_rows = _deserialize_rows(rm_rows)
+	damage_rows = _deserialize_rows(damage_rows)
+
+	# Keep existing integrations working while the dialog moves away from a single outcome.
+	if outcome == "Convert to RM":
+		rm_rows = _deserialize_rows(target_rows)
+	elif outcome == "Issue as Damage":
+		damage_rows = [{"qty": None, "use_full_source_qty": True}]
+	elif outcome:
+		frappe.throw(_("Unsupported returned item processing outcome: {0}").format(outcome))
 
 	doc, row, settings = _get_valid_return_context(
 		delivery_note,
 		delivery_note_item,
-		require_master=(outcome == "Convert to RM"),
-		require_damage=(outcome == "Issue as Damage"),
+		require_master=bool(rm_rows),
+		require_damage=bool(damage_rows),
 	)
 	doc.check_permission("write")
 	_validate_not_already_processed(row)
 	_validate_stock_available(row, settings.return_warehouse)
 
-	if outcome == "Convert to RM":
-		stock_entry, summary, status = _process_convert_to_rm(doc, row, settings, target_rows, remarks)
-	elif outcome == "Issue as Damage":
+	if damage_rows and damage_rows[0].get("use_full_source_qty"):
+		damage_rows[0]["qty"] = _get_source_qty(row)
+
+	damage_qty = _validate_damage_rows(damage_rows, _get_source_qty(row))
+	if rm_rows and damage_qty:
+		stock_entry, summary, status = _process_mixed_return(
+			doc, row, settings, rm_rows, damage_qty, remarks
+		)
+	elif rm_rows:
+		stock_entry, summary, status = _process_convert_to_rm(doc, row, settings, rm_rows, remarks)
+	elif damage_qty:
+		if abs(damage_qty - _get_source_qty(row)) > QTY_TOLERANCE:
+			frappe.throw(_("The full returned quantity must be issued when there is no RM conversion."))
 		stock_entry, summary, status = _process_issue_as_damage(doc, row, settings, remarks)
 	else:
-		frappe.throw(_("Unsupported returned item processing outcome: {0}").format(outcome))
+		frappe.throw(_("Add at least one RM conversion row or damage issuance row."))
 
 	_mark_row_processed(doc, row, status, stock_entry.name, remarks, summary)
 
@@ -339,6 +369,42 @@ def _get_source_valuation_rate(item_code, warehouse, batch_no):
 	)
 
 
+def _deserialize_rows(rows):
+	if isinstance(rows, str):
+		rows = json.loads(rows or "[]")
+	return rows or []
+
+
+def _validate_damage_rows(damage_rows, source_qty):
+	damage_qty = 0
+	for idx, damage in enumerate(damage_rows, start=1):
+		qty = flt(damage.get("qty"))
+		if qty <= 0:
+			frappe.throw(_("Damage issuance row {0}: Qty must be greater than zero.").format(idx))
+		damage_qty += qty
+
+	if damage_qty - source_qty > QTY_TOLERANCE:
+		frappe.throw(
+			_("Total damage quantity {0} cannot exceed the returned quantity {1}.").format(
+				damage_qty, source_qty
+			)
+		)
+
+	return damage_qty
+
+
+def _get_value_allocation(source_qty, source_valuation_rate, damage_qty):
+	source_value = flt(flt(source_qty) * flt(source_valuation_rate), 2)
+	damage_value = flt(flt(damage_qty) * flt(source_valuation_rate), 2)
+	return frappe._dict(
+		{
+			"source_value": source_value,
+			"damage_value": damage_value,
+			"conversion_value": flt(source_value - damage_value, 2),
+		}
+	)
+
+
 def _process_convert_to_rm(doc, row, settings, target_rows, remarks):
 	source_qty = _get_source_qty(row)
 	source_valuation_rate = _get_source_valuation_rate(row.item_code, settings.return_warehouse, row.batch_no)
@@ -401,6 +467,105 @@ def _process_convert_to_rm(doc, row, settings, target_rows, remarks):
 		"stock_entry": stock_entry.name,
 	}
 	return stock_entry, summary, CONVERTED_STATUS
+
+
+def _process_mixed_return(doc, row, settings, target_rows, damage_qty, remarks):
+	source_qty = _get_source_qty(row)
+	conversion_qty = flt(source_qty - damage_qty)
+	if conversion_qty <= QTY_TOLERANCE:
+		frappe.throw(_("RM conversion quantity must be greater than zero after damage issuance."))
+
+	source_valuation_rate = _get_source_valuation_rate(
+		row.item_code, settings.return_warehouse, row.batch_no
+	)
+	allocation = _get_value_allocation(source_qty, source_valuation_rate, damage_qty)
+	source_total_value = allocation.source_value
+	damage_total_value = allocation.damage_value
+	conversion_total_value = allocation.conversion_value
+	targets = _validate_target_rows(target_rows)
+	target_rm_total_value = flt(
+		sum(flt(target.qty) * flt(target.basic_rate) for target in targets), 2
+	)
+
+	if abs(conversion_total_value - target_rm_total_value) > VALUATION_TOLERANCE:
+		frappe.throw(
+			_(
+				"Target RM valuation total must equal the cost of the quantity being converted. "
+				"Conversion cost is {0}; target total is {1}."
+			).format(conversion_total_value, target_rm_total_value)
+		)
+
+	stock_entry = frappe.new_doc("Stock Entry")
+	stock_entry.purpose = "Repack"
+	stock_entry.stock_entry_type = "Repack"
+	stock_entry.company = doc.company
+	stock_entry.custom_return_delivery_note = doc.name
+	stock_entry.custom_return_delivery_note_item = row.name
+	stock_entry.remarks = _build_stock_entry_remarks(
+		doc,
+		row,
+		"Convert to RM and Issue as Damage",
+		remarks,
+		source_total_value,
+		flt(damage_total_value + target_rm_total_value, 2),
+	)
+	stock_entry.append(
+		"items",
+		{
+			"item_code": row.item_code,
+			"batch_no": row.batch_no,
+			"s_warehouse": settings.return_warehouse,
+			"qty": source_qty,
+			"basic_rate": source_valuation_rate,
+		},
+	)
+	stock_entry.append(
+		"items",
+		{
+			"item_code": row.item_code,
+			"batch_no": row.batch_no,
+			"t_warehouse": settings.damage_warehouse,
+			"qty": damage_qty,
+			"basic_rate": source_valuation_rate,
+			"set_basic_rate_manually": 1,
+			"is_finished_item": 1,
+		},
+	)
+
+	for target in targets:
+		stock_entry.append(
+			"items",
+			{
+				"item_code": target.item_code,
+				"t_warehouse": settings.master_warehouse,
+				"qty": flt(target.qty),
+				"basic_rate": flt(target.basic_rate),
+				"set_basic_rate_manually": 1,
+				"is_finished_item": 1,
+			},
+		)
+
+	stock_entry.insert()
+	stock_entry.submit()
+
+	summary = {
+		"outcome": "Convert to RM and Issue as Damage",
+		"source_item": row.item_code,
+		"source_batch": row.batch_no,
+		"source_warehouse": settings.return_warehouse,
+		"source_qty": source_qty,
+		"source_valuation_rate": source_valuation_rate,
+		"source_total_value": source_total_value,
+		"conversion_source_qty": conversion_qty,
+		"conversion_total_value": conversion_total_value,
+		"target_rm_rows": [dict(target) for target in targets],
+		"target_rm_total_value": target_rm_total_value,
+		"damage_qty": damage_qty,
+		"damage_total_value": damage_total_value,
+		"damage_warehouse": settings.damage_warehouse,
+		"stock_entry": stock_entry.name,
+	}
+	return stock_entry, summary, MIXED_STATUS
 
 
 def _process_issue_as_damage(doc, row, settings, remarks):

@@ -130,20 +130,11 @@ function show_return_processing_dialog(frm, row) {
 			{fieldname: 'column_break_source', fieldtype: 'Column Break'},
 			{fieldname: 'qty', fieldtype: 'Float', label: __('Qty Returned'), read_only: 1, default: source_qty},
 			{fieldname: 'warehouse', fieldtype: 'Link', options: 'Warehouse', label: __('Warehouse'), read_only: 1, default: row.warehouse},
-			{fieldname: 'processing_section', fieldtype: 'Section Break'},
+			{fieldname: 'rm_section', fieldtype: 'Section Break', label: __('RM Conversion')},
 			{
-				fieldname: 'outcome',
-				fieldtype: 'Select',
-				label: __('Outcome'),
-				options: 'Convert to RM\nIssue as Damage',
-				default: 'Convert to RM',
-				reqd: 1,
-				onchange: () => toggle_target_rows(dialog)
-			},
-			{
-				fieldname: 'target_rows',
+				fieldname: 'rm_rows',
 				fieldtype: 'Table',
-				label: __('Target RM Rows'),
+				label: __('RM Conversion Rows'),
 				cannot_add_rows: false,
 				in_place_edit: true,
 				fields: [
@@ -161,7 +152,7 @@ function show_return_processing_dialog(frm, row) {
 						label: __('Qty'),
 						in_list_view: 1,
 						reqd: 1,
-						onchange: () => default_single_target_rate(frm, row, dialog)
+						onchange: () => default_single_target_rate(frm, row, dialog, true)
 					},
 					{
 						fieldname: 'basic_rate',
@@ -180,6 +171,40 @@ function show_return_processing_dialog(frm, row) {
 					}
 				]
 			},
+			{fieldname: 'damage_section', fieldtype: 'Section Break', label: __('Damage Issuance')},
+			{
+				fieldname: 'damage_rows',
+				fieldtype: 'Table',
+				label: __('Damage Issuance Rows'),
+				cannot_add_rows: false,
+				in_place_edit: true,
+				fields: [
+					{
+						fieldname: 'item_code',
+						fieldtype: 'Data',
+						label: __('Item Code'),
+						default: row.item_code,
+						read_only: 1,
+						in_list_view: 1
+					},
+					{
+						fieldname: 'batch_no',
+						fieldtype: 'Data',
+						label: __('Batch No'),
+						default: row.batch_no,
+						read_only: 1,
+						in_list_view: 1
+					},
+					{
+						fieldname: 'qty',
+						fieldtype: 'Float',
+						label: __('Qty'),
+						in_list_view: 1,
+						reqd: 1,
+						onchange: () => default_single_target_rate(frm, row, dialog, true)
+					}
+				]
+			},
 			{
 				fieldname: 'remarks',
 				fieldtype: 'Small Text',
@@ -189,13 +214,16 @@ function show_return_processing_dialog(frm, row) {
 		primary_action_label: __('Process'),
 		primary_action(values) {
 			update_target_amounts(dialog);
+			if (!validate_processing_quantities(dialog, source_qty)) {
+				return;
+			}
 			frappe.call({
 				method: 'cardmasters_app.cardmasters_app.api.return_processing.process_returned_item',
 				args: {
 					delivery_note: frm.doc.name,
 					delivery_note_item: row.name,
-					outcome: values.outcome,
-					target_rows: values.target_rows || [],
+					rm_rows: values.rm_rows || [],
+					damage_rows: values.damage_rows || [],
 					remarks: values.remarks
 				},
 				freeze: true,
@@ -216,23 +244,17 @@ function show_return_processing_dialog(frm, row) {
 	});
 
 	dialog.show();
-	toggle_target_rows(dialog);
 }
 
-function toggle_target_rows(dialog) {
-	const outcome = dialog.get_value('outcome');
-	dialog.set_df_property('target_rows', 'hidden', outcome !== 'Convert to RM');
-}
-
-function default_single_target_rate(frm, row, dialog) {
-	const target_rows = dialog.get_value('target_rows') || [];
-	if (dialog.get_value('outcome') !== 'Convert to RM' || target_rows.length !== 1) {
+function default_single_target_rate(frm, row, dialog, force = false) {
+	const target_rows = dialog.get_value('rm_rows') || [];
+	if (target_rows.length !== 1) {
 		update_target_amounts(dialog);
 		return;
 	}
 
 	const target = target_rows[0];
-	if (!target.qty || target.basic_rate) {
+	if (!target.qty || (target.basic_rate && !force)) {
 		update_target_amounts(dialog);
 		return;
 	}
@@ -242,24 +264,53 @@ function default_single_target_rate(frm, row, dialog) {
 		args: {
 			delivery_note: frm.doc.name,
 			delivery_note_item: row.name,
-			target_qty: target.qty
+			target_qty: target.qty,
+			damage_qty: get_damage_qty(dialog)
 		},
 		callback(response) {
 			if (response.message) {
 				target.basic_rate = response.message.default_basic_rate;
 				target.amount = flt(target.qty) * flt(target.basic_rate);
-				dialog.fields_dict.target_rows.grid.refresh();
+				dialog.fields_dict.rm_rows.grid.refresh();
 			}
 		}
 	});
 }
 
 function update_target_amounts(dialog) {
-	const target_rows = dialog.get_value('target_rows') || [];
+	const target_rows = dialog.get_value('rm_rows') || [];
 	target_rows.forEach(row => {
 		row.amount = flt(row.qty) * flt(row.basic_rate);
 	});
-	if (dialog.fields_dict.target_rows) {
-		dialog.fields_dict.target_rows.grid.refresh();
+	if (dialog.fields_dict.rm_rows) {
+		dialog.fields_dict.rm_rows.grid.refresh();
 	}
+}
+
+function get_damage_qty(dialog) {
+	return (dialog.get_value('damage_rows') || []).reduce((total, row) => total + flt(row.qty), 0);
+}
+
+function validate_processing_quantities(dialog, source_qty) {
+	const rm_rows = dialog.get_value('rm_rows') || [];
+	const damage_rows = dialog.get_value('damage_rows') || [];
+	const damage_qty = get_damage_qty(dialog);
+
+	if (!rm_rows.length && !damage_rows.length) {
+		frappe.msgprint(__('Add at least one RM conversion row or damage issuance row.'));
+		return false;
+	}
+	if (damage_qty > source_qty) {
+		frappe.msgprint(__('Damage quantity cannot exceed the returned quantity.'));
+		return false;
+	}
+	if (!rm_rows.length && Math.abs(damage_qty - source_qty) > 0.000001) {
+		frappe.msgprint(__('When there are no RM conversion rows, the full returned quantity must be issued as damage.'));
+		return false;
+	}
+	if (rm_rows.length && damage_qty >= source_qty) {
+		frappe.msgprint(__('RM conversion requires some of the returned quantity to remain after damage issuance.'));
+		return false;
+	}
+	return true;
 }

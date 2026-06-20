@@ -29,7 +29,7 @@ def execute():
 				"fieldname": "custom_return_processing_status",
 				"label": "Return Processing Status",
 				"fieldtype": "Select",
-				"options": "Pending\nConverted to RM\nIssued as Damage",
+				"options": "Pending\nConverted to RM\nIssued as Damage\nConverted to RM and Issued as Damage",
 				"default": "Pending",
 				"insert_after": "custom_item_specifics",
 				"read_only": 1,
