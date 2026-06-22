@@ -57,7 +57,8 @@ doctype_js = {
 # Override core classes for custom calculations and accounting entry injections
 override_doctype_class = {
     "Work Order": "cardmasters_app.cardmasters_app.overrides.work_order.CustomWorkOrder",
-    "Payroll Entry": "cardmasters_app.cardmasters_app.overrides.payroll_entry.CustomPayrollEntry"
+    "Payroll Entry": "cardmasters_app.cardmasters_app.overrides.payroll_entry.CustomPayrollEntry",
+    "Stock Entry": "cardmasters_app.cardmasters_app.overrides.stock_entry.CustomStockEntry"
 }
 
 # Global JS files loaded in Desk
