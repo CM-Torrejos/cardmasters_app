@@ -1,5 +1,12 @@
 frappe.ui.form.on('Credit Memo', {
     refresh: function(frm) {
+        // Submitted memos are immutable. In particular, legacy memos have no
+        // stored sponsored/commercial totals, so recalculating them on refresh
+        // would make the form dirty and cause an update-after-submit error.
+        if (frm.doc.docstatus !== 0) {
+            return;
+        }
+
         set_sales_order_grand_total(frm);
         set_credit_memo_totals(frm);
     },
@@ -77,6 +84,11 @@ function set_sponsored_item_amount(frm, cdt, cdn) {
 }
 
 function set_credit_memo_totals(frm) {
+    // Also guard asynchronous callbacks that may finish after submission.
+    if (frm.doc.docstatus !== 0) {
+        return;
+    }
+
     let sponsored_total = (frm.doc.sponsored_items_table || []).reduce(function(sum, row) {
         return sum + flt(row.sponsored_amount);
     }, 0);
