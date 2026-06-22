@@ -175,54 +175,34 @@ def strip_item_specifics_particulars_spaces(doc, method):
 
 def validate_item_rates(doc, method=None):
     """
-    Validation: rate must match price_list_rate.
-    Before save or submit, if a difference is detected, automatically correct the price list rate to be equal to the rate.
+    Keep Sales Order Item price-list values aligned with the final item rate.
+
+    During a normal save, changing the document is enough because validation runs
+    before persistence. ``on_update_after_submit`` runs after the submitted Sales
+    Order has already been written, so those child rows must also be updated
+    directly in the database.
     """
     from frappe.utils import flt
-    
-    # Auto-correct price_list_rate to match rate if there is a mismatch
+
     for item in doc.items:
         rate = flt(item.rate)
-        p_rate = flt(item.price_list_rate)
-        if rate != p_rate:
-            item.price_list_rate = rate
-            
-    has_mismatch = False
-    
-    for item in doc.items:
-        # Get the rates as floats
-        rate = flt(item.rate)
-        p_rate = flt(item.price_list_rate)
-        
-        # Check: price list rate MUST be the same as the rate
-        if rate != p_rate:
-            has_mismatch = True
-            break
-            
-    if has_mismatch:
-        # 1. Fetch the designated bypass role from Cardmasters Settings
-        bypass_role = frappe.db.get_single_value("Cardmasters Settings", "bypass_rate_validation_role")
-        
-        # 2. Get the current user's roles
-        user_roles = frappe.get_roles(frappe.session.user)
-        
-        # 3. Check if the user has the bypass role
-        has_bypass_role = bypass_role and (bypass_role in user_roles)
-        
-        if doc.docstatus == 0: # Draft / Save
-            frappe.msgprint(
-                msg=_("Sales order is saved but you cannot submit until price list rate issue is addressed"),
-                title=_("Price Mismatch Warning"),
-                indicator="orange"
+        values = {
+            "price_list_rate": rate,
+            "base_price_list_rate": flt(item.base_rate),
+            "discount_percentage": 0,
+            "discount_amount": 0,
+            "margin_type": "",
+            "margin_rate_or_amount": 0,
+            "rate_with_margin": 0,
+        }
+
+        for fieldname, value in values.items():
+            item.set(fieldname, value)
+
+        if doc.docstatus == 1 and item.name:
+            frappe.db.set_value(
+                "Sales Order Item",
+                item.name,
+                values,
+                update_modified=False,
             )
-        elif doc.docstatus >= 1: # Submit or Update after Submit
-            if has_bypass_role:
-                frappe.msgprint(
-                    msg=_("Rate and price list rate are not the same. This will affect accounting."),
-                    title=_("Authorized Override"),
-                    indicator="blue"
-                )
-            else:    
-                frappe.throw(
-                    _("Rate and price list rate are not the same. This will affect accounting, please forward this to a user with the '{0}' role.").format(bypass_role or "System Administrator")
-                )
