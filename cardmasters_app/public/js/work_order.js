@@ -154,6 +154,7 @@ frappe.ui.form.on('Work Order', {
             frm.add_custom_button(__('Update Details'), function() {
                 let d = new frappe.ui.Dialog({
                     title: __('Update Work Order Details'),
+                    size: 'extra-large',
                     fields: [
                         {
                             label: 'Quantity',
@@ -173,6 +174,111 @@ frappe.ui.form.on('Work Order', {
                             fieldname: 'custom_particulars',
                             fieldtype: 'Small Text',
                             default: frm.doc.custom_particulars
+                        },
+                        {
+                            label: __('Operations'),
+                            fieldname: 'operations',
+                            fieldtype: 'Table',
+                            options: 'Work Order Operation',
+                            cannot_add_rows: false,
+                            cannot_delete_rows: false,
+                            in_place_edit: true,
+                            data: (frm.doc.operations || []).map(row => ({
+                                operation_row_name: row.name,
+                                operation: row.operation,
+                                workstation_type: row.workstation_type,
+                                workstation: row.workstation,
+                                sequence_id: row.sequence_id,
+                                description: row.description,
+                                time_in_mins: row.time_in_mins,
+                                batch_size: row.batch_size
+                            })),
+                            fields: [
+                                {
+                                    fieldname: 'operation_row_name',
+                                    fieldtype: 'Data',
+                                    hidden: 1
+                                },
+                                {
+                                    label: __('Operation'),
+                                    fieldname: 'operation',
+                                    fieldtype: 'Link',
+                                    options: 'Operation',
+                                    in_list_view: 1,
+                                    columns: 2,
+                                    reqd: 1,
+                                    async onchange() {
+                                        const row = this.doc;
+                                        const operation = row.operation;
+                                        const set_workstation = workstation => {
+                                            // Dialog table rows are not always registered in
+                                            // frappe.model.locals, so update their data directly.
+                                            row.workstation = workstation || null;
+                                            this.grid_row?.refresh_field('workstation');
+                                        };
+
+                                        if (!operation) {
+                                            set_workstation(null);
+                                            return;
+                                        }
+
+                                        const r = await frappe.db.get_value(
+                                            'Operation',
+                                            operation,
+                                            'workstation'
+                                        );
+
+                                        // Ignore a stale response if the user changed the operation again.
+                                        if (row.operation !== operation) return;
+
+                                        set_workstation(r.message?.workstation);
+                                    }
+                                },
+                                {
+                                    label: __('Workstation Type'),
+                                    fieldname: 'workstation_type',
+                                    fieldtype: 'Link',
+                                    options: 'Workstation Type'
+                                },
+                                {
+                                    label: __('Workstation'),
+                                    fieldname: 'workstation',
+                                    fieldtype: 'Link',
+                                    options: 'Workstation',
+                                    in_list_view: 1,
+                                    columns: 2
+                                },
+                                {
+                                    label: __('Sequence ID'),
+                                    fieldname: 'sequence_id',
+                                    fieldtype: 'Int',
+                                    in_list_view: 1,
+                                    columns: 1,
+                                    default: 1,
+                                    non_negative: 1
+                                },
+                                {
+                                    label: __('Time (mins)'),
+                                    fieldname: 'time_in_mins',
+                                    fieldtype: 'Float',
+                                    in_list_view: 1,
+                                    columns: 1,
+                                    default: 1,
+                                    reqd: 1
+                                },
+                                {
+                                    label: __('Batch Size'),
+                                    fieldname: 'batch_size',
+                                    fieldtype: 'Float',
+                                    default: 1,
+                                    non_negative: 1
+                                },
+                                {
+                                    label: __('Operation Description'),
+                                    fieldname: 'description',
+                                    fieldtype: 'Small Text'
+                                }
+                            ]
                         }
                     ],
                     primary_action_label: __('Update'),
@@ -183,7 +289,8 @@ frappe.ui.form.on('Work Order', {
                                 docname: frm.doc.name,
                                 qty: values.qty,
                                 item_specifics: values.custom_item_specifics,
-                                particulars: values.custom_particulars
+                                particulars: values.custom_particulars,
+                                operations: values.operations
                             },
                             callback: function(r) {
                                 if (r.message === "Success") {

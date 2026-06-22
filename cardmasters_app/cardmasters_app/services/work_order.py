@@ -1,6 +1,17 @@
 import frappe
 from frappe import _
-from frappe.utils import cint
+from frappe.utils import cint, flt
+
+
+EDITABLE_OPERATION_FIELDS = (
+    "operation",
+    "workstation_type",
+    "workstation",
+    "sequence_id",
+    "description",
+    "time_in_mins",
+    "batch_size",
+)
 
 
 def can_bypass_workstation_leader_check():
@@ -205,13 +216,70 @@ def mark_workstation_jobs_complete(docname, workstation):
 def undo_workstation_jobs_complete(docname, workstation):
     return set_workstation_jobs_hidden(docname, workstation, 0, _("restored to workstation queue"))
 
-def update_work_order_details(docname, qty, item_specifics=None, particulars=None):
+
+def update_work_order_operations(doc, operations):
+    """Apply user-editable operation values without accepting child rows from another Work Order."""
+    operations = frappe.parse_json(operations)
+    if not isinstance(operations, list):
+        frappe.throw(_("Operations must be a list."))
+
+    existing_rows = {row.name: row for row in doc.get("operations") or []}
+    submitted_names = [
+        row.get("operation_row_name")
+        for row in operations
+        if row.get("operation_row_name")
+    ]
+    if len(submitted_names) != len(set(submitted_names)):
+        frappe.throw(_("The same operation row cannot be included more than once."))
+
+    invalid_names = set(submitted_names) - set(existing_rows)
+    if invalid_names:
+        frappe.throw(_("One or more operation rows do not belong to this Work Order."))
+
+    removed_names = set(existing_rows) - set(submitted_names)
+    if removed_names:
+        linked_job_cards = frappe.get_all(
+            "Job Card",
+            filters={
+                "operation_id": ["in", list(removed_names)],
+                "docstatus": ["<", 2],
+            },
+            pluck="name",
+        )
+        if linked_job_cards:
+            frappe.throw(
+                _("Operations linked to active Job Cards cannot be removed: {0}").format(
+                    ", ".join(linked_job_cards)
+                )
+            )
+
+    updated_rows = []
+    for index, values in enumerate(operations, start=1):
+        values = frappe._dict(values)
+        if not values.operation:
+            frappe.throw(_("Operation is required in row {0}.").format(index))
+        if flt(values.time_in_mins) <= 0:
+            frappe.throw(_("Operation Time must be greater than 0 in row {0}.").format(index))
+
+        row = existing_rows.get(values.operation_row_name) or doc.append("operations", {})
+        for fieldname in EDITABLE_OPERATION_FIELDS:
+            row.set(fieldname, values.get(fieldname))
+        row.batch_size = flt(row.batch_size) or 1
+        row.idx = index
+        updated_rows.append(row)
+
+    doc.set("operations", updated_rows)
+
+
+def update_work_order_details(docname, qty, item_specifics=None, particulars=None, operations=None):
     # 1. Load the document and basic variables
     doc = frappe.get_doc("Work Order", docname)
     doc.check_permission("write")
 
-    qty = float(qty)
-    old_qty = float(doc.qty)
+    qty = flt(qty)
+    old_qty = flt(doc.qty)
+    if qty <= 0:
+        frappe.throw(_("Quantity must be greater than 0."))
     
     # Check if materials have already been transferred (greater than 0)
     current_transferred = float(doc.material_transferred_for_manufacturing or 0)
@@ -229,15 +297,29 @@ def update_work_order_details(docname, qty, item_specifics=None, particulars=Non
 
     changes = []
 
+    if operations is not None:
+        old_operation_count = len(doc.get("operations") or [])
+        update_work_order_operations(doc, operations)
+        new_operation_count = len(doc.get("operations") or [])
+        changes.append(
+            f"Operations updated ({old_operation_count} to {new_operation_count} rows)"
+        )
+
     # --- UPDATE QUANTITY & CHILD BOM ITEMS ---
     if qty != old_qty:
         # Update Header Qty
-        frappe.db.set_value("Work Order", docname, "qty", qty, update_modified=True)
+        if operations is not None:
+            doc.qty = qty
+        else:
+            frappe.db.set_value("Work Order", docname, "qty", qty, update_modified=True)
         
         # --- CONDITIONAL TRANSFER UPDATE ---
         # If materials were already transferred, update the tracking field to match new qty
         if current_transferred > 0:
-            frappe.db.set_value("Work Order", docname, "material_transferred_for_manufacturing", qty)
+            if operations is not None:
+                doc.material_transferred_for_manufacturing = qty
+            else:
+                frappe.db.set_value("Work Order", docname, "material_transferred_for_manufacturing", qty)
         
         # Update Child Table (Required Items)
         for item in doc.required_items:
@@ -250,7 +332,10 @@ def update_work_order_details(docname, qty, item_specifics=None, particulars=Non
             # if current_transferred > 0:
             #     update_dict["transferred_qty"] = new_req_qty
                 
-            frappe.db.set_value("Work Order Item", item.name, update_dict)
+            if operations is not None:
+                item.required_qty = new_req_qty
+            else:
+                frappe.db.set_value("Work Order Item", item.name, update_dict)
         
         changes.append(f"Qty from {old_qty} to {qty}")
 
@@ -265,15 +350,25 @@ def update_work_order_details(docname, qty, item_specifics=None, particulars=Non
             frappe.db.set_value("Stock Entry", entry.name, "fg_completed_qty", new_fg_qty)
             
 
-    # --- UPDATE CUSTOM FIELDS ---
-    frappe.db.set_value("Work Order", docname, {
-        "custom_item_specifics": item_specifics or "",
-        "custom_particulars": particulars or ""
-    })
+    # --- UPDATE CUSTOM FIELDS AND OPERATIONS ---
+    doc.custom_item_specifics = item_specifics or ""
+    doc.custom_particulars = particulars or ""
+
+    if operations is not None:
+        # Work Orders are submitted when this action is available. Explicitly allow
+        # the controlled child-table update while retaining normal Work Order validation.
+        doc.flags.ignore_validate_update_after_submit = True
+        doc.save(ignore_permissions=True)
+    else:
+        frappe.db.set_value("Work Order", docname, {
+            "custom_item_specifics": doc.custom_item_specifics,
+            "custom_particulars": doc.custom_particulars
+        })
 
     # --- REFRESH & CACHE CLEAR ---
-    if changes or item_specifics or particulars:
-        doc.add_comment("Edit", text=f"Updated: {', '.join(changes)}")
+    if changes or item_specifics is not None or particulars is not None:
+        change_summary = ", ".join(changes) or "Work Order details"
+        doc.add_comment("Edit", text=f"Updated: {change_summary}")
         frappe.clear_cache(doctype="Work Order")
         frappe.clear_document_cache("Work Order", docname)
     
