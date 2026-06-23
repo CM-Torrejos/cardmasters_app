@@ -14,36 +14,52 @@ VALUATION_TOLERANCE = 0.01
 QTY_TOLERANCE = 0.000001
 
 
-def get_cardmasters_return_warehouses(require_master=False, require_damage=False):
-	master_warehouse = frappe.db.get_single_value("Cardmasters Settings", "master_warehouse")
-	return_warehouse = frappe.db.get_single_value("Cardmasters Settings", "return_warehouse")
-	damage_warehouse = frappe.db.get_single_value("Cardmasters Settings", "damage_warehouse")
-
-	if not return_warehouse:
+def get_cardmasters_return_warehouses(company, require_master=False, require_damage=False):
+	if not company:
 		frappe.throw(
-			_("Cardmasters Settings.return_warehouse is required before saving Sales Returns."),
+			_("Company is required to determine the Sales Return processing warehouses."),
+			title=_("Missing Company"),
+		)
+
+	settings = frappe.db.get_value(
+		"Cardmasters Company Settings",
+		{"company": company},
+		["master_warehouse", "return_warehouse", "damage_warehouse"],
+		as_dict=True,
+	)
+	if not settings:
+		frappe.throw(
+			_("Cardmasters Company Settings is required for Company {0}.").format(
+				frappe.bold(company)
+			),
+			title=_("Missing Company Settings"),
+		)
+
+	if not settings.return_warehouse:
+		frappe.throw(
+			_("Return Warehouse is required in Cardmasters Company Settings for Company {0}.").format(
+				frappe.bold(company)
+			),
 			title=_("Missing Return Warehouse"),
 		)
 
-	if require_master and not master_warehouse:
+	if require_master and not settings.master_warehouse:
 		frappe.throw(
-			_("Cardmasters Settings.master_warehouse is required before converting returned items to RM."),
+			_("Master Warehouse is required in Cardmasters Company Settings for Company {0}.").format(
+				frappe.bold(company)
+			),
 			title=_("Missing Master Warehouse"),
 		)
 
-	if require_damage and not damage_warehouse:
+	if require_damage and not settings.damage_warehouse:
 		frappe.throw(
-			_("Cardmasters Settings.damage_warehouse is required before issuing returned items as damage."),
+			_("Damage Warehouse is required in Cardmasters Company Settings for Company {0}.").format(
+				frappe.bold(company)
+			),
 			title=_("Missing Damage Warehouse"),
 		)
 
-	return frappe._dict(
-		{
-			"master_warehouse": master_warehouse,
-			"return_warehouse": return_warehouse,
-			"damage_warehouse": damage_warehouse,
-		}
-	)
+	return settings
 
 
 def is_rm_item(item_code):
@@ -58,7 +74,7 @@ def enforce_return_master_warehouse(doc, _method=None):
 
 	validate_damages_and_returns_reference(doc)
 
-	settings = get_cardmasters_return_warehouses()
+	settings = get_cardmasters_return_warehouses(doc.company)
 	for row in get_processable_return_rows(doc):
 		row.warehouse = settings.return_warehouse
 		if _has_field(row, "custom_return_processing_status") and not row.get("custom_return_processing_status"):
@@ -297,6 +313,7 @@ def _get_valid_return_context(delivery_note, delivery_note_item, require_master=
 		frappe.throw(_("Delivery Note Item row {0} was not found.").format(delivery_note_item))
 
 	settings = get_cardmasters_return_warehouses(
+		doc.company,
 		require_master=require_master,
 		require_damage=require_damage,
 	)

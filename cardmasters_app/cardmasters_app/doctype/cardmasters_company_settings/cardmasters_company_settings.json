@@ -1,0 +1,153 @@
+{
+ "actions": [],
+ "autoname": "field:company",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "company",
+  "disabled",
+  "item_group_account_mappings",
+  "bom_automation_section",
+  "enable_bom_automation",
+  "make_generated_bom_default",
+  "default_bom_component",
+  "bom_component_column",
+  "default_bom_component_qty",
+  "default_bom_source_warehouse",
+  "return_processing_section",
+  "return_warehouse",
+  "warehouse_column",
+  "master_warehouse",
+  "damage_warehouse"
+ ],
+ "fields": [
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "default": "0",
+   "description": "Return processing remains available when configured below.",
+   "fieldname": "disabled",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Disable Item Accounting Defaults"
+  },
+  {
+   "fieldname": "item_group_account_mappings",
+   "fieldtype": "Table",
+   "label": "Item Group Account Mappings",
+   "options": "Item Group Account Mapping"
+  },
+  {
+   "fieldname": "bom_automation_section",
+   "fieldtype": "Section Break",
+   "label": "BOM Automation"
+  },
+  {
+   "default": "0",
+   "description": "Create and submit a company-specific BOM when a new stock Item is inserted.",
+   "fieldname": "enable_bom_automation",
+   "fieldtype": "Check",
+   "label": "Enable BOM Automation"
+  },
+  {
+   "default": "0",
+   "depends_on": "enable_bom_automation",
+   "description": "ERPNext supports only one global default BOM per Item. Exactly one enabled company must be selected.",
+   "fieldname": "make_generated_bom_default",
+   "fieldtype": "Check",
+   "label": "Make Generated BOM the Default"
+  },
+  {
+   "depends_on": "enable_bom_automation",
+   "fieldname": "default_bom_component",
+   "fieldtype": "Link",
+   "label": "Placeholder BOM Component",
+   "mandatory_depends_on": "enable_bom_automation",
+   "options": "Item"
+  },
+  {
+   "fieldname": "bom_component_column",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "depends_on": "enable_bom_automation",
+   "fieldname": "default_bom_component_qty",
+   "fieldtype": "Float",
+   "label": "Placeholder Quantity",
+   "mandatory_depends_on": "enable_bom_automation",
+   "non_negative": 1
+  },
+  {
+   "depends_on": "enable_bom_automation",
+   "description": "The company warehouse from which the placeholder component, such as NEW-BOM, will be consumed.",
+   "fieldname": "default_bom_source_warehouse",
+   "fieldtype": "Link",
+   "label": "Placeholder Source Warehouse",
+   "mandatory_depends_on": "enable_bom_automation",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "return_processing_section",
+   "fieldtype": "Section Break",
+   "label": "Sales Return Processing"
+  },
+  {
+   "description": "Warehouse that initially receives stock from Sales Return Delivery Notes.",
+   "fieldname": "return_warehouse",
+   "fieldtype": "Link",
+   "label": "Return Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "warehouse_column",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Target warehouse for raw materials recovered from returned items.",
+   "fieldname": "master_warehouse",
+   "fieldtype": "Link",
+   "label": "Master Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "description": "Target warehouse for returned quantities classified as damaged.",
+   "fieldname": "damage_warehouse",
+   "fieldtype": "Link",
+   "label": "Damage Warehouse",
+   "options": "Warehouse"
+  }
+ ],
+ "grid_page_length": 50,
+ "links": [],
+ "module": "Cardmasters App",
+ "name": "Cardmasters Company Settings",
+ "naming_rule": "By fieldname",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "company",
+ "sort_order": "ASC",
+ "states": [],
+ "title_field": "company",
+ "track_changes": 1
+}
