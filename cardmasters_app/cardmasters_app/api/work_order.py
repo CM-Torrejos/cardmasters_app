@@ -24,3 +24,8 @@ def mark_workstation_jobs_complete(docname, workstation):
 def undo_workstation_jobs_complete(docname, workstation):
     from cardmasters_app.cardmasters_app.services.work_order import undo_workstation_jobs_complete as undo_complete
     return undo_complete(docname, workstation)
+
+@frappe.whitelist()
+def get_linked_stock_work_orders(docname):
+    from cardmasters_app.cardmasters_app.services.work_order import get_linked_stock_work_orders as get_linked
+    return get_linked(docname)

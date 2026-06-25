@@ -13,6 +13,32 @@ EDITABLE_OPERATION_FIELDS = (
     "batch_size",
 )
 
+PARENT_WORK_ORDER_FIELD = "custom_parent_work_order"
+
+
+def get_linked_stock_work_orders(docname):
+    if not docname:
+        frappe.throw(_("Work Order is required."))
+
+    parent_work_order = frappe.get_doc("Work Order", docname)
+    parent_work_order.check_permission("read")
+
+    return frappe.get_list(
+        "Work Order",
+        filters={PARENT_WORK_ORDER_FIELD: parent_work_order.name},
+        fields=[
+            "name",
+            "item_name",
+            "qty",
+            "status",
+            "workflow_state",
+            "custom_item_specifics",
+            "custom_particulars",
+            "custom_bypass",
+        ],
+        order_by="creation asc",
+    )
+
 
 def can_bypass_workstation_leader_check():
     return frappe.session.user == "Administrator" or "System Manager" in frappe.get_roles()

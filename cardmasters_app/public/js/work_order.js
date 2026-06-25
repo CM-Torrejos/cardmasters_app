@@ -310,6 +310,8 @@ frappe.ui.form.on('Work Order', {
 
 		add_workstation_completion_button(frm);
 		add_damage_withdraw_button(frm, invalid_statuses);
+		add_make_to_stock_button(frm);
+		show_linked_stock_work_orders(frm);
 
 		if (!frm.is_new() && !invalid_statuses.includes(frm.doc.status)) {
 			frm.add_custom_button(__('Issue Damages/Returns'), function() {
@@ -354,6 +356,113 @@ var filter_work_order_make_buttons = function(frm) {
 	if (!frm.has_perm('read') || !frappe.model.can_create('Stock Entry')) {
 		delete frm.custom_make_buttons['Stock Entry'];
 	}
+};
+
+var add_make_to_stock_button = function(frm) {
+	if (
+		frm.is_new() ||
+		frm.doc.docstatus === 2 ||
+		!frm.doc.sales_order ||
+		!frappe.model.can_create('Work Order')
+	) {
+		return;
+	}
+
+	frm.add_custom_button(__('Make to Stock'), function() {
+		frm.copy_doc(function(new_work_order) {
+			new_work_order.production_item = null;
+			new_work_order.item_name = null;
+			new_work_order.bom_no = null;
+			new_work_order.qty = null;
+			new_work_order.custom_customer = null;
+			new_work_order.sales_order = null;
+			new_work_order.sales_order_item = null;
+			new_work_order.custom_parent_work_order = frm.doc.name;
+		});
+	}, __('Link WO'));
+};
+
+var show_linked_stock_work_orders = function(frm) {
+	if (frm.is_new() || !frm.doc.sales_order) {
+		return;
+	}
+
+	frappe.call({
+		method: 'cardmasters_app.cardmasters_app.api.work_order.get_linked_stock_work_orders',
+		args: {docname: frm.doc.name},
+		callback: function(r) {
+			const work_orders = r.message || [];
+			if (!work_orders.length) {
+				return;
+			}
+
+			const settings = frappe.boot.cardmasters_settings || {};
+			const concluded_states = (settings.wo_finished_items_workflow_state || [])
+				.map(row => row.workflow_state);
+			const in_production_status = settings.wo_in_production_status || 'In Production';
+			const in_claiming_status = settings.wo_in_claiming_status || 'In Claiming';
+
+			const rows = work_orders.map(function(work_order) {
+				const route = frappe.utils.get_form_link('Work Order', work_order.name);
+				let production_status = frappe.utils.escape_html(work_order.workflow_state || '');
+				if (concluded_states.includes(work_order.workflow_state)) {
+					production_status = `<span class="status-concluded">${__('Production Concluded')}</span>`;
+				} else if (work_order.workflow_state === in_production_status) {
+					production_status = frappe.utils.escape_html(in_production_status);
+				}
+
+				const consumption_status = work_order.status === 'Completed'
+					? __('Consumption entry submitted')
+					: __('No consumption entry submitted');
+				let claiming_status = __('Not In Claiming');
+				if (Number(work_order.custom_bypass) === 1) {
+					claiming_status = __('{0} (Bypassed)', [in_claiming_status]);
+				} else if (work_order.workflow_state === in_claiming_status) {
+					claiming_status = in_claiming_status;
+				}
+
+				return `<tr>
+					<td><a href="${route}" target="_blank"><b>${frappe.utils.escape_html(work_order.name)}</b></a></td>
+					<td>${frappe.utils.escape_html(work_order.item_name || '')}</td>
+					<td>${format_number(work_order.qty || 0)}</td>
+					<td>${frappe.utils.escape_html(work_order.custom_item_specifics || '')}</td>
+					<td>${frappe.utils.escape_html(work_order.custom_particulars || '')}</td>
+					<td>${production_status}</td>
+					<td>${frappe.utils.escape_html(consumption_status)}</td>
+					<td>${frappe.utils.escape_html(claiming_status)}</td>
+				</tr>`;
+			}).join('');
+
+			frm.dashboard.add_section(
+				`<style>
+					.custom-wo-table { table-layout: fixed; width: 100%; border-collapse: collapse; }
+					.custom-wo-table td, .custom-wo-table th {
+						white-space: normal !important;
+						word-wrap: break-word;
+						vertical-align: top;
+						padding: 10px 8px;
+						font-size: 0.9em;
+						border-bottom: 1px solid var(--border-color);
+					}
+					.status-concluded { color: var(--green-600, #28a745); font-weight: bold; }
+				</style>
+				<table class="table table-bordered custom-wo-table">
+					<thead><tr>
+						<th style="width: 12%;">${__('Work Order')}</th>
+						<th style="width: 12%;">${__('Item')}</th>
+						<th style="width: 6%;">${__('Qty')}</th>
+						<th style="width: 13%;">${__('Specifics')}</th>
+						<th style="width: 13%;">${__('Particulars')}</th>
+						<th style="width: 14%;">${__('Production Status')}</th>
+						<th style="width: 15%;">${__('Consumption')}</th>
+						<th style="width: 15%;">${__('Claiming Status')}</th>
+					</tr></thead>
+					<tbody>${rows}</tbody>
+				</table>`,
+				__('Linked Make-to-Stock Work Orders')
+			);
+		}
+	});
 };
 
 var add_damage_withdraw_button = function(frm, invalid_statuses) {
