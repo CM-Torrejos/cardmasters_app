@@ -71,6 +71,9 @@
 			
 			// Set DNR, Complaint, Quotation, and Credit Memo
 			if (!frm.is_new() && !invalid_statuses.includes(frm.doc.status)) {
+				if (frappe.model.can_create('Stock Entry')) {
+					set_batched_material_transfer_button(frm);
+				}
 				// Artist card button can only be seen by the user with access
 				if (frappe.model.can_create("Artist Card")) {
 					set_artist_card_button(frm, invalid_statuses);
@@ -114,6 +117,15 @@
 			validate_project(frm);
 		}
 	});
+
+	function set_batched_material_transfer_button(frm) {
+		frm.add_custom_button(__('Batched Material Transfer'), function() {
+			frappe.model.open_mapped_doc({
+				method: 'cardmasters_app.cardmasters_app.api.sales_order.make_batched_material_transfer',
+				frm: frm
+			});
+		}, __('Create'));
+	}
 	
 	function set_custom_pill(frm) {
 		// 1. SCOPE TO CURRENT FORM: This prevents the pill from bleeding into other pages
