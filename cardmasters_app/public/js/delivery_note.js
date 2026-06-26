@@ -7,6 +7,17 @@ frappe.ui.form.on('Delivery Note', {
 				}
 			};
 		});
+
+		frm.set_query('custom_return_warehouse', () => {
+			return {
+				filters: {
+					company: frm.doc.company,
+					is_group: 0,
+					disabled: 0,
+					custom_accepts_returns: 1
+				}
+			};
+		});
 	},
 
 	refresh(frm) {
@@ -31,9 +42,26 @@ function toggle_damages_and_returns_requirement(frm) {
 
 	frm.toggle_reqd('custom_damages_and_returns', Boolean(cint(frm.doc.is_return)));
 	frm.toggle_display('custom_damages_and_returns', Boolean(cint(frm.doc.is_return)));
+
+	if (frm.fields_dict.custom_return_warehouse) {
+		frm.toggle_reqd('custom_return_warehouse', Boolean(cint(frm.doc.is_return)));
+		frm.toggle_display('custom_return_warehouse', Boolean(cint(frm.doc.is_return)));
+	}
 }
 
 function prompt_for_damages_and_returns(frm) {
+	frappe.call({
+		method: 'cardmasters_app.cardmasters_app.api.return_processing.get_sales_return_destination_defaults',
+		args: {
+			company: frm.doc.company
+		},
+		callback(response) {
+			show_sales_return_dialog(frm, response.message || {});
+		}
+	});
+}
+
+function show_sales_return_dialog(frm, defaults) {
 	const dialog = new frappe.ui.Dialog({
 		title: __('Create Sales Return'),
 		fields: [
@@ -50,6 +78,25 @@ function prompt_for_damages_and_returns(frm) {
 						}
 					};
 				}
+			},
+			{
+				fieldname: 'return_warehouse',
+				fieldtype: 'Link',
+				label: __('Returned Item Destination Warehouse'),
+				options: 'Warehouse',
+				reqd: 1,
+				default: defaults.return_warehouse,
+				description: __('Only warehouses marked as accepting returns are allowed.'),
+				get_query: () => {
+					return {
+						filters: {
+							company: frm.doc.company,
+							is_group: 0,
+							disabled: 0,
+							custom_accepts_returns: 1
+						}
+					};
+				}
 			}
 		],
 		primary_action_label: __('Create Sales Return'),
@@ -60,7 +107,8 @@ function prompt_for_damages_and_returns(frm) {
 				frm,
 				run_link_triggers: true,
 				args: {
-					damages_and_returns: values.custom_damages_and_returns
+					damages_and_returns: values.custom_damages_and_returns,
+					return_warehouse: values.return_warehouse
 				}
 			});
 		}

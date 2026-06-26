@@ -38,6 +38,19 @@ class TestReturnProcessing(FrappeTestCase):
 		with self.assertRaises(frappe.ValidationError):
 			get_cardmasters_return_warehouses("Cardmasters")
 
+	@patch("cardmasters_app.cardmasters_app.api.return_processing.frappe.db.get_value")
+	def test_return_warehouse_is_optional_fallback(self, get_value):
+		get_value.return_value = frappe._dict(
+			return_warehouse=None,
+			master_warehouse="Main - CM",
+			damage_warehouse="Damages - CM",
+		)
+
+		settings = get_cardmasters_return_warehouses("Cardmasters")
+
+		self.assertIsNone(settings.return_warehouse)
+		self.assertEqual(settings.master_warehouse, "Main - CM")
+
 	def test_damage_rows_are_summed(self):
 		self.assertEqual(_validate_damage_rows([{"qty": 2}, {"qty": 1.5}], 10), 3.5)
 
