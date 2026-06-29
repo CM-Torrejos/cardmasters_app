@@ -16,10 +16,8 @@ def run_employee_ar_reclassification(filters=None):
 	else:
 		filters = filters or {}
 
-	# Initialize the master logging queue array
 	execution_logs = []
 
-	# FIXED: Restored the missing value to the custom_customer_profile array filter
 	employees = frappe.get_all(
 		"Employee", 
 		filters={"custom_customer_profile": ["!=", ""], "status": "Active"}, 
@@ -54,7 +52,6 @@ def run_employee_ar_reclassification(filters=None):
 		"1410 - ACCOUNTS RECEIVABLE - TRADE - CM CDO"
 	]
 
-	processed_vouchers = set()
 	total_rows = len(report_rows)
 
 	for index, raw_row in enumerate(report_rows):
@@ -97,11 +94,18 @@ def run_employee_ar_reclassification(filters=None):
 		if outstanding == 0:
 			continue
 
-		if frappe.db.exists("Journal Entry", {"cheque_no": v_no, "docstatus": ["in", [0, 1]]}):
+		# FIXED: Smarter duplicate check queries child tables to see if this exact customer has been processed for this voucher
+		already_done = frappe.db.sql("""
+			SELECT je.name FROM `tabJournal Entry` je
+			JOIN `tabJournal Entry Account` jea ON je.name = jea.parent
+			WHERE je.cheque_no = %s AND jea.party = %s AND je.docstatus in (0, 1)
+		""", (v_no, party))
+
+		if already_done:
 			execution_logs.append({
 				"Voucher Type": v_type, "Voucher No": v_no, "Customer": party,
 				"Employee ID": linked_employee, "Status": "Skipped", 
-				"Details": "A reclassification Journal Entry matching this reference document already exists."
+				"Details": "A reclassification Journal Entry matching this reference document and customer already exists."
 			})
 			continue
 
