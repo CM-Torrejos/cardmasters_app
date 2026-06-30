@@ -6,29 +6,152 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "item",
-  "quantity"
+  "item_code",
+  "item_name",
+  "column_break_lloj",
+  "quantity",
+  "batch",
+  "uom",
+  "section_break_seaa",
+  "source_warehouse",
+  "holding_document_type",
+  "holding_document",
+  "section_break_disposition",
+  "disposition",
+  "replacement_qty",
+  "replacement_work_order",
+  "replacement_document_type",
+  "replacement_document",
+  "processing_document_type",
+  "processing_document"
  ],
  "fields": [
   {
    "fieldname": "quantity",
-   "fieldtype": "Int",
+   "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Quantity"
+   "label": "Quantity",
+   "reqd": 1
   },
   {
-   "fieldname": "item",
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "label": "Item Code",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "item_code.item_name",
+   "fieldname": "item_name",
    "fieldtype": "Text",
    "in_list_view": 1,
-   "label": "Item",
-   "options": "Item"
+   "label": "Item Name",
+   "options": "Item",
+   "read_only": 1
+  },
+  {
+   "fieldname": "batch",
+   "fieldtype": "Link",
+   "label": "Batch",
+   "options": "Batch"
+  },
+  {
+   "fieldname": "uom",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "UOM",
+   "options": "UOM",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_lloj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_seaa",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "source_warehouse",
+   "fieldtype": "Link",
+   "label": "Source Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "holding_document_type",
+   "fieldtype": "Select",
+   "label": "Holding Document Type",
+   "options": "Stock Entry\nDelivery Note"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "holding_document",
+   "fieldtype": "Data",
+   "label": "Holding Document"
+  },
+  {
+   "fieldname": "section_break_disposition",
+   "fieldtype": "Section Break",
+   "label": "Disposition"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "disposition",
+   "fieldtype": "Select",
+   "label": "Disposition",
+   "options": "\nProcess as Damage\nConvert to RM\nCreate Replacement Work Order\nIssue Existing Stock\nNo Replacement Needed"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "replacement_qty",
+   "fieldtype": "Float",
+   "label": "Replacement Qty"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "replacement_work_order",
+   "fieldtype": "Link",
+   "label": "Replacement Work Order",
+   "options": "Work Order",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "replacement_document_type",
+   "fieldtype": "Select",
+   "label": "Replacement Document Type",
+   "options": "Stock Entry",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "replacement_document",
+   "fieldtype": "Data",
+   "label": "Replacement Document",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "processing_document_type",
+   "fieldtype": "Select",
+   "label": "Processing Document Type",
+   "options": "Stock Entry",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "processing_document",
+   "fieldtype": "Data",
+   "label": "Processing Document",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-04-01 16:29:43.629409",
+ "modified": "2026-06-27 09:05:12.720307",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damages and Returns Item Table",

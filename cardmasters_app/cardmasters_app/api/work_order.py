@@ -29,3 +29,8 @@ def undo_workstation_jobs_complete(docname, workstation):
 def get_linked_stock_work_orders(docname):
     from cardmasters_app.cardmasters_app.services.work_order import get_linked_stock_work_orders as get_linked
     return get_linked(docname)
+
+@frappe.whitelist()
+def get_damages_and_returns_defaults(docname):
+    from cardmasters_app.cardmasters_app.services.work_order import get_damages_and_returns_defaults as get_defaults
+    return get_defaults(docname)

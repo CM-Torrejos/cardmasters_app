@@ -16,6 +16,7 @@
   "default_bom_source_warehouse",
   "return_processing_section",
   "return_warehouse",
+  "dnr_holding_warehouse",
   "warehouse_column",
   "master_warehouse",
   "damage_warehouse"
@@ -105,6 +106,13 @@
    "fieldname": "return_warehouse",
    "fieldtype": "Link",
    "label": "Return Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "description": "Warehouse that initially holds damaged stock from DNR holding movements.",
+   "fieldname": "dnr_holding_warehouse",
+   "fieldtype": "Link",
+   "label": "DNR Holding Warehouse",
    "options": "Warehouse"
   },
   {

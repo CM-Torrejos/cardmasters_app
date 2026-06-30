@@ -1,6 +1,6 @@
 import frappe
 from frappe import _
-from frappe.utils import cint, flt
+from frappe.utils import cint, flt, nowdate
 
 
 EDITABLE_OPERATION_FIELDS = (
@@ -38,6 +38,95 @@ def get_linked_stock_work_orders(docname):
         ],
         order_by="creation asc",
     )
+
+
+def get_damages_and_returns_defaults(docname):
+    if not docname:
+        frappe.throw(_("Work Order is required."))
+
+    doc = frappe.get_doc("Work Order", docname)
+    doc.check_permission("read")
+
+    rows = []
+    finished_batch = None
+
+    if doc.sales_order and doc.sales_order_item and doc.production_item:
+        from cardmasters_app.cardmasters_app.services.batch_handler import (
+            resolve_sales_order_batch,
+        )
+
+        finished_batch = resolve_sales_order_batch(
+            doc.sales_order,
+            doc.sales_order_item,
+            doc.production_item,
+            doc.get("custom_item_specifics"),
+        )
+
+    if doc.production_item and finished_batch:
+        rows.append({
+            "item_code": doc.production_item,
+            "item_name": doc.item_name or frappe.db.get_value("Item", doc.production_item, "item_name"),
+            "quantity": flt(doc.qty),
+            "batch": finished_batch,
+            "uom": doc.stock_uom,
+        })
+
+    transfer_entries = frappe.get_all(
+        "Stock Entry",
+        filters={
+            "work_order": doc.name,
+            "docstatus": 1,
+            "stock_entry_type": "Material Transfer for Manufacture",
+        },
+        pluck="name",
+        order_by="posting_date asc, posting_time asc, creation asc",
+    )
+
+    if transfer_entries:
+        transferred_rows = frappe.get_all(
+            "Stock Entry Detail",
+            filters={"parent": ["in", transfer_entries]},
+            fields=["item_code", "item_name", "qty", "batch_no", "uom", "stock_uom"],
+            order_by="parent asc, idx asc",
+        )
+
+        grouped_rows = {}
+        for row in transferred_rows:
+            if not row.item_code:
+                continue
+
+            uom = row.uom or row.stock_uom
+            key = (row.item_code, row.batch_no or "", uom or "")
+            if key not in grouped_rows:
+                grouped_rows[key] = {
+                    "item_code": row.item_code,
+                    "item_name": row.item_name or frappe.db.get_value("Item", row.item_code, "item_name"),
+                    "quantity": 0,
+                    "batch": row.batch_no,
+                    "uom": uom,
+                }
+
+            grouped_rows[key]["quantity"] += flt(row.qty)
+
+        rows.extend(grouped_rows.values())
+
+    existing_damages_and_returns = frappe.get_all(
+        "Damages and Returns",
+        filters={
+            "work_order": doc.name,
+            "docstatus": ["<", 2],
+        },
+        pluck="name",
+        order_by="creation asc",
+    )
+
+    return {
+        "work_order": doc.name,
+        "date": nowdate(),
+        "date_of_damage_or_return": nowdate(),
+        "damaged_or_returned_item": rows,
+        "existing_damages_and_returns": existing_damages_and_returns,
+    }
 
 
 def can_bypass_workstation_leader_check():

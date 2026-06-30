@@ -15,6 +15,9 @@
   "date_of_damage_or_return",
   "company",
   "department",
+  "source_context",
+  "item_stage",
+  "delivery_state",
   "section_break_cxwc",
   "damaged_or_returned_item",
   "section_break_kydy",
@@ -25,6 +28,7 @@
   "error_type",
   "reason_for_damage",
   "column_break_gzpj",
+  "point_persons",
   "blame",
   "blame2",
   "blame3",
@@ -223,19 +227,40 @@
    "fieldname": "audit_remarks",
    "fieldtype": "Text",
    "label": "Audit Remarks"
+  },
+  {
+   "fieldname": "point_persons",
+   "fieldtype": "Table MultiSelect",
+   "label": "Point Persons",
+   "options": "Multi Employee"
+  },
+  {
+   "fieldname": "source_context",
+   "fieldtype": "Select",
+   "label": "Source Context",
+   "options": "\nProduction\nWarehouse\nCustomer",
+   "reqd": 1
+  },
+  {
+   "fieldname": "item_stage",
+   "fieldtype": "Select",
+   "label": "Item Stage",
+   "options": "\nRaw Material/Component\nFinished Good",
+   "reqd": 1
+  },
+  {
+   "fieldname": "delivery_state",
+   "fieldtype": "Select",
+   "label": "Delivery State",
+   "options": "\nNot Applicable\nNot Delivered\nDelivered",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
- "links": [
-  {
-   "group": "Linked Stock Entries",
-   "link_doctype": "Stock Entry",
-   "link_fieldname": "custom_damages_and_returns"
-  }
- ],
- "modified": "2026-06-25 15:21:37.812556",
+ "links": [],
+ "modified": "2026-06-27 08:57:14.698956",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damages and Returns",

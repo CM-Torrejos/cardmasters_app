@@ -309,19 +309,8 @@ frappe.ui.form.on('Work Order', {
         }
 
 		add_workstation_completion_button(frm);
-		add_damage_withdraw_button(frm, invalid_statuses);
 		add_make_to_stock_button(frm);
 		show_linked_stock_work_orders(frm);
-
-		if (!frm.is_new() && !invalid_statuses.includes(frm.doc.status)) {
-			frm.add_custom_button(__('Issue Damages/Returns'), function() {
-				frappe.new_doc('Damages and Returns', {
-					work_order: frm.doc.name,
-					date: 'Today',
-					date_of_damage_or_return: 'Today'
-				});
-			}, __('Options'));
-		}
 	},
 });
 
@@ -463,74 +452,6 @@ var show_linked_stock_work_orders = function(frm) {
 			);
 		}
 	});
-};
-
-var add_damage_withdraw_button = function(frm, invalid_statuses) {
-	if (
-		frm.is_new() ||
-		frm.doc.docstatus !== 1 ||
-		invalid_statuses.includes(frm.doc.status) ||
-		!frm.has_perm('read') ||
-		!frappe.model.can_create('Stock Entry')
-	) {
-		return;
-	}
-
-	let $btn = frm.add_custom_button(__('Damage Withdraw'), function() {
-		let d = new frappe.ui.Dialog({
-			title: __('Damage Withdraw'),
-			fields: [
-				{
-					label: __('Damages and Returns'),
-					fieldname: 'damages_and_returns',
-					fieldtype: 'Link',
-					options: 'Damages and Returns',
-					reqd: 1,
-					get_query: function() {
-						return {
-							filters: {
-								work_order: frm.doc.name
-							}
-						};
-					}
-				}
-			],
-			primary_action_label: __('Create Stock Entry'),
-			primary_action: function(values) {
-				frappe.db.get_value(
-					'Damages and Returns',
-					values.damages_and_returns,
-					['name', 'work_order']
-				).then(function(r) {
-					const dnr = r.message || {};
-
-					if (!r.message) {
-						frappe.msgprint(__('Damages and Returns {0} was not found.', [values.damages_and_returns]));
-						return;
-					}
-
-					dnr.name = dnr.name || values.damages_and_returns;
-
-					if (dnr.work_order && dnr.work_order !== frm.doc.name) {
-						frappe.msgprint(__('Damages and Returns {0} is linked to Work Order {1}.', [dnr.name, dnr.work_order]));
-						return;
-					}
-
-					d.hide();
-					frappe.new_doc('Stock Entry', {
-						purpose: 'Material Transfer',
-						stock_entry_type: 'Material Transfer',
-						work_order: frm.doc.name,
-						custom_damages_and_returns: dnr.name
-					});
-				});
-			}
-		});
-
-		d.show();
-	});
-
-	$btn.removeClass('btn-default').addClass('btn-primary');
 };
 
 var add_workstation_completion_button = function(frm) {

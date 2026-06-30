@@ -324,17 +324,6 @@ frappe.ui.form.on('Sales Order', {
 			}, __('Create'));
 		}
 		
-		// Damages and returns
-		if (!frm.is_new() && !invalid_statuses.includes(frm.doc.status)) {
-			frm.add_custom_button(__('Issue Damages/Returns'), function() {
-				frappe.new_doc('Damages and Returns', {
-					sales_order: frm.doc.name,
-					date: 'Today',
-					date_of_damage_or_return: 'Today'
-				});
-			}, __('Create'));
-		}
-		
 		// Quotation 
 		if (!frm.is_new() && !invalid_statuses.includes(frm.doc.status)) {
 			frm.add_custom_button(__('Create Quotation'), function() {

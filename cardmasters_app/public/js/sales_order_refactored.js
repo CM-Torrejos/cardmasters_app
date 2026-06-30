@@ -69,7 +69,7 @@
 				set_update_items_button(frm);
 			}
 			
-			// Set DNR, Complaint, Quotation, and Credit Memo
+			// Set Complaint, Quotation, and Credit Memo
 			if (!frm.is_new() && !invalid_statuses.includes(frm.doc.status)) {
 				if (frappe.model.can_create('Stock Entry')) {
 					set_batched_material_transfer_button(frm);
@@ -78,7 +78,6 @@
 				if (frappe.model.can_create("Artist Card")) {
 					set_artist_card_button(frm, invalid_statuses);
 				}
-				set_dnr_button(frm);
 				set_complaint_button(frm);
 				set_credit_memo_button(frm);
 				set_quotation_button(frm);
@@ -449,16 +448,6 @@
 				});
 			}, __('Create'));
 		}
-	}
-	
-	function set_dnr_button(frm) {
-		frm.add_custom_button(__('Damages/Returns'), function() {
-			frappe.new_doc('Damages and Returns', {
-				sales_order: frm.doc.name,
-				date: 'Today',
-				date_of_damage_or_return: 'Today'
-			});
-		}, __('Create'));
 	}
 	
 	function set_complaint_button(frm) {
