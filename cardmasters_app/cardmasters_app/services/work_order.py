@@ -32,9 +32,7 @@ def get_linked_stock_work_orders(docname):
             "qty",
             "status",
             "workflow_state",
-            "custom_item_specifics",
             "custom_particulars",
-            "custom_bypass",
         ],
         order_by="creation asc",
     )

@@ -389,7 +389,6 @@ var show_linked_stock_work_orders = function(frm) {
 			const concluded_states = (settings.wo_finished_items_workflow_state || [])
 				.map(row => row.workflow_state);
 			const in_production_status = settings.wo_in_production_status || 'In Production';
-			const in_claiming_status = settings.wo_in_claiming_status || 'In Claiming';
 
 			const rows = work_orders.map(function(work_order) {
 				const route = frappe.utils.get_form_link('Work Order', work_order.name);
@@ -403,22 +402,14 @@ var show_linked_stock_work_orders = function(frm) {
 				const consumption_status = work_order.status === 'Completed'
 					? __('Consumption entry submitted')
 					: __('No consumption entry submitted');
-				let claiming_status = __('Not In Claiming');
-				if (Number(work_order.custom_bypass) === 1) {
-					claiming_status = __('{0} (Bypassed)', [in_claiming_status]);
-				} else if (work_order.workflow_state === in_claiming_status) {
-					claiming_status = in_claiming_status;
-				}
 
 				return `<tr>
 					<td><a href="${route}" target="_blank"><b>${frappe.utils.escape_html(work_order.name)}</b></a></td>
 					<td>${frappe.utils.escape_html(work_order.item_name || '')}</td>
 					<td>${format_number(work_order.qty || 0)}</td>
-					<td>${frappe.utils.escape_html(work_order.custom_item_specifics || '')}</td>
 					<td>${frappe.utils.escape_html(work_order.custom_particulars || '')}</td>
 					<td>${production_status}</td>
 					<td>${frappe.utils.escape_html(consumption_status)}</td>
-					<td>${frappe.utils.escape_html(claiming_status)}</td>
 				</tr>`;
 			}).join('');
 
@@ -438,13 +429,11 @@ var show_linked_stock_work_orders = function(frm) {
 				<table class="table table-bordered custom-wo-table">
 					<thead><tr>
 						<th style="width: 12%;">${__('Work Order')}</th>
-						<th style="width: 12%;">${__('Item')}</th>
-						<th style="width: 6%;">${__('Qty')}</th>
-						<th style="width: 13%;">${__('Specifics')}</th>
-						<th style="width: 13%;">${__('Particulars')}</th>
-						<th style="width: 14%;">${__('Production Status')}</th>
-						<th style="width: 15%;">${__('Consumption')}</th>
-						<th style="width: 15%;">${__('Claiming Status')}</th>
+						<th style="width: 18%;">${__('Item')}</th>
+						<th style="width: 8%;">${__('Qty')}</th>
+						<th style="width: 18%;">${__('Particulars')}</th>
+						<th style="width: 21%;">${__('Production Status')}</th>
+						<th style="width: 23%;">${__('Consumption')}</th>
 					</tr></thead>
 					<tbody>${rows}</tbody>
 				</table>`,
