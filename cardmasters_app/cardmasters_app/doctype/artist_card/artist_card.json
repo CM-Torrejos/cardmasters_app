@@ -10,6 +10,7 @@
   "artist_2",
   "artist_3",
   "any_artist_search",
+  "reference_document",
   "sales_order",
   "rush_order",
   "customer",
@@ -36,10 +37,10 @@
  "fields": [
   {
    "fieldname": "sales_order",
-   "fieldtype": "Link",
+   "fieldtype": "Dynamic Link",
    "in_list_view": 1,
-   "label": "Sales Order",
-   "options": "Sales Order",
+   "label": "Reference",
+   "options": "reference_document",
    "reqd": 1,
    "search_index": 1
   },
@@ -191,13 +192,20 @@
    "fieldtype": "Link",
    "label": "Project",
    "options": "Project"
+  },
+  {
+   "fieldname": "reference_document",
+   "fieldtype": "Select",
+   "label": "Reference Document",
+   "options": "Sales Order\nWork Order",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
  "make_attachments_public": 1,
- "modified": "2026-03-25 08:39:44.162202",
+ "modified": "2026-07-01 08:14:49.974670",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Card",
