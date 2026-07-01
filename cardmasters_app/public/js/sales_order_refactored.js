@@ -440,7 +440,6 @@
 		if (!invalid_statuses.includes(frm.doc.status)) {
 			frm.add_custom_button(__('Artist Card'), function() {
 				frappe.new_doc('Artist Card', {
-					reference_document: "Sales Order",
 					sales_order: frm.doc.name,
 					customer: frm.doc.customer,
 					deadline: frm.doc.delivery_date,
