@@ -45,14 +45,16 @@ function add_repack_actions(frm) {
     frm.add_custom_button(__('Deliver'), function() {
         make_delivery_note_from_repack(frm);
     }, __('Actions'));
-    frm.add_custom_button(__('Transform'), function() {}, __('Actions'));
+    frm.add_custom_button(__('Repack'), function() {
+        make_repack_stock_entry_from_repack(frm);
+    }, __('Actions'));
 }
 
 async function make_delivery_note_from_repack(frm) {
-    const finished_good_row = get_repack_finished_good_row(frm);
+    const finished_good_row = get_repack_finished_good_output_row(frm);
 
     if (!finished_good_row) {
-        frappe.msgprint(__('Could not find a finished good row with a target warehouse and batch.'));
+        frappe.msgprint(__('Could not find a finished good output row with a target warehouse and batch.'));
         return;
     }
 
@@ -85,7 +87,7 @@ async function make_delivery_note_from_repack(frm) {
     frappe.set_route('Form', 'Delivery Note', delivery_note.name);
 }
 
-function get_repack_finished_good_row(frm) {
+function get_repack_finished_good_output_row(frm) {
     const rows = (frm.doc.items || []).filter(row => row.t_warehouse && row.batch_no);
 
     if (rows.length === 1) {
@@ -98,6 +100,41 @@ function get_repack_finished_good_row(frm) {
     }
 
     return null;
+}
+
+async function make_repack_stock_entry_from_repack(frm) {
+    const finished_good_row = get_repack_finished_good_output_row(frm);
+
+    if (!finished_good_row) {
+        frappe.msgprint(__('Could not find a finished good output row with a target warehouse and batch.'));
+        return;
+    }
+
+    await with_doctype('Stock Entry');
+
+    const stock_entry = frappe.model.get_new_doc('Stock Entry');
+    stock_entry.purpose = 'Repack';
+    stock_entry.stock_entry_type = 'Repack';
+    stock_entry.company = frm.doc.company;
+    stock_entry.custom_work_order_for_repack = frm.doc.custom_work_order_for_repack;
+    stock_entry.custom_sales_order = frm.doc.custom_sales_order;
+    stock_entry.custom_batched = 0;
+
+    const row = frappe.model.add_child(stock_entry, 'Stock Entry Detail', 'items');
+    row.item_code = finished_good_row.item_code;
+    row.item_name = finished_good_row.item_name;
+    row.description = finished_good_row.description;
+    row.qty = finished_good_row.qty;
+    row.transfer_qty = finished_good_row.transfer_qty || finished_good_row.qty;
+    row.uom = finished_good_row.uom;
+    row.stock_uom = finished_good_row.stock_uom;
+    row.conversion_factor = finished_good_row.conversion_factor || 1;
+    row.s_warehouse = finished_good_row.t_warehouse;
+    row.batch_no = finished_good_row.batch_no;
+    row.use_serial_batch_fields = 1;
+    row.custom_item_specifics = finished_good_row.custom_item_specifics;
+
+    frappe.set_route('Form', 'Stock Entry', stock_entry.name);
 }
 
 function with_doctype(doctype) {
