@@ -24,6 +24,10 @@ frappe.ui.form.on('Delivery Note', {
 		toggle_damages_and_returns_requirement(frm);
 
 		if (frm.doc.docstatus === 1 && frm.doc.is_return) {
+			frm.add_custom_button(__('Deliver'), () => {
+				make_delivery_note_from_sales_return(frm);
+			}, __('Actions'));
+
 			frm.add_custom_button(__('Process Returned Item'), () => {
 				process_returned_item(frm);
 			});
@@ -34,6 +38,57 @@ frappe.ui.form.on('Delivery Note', {
 		toggle_damages_and_returns_requirement(frm);
 	}
 });
+
+async function make_delivery_note_from_sales_return(frm) {
+	const returned_rows = get_sales_return_delivery_rows(frm);
+
+	if (!returned_rows.length) {
+		frappe.msgprint(__('Could not find any returned item rows to deliver.'));
+		return;
+	}
+
+	await with_doctype('Delivery Note');
+
+	const delivery_note = frappe.model.get_new_doc('Delivery Note');
+	delivery_note.company = frm.doc.company;
+	delivery_note.custom_batched = frm.doc.custom_batched || 1;
+	delivery_note.custom_repack_reference = frm.doc.custom_repack_reference;
+
+	returned_rows.forEach(returned_row => {
+		const delivery_note_item = frappe.model.add_child(
+			delivery_note,
+			'Delivery Note Item',
+			'items'
+		);
+		const qty = Math.abs(flt(returned_row.qty));
+		const stock_qty = Math.abs(flt(returned_row.stock_qty || returned_row.qty));
+
+		delivery_note_item.item_code = returned_row.item_code;
+		delivery_note_item.item_name = returned_row.item_name;
+		delivery_note_item.description = returned_row.description;
+		delivery_note_item.qty = qty;
+		delivery_note_item.stock_qty = stock_qty;
+		delivery_note_item.uom = returned_row.uom;
+		delivery_note_item.stock_uom = returned_row.stock_uom;
+		delivery_note_item.conversion_factor = returned_row.conversion_factor || 1;
+		delivery_note_item.warehouse = returned_row.warehouse;
+		delivery_note_item.batch_no = returned_row.batch_no;
+		delivery_note_item.use_serial_batch_fields = 1;
+		delivery_note_item.custom_item_specifics = returned_row.custom_item_specifics;
+	});
+
+	frappe.set_route('Form', 'Delivery Note', delivery_note.name);
+}
+
+function get_sales_return_delivery_rows(frm) {
+	return (frm.doc.items || []).filter(row => row.item_code && row.warehouse);
+}
+
+function with_doctype(doctype) {
+	return new Promise(resolve => {
+		frappe.model.with_doctype(doctype, resolve);
+	});
+}
 
 function toggle_damages_and_returns_requirement(frm) {
 	if (!frm.fields_dict.custom_damages_and_returns) {
