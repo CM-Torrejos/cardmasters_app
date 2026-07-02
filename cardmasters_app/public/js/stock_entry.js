@@ -47,10 +47,11 @@ function toggle_batched_field(frm) {
                     frm.set_value('custom_batched', 0);
                 }
             });
+    } else if (frm.doc.stock_entry_type === 'Repack') {
+        return;
     } else {
         frm.set_value('custom_batched', 0);
     }
 }
-
 
 
