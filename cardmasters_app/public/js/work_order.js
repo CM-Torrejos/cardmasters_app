@@ -310,6 +310,7 @@ frappe.ui.form.on('Work Order', {
 
 		add_workstation_completion_button(frm);
 		add_make_to_stock_button(frm);
+		add_repack_damage_button(frm);
 		show_linked_stock_work_orders(frm);
 	},
 });
@@ -369,6 +370,56 @@ var add_make_to_stock_button = function(frm) {
 			new_work_order.custom_parent_work_order = frm.doc.name;
 		});
 	}, __('Link WO'));
+};
+
+var add_repack_damage_button = function(frm) {
+	if (
+		frm.is_new() ||
+		frm.doc.docstatus === 2 ||
+		!frappe.model.can_create('Stock Entry')
+	) {
+		return;
+	}
+
+	frm.add_custom_button(__('Repack Damage'), function() {
+		frappe.call({
+			method: 'cardmasters_app.cardmasters_app.api.work_order.get_repack_damage_stock_entry_defaults',
+			args: {
+				docname: frm.doc.name
+			},
+			freeze: true,
+			freeze_message: __('Preparing Repack Stock Entry...'),
+			callback: function(r) {
+				const defaults = r.message || {};
+				open_repack_damage_stock_entry(defaults);
+			}
+		});
+	}, __('Stock Entry'));
+};
+
+var open_repack_damage_stock_entry = function(defaults) {
+	frappe.model.with_doctype('Stock Entry', function() {
+		const stock_entry = frappe.model.get_new_doc('Stock Entry');
+
+		stock_entry.purpose = 'Repack';
+		stock_entry.stock_entry_type = 'Repack';
+		stock_entry.company = defaults.company;
+		stock_entry.custom_work_order_for_repack = defaults.work_order;
+		stock_entry.custom_sales_order = defaults.sales_order;
+		stock_entry.custom_batched = 1;
+
+		const row = frappe.model.add_child(stock_entry, 'Stock Entry Detail', 'items');
+		row.item_code = defaults.production_item;
+		row.item_name = defaults.item_name;
+		row.qty = defaults.qty || 1;
+		row.uom = defaults.stock_uom;
+		row.stock_uom = defaults.stock_uom;
+		row.conversion_factor = 1;
+		row.t_warehouse = defaults.damage_warehouse;
+		row.is_finished_item = 1;
+
+		frappe.set_route('Form', 'Stock Entry', stock_entry.name);
+	});
 };
 
 var show_linked_stock_work_orders = function(frm) {

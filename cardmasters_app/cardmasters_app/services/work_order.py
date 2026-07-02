@@ -127,6 +127,56 @@ def get_damages_and_returns_defaults(docname):
     }
 
 
+def get_repack_damage_stock_entry_defaults(docname):
+    if not docname:
+        frappe.throw(_("Work Order is required."))
+
+    doc = frappe.get_doc("Work Order", docname)
+    doc.check_permission("read")
+
+    if not frappe.has_permission("Stock Entry", "create"):
+        frappe.throw(_("You do not have permission to create Stock Entry."))
+
+    if not doc.production_item:
+        frappe.throw(_("Work Order {0} does not have a production item.").format(frappe.bold(doc.name)))
+
+    settings = frappe.db.get_value(
+        "Cardmasters Company Settings",
+        doc.company,
+        ["damage_warehouse"],
+        as_dict=True,
+    )
+    if not settings:
+        frappe.throw(
+            _("Cardmasters Company Settings is required for Company {0}.").format(
+                frappe.bold(doc.company)
+            )
+        )
+    if not settings.damage_warehouse:
+        frappe.throw(
+            _("Damage Warehouse is required in Cardmasters Company Settings for Company {0}.").format(
+                frappe.bold(doc.company)
+            )
+        )
+
+    item_name, stock_uom = frappe.db.get_value(
+        "Item",
+        doc.production_item,
+        ["item_name", "stock_uom"],
+    ) or (None, None)
+
+    return {
+        "company": doc.company,
+        "work_order": doc.name,
+        "sales_order": doc.sales_order,
+        "production_item": doc.production_item,
+        "item_name": doc.item_name or item_name,
+        "qty": flt(doc.qty),
+        "stock_uom": doc.stock_uom or stock_uom,
+        "damage_warehouse": settings.damage_warehouse,
+    }
+
+
 def can_bypass_workstation_leader_check():
     return frappe.session.user == "Administrator" or "System Manager" in frappe.get_roles()
 

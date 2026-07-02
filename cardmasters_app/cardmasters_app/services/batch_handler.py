@@ -44,6 +44,14 @@ def _get_stock_entry_type(doc) -> str:
 	return (getattr(doc, "stock_entry_type", None) or getattr(doc, "purpose", None) or "").strip()
 
 
+def _get_batch_work_order(doc) -> str:
+	entry_type = _get_stock_entry_type(doc)
+	if entry_type == "Repack":
+		return getattr(doc, "custom_work_order_for_repack", None) or getattr(doc, "work_order", None)
+
+	return getattr(doc, "work_order", None)
+
+
 def resolve_sales_order_batch(so_name, so_detail, item_code, item_specifics=None):
 	"""Resolve a canonical Sales Order Item batch, then its legacy equivalent."""
 	new_batch_name = f"{so_name}_{so_detail}"
@@ -177,10 +185,11 @@ def set_batch_no_for_fg_on_manufacture_entry(doc, method):
 	if _get_stock_entry_type(doc) not in BATCH_ASSIGNMENT_STOCK_ENTRY_TYPES:
 		return
 
-	if not doc.work_order:
+	work_order = _get_batch_work_order(doc)
+	if not work_order:
 		frappe.throw(_("Stock Entry must reference a Work Order"))
 
-	wo = frappe.get_doc("Work Order", doc.work_order)
+	wo = frappe.get_doc("Work Order", work_order)
 
 	# ------------------------------------------------------------------
 	# Resolve Sales Order and Sales Order Item from the Work Order
@@ -227,7 +236,7 @@ def set_batch_no_for_fg_on_manufacture_entry(doc, method):
 		posting_date=doc.posting_date,
 		so_name=so_name,
 		soi_docname=soi_docname,
-		work_order=doc.work_order,
+		work_order=work_order,
 		wo_qty=fg_row.qty,
 	)
 	fg_row.db_set("batch_no", fg_row.batch_no)
