@@ -390,24 +390,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2026-06-27 08:42:33.520801",
-  "name": "Pending Holding",
-  "style": "",
-  "workflow_state_name": "Pending Holding"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2026-06-27 08:43:49.535528",
-  "name": "In Holding",
-  "style": "",
-  "workflow_state_name": "In Holding"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2026-06-27 08:44:24.196545",
   "name": "Resolved",
   "style": "",
@@ -430,5 +412,23 @@
   "name": "Draft",
   "style": "",
   "workflow_state_name": "Draft"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-06-27 08:42:33.520801",
+  "name": "Pending Holding",
+  "style": "",
+  "workflow_state_name": "Pending Holding"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-06-27 08:43:49.535528",
+  "name": "In Holding",
+  "style": "",
+  "workflow_state_name": "In Holding"
  }
 ]
