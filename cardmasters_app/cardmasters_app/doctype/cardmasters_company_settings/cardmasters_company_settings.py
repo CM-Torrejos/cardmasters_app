@@ -43,7 +43,6 @@ class CardmastersCompanySettings(Document):
 	def validate_return_warehouses(self):
 		for fieldname, label in (
 			("return_warehouse", _("Return Warehouse")),
-			("dnr_holding_warehouse", _("DNR Holding Warehouse")),
 			("master_warehouse", _("Master Warehouse")),
 			("damage_warehouse", _("Damage Warehouse")),
 		):

@@ -390,6 +390,33 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
+  "modified": "2026-06-27 08:44:24.196545",
+  "name": "Resolved",
+  "style": "",
+  "workflow_state_name": "Resolved"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-08-05 09:36:25.089086",
+  "name": "BOM Finished",
+  "style": "Success",
+  "workflow_state_name": "BOM Finished"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-28 05:15:12.134310",
+  "name": "Draft",
+  "style": "",
+  "workflow_state_name": "Draft"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
   "modified": "2026-06-27 08:42:33.520801",
   "name": "Pending Holding",
   "style": "",

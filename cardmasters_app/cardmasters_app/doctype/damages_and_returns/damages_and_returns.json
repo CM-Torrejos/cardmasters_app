@@ -15,9 +15,6 @@
   "date_of_damage_or_return",
   "company",
   "department",
-  "source_context",
-  "item_stage",
-  "delivery_state",
   "section_break_cxwc",
   "damaged_or_returned_item",
   "section_break_kydy",
@@ -96,7 +93,6 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Point Person",
-   "mandatory_depends_on": "eval:doc.error_type == \"Human\"",
    "options": "Employee"
   },
   {
@@ -160,7 +156,6 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Point Person 2",
-   "mandatory_depends_on": "eval:doc.error_type == \"Human\"",
    "options": "Employee"
   },
   {
@@ -170,7 +165,6 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Point Person 3",
-   "mandatory_depends_on": "eval:doc.error_type == \"Human\"",
    "options": "Employee"
   },
   {
@@ -229,38 +223,17 @@
    "label": "Audit Remarks"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "point_persons",
    "fieldtype": "Table MultiSelect",
    "label": "Point Persons",
    "options": "Multi Employee"
-  },
-  {
-   "fieldname": "source_context",
-   "fieldtype": "Select",
-   "label": "Source Context",
-   "options": "\nProduction\nWarehouse\nCustomer",
-   "reqd": 1
-  },
-  {
-   "fieldname": "item_stage",
-   "fieldtype": "Select",
-   "label": "Item Stage",
-   "options": "\nRaw Material/Component\nFinished Good",
-   "reqd": 1
-  },
-  {
-   "fieldname": "delivery_state",
-   "fieldtype": "Select",
-   "label": "Delivery State",
-   "options": "\nNot Applicable\nNot Delivered\nDelivered",
-   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
- "is_submittable": 1,
  "links": [],
- "modified": "2026-06-27 08:57:14.698956",
+ "modified": "2026-07-03 09:17:08.977920",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damages and Returns",

@@ -31,7 +31,7 @@ frappe.ui.form.on("Cardmasters Company Settings", {
 			},
 		}));
 
-		for (const fieldname of ["return_warehouse", "dnr_holding_warehouse", "master_warehouse", "damage_warehouse"]) {
+		for (const fieldname of ["return_warehouse", "master_warehouse", "damage_warehouse"]) {
 			frm.set_query(fieldname, () => ({
 				filters: {
 					company: frm.doc.company,
