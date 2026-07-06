@@ -22,6 +22,9 @@
   "remarks",
   "section_break_6ovu",
   "amended_from",
+  "stock_processing_tab",
+  "is_stock_processed",
+  "is_damage_items_processed",
   "investigation_tab",
   "error_type",
   "reason_for_damage",
@@ -229,6 +232,23 @@
    "fieldtype": "Table MultiSelect",
    "label": "Point Persons",
    "options": "Multi Employee"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_stock_processed",
+   "fieldtype": "Check",
+   "label": "Is Stock Processed"
+  },
+  {
+   "fieldname": "stock_processing_tab",
+   "fieldtype": "Tab Break",
+   "label": "Stock Processing"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_damage_items_processed",
+   "fieldtype": "Check",
+   "label": "Is Damage Items Processed"
   }
  ],
  "grid_page_length": 50,

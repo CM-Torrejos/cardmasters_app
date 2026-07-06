@@ -8,6 +8,7 @@ from frappe import _
 BATCH_NAME_MAX_LEN = 100
 IDENTITY_SOURCE_SYSTEM = "system_generated"
 IDENTITY_SOURCE_LEGACY = "legacy_unresolved"
+BATCH_ASSIGNMENT_STOCK_ENTRY_TYPES = {"Manufacture", "Repack"}
 
 
 # ---------------------------------------------------------------------------
@@ -37,6 +38,18 @@ def _build_new_batch_name(so_name: str, soi_docname: str) -> str:
 			title=_("Batch Name Too Long"),
 		)
 	return name
+
+
+def _get_stock_entry_type(doc) -> str:
+	return (getattr(doc, "stock_entry_type", None) or getattr(doc, "purpose", None) or "").strip()
+
+
+def _get_batch_work_order(doc) -> str:
+	entry_type = _get_stock_entry_type(doc)
+	if entry_type == "Repack":
+		return getattr(doc, "custom_work_order_for_repack", None) or getattr(doc, "work_order", None)
+
+	return getattr(doc, "work_order", None)
 
 
 def resolve_sales_order_batch(so_name, so_detail, item_code, item_specifics=None):
@@ -141,15 +154,15 @@ def _get_or_create_batch(
 
 
 # ---------------------------------------------------------------------------
-# STOCK ENTRY HOOK — Manufacture
+# STOCK ENTRY HOOK — Manufacture / Repack
 # ---------------------------------------------------------------------------
 
 def set_batch_no_for_fg_on_manufacture_entry(doc, method):
 	"""
 	Assign (or create) the canonical batch for the finished-goods line on a
-	Manufacture Stock Entry.
+	Manufacture or batched Repack Stock Entry.
 
-	Triggered on: Stock Entry submit, purpose = Manufacture.
+	Triggered on: Stock Entry save, purpose/stock_entry_type = Manufacture or Repack.
 
 	Identity rule
 	-------------
@@ -169,13 +182,14 @@ def set_batch_no_for_fg_on_manufacture_entry(doc, method):
 	if doc.custom_batched != 1:
 		return
 
-	if doc.purpose != "Manufacture":
+	if _get_stock_entry_type(doc) not in BATCH_ASSIGNMENT_STOCK_ENTRY_TYPES:
 		return
 
-	if not doc.work_order:
+	work_order = _get_batch_work_order(doc)
+	if not work_order:
 		frappe.throw(_("Stock Entry must reference a Work Order"))
 
-	wo = frappe.get_doc("Work Order", doc.work_order)
+	wo = frappe.get_doc("Work Order", work_order)
 
 	# ------------------------------------------------------------------
 	# Resolve Sales Order and Sales Order Item from the Work Order
@@ -222,7 +236,7 @@ def set_batch_no_for_fg_on_manufacture_entry(doc, method):
 		posting_date=doc.posting_date,
 		so_name=so_name,
 		soi_docname=soi_docname,
-		work_order=doc.work_order,
+		work_order=work_order,
 		wo_qty=fg_row.qty,
 	)
 	fg_row.db_set("batch_no", fg_row.batch_no)
@@ -392,7 +406,14 @@ def set_batch_no_for_delivery_note(doc, method):
 # ---------------------------------------------------------------------------
 
 def set_batch_received_date_on_population(doc, method):
-	if doc.docstatus != 1 or doc.purpose != "Manufacture":
+	if doc.docstatus != 1:
+		return
+
+	entry_type = _get_stock_entry_type(doc)
+	if entry_type == "Repack" and doc.custom_batched != 1:
+		return
+
+	if entry_type not in BATCH_ASSIGNMENT_STOCK_ENTRY_TYPES:
 		return
 
 	user_name = frappe.db.get_value("User", doc.modified_by, "full_name") or doc.modified_by
