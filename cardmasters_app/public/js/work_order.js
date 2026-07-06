@@ -150,6 +150,8 @@ frappe.ui.form.on('Work Order', {
 		// 	})
 		// })
 
+		add_damages_and_returns_button(frm);
+
 		if (frm.doc.docstatus === 1 && has_work_order_status_action_permissions(frm)) {
             frm.add_custom_button(__('Update Details'), function() {
                 let d = new frappe.ui.Dialog({
@@ -330,6 +332,26 @@ var has_work_order_status_action_permissions = function(frm) {
 var cardmasters_job_cards_disabled = function() {
 	const settings = frappe.boot.cardmasters_settings || {};
 	return Boolean(Number(settings.disable_job_cards || 0));
+};
+
+var add_damages_and_returns_button = function(frm) {
+	if (
+		frm.is_new() ||
+		frm.doc.docstatus === 2 ||
+		!frappe.model.can_create('Damages and Returns')
+	) {
+		return;
+	}
+
+	const today = frappe.datetime.get_today();
+
+	frm.add_custom_button(__('Damages and Returns'), function() {
+		frappe.new_doc('Damages and Returns', {
+			work_order: frm.doc.name,
+			date: today,
+			date_of_damage_or_return: today
+		});
+	}, __('Options'));
 };
 
 var filter_work_order_make_buttons = function(frm) {
