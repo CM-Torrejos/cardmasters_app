@@ -72,17 +72,45 @@ def before_save_stock_entry(doc, _method=None):
 	   - set expense_account on each row in items to EXPENSE_ACCOUNT
 	2) If type/purpose is 'Manufacture':
 	   - for any row with t_warehouse == TARGET_WAREHOUSE, set allow_zero_valuation_rate = 1
+	   - warn if a finished item target warehouse is not marked as a finished goods warehouse
 	"""
 
 	# ERPNext commonly uses "purpose". Some setups may use/alias "stock_entry_type".
 	entry_type = (getattr(doc, "stock_entry_type", None) or getattr(doc, "purpose", None) or "").strip()
 
 	if entry_type == "Manufacture":
+		_warn_if_finished_goods_target_is_not_flagged(doc)
 		for row in (doc.items or []):
 			# Only for target warehouse lines where basic_rate is 0
 			if getattr(row, "t_warehouse", None) == TARGET_WAREHOUSE and flt(row.basic_rate) == 0:
 				if hasattr(row, "allow_zero_valuation_rate"):
 					row.allow_zero_valuation_rate = 1
+
+
+def _warn_if_finished_goods_target_is_not_flagged(doc):
+	warehouses = {
+		row.t_warehouse
+		for row in (doc.items or [])
+		if getattr(row, "is_finished_item", 0) and getattr(row, "t_warehouse", None)
+	}
+	if not warehouses:
+		return
+
+	unflagged = []
+	for warehouse in sorted(warehouses):
+		if not frappe.db.get_value("Warehouse", warehouse, "custom_is_finished_goods_warehouse"):
+			unflagged.append(warehouse)
+
+	if not unflagged:
+		return
+
+	frappe.msgprint(
+		_(
+			"The finished item target warehouse is not marked as a Finished Goods Warehouse: {0}"
+		).format(", ".join(frappe.bold(warehouse) for warehouse in unflagged)),
+		title=_("Finished Goods Warehouse Warning"),
+		indicator="orange",
+	)
 
 
 # def after_insert_stock_entry(doc, method=None):

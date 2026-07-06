@@ -3,6 +3,24 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
+  "modified": "2026-06-27 08:43:41.146855",
+  "name": "Partially In Holding",
+  "style": "",
+  "workflow_state_name": "Partially In Holding"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-06-27 08:43:58.553860",
+  "name": "Pending Disposition",
+  "style": "",
+  "workflow_state_name": "Pending Disposition"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
   "modified": "2025-09-29 11:54:47.441747",
   "name": "For Edit",
   "style": "",
@@ -210,15 +228,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-08-05 09:36:25.089086",
-  "name": "BOM Finished",
-  "style": "Success",
-  "workflow_state_name": "BOM Finished"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-08-05 09:36:15.935091",
   "name": "Client Approved (BOM WIP)",
   "style": "Info",
@@ -363,15 +372,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-04-28 05:15:12.134310",
-  "name": "Draft",
-  "style": "",
-  "workflow_state_name": "Draft"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-07-03 09:10:17.857134",
   "name": "Awaiting Submission",
   "style": "",
@@ -385,5 +385,50 @@
   "name": "Production",
   "style": "Warning",
   "workflow_state_name": "Production"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-06-27 08:44:24.196545",
+  "name": "Resolved",
+  "style": "",
+  "workflow_state_name": "Resolved"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-08-05 09:36:25.089086",
+  "name": "BOM Finished",
+  "style": "Success",
+  "workflow_state_name": "BOM Finished"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-28 05:15:12.134310",
+  "name": "Draft",
+  "style": "",
+  "workflow_state_name": "Draft"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-06-27 08:42:33.520801",
+  "name": "Pending Holding",
+  "style": "",
+  "workflow_state_name": "Pending Holding"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-06-27 08:43:49.535528",
+  "name": "In Holding",
+  "style": "",
+  "workflow_state_name": "In Holding"
  }
 ]

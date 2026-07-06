@@ -45,8 +45,10 @@ def validate_submission(doc, _method):
 			)
 			
 def update_so_workflow_state(doc, _method):
+	if not doc.sales_order:
+		return
+
 	so = frappe.get_doc("Sales Order", doc.sales_order)
 	if (so.workflow_state and so.workflow_state == 'Pending'):
 		so = apply_workflow(so, "Begin Layout")
 		so.save()
-

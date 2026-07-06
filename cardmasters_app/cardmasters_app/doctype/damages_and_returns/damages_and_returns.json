@@ -25,6 +25,7 @@
   "error_type",
   "reason_for_damage",
   "column_break_gzpj",
+  "point_persons",
   "blame",
   "blame2",
   "blame3",
@@ -92,7 +93,6 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Point Person",
-   "mandatory_depends_on": "eval:doc.error_type == \"Human\"",
    "options": "Employee"
   },
   {
@@ -156,7 +156,6 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Point Person 2",
-   "mandatory_depends_on": "eval:doc.error_type == \"Human\"",
    "options": "Employee"
   },
   {
@@ -166,7 +165,6 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Point Person 3",
-   "mandatory_depends_on": "eval:doc.error_type == \"Human\"",
    "options": "Employee"
   },
   {
@@ -223,26 +221,23 @@
    "fieldname": "audit_remarks",
    "fieldtype": "Text",
    "label": "Audit Remarks"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "point_persons",
+   "fieldtype": "Table MultiSelect",
+   "label": "Point Persons",
+   "options": "Multi Employee"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
- "is_submittable": 1,
- "links": [
-  {
-   "link_doctype": "Stock Entry",
-   "link_fieldname": "custom_damages_and_returns"
-  },
-  {
-   "link_doctype": "Stock Entry",
-   "link_fieldname": "custom_damages_and_returns"
-  }
- ],
- "modified": "2026-05-11 13:37:01.100602",
+ "links": [],
+ "modified": "2026-07-03 09:17:08.977920",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damages and Returns",
- "naming_rule": "Expression",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {

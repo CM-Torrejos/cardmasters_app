@@ -1,6 +1,90 @@
 import frappe
+from frappe import _
 from frappe.model.mapper import get_mapped_doc
 import json
+
+
+def _get_batch_source_warehouse(batch_no, required_qty, company=None):
+    """Choose the largest positive holding, preferring one that covers the row qty."""
+    if not batch_no:
+        return None
+
+    from erpnext.stock.doctype.batch.batch import get_batch_qty
+
+    holdings = [
+        row for row in (get_batch_qty(batch_no=batch_no) or [])
+        if row.get("warehouse")
+        and (row.get("qty") or 0) > 0
+        and (
+            not company
+            or frappe.get_cached_value("Warehouse", row.get("warehouse"), "company") == company
+        )
+    ]
+    if not holdings:
+        return None
+
+    sufficient = [row for row in holdings if row.get("qty", 0) >= required_qty]
+    candidates = sufficient or holdings
+    return max(candidates, key=lambda row: row.get("qty", 0)).get("warehouse")
+
+
+@frappe.whitelist()
+def make_batched_material_transfer(source_name, target_doc=None):
+    """Prepare an unsaved Material Transfer from a submitted Sales Order."""
+    def include_item(source):
+        return bool(frappe.get_cached_value("Item", source.item_code, "is_stock_item"))
+
+    def map_item(source, target, source_parent):
+        target.qty = source.qty
+        target.conversion_factor = source.conversion_factor or 1
+        target.transfer_qty = target.qty * target.conversion_factor
+        target.use_serial_batch_fields = 1
+
+        if frappe.get_cached_value("Item", source.item_code, "has_batch_no"):
+            from cardmasters_app.cardmasters_app.services.batch_handler import (
+                resolve_sales_order_batch,
+            )
+
+            target.batch_no = resolve_sales_order_batch(
+                source_parent.name,
+                source.name,
+                source.item_code,
+                source.get("custom_item_specifics"),
+            )
+            target.s_warehouse = _get_batch_source_warehouse(
+                target.batch_no, target.transfer_qty, source_parent.company
+            )
+
+    def set_defaults(source, target):
+        target.purpose = "Material Transfer"
+        target.set_stock_entry_type()
+        target.company = source.company
+        target.custom_sales_order = source.name
+        target.to_warehouse = None
+        target.set_missing_values()
+
+    stock_entry = get_mapped_doc(
+        "Sales Order",
+        source_name,
+        {
+            "Sales Order": {
+                "doctype": "Stock Entry",
+                "validation": {"docstatus": ["=", 1]},
+            },
+            "Sales Order Item": {
+                "doctype": "Stock Entry Detail",
+                "condition": include_item,
+                "postprocess": map_item,
+            },
+        },
+        target_doc,
+        set_defaults,
+    )
+
+    if not stock_entry.items:
+        frappe.throw(_("Sales Order {0} has no stock items to transfer.").format(source_name))
+
+    return stock_entry
 
 @frappe.whitelist()
 def make_quotation_from_so(source_name):

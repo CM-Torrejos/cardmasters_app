@@ -2,6 +2,34 @@
  {
   "docstatus": 0,
   "doctype": "Workflow Action Master",
+  "modified": "2026-06-27 08:45:00.135518",
+  "name": "For Holding",
+  "workflow_action_name": "For Holding"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-06-27 08:46:50.523403",
+  "name": "For Disposition",
+  "workflow_action_name": "For Disposition"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-06-27 08:47:15.050156",
+  "name": "Progress Disposition",
+  "workflow_action_name": "Progress Disposition"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-06-27 08:47:27.543660",
+  "name": "Resolve",
+  "workflow_action_name": "Resolve"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
   "modified": "2026-03-03 13:03:30.062039",
   "name": "Revert to Draft",
   "workflow_action_name": "Revert to Draft"
@@ -313,5 +341,12 @@
   "modified": "2026-01-28 10:31:10.464255",
   "name": "Revert to Production",
   "workflow_action_name": "Revert to Production"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-06-27 08:46:06.886611",
+  "name": "In Holding",
+  "workflow_action_name": "In Holding"
  }
 ]

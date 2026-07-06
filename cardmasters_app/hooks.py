@@ -75,6 +75,10 @@ app_include_css = [
 
 # Server-side document hooks and handlers
 doc_events = {
+	"Item": {
+		"before_insert": "cardmasters_app.cardmasters_app.event_handlers.item.apply_accounting_defaults",
+		"after_insert": "cardmasters_app.cardmasters_app.event_handlers.item.create_company_boms"
+	},
 	"Petty Cash Voucher": {
     	"after_submit": "cardmasters_app.cardmasters_app.event_handlers.petty_cash_voucher.update_pcr_onpcv"
     },

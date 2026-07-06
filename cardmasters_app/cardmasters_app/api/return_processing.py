@@ -2,7 +2,7 @@ import json
 
 import frappe
 from frappe import _
-from frappe.utils import flt, now
+from frappe.utils import add_to_date, flt, get_datetime, now
 
 
 PENDING_STATUS = "Pending"
@@ -14,36 +14,54 @@ VALUATION_TOLERANCE = 0.01
 QTY_TOLERANCE = 0.000001
 
 
-def get_cardmasters_return_warehouses(require_master=False, require_damage=False):
-	master_warehouse = frappe.db.get_single_value("Cardmasters Settings", "master_warehouse")
-	return_warehouse = frappe.db.get_single_value("Cardmasters Settings", "return_warehouse")
-	damage_warehouse = frappe.db.get_single_value("Cardmasters Settings", "damage_warehouse")
-
-	if not return_warehouse:
+def get_cardmasters_return_warehouses(company, require_master=False, require_damage=False):
+	if not company:
 		frappe.throw(
-			_("Cardmasters Settings.return_warehouse is required before saving Sales Returns."),
-			title=_("Missing Return Warehouse"),
+			_("Company is required to determine the Sales Return processing warehouses."),
+			title=_("Missing Company"),
 		)
 
-	if require_master and not master_warehouse:
+	settings = frappe.db.get_value(
+		"Cardmasters Company Settings",
+		{"company": company},
+		["master_warehouse", "return_warehouse", "damage_warehouse"],
+		as_dict=True,
+	)
+	if not settings:
 		frappe.throw(
-			_("Cardmasters Settings.master_warehouse is required before converting returned items to RM."),
+			_("Cardmasters Company Settings is required for Company {0}.").format(
+				frappe.bold(company)
+			),
+			title=_("Missing Company Settings"),
+		)
+
+	if require_master and not settings.master_warehouse:
+		frappe.throw(
+			_("Master Warehouse is required in Cardmasters Company Settings for Company {0}.").format(
+				frappe.bold(company)
+			),
 			title=_("Missing Master Warehouse"),
 		)
 
-	if require_damage and not damage_warehouse:
+	if require_damage and not settings.damage_warehouse:
 		frappe.throw(
-			_("Cardmasters Settings.damage_warehouse is required before issuing returned items as damage."),
+			_("Damage Warehouse is required in Cardmasters Company Settings for Company {0}.").format(
+				frappe.bold(company)
+			),
 			title=_("Missing Damage Warehouse"),
 		)
 
-	return frappe._dict(
-		{
-			"master_warehouse": master_warehouse,
-			"return_warehouse": return_warehouse,
-			"damage_warehouse": damage_warehouse,
-		}
-	)
+	return settings
+
+
+@frappe.whitelist()
+def get_sales_return_destination_defaults(company):
+	settings = get_cardmasters_return_warehouses(company)
+	default_warehouse = settings.master_warehouse if _warehouse_accepts_returns(settings.master_warehouse) else None
+
+	return {
+		"return_warehouse": default_warehouse,
+	}
 
 
 def is_rm_item(item_code):
@@ -58,9 +76,10 @@ def enforce_return_master_warehouse(doc, _method=None):
 
 	validate_damages_and_returns_reference(doc)
 
-	settings = get_cardmasters_return_warehouses()
+	settings = get_cardmasters_return_warehouses(doc.company)
+	return_warehouse = _get_return_destination_warehouse(doc, settings)
 	for row in get_processable_return_rows(doc):
-		row.warehouse = settings.return_warehouse
+		row.warehouse = return_warehouse
 		if _has_field(row, "custom_return_processing_status") and not row.get("custom_return_processing_status"):
 			row.custom_return_processing_status = PENDING_STATUS
 
@@ -87,6 +106,67 @@ def validate_damages_and_returns_reference(doc):
 			),
 			title=_("Invalid Damages and Returns"),
 		)
+
+
+def _get_return_destination_warehouse(doc, settings=None):
+	settings = settings or get_cardmasters_return_warehouses(doc.company)
+	return_warehouse = doc.get("custom_return_warehouse") if _has_field(doc, "custom_return_warehouse") else None
+	return_warehouse = return_warehouse or settings.return_warehouse
+
+	if not return_warehouse:
+		frappe.throw(
+			_("Returned Item Destination Warehouse is required for Sales Return Delivery Notes."),
+			title=_("Missing Return Warehouse"),
+		)
+
+	_validate_return_destination_warehouse(return_warehouse, doc.company)
+	return return_warehouse
+
+
+def _validate_return_destination_warehouse(warehouse, company):
+	warehouse_details = frappe.db.get_value(
+		"Warehouse",
+		warehouse,
+		["company", "is_group", "disabled", "custom_accepts_returns"],
+		as_dict=True,
+	)
+
+	if not warehouse_details:
+		frappe.throw(
+			_("Returned Item Destination Warehouse {0} does not exist.").format(frappe.bold(warehouse)),
+			title=_("Invalid Return Warehouse"),
+		)
+
+	if warehouse_details.company != company:
+		frappe.throw(
+			_("Returned Item Destination Warehouse {0} does not belong to Company {1}.").format(
+				frappe.bold(warehouse), frappe.bold(company)
+			),
+			title=_("Invalid Return Warehouse"),
+		)
+
+	if warehouse_details.is_group or warehouse_details.disabled:
+		frappe.throw(
+			_("Returned Item Destination Warehouse {0} must be enabled and cannot be a group.").format(
+				frappe.bold(warehouse)
+			),
+			title=_("Invalid Return Warehouse"),
+		)
+
+	if not warehouse_details.custom_accepts_returns:
+		frappe.throw(
+			_("Returned Item Destination Warehouse {0} must be marked as Accepts Returns.").format(
+				frappe.bold(warehouse)
+			),
+			title=_("Invalid Return Warehouse"),
+		)
+
+
+def _warehouse_accepts_returns(warehouse):
+	if not warehouse:
+		return False
+
+	return bool(frappe.db.get_value("Warehouse", warehouse, "custom_accepts_returns"))
 
 
 def get_processable_return_rows(doc):
@@ -135,8 +215,9 @@ def update_delivery_note_return_processing_status(doc):
 def get_return_item_processing_defaults(delivery_note, delivery_note_item, target_qty=None, damage_qty=None):
 	doc, row, settings = _get_valid_return_context(delivery_note, delivery_note_item)
 	source_qty = _get_source_qty(row)
+	source_warehouse = _get_return_destination_warehouse(doc, settings)
 	source_valuation_rate = _get_source_valuation_rate(
-		row.item_code, settings.return_warehouse, row.batch_no
+		row.item_code, source_warehouse, row.batch_no
 	)
 	source_total_value = flt(source_qty * source_valuation_rate, 2)
 
@@ -152,7 +233,7 @@ def get_return_item_processing_defaults(delivery_note, delivery_note_item, targe
 		"source_valuation_rate": source_valuation_rate,
 		"source_total_value": source_total_value,
 		"default_basic_rate": default_rate,
-		"return_warehouse": settings.return_warehouse,
+		"return_warehouse": source_warehouse,
 		"master_warehouse": settings.master_warehouse,
 	}
 
@@ -220,6 +301,7 @@ def process_returned_item(
 def make_sales_return_with_damages_and_returns(source_name, target_doc=None):
 	args = getattr(frappe.flags, "args", None) or frappe._dict()
 	damages_and_returns = args.get("damages_and_returns")
+	return_warehouse = args.get("return_warehouse")
 	if not damages_and_returns:
 		frappe.throw(
 			_("Damages and Returns is required to create a Sales Return Delivery Note."),
@@ -239,11 +321,20 @@ def make_sales_return_with_damages_and_returns(source_name, target_doc=None):
 			title=_("Invalid Damages and Returns"),
 		)
 
+	if not return_warehouse:
+		frappe.throw(
+			_("Returned Item Destination Warehouse is required to create a Sales Return Delivery Note."),
+			title=_("Missing Return Warehouse"),
+		)
+
 	from erpnext.stock.doctype.delivery_note.delivery_note import make_sales_return
 
 	doc = make_sales_return(source_name, target_doc)
 	if _has_field(doc, "custom_damages_and_returns"):
 		doc.custom_damages_and_returns = damages_and_returns
+	if _has_field(doc, "custom_return_warehouse"):
+		_validate_return_destination_warehouse(return_warehouse, doc.company)
+		doc.custom_return_warehouse = return_warehouse
 
 	return doc
 
@@ -297,17 +388,20 @@ def _get_valid_return_context(delivery_note, delivery_note_item, require_master=
 		frappe.throw(_("Delivery Note Item row {0} was not found.").format(delivery_note_item))
 
 	settings = get_cardmasters_return_warehouses(
+		doc.company,
 		require_master=require_master,
 		require_damage=require_damage,
 	)
-	if row.warehouse != settings.return_warehouse:
+	source_warehouse = _get_return_destination_warehouse(doc, settings)
+	if row.warehouse != source_warehouse:
 		frappe.throw(
-			_("Returned item row {0} must be in the return warehouse {1}.").format(row.idx, settings.return_warehouse)
+			_("Returned item row {0} must be in the return warehouse {1}.").format(row.idx, source_warehouse)
 		)
 
 	if not row.item_code or not row.batch_no or not _get_source_qty(row):
 		frappe.throw(_("Returned item row {0} must have item, batch, and returned quantity.").format(row.idx))
 
+	settings.return_warehouse = source_warehouse
 	return doc, row, settings
 
 
@@ -424,6 +518,7 @@ def _process_convert_to_rm(doc, row, settings, target_rows, remarks):
 	stock_entry.purpose = "Repack"
 	stock_entry.stock_entry_type = "Repack"
 	stock_entry.company = doc.company
+	_set_return_processing_posting_time(stock_entry, doc)
 	stock_entry.custom_return_delivery_note = doc.name
 	stock_entry.custom_return_delivery_note_item = row.name
 	stock_entry.remarks = _build_stock_entry_remarks(doc, row, "Convert to RM", remarks, source_total_value, target_total_value)
@@ -432,6 +527,7 @@ def _process_convert_to_rm(doc, row, settings, target_rows, remarks):
 		{
 			"item_code": row.item_code,
 			"batch_no": row.batch_no,
+			"use_serial_batch_fields": 1,
 			"s_warehouse": settings.return_warehouse,
 			"qty": source_qty,
 			"basic_rate": source_valuation_rate,
@@ -499,6 +595,7 @@ def _process_mixed_return(doc, row, settings, target_rows, damage_qty, remarks):
 	stock_entry.purpose = "Repack"
 	stock_entry.stock_entry_type = "Repack"
 	stock_entry.company = doc.company
+	_set_return_processing_posting_time(stock_entry, doc)
 	stock_entry.custom_return_delivery_note = doc.name
 	stock_entry.custom_return_delivery_note_item = row.name
 	stock_entry.remarks = _build_stock_entry_remarks(
@@ -514,6 +611,7 @@ def _process_mixed_return(doc, row, settings, target_rows, damage_qty, remarks):
 		{
 			"item_code": row.item_code,
 			"batch_no": row.batch_no,
+			"use_serial_batch_fields": 1,
 			"s_warehouse": settings.return_warehouse,
 			"qty": source_qty,
 			"basic_rate": source_valuation_rate,
@@ -524,6 +622,7 @@ def _process_mixed_return(doc, row, settings, target_rows, damage_qty, remarks):
 		{
 			"item_code": row.item_code,
 			"batch_no": row.batch_no,
+			"use_serial_batch_fields": 1,
 			"t_warehouse": settings.damage_warehouse,
 			"qty": damage_qty,
 			"basic_rate": source_valuation_rate,
@@ -575,6 +674,7 @@ def _process_issue_as_damage(doc, row, settings, remarks):
 	stock_entry.purpose = "Material Transfer"
 	stock_entry.stock_entry_type = "Material Transfer"
 	stock_entry.company = doc.company
+	_set_return_processing_posting_time(stock_entry, doc)
 	stock_entry.custom_return_delivery_note = doc.name
 	stock_entry.custom_return_delivery_note_item = row.name
 	stock_entry.remarks = _build_stock_entry_remarks(doc, row, "Issue as Damage", remarks)
@@ -583,6 +683,7 @@ def _process_issue_as_damage(doc, row, settings, remarks):
 		{
 			"item_code": row.item_code,
 			"batch_no": row.batch_no,
+			"use_serial_batch_fields": 1,
 			"s_warehouse": settings.return_warehouse,
 			"t_warehouse": settings.damage_warehouse,
 			"qty": source_qty,
@@ -603,6 +704,18 @@ def _process_issue_as_damage(doc, row, settings, remarks):
 		"stock_entry": stock_entry.name,
 	}
 	return stock_entry, summary, DAMAGE_STATUS
+
+
+def _set_return_processing_posting_time(stock_entry, return_delivery_note):
+	return_posting_time = return_delivery_note.get("posting_time") or "00:00:00"
+	return_posting_datetime = get_datetime(
+		f"{return_delivery_note.posting_date} {return_posting_time}"
+	)
+	processing_posting_datetime = add_to_date(return_posting_datetime, seconds=1)
+
+	stock_entry.set_posting_time = 1
+	stock_entry.posting_date = processing_posting_datetime.date()
+	stock_entry.posting_time = processing_posting_datetime.time()
 
 
 def _validate_target_rows(target_rows):

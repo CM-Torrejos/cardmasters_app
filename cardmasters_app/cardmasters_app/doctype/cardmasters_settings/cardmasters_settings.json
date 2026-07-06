@@ -41,11 +41,7 @@
   "wo_draft_status",
   "wo_not_started_status",
   "wo_in_production_status",
-  "wo_in_claiming_status",
-  "inventory_tab",
-  "damage_warehouse",
-  "master_warehouse",
-  "return_warehouse"
+  "wo_in_claiming_status"
  ],
  "fields": [
   {
@@ -263,29 +259,6 @@
    "fieldname": "disable_job_cards",
    "fieldtype": "Check",
    "label": "Disable Job Cards"
-  },
-  {
-   "fieldname": "inventory_tab",
-   "fieldtype": "Tab Break",
-   "label": "Inventory"
-  },
-  {
-   "fieldname": "damage_warehouse",
-   "fieldtype": "Link",
-   "label": "Damage Warehouse",
-   "options": "Warehouse"
-  },
-  {
-   "fieldname": "master_warehouse",
-   "fieldtype": "Link",
-   "label": "Master Warehouse",
-   "options": "Warehouse"
-  },
-  {
-   "fieldname": "return_warehouse",
-   "fieldtype": "Link",
-   "label": "Return Warehouse",
-   "options": "Warehouse"
   }
  ],
  "grid_page_length": 50,

@@ -40,7 +40,6 @@
    "in_list_view": 1,
    "label": "Sales Order",
    "options": "Sales Order",
-   "reqd": 1,
    "search_index": 1
   },
   {
@@ -195,9 +194,15 @@
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
- "links": [],
+ "links": [
+  {
+   "group": "Linked Work Orders",
+   "link_doctype": "Work Order",
+   "link_fieldname": "custom_artist_card"
+  }
+ ],
  "make_attachments_public": 1,
- "modified": "2026-03-25 08:39:44.162202",
+ "modified": "2026-07-01 09:09:42.544173",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Card",

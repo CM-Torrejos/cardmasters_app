@@ -39,6 +39,27 @@ def _build_new_batch_name(so_name: str, soi_docname: str) -> str:
 	return name
 
 
+def resolve_sales_order_batch(so_name, so_detail, item_code, item_specifics=None):
+	"""Resolve a canonical Sales Order Item batch, then its legacy equivalent."""
+	new_batch_name = f"{so_name}_{so_detail}"
+	found_batch = frappe.db.get_value("Batch", new_batch_name, "name")
+	if found_batch:
+		return found_batch
+
+	if item_specifics is None:
+		item_specifics = frappe.db.get_value(
+			"Sales Order Item", so_detail, "custom_item_specifics"
+		)
+
+	legacy_name = f"{so_name} - {item_code}:{(item_specifics or '').strip()}"
+	legacy_name = legacy_name.strip()[:BATCH_NAME_MAX_LEN]
+
+	if frappe.db.exists("Batch", legacy_name):
+		return legacy_name
+
+	return frappe.db.get_value("Batch", {"batch_id": legacy_name}, "name")
+
+
 def _get_or_create_batch(
 	batch_name: str,
 	item_code: str,
@@ -323,33 +344,10 @@ def set_batch_no_for_delivery_note(doc, method):
 		# Step 1 — New-batch direct lookup (canonical path)
 		# ------------------------------------------------------------------
 		new_batch_name = f"{so_name}_{so_detail}"
-		found_batch = frappe.db.get_value("Batch", new_batch_name, "name")
-
-		# ------------------------------------------------------------------
-		# Step 2 — Legacy fallback (TEMPORARY — see TODO above)
-		# ------------------------------------------------------------------
-		if not found_batch:
-			item_specifics = (d.get("custom_item_specifics") or "").strip()
-			if not item_specifics:
-				item_specifics = (
-					frappe.db.get_value(
-						"Sales Order Item", so_detail, "custom_item_specifics"
-					)
-					or ""
-				).strip()
-
-			# Legacy formula: "{SO} - {item_code}:{item_specifics}"
-			legacy_name = f"{so_name} - {item_code}:{item_specifics}"
-			legacy_name = legacy_name.strip()[:BATCH_NAME_MAX_LEN]
-
-			# Direct name match
-			if frappe.db.exists("Batch", legacy_name):
-				found_batch = legacy_name
-			else:
-				# batch_id match (old batches may have differing name vs batch_id)
-				found_batch = frappe.db.get_value(
-					"Batch", {"batch_id": legacy_name}, "name"
-				)
+		item_specifics = (d.get("custom_item_specifics") or "").strip() or None
+		found_batch = resolve_sales_order_batch(
+			so_name, so_detail, item_code, item_specifics
+		)
 
 		# ------------------------------------------------------------------
 		# Step 3 — Assign or flag missing
