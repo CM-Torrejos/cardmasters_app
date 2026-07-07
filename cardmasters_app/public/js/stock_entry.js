@@ -160,3 +160,18 @@ function toggle_batched_field(frm) {
         frm.set_value('custom_batched', 0);
     }
 }
+
+frappe.ui.form.on('Stock Entry Detail', {
+  // update basic rate based on custom_uom_rate and conversion_factor when custom_uom_rate is changed
+    custom_uom_rate: function(frm, cdt, cdn) {
+        let row = frappe.get_doc(cdt, cdn);
+        
+        if (row.custom_uom_rate && row.conversion_factor) {
+            let calculated_rate = flt(row.custom_uom_rate) / flt(row.conversion_factor);
+            
+            frappe.model.set_value(cdt, cdn, 'set_basic_rate_manually', 1);
+            
+            frappe.model.set_value(cdt, cdn, 'basic_rate', calculated_rate);
+        }
+    }
+});
