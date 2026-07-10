@@ -25,4 +25,7 @@ def execute():
 		"""
 	)
 
+	#flush pending transactions safely
+	frappe.db.commit()
+
 	frappe.db.sql(f"ALTER TABLE `{table}` DROP COLUMN `item_name`")
