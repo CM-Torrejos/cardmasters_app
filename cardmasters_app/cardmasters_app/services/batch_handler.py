@@ -330,6 +330,11 @@ def set_batch_no_for_delivery_note(doc, method):
 	"""
 	if doc.get("is_return"):
 		return
+	
+	if not doc.get("custom_batched"):
+		for d in doc.items:
+			d.set("batch_no", None)
+		return
 
 	missing_or_unmatched = []
 
