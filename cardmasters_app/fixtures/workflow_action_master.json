@@ -2,6 +2,20 @@
  {
   "docstatus": 0,
   "doctype": "Workflow Action Master",
+  "modified": "2026-05-11 11:13:40.025205",
+  "name": "For Withdrawal",
+  "workflow_action_name": "For Withdrawal"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-06-22 10:47:04.933922",
+  "name": "Revert to Layout",
+  "workflow_action_name": "Revert to Layout"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
   "modified": "2026-06-27 08:45:00.135518",
   "name": "For Holding",
   "workflow_action_name": "For Holding"
@@ -348,5 +362,82 @@
   "modified": "2026-06-27 08:46:06.886611",
   "name": "In Holding",
   "workflow_action_name": "In Holding"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-07-03 13:16:14.397022",
+  "name": "Release Stock",
+  "workflow_action_name": "Release Stock"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-07-03 13:16:27.044033",
+  "name": "Receive Damaged Stock",
+  "workflow_action_name": "Receive Damaged Stock"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-07-03 13:16:49.498028",
+  "name": "Process Damaged Stock",
+  "workflow_action_name": "Process Damaged Stock"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-07-03 13:17:09.844632",
+  "name": "Receive Damaged Items",
+  "workflow_action_name": "Receive Damaged Items"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-07-03 13:17:14.729013",
+  "name": "Release Items",
+  "workflow_action_name": "Release Items"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-07-03 13:18:35.815858",
+  "name": "Skip Release of Items",
+  "workflow_action_name": "Skip Release of Items"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-07-03 13:53:31.805777",
+  "name": "Finish Processing",
+  "workflow_action_name": "Finish Processing"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-05-11 11:13:32.237006",
+  "name": "For Backjob",
+  "workflow_action_name": "For Backjob"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-07-03 13:33:17.809362",
+  "name": "Audit",
+  "workflow_action_name": "Audit"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-07-03 13:17:05.134066",
+  "name": "Process Damaged Items",
+  "workflow_action_name": "Process Damaged Items"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-05-26 09:56:15.546241",
+  "name": "Revert to Consumption",
+  "workflow_action_name": "Revert to Consumption"
  }
 ]

@@ -36,10 +36,15 @@ frappe.ui.form.on('Work Order', {
 			return original_add_button(label, action, group);
 		};
 	},
-	
+
+	onload: function(frm) {
+		autofill_work_order_batch_source_fields(frm);
+	},
+
 	refresh: function(frm) {
 		const invalid_statuses = ['On Hold', 'Cancelled', 'Closed'];
 		filter_work_order_make_buttons(frm);
+		autofill_work_order_batch_source_fields(frm);
 
 		setTimeout(() => {
 			if(frm.custom_buttons['Withdraw']) {
@@ -315,7 +320,51 @@ frappe.ui.form.on('Work Order', {
 		add_repack_damage_button(frm);
 		show_linked_stock_work_orders(frm);
 	},
+
+	sales_order: function(frm) {
+		autofill_work_order_batch_source_fields(frm);
+	},
+
+	sales_order_item: function(frm) {
+		autofill_work_order_batch_source_fields(frm);
+	}
 });
+
+var autofill_work_order_batch_source_fields = function(frm) {
+	if (!frm.is_new()) {
+		return;
+	}
+
+	const updates = {};
+
+	if (
+		frm.fields_dict.custom_document &&
+		frm.doc.sales_order &&
+		!frm.doc.custom_document
+	) {
+		updates.custom_document = 'Sales Order';
+	}
+
+	if (
+		frm.fields_dict.custom_document_id &&
+		frm.doc.sales_order &&
+		!frm.doc.custom_document_id
+	) {
+		updates.custom_document_id = frm.doc.sales_order;
+	}
+
+	if (
+		frm.fields_dict.custom_document_item_id &&
+		frm.doc.sales_order_item &&
+		!frm.doc.custom_document_item_id
+	) {
+		updates.custom_document_item_id = frm.doc.sales_order_item;
+	}
+
+	if (Object.keys(updates).length) {
+		frm.set_value(updates);
+	}
+};
 
 var is_work_order_button = function(label, expected) {
 	return label === expected || label === __(expected);
@@ -389,6 +438,10 @@ var add_make_to_stock_button = function(frm) {
 			new_work_order.custom_customer = null;
 			new_work_order.sales_order = null;
 			new_work_order.sales_order_item = null;
+			new_work_order.custom_document = null;
+			new_work_order.custom_document_id = null;
+			new_work_order.custom_document_item_id = null;
+			new_work_order.custom_batch = null;
 			new_work_order.custom_parent_work_order = frm.doc.name;
 		});
 	}, __('Link WO'));
