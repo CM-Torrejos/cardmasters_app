@@ -1,5 +1,7 @@
 frappe.ui.form.on('Stock Entry', {
   onload(frm) {
+    get_ingoing_stock_entry_types(frm);
+    
     // only for Manufacture pick-type entries from a Work Order
     if (
       !frm.doc.__islocal ||
@@ -35,6 +37,26 @@ frappe.ui.form.on('Stock Entry', {
         toggle_batched_field(frm);
     }
   
+});
+
+frappe.ui.form.on('Stock Entry Detail', {
+    // update basic rate based on custom_uom_rate and conversion_factor when custom_uom_rate is changed
+    custom_uom_rate: function(frm, cdt, cdn) {
+        let row = frappe.get_doc(cdt, cdn);
+        
+        const ingoing_types = frm.ingoing_types || [];
+        
+        if (!ingoing_types.includes(frm.doc.stock_entry_type)) {
+            return;
+        }
+        
+        if (row.custom_uom_rate && row.conversion_factor) {
+            let calculated_rate = flt(row.custom_uom_rate) / flt(row.conversion_factor);
+            
+            frappe.model.set_value(cdt, cdn, 'set_basic_rate_manually', 1);
+            frappe.model.set_value(cdt, cdn, 'basic_rate', calculated_rate);
+        }
+    }
 });
 
 function add_repack_actions(frm) {
@@ -161,17 +183,14 @@ function toggle_batched_field(frm) {
     }
 }
 
-frappe.ui.form.on('Stock Entry Detail', {
-  // update basic rate based on custom_uom_rate and conversion_factor when custom_uom_rate is changed
-    custom_uom_rate: function(frm, cdt, cdn) {
-        let row = frappe.get_doc(cdt, cdn);
-        
-        if (row.custom_uom_rate && row.conversion_factor) {
-            let calculated_rate = flt(row.custom_uom_rate) / flt(row.conversion_factor);
-            
-            frappe.model.set_value(cdt, cdn, 'set_basic_rate_manually', 1);
-            
-            frappe.model.set_value(cdt, cdn, 'basic_rate', calculated_rate);
-        }
-    }
-});
+function get_ingoing_stock_entry_types(frm) {
+    frappe.db.get_doc('Cardmasters Settings').then(settings => {
+        let ingoing_stock_entry_type = settings.ingoing_stock_entry_type || [];
+
+        frm.ingoing_types = ingoing_stock_entry_type.map(row => row.stock_entry_type);
+        console.log('Ingoing Stock Entry Types:', frm.ingoing_types);
+    }).catch(err => {
+        console.error('Error fetching Cardmasters Settings:', err);
+        frm.ingoing_types = [];
+    });
+}

@@ -41,7 +41,9 @@
   "wo_draft_status",
   "wo_not_started_status",
   "wo_in_production_status",
-  "wo_in_claiming_status"
+  "wo_in_claiming_status",
+  "accounting_tab",
+  "ingoing_stock_entry_type"
  ],
  "fields": [
   {
@@ -259,13 +261,25 @@
    "fieldname": "disable_job_cards",
    "fieldtype": "Check",
    "label": "Disable Job Cards"
+  },
+  {
+   "fieldname": "accounting_tab",
+   "fieldtype": "Tab Break",
+   "label": "Inventory"
+  },
+  {
+   "description": "Defines which Stock Entry Types are permitted to bypass standard valuation rules and accept manual UOM rate calculations during item entry.",
+   "fieldname": "ingoing_stock_entry_type",
+   "fieldtype": "Table",
+   "label": "Ingoing Stock Entry Type",
+   "options": "Ingoing Stock Entry Type"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-06-19 11:07:24.298407",
+ "modified": "2026-07-13 13:54:00.249546",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Cardmasters Settings",
