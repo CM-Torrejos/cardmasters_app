@@ -24,6 +24,10 @@ frappe.ui.form.on('Delivery Note', {
 		toggle_damages_and_returns_requirement(frm);
 
 		if (frm.doc.docstatus === 1 && frm.doc.is_return) {
+			frm.add_custom_button(__('Work Order'), () => {
+				make_work_order_from_sales_return(frm);
+			}, __('Create'));
+
 			frm.add_custom_button(__('Deliver'), () => {
 				make_delivery_note_from_sales_return(frm);
 			}, __('Actions'));
@@ -38,6 +42,113 @@ frappe.ui.form.on('Delivery Note', {
 		toggle_damages_and_returns_requirement(frm);
 	}
 });
+
+async function make_work_order_from_sales_return(frm) {
+	const returned_rows = get_sales_return_delivery_rows(frm).filter(row => {
+		return row.against_sales_order && row.so_detail;
+	});
+
+	if (!returned_rows.length) {
+		frappe.msgprint(__('Could not find any returned item rows linked to a Sales Order.'));
+		return;
+	}
+
+	if (returned_rows.length === 1) {
+		await open_work_order_from_return_row(frm, returned_rows[0]);
+		return;
+	}
+
+	const row_options = returned_rows.map(row => {
+		return `${row.idx}. ${row.item_code} ${row.batch_no || ''} (${Math.abs(flt(row.qty))})`;
+	});
+
+	const dialog = new frappe.ui.Dialog({
+		title: __('Select Returned Item'),
+		fields: [
+			{
+				fieldname: 'delivery_note_item',
+				fieldtype: 'Select',
+				label: __('Returned Item Row'),
+				options: row_options.join('\n'),
+				reqd: 1
+			}
+		],
+		primary_action_label: __('Create Work Order'),
+		async primary_action(values) {
+			dialog.hide();
+			const selected_index = row_options.indexOf(values.delivery_note_item);
+			await open_work_order_from_return_row(frm, returned_rows[selected_index]);
+		}
+	});
+
+	dialog.show();
+}
+
+async function open_work_order_from_return_row(frm, row) {
+	await with_doctype('Work Order');
+
+	const so_item = await get_sales_order_item_details(row.so_detail);
+	const work_order = frappe.model.get_new_doc('Work Order');
+	const qty = Math.abs(flt(row.qty));
+
+	set_work_order_value(work_order, 'company', frm.doc.company);
+	set_work_order_value(work_order, 'production_item', row.item_code);
+	set_work_order_value(work_order, 'item_name', row.item_name);
+	set_work_order_value(work_order, 'qty', qty);
+	set_work_order_value(work_order, 'stock_uom', row.stock_uom);
+	set_work_order_value(work_order, 'custom_production_type', 'Backjob');
+	set_work_order_value(work_order, 'custom_document', 'Sales Order');
+	set_work_order_value(work_order, 'custom_document_id', row.against_sales_order);
+	set_work_order_value(work_order, 'custom_document_item_id', row.so_detail);
+	set_work_order_value(work_order, 'custom_customer', frm.doc.customer);
+	set_work_order_value(work_order, 'custom_item_specifics', row.custom_item_specifics || so_item.custom_item_specifics);
+	set_work_order_value(work_order, 'custom_particulars', get_backjob_particulars(row.custom_particulars || so_item.custom_particulars));
+	set_work_order_value(work_order, 'description', row.description);
+
+	if (so_item.bom_no) {
+		set_work_order_value(work_order, 'bom_no', so_item.bom_no);
+	}
+
+	frappe.set_route('Form', 'Work Order', work_order.name);
+}
+
+function get_backjob_particulars(particulars) {
+	const clean_particulars = (particulars || '').trim();
+	if (!clean_particulars) {
+		return 'BACKJOB -';
+	}
+
+	if (clean_particulars.toUpperCase().startsWith('BACKJOB - ')) {
+		return clean_particulars;
+	}
+
+	return `BACKJOB - ${clean_particulars}`;
+}
+
+async function get_sales_order_item_details(so_detail) {
+	if (!so_detail) {
+		return {};
+	}
+
+	const response = await frappe.call({
+		method: 'cardmasters_app.cardmasters_app.api.work_order.get_sales_order_item_work_order_defaults',
+		args: {
+			so_detail
+		}
+	});
+
+	return response.message || {};
+}
+
+function set_work_order_value(work_order, fieldname, value) {
+	if (value === undefined || value === null || value === '') {
+		return;
+	}
+
+	if (frappe.meta.has_field('Work Order', fieldname)) {
+		work_order[fieldname] = value;
+	}
+}
 
 async function make_delivery_note_from_sales_return(frm) {
 	const returned_rows = get_sales_return_delivery_rows(frm);

@@ -338,6 +338,14 @@ var autofill_work_order_batch_source_fields = function(frm) {
 	const updates = {};
 
 	if (
+		frm.fields_dict.custom_production_type &&
+		frm.doc.sales_order &&
+		!frm.doc.custom_production_type
+	) {
+		updates.custom_production_type = 'Make to Order';
+	}
+
+	if (
 		frm.fields_dict.custom_document &&
 		frm.doc.sales_order &&
 		!frm.doc.custom_document
@@ -442,6 +450,7 @@ var add_make_to_stock_button = function(frm) {
 			new_work_order.custom_document_id = null;
 			new_work_order.custom_document_item_id = null;
 			new_work_order.custom_batch = null;
+			new_work_order.custom_production_type = 'Make to Stock';
 			new_work_order.custom_parent_work_order = frm.doc.name;
 		});
 	}, __('Link WO'));

@@ -106,11 +106,16 @@ def autofill_work_order_batch_source_fields(doc, method=None):
 	This does not create a Batch and intentionally leaves custom_batch blank.
 	"""
 	if doc.get("custom_parent_work_order") and not doc.get("sales_order"):
+		if not doc.get("custom_production_type"):
+			_set_doc_field_if_exists(doc, "custom_production_type", "Make to Stock")
 		_set_doc_field_if_exists(doc, "custom_document", None)
 		_set_doc_field_if_exists(doc, "custom_document_id", None)
 		_set_doc_field_if_exists(doc, "custom_document_item_id", None)
 		_set_doc_field_if_exists(doc, "custom_batch", None)
 		return
+
+	if doc.get("sales_order") and not doc.get("custom_production_type"):
+		_set_doc_field_if_exists(doc, "custom_production_type", "Make to Order")
 
 	if doc.get("sales_order") and not doc.get("custom_document"):
 		_set_doc_field_if_exists(doc, "custom_document", "Sales Order")
@@ -142,12 +147,6 @@ def _validate_work_order_batch_source(
 		)
 
 	if source_doctype == "Sales Order":
-		if document_id != doc.sales_order:
-			frappe.throw(
-				_("Document ID must match Sales Order {0} for Work Order {1}.")
-				.format(frappe.bold(doc.sales_order), frappe.bold(doc.name))
-			)
-
 		if not frappe.db.exists("Sales Order", document_id):
 			frappe.throw(_("Sales Order {0} does not exist.").format(frappe.bold(document_id)))
 
@@ -283,6 +282,10 @@ def create_or_assign_work_order_batch(doc, method=None):
 	The Work Order owns the batch reference. Downstream Stock Entries should
 	only copy Work Order.custom_batch and must not derive or create batches.
 	"""
+	if doc.get("custom_production_type") == "Make to Stock":
+		_set_doc_field_if_exists(doc, "custom_batch", None)
+		return
+
 	source_doctype = (doc.get("custom_document") or "").strip()
 	document_id = (doc.get("custom_document_id") or "").strip()
 	document_item_id = (doc.get("custom_document_item_id") or "").strip()
@@ -360,6 +363,9 @@ def set_batch_no_for_fg_on_manufacture_entry(doc, method):
 		frappe.throw(_("Stock Entry must reference a Work Order"))
 
 	wo = frappe.get_doc("Work Order", work_order)
+	if wo.get("custom_production_type") == "Make to Stock":
+		return
+
 	batch_name = wo.get("custom_batch")
 	if not batch_name:
 		frappe.throw(

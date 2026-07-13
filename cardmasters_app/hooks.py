@@ -51,7 +51,8 @@ doctype_js = {
     "Purchase Invoice": "public/js/purchase_invoice.js",
     "Payment Entry": "public/js/payment_entry.js", # Payment reversal out-of-period trigger button
     "Sales Invoice": "public/js/sales_invoice.js",
-    "Credit Memo": "public/js/credit_memo.js"
+    "Credit Memo": "public/js/credit_memo.js",
+    "Material Request": "public/js/material_request.js"
 }
 
 # Override core classes for custom calculations and accounting entry injections
