@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "format:DNR-{####}",
  "creation": "2025-04-26 09:10:24.897133",
@@ -21,6 +22,9 @@
   "remarks",
   "section_break_6ovu",
   "amended_from",
+  "stock_processing_tab",
+  "is_stock_processed",
+  "is_damage_items_processed",
   "investigation_tab",
   "error_type",
   "reason_for_damage",
@@ -84,7 +88,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Error Type",
-   "options": "For Investigation\nFactory Defect\nHuman\nMachine"
+   "options": "For Investigation\nFactory Defect\nHuman\nMachine\nN/A"
   },
   {
    "allow_on_submit": 1,
@@ -228,12 +232,29 @@
    "fieldtype": "Table MultiSelect",
    "label": "Point Persons",
    "options": "Multi Employee"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_stock_processed",
+   "fieldtype": "Check",
+   "label": "Is Stock Processed"
+  },
+  {
+   "fieldname": "stock_processing_tab",
+   "fieldtype": "Tab Break",
+   "label": "Stock Processing"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_damage_items_processed",
+   "fieldtype": "Check",
+   "label": "Is Damage Items Processed"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-07-03 09:17:08.977920",
+ "modified": "2026-07-03 17:53:59.757842",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damages and Returns",

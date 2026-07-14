@@ -34,3 +34,8 @@ def get_linked_stock_work_orders(docname):
 def get_damages_and_returns_defaults(docname):
     from cardmasters_app.cardmasters_app.services.work_order import get_damages_and_returns_defaults as get_defaults
     return get_defaults(docname)
+
+@frappe.whitelist()
+def get_repack_damage_stock_entry_defaults(docname):
+    from cardmasters_app.cardmasters_app.services.work_order import get_repack_damage_stock_entry_defaults as get_defaults
+    return get_defaults(docname)
