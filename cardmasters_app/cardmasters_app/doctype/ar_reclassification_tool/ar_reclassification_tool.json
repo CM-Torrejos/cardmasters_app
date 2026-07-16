@@ -1,0 +1,44 @@
+{
+ "actions": [],
+ "creation": "2026-07-16 11:14:14.349429",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "reclassify_to_employee"
+ ],
+ "fields": [
+  {
+   "description": "Transfer outstanding customer accounts receivable balances to their linked employee profiles.",
+   "fieldname": "reclassify_to_employee",
+   "fieldtype": "Button",
+   "label": "Reclassify to Employee"
+  }
+ ],
+ "grid_page_length": 50,
+ "hide_toolbar": 1,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-07-16 11:17:09.297789",
+ "modified_by": "Administrator",
+ "module": "Cardmasters App",
+ "name": "AR Reclassification Tool",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

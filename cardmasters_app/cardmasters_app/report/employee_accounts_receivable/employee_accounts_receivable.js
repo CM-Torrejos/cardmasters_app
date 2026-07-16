@@ -1,9 +1,5 @@
-// Copyright (c) 2026, Your Company and Contributors
-// License: GNU General Public License v3. See license.txt
-
 frappe.provide("erpnext.utils");
 
-// Note: Ensure the string name here exactly matches your Report name in the DB
 frappe.query_reports["Employee Accounts Receivable"] = {
 	filters: [
 		{
@@ -129,51 +125,6 @@ frappe.query_reports["Employee Accounts Receivable"] = {
 		if (frappe.boot.sysdefaults.default_ageing_range) {
 			report.set_filter_value("range", frappe.boot.sysdefaults.default_ageing_range);
 		}
-
-		report.page.add_inner_button(__("Reclassify to Employee AR"), function() {
-			frappe.confirm(
-				__('Are you sure you want to run batch reclassification? An Excel-compatible audit spreadsheet log will be generated automatically at the end.'), 
-				function() {
-					
-					let current_filters = report.get_values();
-
-					frappe.show_progress(__("Processing Reclassification"), 0, 100, __("Querying core Accounts Receivable report context..."));
-
-					frappe.realtime.on("reclass_progress", function(data) {
-						frappe.show_progress(__("Processing Reclassification"), data.current, data.total, data.message);
-					});
-
-					frappe.call({
-						method: "cardmasters_app.cardmasters_app.api.employee_ar_reclassification.run_employee_ar_reclassification",
-						args: {
-							filters: current_filters
-						},
-						callback: function(r) {
-							if (!r.exc && r.message) {
-								
-								// Central validation dialog layout response
-								frappe.msgprint({
-									title: __('Reclassification Run Complete'),
-									indicator: r.message.status === 'complete' ? 'green' : 'orange',
-									message: r.message.message
-								});
-
-								// TRIGGER DOWNLOAD: If a file URL was compiled, launch the download stream
-								if (r.message.file_url) {
-									window.open(r.message.file_url, '_blank');
-								}
-
-								report.refresh();
-							}
-						},
-						always: function() {
-							frappe.realtime.off("reclass_progress");
-							frappe.hide_progress();
-						}
-					});
-				}
-			);
-		});
 	},
 };
 
