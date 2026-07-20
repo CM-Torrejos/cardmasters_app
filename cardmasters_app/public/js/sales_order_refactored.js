@@ -519,14 +519,21 @@
 				args: {
 					doctype: 'Work Order',
 					filters: {
-						sales_order: frm.doc.name,
 						docstatus: ["!=", 2]
 					},
-					fields: ['name', 'workflow_state', 'item_name', 'status', 'qty', 'custom_item_specifics', 'custom_particulars', 'custom_bypass', 'sales_order_item'],
+					or_filters: [
+						['Work Order', 'sales_order', '=', frm.doc.name],
+						['Work Order', 'custom_document_id', '=', frm.doc.name]
+					],
+					fields: ['name', 'workflow_state', 'item_name', 'status', 'qty', 'custom_item_specifics', 'custom_particulars', 'custom_bypass', 'sales_order_item', 'custom_document_id', 'custom_document_item_id', 'custom_production_type'],
 					limit: 0
 				},
 				callback: function(response) {
 					let work_orders = response.message || [];
+					let standard_work_orders = work_orders.filter(wo => wo.custom_production_type !== 'Backjob');
+					let backjob_work_orders = work_orders.filter(wo => {
+						return wo.custom_production_type === 'Backjob' && wo.custom_document_id === frm.doc.name;
+					});
 					
 					let html = `
 							<style>
@@ -566,7 +573,7 @@
 								<tbody>`;
 					
 					frm.doc.items.forEach(so_item => {
-						let linked_wos = work_orders.filter(wo => wo.sales_order_item === so_item.name);
+						let linked_wos = standard_work_orders.filter(wo => wo.sales_order_item === so_item.name);
 						let total_wo_qty = 0;
 						
 						let safe_so_item_name = frappe.utils.escape_html(so_item.item_name || "");
@@ -632,9 +639,94 @@
 					
 					html += '</tbody></table>';
 					frm.fields_dict['custom_progress_summary'].$wrapper.html(html);
+					render_backjob_html_block(frm, backjob_work_orders);
 				}
 			});
 		}
+	}
+
+	function render_backjob_html_block(frm, backjob_work_orders) {
+		if (!frm.fields_dict.custom_backjob_summary) {
+			return;
+		}
+
+		let html = `
+				<style>
+					.custom-backjob-table { table-layout: fixed; width: 100%; border-collapse: collapse; }
+					.custom-backjob-table td, .custom-backjob-table th {
+						white-space: normal !important;
+						word-wrap: break-word;
+						vertical-align: top;
+						padding: 10px 8px;
+						font-size: 0.9em;
+						border-bottom: 1px solid var(--border-color);
+					}
+					.status-concluded { color: var(--green-600, #28a745); font-weight: bold; }
+					.no-backjob-row {
+						color: var(--text-muted);
+						font-style: italic;
+					}
+				</style>
+				<table class="table table-bordered custom-backjob-table">
+					<thead>
+						<tr>
+							<th style="width: 12%;">Work Order</th>
+							<th style="width: 12%;">Item</th>
+							<th style="width: 6%;">Qty</th>
+							<th style="width: 13%;">Specifics</th>
+							<th style="width: 18%;">Particulars</th>
+							<th style="width: 15%;">Production Status</th>
+							<th style="width: 15%;">Consumption</th>
+							<th style="width: 15%;">Claiming Status</th>
+						</tr>
+					</thead>
+					<tbody>`;
+
+		let rendered_rows = 0;
+
+		frm.doc.items.forEach(so_item => {
+			let linked_backjobs = backjob_work_orders.filter(wo => wo.custom_document_item_id === so_item.name);
+
+			linked_backjobs.forEach(wo => {
+				rendered_rows += 1;
+
+				let production_status = wo.workflow_state || "";
+				if (WO_CONCLUDED_STATES.includes(wo.workflow_state)) {
+					production_status = `<span class="status-concluded">Production Concluded</span>`;
+				}
+
+				let consumption_status = wo.status === "Completed" ? "Consumption entry submitted" : "No consumption entry submitted";
+
+				let claiming_status = "Not In Claiming";
+				if (wo.custom_bypass == 1) {
+					claiming_status = `${WO_IN_CLAIMING_STATUS} (Bypassed)`;
+				} else if (wo.workflow_state === WO_IN_CLAIMING_STATUS) {
+					claiming_status = WO_IN_CLAIMING_STATUS;
+				}
+
+				html += `
+						<tr>
+							<td><a href="/app/work-order/${wo.name}" target="_blank"><b>${wo.name}</b></a></td>
+							<td>${frappe.utils.escape_html(wo.item_name || "")}</td>
+							<td>${wo.qty}</td>
+							<td>${frappe.utils.escape_html(wo.custom_item_specifics || "")}</td>
+							<td>${frappe.utils.escape_html(wo.custom_particulars || "")}</td>
+							<td>${production_status}</td>
+							<td>${consumption_status}</td>
+							<td>${claiming_status}</td>
+						</tr>`;
+			});
+		});
+
+		if (!rendered_rows) {
+			html += `
+					<tr class="no-backjob-row">
+						<td colspan="8">No Backjob Work Orders found.</td>
+					</tr>`;
+		}
+
+		html += '</tbody></table>';
+		frm.fields_dict.custom_backjob_summary.$wrapper.html(html);
 	}
 	
 	function render_outstanding_balance(frm) {

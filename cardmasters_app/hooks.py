@@ -51,7 +51,8 @@ doctype_js = {
     "Purchase Invoice": "public/js/purchase_invoice.js",
     "Payment Entry": "public/js/payment_entry.js", # Payment reversal out-of-period trigger button
     "Sales Invoice": "public/js/sales_invoice.js",
-    "Credit Memo": "public/js/credit_memo.js"
+    "Credit Memo": "public/js/credit_memo.js",
+    "Material Request": "public/js/material_request.js"
 }
 
 # Override core classes for custom calculations and accounting entry injections
@@ -88,6 +89,7 @@ doc_events = {
             "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_tags_from_master_on_creation" # Tag copy logic
         ],
         "before_submit" : [
+            "cardmasters_app.cardmasters_app.services.batch_handler.create_or_assign_work_order_batch", # Create/link SO Item batch on submission
             "cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_submit" # Transition SO state to "Begin Production"
         ],
         "on_update_after_submit": [
@@ -97,7 +99,8 @@ doc_events = {
             "cardmasters_app.cardmasters_app.event_handlers.work_order.work_order_workflow_trigger" # Revert workflow status if cancelled
         ],
         "validate": [
-            "cardmasters_app.cardmasters_app.event_handlers.work_order.validate_so_workflow_state" # Block if parent SO is 'Pending'
+            "cardmasters_app.cardmasters_app.event_handlers.work_order.validate_so_workflow_state", # Block if parent SO is 'Pending'
+            "cardmasters_app.cardmasters_app.services.batch_handler.autofill_work_order_batch_source_fields" # Fill draft batch source fields
         ],
         "onload": [
             "cardmasters_app.cardmasters_app.event_handlers.work_order.warn_data_mismatch" # Alert if SO Item vs WO details mismatch
@@ -114,7 +117,7 @@ doc_events = {
             "cardmasters_app.cardmasters_app.api.return_processing.handle_return_processing_stock_entry_cancel" # Reopen returned item processing status when linked entry is cancelled
         ],
         "before_save": [
-            "cardmasters_app.cardmasters_app.services.batch_handler.set_batch_no_for_fg_on_manufacture_entry" # Automatically generate/assign SO-based Batch Name
+            "cardmasters_app.cardmasters_app.services.batch_handler.set_batch_no_for_fg_on_manufacture_entry" # Assign WO batch to FG row
         ]
     },
     "Artist Card": {

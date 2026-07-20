@@ -1,5 +1,6 @@
 import frappe
 from frappe import _
+from frappe.utils import nowdate
 
 # ---------------------------------------------------------------------------
 # CONSTANTS
@@ -17,7 +18,7 @@ BATCH_ASSIGNMENT_STOCK_ENTRY_TYPES = {"Manufacture", "Repack"}
 
 def _build_new_batch_name(so_name: str, soi_docname: str) -> str:
 	"""
-	Construct the canonical batch name: {SO_NAME}_{SOI_DOCNAME}.
+	Construct the canonical batch name: {DOCUMENT_ID}_{DOCUMENT_ITEM_ID}.
 
 	Raises a descriptive hard error if the result would exceed
 	ERPNext's 100-character Batch.name limit.
@@ -33,7 +34,7 @@ def _build_new_batch_name(so_name: str, soi_docname: str) -> str:
 			_(
 				"Cannot create batch: constructed name '{0}' is {1} characters, "
 				"which exceeds ERPNext's 100-character Batch.name limit. "
-				"Check the Sales Order name and Sales Order Item docname."
+				"Check the Document ID and Document Item ID."
 			).format(name, len(name)),
 			title=_("Batch Name Too Long"),
 		)
@@ -52,8 +53,160 @@ def _get_batch_work_order(doc) -> str:
 	return getattr(doc, "work_order", None)
 
 
+def _has_field(doctype: str, fieldname: str) -> bool:
+	return bool(frappe.get_meta(doctype).has_field(fieldname))
+
+
+def _set_doc_field_if_exists(doc, fieldname: str, value):
+	if not _has_field(doc.doctype, fieldname):
+		return
+
+	doc.set(fieldname, value)
+	if doc.name and doc.docstatus != 0 and frappe.db.exists(doc.doctype, doc.name):
+		doc.db_set(fieldname, value, update_modified=False)
+
+
+def _append_batch_work_order(batch_name: str, work_order: str, wo_qty: float):
+	if not work_order:
+		return
+
+	if frappe.db.exists(
+		"Batch Work Order",
+		{
+			"parent": batch_name,
+			"parenttype": "Batch",
+			"parentfield": "custom_work_orders",
+			"work_order": work_order,
+		},
+	):
+		return
+
+	frappe.db.sql(
+		"""
+		INSERT INTO `tabBatch Work Order`
+			(name, parent, parenttype, parentfield,
+			 work_order, qty)
+		VALUES
+			(%s, %s, 'Batch', 'custom_work_orders',
+			 %s, %s)
+		""",
+		(
+			frappe.generate_hash(length=10),
+			batch_name,
+			work_order,
+			wo_qty,
+		),
+	)
+
+
+def autofill_work_order_batch_source_fields(doc, method=None):
+	"""
+	Fill the draft Work Order batch identity source fields.
+
+	This does not create a Batch and intentionally leaves custom_batch blank.
+	"""
+	if doc.get("custom_parent_work_order") and not doc.get("sales_order"):
+		if not doc.get("custom_production_type"):
+			_set_doc_field_if_exists(doc, "custom_production_type", "Make to Stock")
+		_set_doc_field_if_exists(doc, "custom_document", None)
+		_set_doc_field_if_exists(doc, "custom_document_id", None)
+		_set_doc_field_if_exists(doc, "custom_document_item_id", None)
+		_set_doc_field_if_exists(doc, "custom_batch", None)
+		return
+
+	if doc.get("sales_order") and not doc.get("custom_production_type"):
+		_set_doc_field_if_exists(doc, "custom_production_type", "Make to Order")
+
+	if doc.get("sales_order") and not doc.get("custom_document"):
+		_set_doc_field_if_exists(doc, "custom_document", "Sales Order")
+
+	if doc.get("sales_order") and not doc.get("custom_document_id"):
+		_set_doc_field_if_exists(doc, "custom_document_id", doc.sales_order)
+
+	if doc.get("sales_order_item") and not doc.get("custom_document_item_id"):
+		_set_doc_field_if_exists(
+			doc,
+			"custom_document_item_id",
+			doc.sales_order_item,
+		)
+
+
+def _validate_work_order_batch_source(
+	doc,
+	source_doctype: str,
+	document_id: str,
+	document_item_id: str,
+):
+	if not source_doctype and not document_id and not document_item_id:
+		return
+
+	if not source_doctype or not document_id or not document_item_id:
+		frappe.throw(
+			_("Document, Document ID, and Document Item ID are required to create a batch for Work Order {0}.")
+			.format(doc.name)
+		)
+
+	if source_doctype == "Sales Order":
+		if not frappe.db.exists("Sales Order", document_id):
+			frappe.throw(_("Sales Order {0} does not exist.").format(frappe.bold(document_id)))
+
+		if not frappe.db.exists(
+			"Sales Order Item",
+			{
+				"name": document_item_id,
+				"parent": document_id,
+			},
+		):
+			frappe.throw(
+				_("Document Item ID {0} is not an item row on Sales Order {1}.")
+				.format(frappe.bold(document_item_id), frappe.bold(document_id))
+			)
+		return
+
+	if source_doctype == "Material Request":
+		if not frappe.db.exists("Material Request", document_id):
+			frappe.throw(_("Material Request {0} does not exist.").format(frappe.bold(document_id)))
+
+		if not frappe.db.exists(
+			"Material Request Item",
+			{
+				"name": document_item_id,
+				"parent": document_id,
+			},
+		):
+			frappe.throw(
+				_("Document Item ID {0} is not an item row on Material Request {1}.")
+				.format(frappe.bold(document_item_id), frappe.bold(document_id))
+			)
+		return
+
+	frappe.throw(
+		_("Document {0} is not supported for Work Order batch creation.")
+		.format(frappe.bold(source_doctype))
+	)
+
+
 def resolve_sales_order_batch(so_name, so_detail, item_code, item_specifics=None):
-	"""Resolve a canonical Sales Order Item batch, then its legacy equivalent."""
+	"""Resolve a Sales Order Item batch without creating one."""
+	work_order_batch = None
+	if so_name and so_detail and _has_field("Work Order", "custom_batch"):
+		work_orders = frappe.get_all(
+			"Work Order",
+			filters={
+				"sales_order": so_name,
+				"sales_order_item": so_detail,
+				"production_item": item_code,
+				"docstatus": ["<", 2],
+				"custom_batch": ["!=", ""],
+			},
+			fields=["custom_batch"],
+			order_by="creation asc",
+			limit=1,
+		)
+		work_order_batch = work_orders[0].custom_batch if work_orders else None
+	if work_order_batch:
+		return work_order_batch
+
 	new_batch_name = f"{so_name}_{so_detail}"
 	found_batch = frappe.db.get_value("Batch", new_batch_name, "name")
 	if found_batch:
@@ -89,8 +242,8 @@ def _get_or_create_batch(
 	* custom_identity_source is always IDENTITY_SOURCE_SYSTEM for new batches.
 	* Appends a row to custom_work_orders child table on create.
 
-	On DuplicateEntryError (race condition), rolls back and returns the
-	already-existing name — the batch was created by a concurrent request.
+	On DuplicateEntryError (race condition), returns the already-existing name;
+	the batch was created by a concurrent request.
 	"""
 	if not frappe.db.exists("Batch", batch_name):
 		try:
@@ -115,27 +268,55 @@ def _get_or_create_batch(
 			)
 			doc.insert(ignore_permissions=True)
 		except frappe.DuplicateEntryError:
-			frappe.db.rollback()
-	else:
-		# Batch already exists — append this WO for traceability
-		frappe.db.sql(
-			"""
-			INSERT INTO `tabBatch Work Order`
-				(name, parent, parenttype, parentfield,
-				 work_order, qty)
-			VALUES
-				(%s, %s, 'Batch', 'custom_work_orders',
-				 %s, %s)
-			""",
-			(
-				frappe.generate_hash(length=10),
-				batch_name,
-				work_order,
-				wo_qty,
-			),
-		)
+			pass
+
+	_append_batch_work_order(batch_name, work_order, wo_qty)
 
 	return batch_name
+
+
+def create_or_assign_work_order_batch(doc, method=None):
+	"""
+	Create/resolve the document item batch when the Work Order is submitted.
+
+	The Work Order owns the batch reference. Downstream Stock Entries should
+	only copy Work Order.custom_batch and must not derive or create batches.
+	"""
+	if doc.get("custom_production_type") == "Make to Stock":
+		_set_doc_field_if_exists(doc, "custom_batch", None)
+		return
+
+	source_doctype = (doc.get("custom_document") or "").strip()
+	document_id = (doc.get("custom_document_id") or "").strip()
+	document_item_id = (doc.get("custom_document_item_id") or "").strip()
+
+	if not source_doctype and not document_id and not document_item_id:
+		return
+
+	_validate_work_order_batch_source(doc, source_doctype, document_id, document_item_id)
+
+	if not source_doctype or not document_id or not document_item_id:
+		return
+
+	if not doc.production_item:
+		frappe.throw(
+			_("Work Order {0} does not have a production item. "
+			  "Cannot create a batch.").format(doc.name)
+		)
+
+	batch_name = _build_new_batch_name(document_id, document_item_id)
+
+	batch = _get_or_create_batch(
+		batch_name=batch_name,
+		item_code=doc.production_item,
+		posting_date=doc.get("planned_start_date") or nowdate(),
+		so_name=doc.sales_order if doc.sales_order == document_id else None,
+		soi_docname=doc.sales_order_item if doc.sales_order_item == document_item_id else None,
+		work_order=doc.name,
+		wo_qty=doc.qty,
+	)
+
+	_set_doc_field_if_exists(doc, "custom_batch", batch)
 
 
 # ---------------------------------------------------------------------------
@@ -159,24 +340,16 @@ def _get_or_create_batch(
 
 def set_batch_no_for_fg_on_manufacture_entry(doc, method):
 	"""
-	Assign (or create) the canonical batch for the finished-goods line on a
-	Manufacture or batched Repack Stock Entry.
+	Assign the Work Order batch to the finished-goods line on a Manufacture or
+	batched Repack Stock Entry.
 
 	Triggered on: Stock Entry save, purpose/stock_entry_type = Manufacture or Repack.
-
-	Identity rule
-	-------------
-	Batch.name  =  {sales_order}_{sales_order_item}   (e.g. SO-043680_SOI-1238)
-
-	If a batch with that name already exists the FG row is pointed at it,
-	accumulating a weighted-average valuation across all contributing WOs.
-	If it does not exist yet, it is created.
 
 	Preconditions (hard errors)
 	---------------------------
 	- Stock Entry must be flagged custom_batched = 1
 	- Stock Entry must reference a Work Order
-	- Work Order must carry both sales_order and sales_order_item
+	- Work Order must carry custom_batch
 	- A finished-goods receipt row must be identifiable
 	"""
 	if doc.custom_batched != 1:
@@ -190,22 +363,14 @@ def set_batch_no_for_fg_on_manufacture_entry(doc, method):
 		frappe.throw(_("Stock Entry must reference a Work Order"))
 
 	wo = frappe.get_doc("Work Order", work_order)
+	if wo.get("custom_production_type") == "Make to Stock":
+		return
 
-	# ------------------------------------------------------------------
-	# Resolve Sales Order and Sales Order Item from the Work Order
-	# ------------------------------------------------------------------
-	so_name = wo.sales_order
-	soi_docname = wo.sales_order_item
-
-	if not so_name:
+	batch_name = wo.get("custom_batch")
+	if not batch_name:
 		frappe.throw(
-			_("Work Order {0} does not reference a Sales Order. "
-			  "Cannot determine batch identity.").format(wo.name)
-		)
-	if not soi_docname:
-		frappe.throw(
-			_("Work Order {0} does not reference a Sales Order Item. "
-			  "Cannot determine batch identity.").format(wo.name)
+			_("Work Order {0} does not have a linked batch. "
+			  "Create or repair the Work Order batch before making this Stock Entry.").format(wo.name)
 		)
 
 	# ------------------------------------------------------------------
@@ -225,20 +390,7 @@ def set_batch_no_for_fg_on_manufacture_entry(doc, method):
 			_("Could not find the FG receipt row for {0}").format(wo.production_item)
 		)
 
-	# ------------------------------------------------------------------
-	# Build canonical batch name and assign / create
-	# ------------------------------------------------------------------
-	batch_name = _build_new_batch_name(so_name, soi_docname)
-
-	fg_row.batch_no = _get_or_create_batch(
-		batch_name=batch_name,
-		item_code=fg_row.item_code,
-		posting_date=doc.posting_date,
-		so_name=so_name,
-		soi_docname=soi_docname,
-		work_order=work_order,
-		wo_qty=fg_row.qty,
-	)
+	fg_row.batch_no = batch_name
 	fg_row.db_set("batch_no", fg_row.batch_no)
 
 
@@ -307,21 +459,19 @@ def set_batch_no_for_delivery_note(doc, method):
 	"""
 	Assign batches to Delivery Note items.
 
-	Lookup strategy (DUAL — temporary for transition period)
+	Lookup strategy
 	---------------------------------------------------------
-	1. NEW BATCH PATH
-	   Construct expected name as f"{against_sales_order}_{so_detail}" and
-	   query Batch.name directly.  This is the canonical path for all batches
-	   created after the naming-scheme cutover.
+	1. WORK ORDER BATCH PATH
+	   Resolve the Sales Order Item to a non-cancelled Work Order and use its
+	   custom_batch value. This is the canonical path after the WO-owned batch
+	   remodel.
 
-	2. LEGACY BATCH PATH
-	   If the direct lookup returns nothing, reconstruct the legacy name using
-	   the old formula: "{SO} - {item_code}:{item_specifics}".  This path
-	   exists solely to serve batches whose Batch.name was set by the old
-	   build_batch_name function before cutover.
+	2. DIRECT / LEGACY READ-ONLY FALLBACK
+	   If no Work Order batch is available, read the canonical Batch.name
+	   directly, then reconstruct the legacy name using the old formula:
+	   "{SO} - {item_code}:{item_specifics}".
 
-	TODO: Remove the legacy fallback once all pre-cutover batches have no
-		  open stock movements.  At that point only step 1 is needed.
+	TODO: Remove the fallback once all open documents have Work Order custom_batch.
 
 	Behavior on save (draft) vs submit
 	------------------------------------
@@ -329,6 +479,11 @@ def set_batch_no_for_delivery_note(doc, method):
 	- Missing batch on SUBMIT → hard error, blocks submission.
 	"""
 	if doc.get("is_return"):
+		return
+	
+	if not doc.get("custom_batched"):
+		for d in doc.items:
+			d.set("batch_no", None)
 		return
 
 	missing_or_unmatched = []
@@ -355,7 +510,7 @@ def set_batch_no_for_delivery_note(doc, method):
 			continue
 
 		# ------------------------------------------------------------------
-		# Step 1 — New-batch direct lookup (canonical path)
+		# Resolve the batch without creating one.
 		# ------------------------------------------------------------------
 		new_batch_name = f"{so_name}_{so_detail}"
 		item_specifics = (d.get("custom_item_specifics") or "").strip() or None
@@ -364,7 +519,7 @@ def set_batch_no_for_delivery_note(doc, method):
 		)
 
 		# ------------------------------------------------------------------
-		# Step 3 — Assign or flag missing
+		# Assign or flag missing.
 		# ------------------------------------------------------------------
 		if found_batch:
 			if d.batch_no != found_batch:

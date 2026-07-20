@@ -48,7 +48,9 @@ def get_damages_and_returns_defaults(docname):
     rows = []
     finished_batch = None
 
-    if doc.sales_order and doc.sales_order_item and doc.production_item:
+    if doc.get("custom_batch"):
+        finished_batch = doc.custom_batch
+    elif doc.sales_order and doc.sales_order_item and doc.production_item:
         from cardmasters_app.cardmasters_app.services.batch_handler import (
             resolve_sales_order_batch,
         )
