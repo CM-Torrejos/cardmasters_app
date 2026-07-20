@@ -1,6 +1,39 @@
 import frappe
 from frappe import _  # <--- THIS WAS MISSING
 
+def set_branch_from_creator_employee(doc, _method=None):
+    """
+    Fill the Sales Order branch from the Employee linked to the user
+    creating the document. This also handles "impersonate user" flows by
+    preferring the active session user over the draft document owner.
+    """
+    if not doc.is_new():
+        return
+
+    if not doc.meta.has_field("branch") or doc.get("branch"):
+        return
+
+    users = [frappe.session.user, doc.owner]
+    for user in users:
+        if not user or user in ("Administrator", "Guest"):
+            continue
+
+        employee_branch = frappe.db.get_value(
+            "Employee",
+            {
+                "user_id": user,
+                "status": "Active",
+            },
+            "branch",
+        )
+
+        if not employee_branch:
+            employee_branch = frappe.db.get_value("Employee", {"user_id": user}, "branch")
+
+        if employee_branch:
+            doc.set("branch", employee_branch)
+            return
+
 def manage_grant_usage(doc, method):
     if not doc.custom_grant:
         return

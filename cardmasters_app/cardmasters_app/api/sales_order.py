@@ -4,6 +4,25 @@ from frappe.model.mapper import get_mapped_doc
 import json
 
 
+@frappe.whitelist()
+def get_current_user_employee_branch():
+    """Return the branch from the Employee record linked to the current user."""
+    if frappe.session.user in ("Administrator", "Guest"):
+        return None
+
+    return (
+        frappe.db.get_value(
+            "Employee",
+            {
+                "user_id": frappe.session.user,
+                "status": "Active",
+            },
+            "branch",
+        )
+        or frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "branch")
+    )
+
+
 def _get_batch_source_warehouse(batch_no, required_qty, company=None):
     """Choose the largest positive holding, preferring one that covers the row qty."""
     if not batch_no:

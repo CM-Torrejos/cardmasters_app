@@ -54,9 +54,14 @@
 				if (settings.wo_in_claiming_status) { WO_IN_CLAIMING_STATUS = settings.wo_in_claiming_status; }
 			}
 		},
+
+		onload: function(frm) {
+			set_branch_from_current_user_employee(frm);
+		},
 		
 		refresh: function(frm) {
 			const invalid_statuses = ['On Hold', 'Cancelled', 'Closed', 'Draft'];
+			set_branch_from_current_user_employee(frm);
 			
 			// Set Secondary Status Pill
 			set_custom_pill(frm);
@@ -116,6 +121,25 @@
 			validate_project(frm);
 		}
 	});
+
+	function set_branch_from_current_user_employee(frm) {
+		if (!frm.is_new() || frm.doc.branch || frm.__setting_employee_branch) {
+			return;
+		}
+
+		frm.__setting_employee_branch = true;
+		frappe.call({
+			method: 'cardmasters_app.cardmasters_app.api.sales_order.get_current_user_employee_branch',
+			callback: function(r) {
+				if (r.message && !frm.doc.branch) {
+					frm.set_value('branch', r.message);
+				}
+			},
+			always: function() {
+				frm.__setting_employee_branch = false;
+			}
+		});
+	}
 
 	function set_batched_material_transfer_button(frm) {
 		frm.add_custom_button(__('Batched Material Transfer'), function() {
