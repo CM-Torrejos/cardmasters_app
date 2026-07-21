@@ -136,6 +136,7 @@ doc_events = {
     "Sales Order": {
         "validate": [
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.set_branch_from_creator_employee",
+            "cardmasters_app.cardmasters_app.event_handlers.sales_order.sync_item_branches_with_header",
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.validate_alias_on_facebook_channel",
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.validate_item_rates" # Enforce price list matching
         ],

@@ -101,6 +101,7 @@ async function open_work_order_from_return_row(frm, row) {
 	set_work_order_value(work_order, 'custom_document_id', row.against_sales_order);
 	set_work_order_value(work_order, 'custom_document_item_id', row.so_detail);
 	set_work_order_value(work_order, 'custom_customer', frm.doc.customer);
+	set_work_order_value(work_order, 'custom_for_branch', frm.doc.branch);
 	set_work_order_value(work_order, 'custom_item_specifics', row.custom_item_specifics || so_item.custom_item_specifics);
 	set_work_order_value(work_order, 'custom_particulars', get_backjob_particulars(row.custom_particulars || so_item.custom_particulars));
 	set_work_order_value(work_order, 'description', row.description);

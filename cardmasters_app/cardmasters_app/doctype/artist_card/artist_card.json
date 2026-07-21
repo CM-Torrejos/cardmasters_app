@@ -202,6 +202,7 @@
    "options": "Branch"
   },
   {
+   "fetch_from": "sales_order.custom_production_branch",
    "fieldname": "production_branch",
    "fieldtype": "Link",
    "label": "Production Branch",
@@ -218,7 +219,7 @@
   }
  ],
  "make_attachments_public": 1,
- "modified": "2026-07-20 14:35:52.334847",
+ "modified": "2026-07-21 11:35:25.416161",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Card",
