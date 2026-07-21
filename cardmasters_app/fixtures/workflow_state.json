@@ -282,15 +282,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-05-17 04:59:56.120535",
-  "name": "Pending Approval",
-  "style": "Info",
-  "workflow_state_name": "Pending Approval"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2026-04-08 10:34:45.735707",
   "name": "For Backjob/Withdrawal",
   "style": "Danger",
@@ -313,6 +304,15 @@
   "name": "No Replacement Stock Issued",
   "style": "Warning",
   "workflow_state_name": "No Replacement Stock Issued"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-17 04:59:56.120535",
+  "name": "Pending Approval",
+  "style": "Info",
+  "workflow_state_name": "Pending Approval"
  },
  {
   "docstatus": 0,
