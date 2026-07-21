@@ -251,8 +251,11 @@ def update_custom_child_fields(parent_doctype, trans_items, parent_doctype_name,
 @frappe.whitelist()
 def get_sales_order_html(sales_order_name):
     if not sales_order_name:
-        return "<div>No Sales Order Linked</div>"
-    
+        return ""
+
+    if not frappe.db.exists("Sales Order", sales_order_name):
+        return ""
+
     try:
         print_format = get_default_print_format("Sales Order")
 
