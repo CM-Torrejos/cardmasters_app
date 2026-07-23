@@ -137,15 +137,6 @@
  {
   "docstatus": 0,
   "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-05-17 04:59:56.120535",
-  "name": "Pending Approval",
-  "style": "Info",
-  "workflow_state_name": "Pending Approval"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
   "icon": "ok-sign",
   "modified": "2025-04-24 12:11:30.784826",
   "name": "Approved",
@@ -237,15 +228,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-08-04 14:54:40.231869",
-  "name": "No Artist - Pending Production",
-  "style": "Danger",
-  "workflow_state_name": "No Artist - Pending Production"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2026-05-09 11:04:01.474738",
   "name": "Lost",
   "style": "",
@@ -300,37 +282,10 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2026-07-03 13:52:34.182762",
-  "name": "Processing",
-  "style": "",
-  "workflow_state_name": "Processing"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2026-07-03 13:52:54.115695",
-  "name": "Pending Audit",
-  "style": "",
-  "workflow_state_name": "Pending Audit"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2026-04-08 10:34:45.735707",
   "name": "For Backjob/Withdrawal",
   "style": "Danger",
   "workflow_state_name": "For Backjob/Withdrawal"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2026-02-05 10:08:34.541238",
-  "name": "Partial Production Concluded",
-  "style": "",
-  "workflow_state_name": "Partial Production Concluded"
  },
  {
   "docstatus": 0,
@@ -354,19 +309,10 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2026-07-03 13:32:31.140996",
-  "name": "Audited",
-  "style": "",
-  "workflow_state_name": "Audited"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2026-07-03 13:29:21.353833",
-  "name": "For Processing",
+  "modified": "2025-05-17 04:59:56.120535",
+  "name": "Pending Approval",
   "style": "Info",
-  "workflow_state_name": "For Processing"
+  "workflow_state_name": "Pending Approval"
  },
  {
   "docstatus": 0,
@@ -381,10 +327,37 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
+  "modified": "2026-07-03 13:32:31.140996",
+  "name": "Audited",
+  "style": "",
+  "workflow_state_name": "Audited"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-07-03 13:52:34.182762",
+  "name": "Processing",
+  "style": "",
+  "workflow_state_name": "Processing"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
   "modified": "2026-05-11 11:12:54.282983",
   "name": "For Withdrawal",
   "style": "",
   "workflow_state_name": "For Withdrawal"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-08-04 14:54:40.231869",
+  "name": "No Artist - Pending Production",
+  "style": "Danger",
+  "workflow_state_name": "No Artist - Pending Production"
  },
  {
   "docstatus": 0,
@@ -399,19 +372,28 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2026-02-05 13:28:29.564372",
-  "name": "Pending Claiming",
-  "style": "Danger",
-  "workflow_state_name": "Pending Claiming"
+  "modified": "2026-07-03 13:52:54.115695",
+  "name": "Pending Audit",
+  "style": "",
+  "workflow_state_name": "Pending Audit"
  },
  {
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2026-02-05 13:27:53.190005",
-  "name": "Pending Consumption",
-  "style": "Danger",
-  "workflow_state_name": "Pending Consumption"
+  "modified": "2026-07-03 13:29:21.353833",
+  "name": "For Processing",
+  "style": "Info",
+  "workflow_state_name": "For Processing"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-02-05 10:08:34.541238",
+  "name": "Partial Production Concluded",
+  "style": "",
+  "workflow_state_name": "Partial Production Concluded"
  },
  {
   "docstatus": 0,
@@ -421,6 +403,15 @@
   "name": "Client Approved (BOM WIP)",
   "style": "Info",
   "workflow_state_name": "Client Approved (BOM WIP)"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "question-sign",
+  "modified": "2025-08-04 14:53:46.132163",
+  "name": "Pending",
+  "style": "",
+  "workflow_state_name": "Pending"
  },
  {
   "docstatus": 0,
@@ -444,28 +435,19 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-05-17 05:00:31.788551",
-  "name": "Pending Client Approval",
-  "style": "Danger",
-  "workflow_state_name": "Pending Client Approval"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "question-sign",
-  "modified": "2025-08-04 14:53:46.132163",
-  "name": "Pending",
-  "style": "",
-  "workflow_state_name": "Pending"
+  "modified": "2026-02-05 13:28:34.795946",
+  "name": "In Claiming",
+  "style": "Success",
+  "workflow_state_name": "In Claiming"
  },
  {
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2026-02-05 13:28:34.795946",
-  "name": "In Claiming",
-  "style": "Success",
-  "workflow_state_name": "In Claiming"
+  "modified": "2025-05-17 05:00:31.788551",
+  "name": "Pending Client Approval",
+  "style": "Danger",
+  "workflow_state_name": "Pending Client Approval"
  },
  {
   "docstatus": 0,
@@ -480,10 +462,19 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2026-02-05 13:27:21.555207",
-  "name": "In Production",
-  "style": "Warning",
-  "workflow_state_name": "In Production"
+  "modified": "2026-02-05 13:28:29.564372",
+  "name": "Pending Claiming",
+  "style": "Danger",
+  "workflow_state_name": "Pending Claiming"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-02-05 13:27:53.190005",
+  "name": "Pending Consumption",
+  "style": "Danger",
+  "workflow_state_name": "Pending Consumption"
  },
  {
   "docstatus": 0,
@@ -493,6 +484,15 @@
   "name": "Not Started",
   "style": "Info",
   "workflow_state_name": "Not Started"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-02-05 13:27:21.555207",
+  "name": "In Production",
+  "style": "Warning",
+  "workflow_state_name": "In Production"
  },
  {
   "docstatus": 0,

@@ -23,6 +23,8 @@
   "deadline",
   "work_order_created",
   "project",
+  "branch",
+  "production_branch",
   "section_break_ingn",
   "timesheet",
   "finished_total_time",
@@ -190,6 +192,21 @@
    "fieldtype": "Link",
    "label": "Project",
    "options": "Project"
+  },
+  {
+   "fetch_from": "sales_order.branch",
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "ignore_user_permissions": 1,
+   "label": "Branch",
+   "options": "Branch"
+  },
+  {
+   "fetch_from": "sales_order.custom_production_branch",
+   "fieldname": "production_branch",
+   "fieldtype": "Link",
+   "label": "Production Branch",
+   "options": "Branch"
   }
  ],
  "grid_page_length": 50,
@@ -202,7 +219,7 @@
   }
  ],
  "make_attachments_public": 1,
- "modified": "2026-07-01 09:09:42.544173",
+ "modified": "2026-07-21 11:35:25.416161",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Card",
