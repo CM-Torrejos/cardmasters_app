@@ -64,6 +64,30 @@ frappe.query_reports["Accounting Dimension-wise Profit and Loss Statement"].filt
 frappe.query_reports["Accounting Dimension-wise Profit and Loss Statement"].onload = function (report) {
 	erpnext.financial_statements.onload(report);
 
+	if (report.page) {
+        let views_menu = report.page.wrapper.find('.custom-btn-group:contains("Financial Statements")');
+
+		report.page.add_custom_menu_item(views_menu, __("Accounting Dimension-wise Balance Sheet"), function () {
+			frappe.set_route("query-report", "Accounting Dimension-wise Balance Sheet", report.get_values());
+		});
+
+		report.page.add_custom_menu_item(views_menu, __("Accounting Dimension-wise Profit and Loss Statement"), function () {
+			frappe.set_route("query-report", "Accounting Dimension-wise Profit and Loss Statement", report.get_values());
+		});
+
+		views_menu.find('.dropdown-menu a').filter(function() {
+			return $(this).text().trim() === __("Balance Sheet");
+		}).parent().remove();
+        
+		views_menu.find('.dropdown-menu a').filter(function() {
+			return $(this).text().trim() === __("Profit and Loss");
+		}).parent().remove();
+
+		views_menu.find('.dropdown-menu a').filter(function() {
+			return $(this).text().trim() === __("Cash Flow Statement");
+		}).parent().remove();
+    }
+
 	frappe.call({
 		method: "erpnext.accounts.doctype.accounting_dimension.accounting_dimension.get_dimensions",
 		args: {
