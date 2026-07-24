@@ -6,4 +6,3 @@
 # Patches added in this section will be executed after doctypes are migrated
 cardmasters_app.cardmasters_app.patches.remove_work_order_star_customization
 cardmasters_app.cardmasters_app.patches.migrate_return_warehouses_to_company_settings
-cardmasters_app.cardmasters_app.patches.migrate_damages_returns_item_name_to_item
