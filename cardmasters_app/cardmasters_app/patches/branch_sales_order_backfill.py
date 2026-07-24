@@ -11,7 +11,7 @@ from frappe.utils import cint, now_datetime
 
 COMPANY = "CARDMASTERS CDO"
 TARGET_BRANCH = "Cagayan de Oro"
-CUTOFF_DATE = "2026-07-22"
+CUTOFF_DATE = "2026-07-24"
 BRANCH_FIELD = "branch"
 DEFAULT_BATCH_SIZE = 500
 

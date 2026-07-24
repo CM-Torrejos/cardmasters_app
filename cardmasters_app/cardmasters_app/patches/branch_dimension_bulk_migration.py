@@ -52,7 +52,7 @@ from frappe.utils import cint, flt, getdate, now_datetime
 COMPANY = "CARDMASTERS CDO"
 TARGET_BRANCH = "Cagayan de Oro"
 BRANCH_FIELD = "branch"
-CUTOFF_DATE = "2026-07-22"
+CUTOFF_DATE = "2026-07-24"
 DEFAULT_BATCH_SIZE = 100
 PRECISION = 6
 
