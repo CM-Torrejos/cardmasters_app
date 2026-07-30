@@ -108,6 +108,15 @@ class TestItemAccountingDefaults(FrappeTestCase):
 		with self.assertRaises(frappe.ValidationError):
 			create_company_boms(frappe._dict(name="FG-001", is_stock_item=1))
 
+	@patch("cardmasters_app.cardmasters_app.event_handlers.item.frappe.get_all")
+	def test_bom_automation_ignores_disabled_company_settings(self, get_all):
+		get_all.return_value = []
+
+		create_company_boms(frappe._dict(name="FG-001", is_stock_item=1))
+
+		get_all.assert_called_once()
+		self.assertEqual(get_all.call_args.kwargs["filters"], {"disabled": 0, "enable_bom_automation": 1})
+
 
 def make_configuration(company, item_group, income_account, cost_center):
 	warehouse = "Main - CDO" if company == "Cardmasters CDO" else "Main - MNL"
