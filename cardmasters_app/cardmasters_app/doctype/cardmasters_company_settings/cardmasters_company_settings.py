@@ -94,6 +94,7 @@ class CardmastersCompanySettings(Document):
 				"Cardmasters Company Settings",
 				{
 					"name": ("!=", self.name or ""),
+					"disabled": 0,
 					"enable_bom_automation": 1,
 					"make_generated_bom_default": 1,
 				},

@@ -75,7 +75,7 @@ def create_company_boms(doc, method=None):
 
 	configurations = frappe.get_all(
 		"Cardmasters Company Settings",
-		filters={"enable_bom_automation": 1},
+		filters={"disabled": 0, "enable_bom_automation": 1},
 		fields=[
 			"company",
 			"default_bom_component",
