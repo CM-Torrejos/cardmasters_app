@@ -339,10 +339,12 @@ var autofill_work_order_batch_source_fields = function(frm) {
 
 	if (
 		frm.fields_dict.custom_production_type &&
-		frm.doc.sales_order &&
-		!frm.doc.custom_production_type
+		(
+			!frm.doc.custom_production_type ||
+			(frm.doc.sales_order && frm.doc.custom_production_type === 'Make to Stock')
+		)
 	) {
-		updates.custom_production_type = 'Make to Order';
+		updates.custom_production_type = frm.doc.sales_order ? 'Make to Order' : 'Make to Stock';
 	}
 
 	if (
@@ -431,7 +433,6 @@ var add_make_to_stock_button = function(frm) {
 	if (
 		frm.is_new() ||
 		frm.doc.docstatus === 2 ||
-		!frm.doc.sales_order ||
 		!frappe.model.can_create('Work Order')
 	) {
 		return;
