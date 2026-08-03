@@ -431,7 +431,6 @@ var add_make_to_stock_button = function(frm) {
 	if (
 		frm.is_new() ||
 		frm.doc.docstatus === 2 ||
-		!frm.doc.sales_order ||
 		!frappe.model.can_create('Work Order')
 	) {
 		return;
