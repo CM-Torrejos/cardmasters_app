@@ -90,6 +90,9 @@
 			
 			// Render Outstanding balance
 			render_outstanding_balance(frm)
+
+			// Render the customer's company-specific dashboard balance
+			render_customer_total_unpaid(frm);
 			
 			// Validation check (may no longer be needed since specifics and particulars cna only be updated in update items now)
 			// validate_discrepancy_against_wo(frm)
@@ -103,6 +106,14 @@
 		// Sales Channels
 		custom_sales_channel: function(frm){
 			validate_sales_partner(frm);
+		},
+
+		customer: function(frm) {
+			render_customer_total_unpaid(frm);
+		},
+
+		company: function(frm) {
+			render_customer_total_unpaid(frm);
 		},
 		
 		// Grant stuff
@@ -767,6 +778,44 @@
 				}
 			});
 		}
+	}
+
+	function render_customer_total_unpaid(frm) {
+		const field = frm.get_field('custom_total_unpaid');
+		if (!field?.$wrapper) return;
+
+		field.$wrapper.empty().css('margin-bottom', '16px');
+		if (!frm.doc.customer || !frm.doc.company) return;
+
+		const customer = frm.doc.customer;
+		const company = frm.doc.company;
+
+		frappe.call({
+			method: 'cardmasters_app.cardmasters_app.api.sales_order.get_customer_dashboard_balance',
+			args: { customer, company },
+			callback: function(r) {
+				if (frm.doc.customer !== customer || frm.doc.company !== company) return;
+
+				const info = r.message;
+				if (!info) {
+					field.$wrapper.text(__('No customer balance available for this company'));
+					return;
+				}
+
+				const amount = Number(info.balance_amount) || 0;
+				const amount_element = $('<strong>', {
+					text: format_currency(amount, info.currency),
+				});
+
+				if (amount > 0) {
+					amount_element.css('color', 'var(--red-600, #dc3545)');
+				}
+
+				field.$wrapper
+					.empty()
+					.append($('<span>', { text: `${__('Total Unpaid')}: ` }), amount_element);
+			}
+		});
 	}
 	
 	function validate_discrepancy_against_wo(frm) {
