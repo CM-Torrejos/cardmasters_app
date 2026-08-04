@@ -282,3 +282,18 @@ def get_default_print_format(doctype):
 def get_sales_order_outstanding(so_name):
     from cardmasters_app.cardmasters_app.services.outstanding_balance import get_sales_order_outstanding as get_outstanding
     return get_outstanding(so_name)
+
+
+@frappe.whitelist()
+def get_customer_dashboard_balance(customer, company):
+    """Return the same company balance shown in the Customer dashboard Stats section."""
+    if not customer or not company:
+        return None
+
+    customer_doc = frappe.get_doc("Customer", customer)
+    customer_doc.check_permission("read")
+
+    from erpnext.accounts.party import get_dashboard_info
+
+    dashboard_info = get_dashboard_info("Customer", customer, customer_doc.loyalty_program)
+    return next((info for info in dashboard_info if info.get("company") == company), None)
