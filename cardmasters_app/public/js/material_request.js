@@ -1,6 +1,14 @@
 frappe.ui.form.on('Material Request', {
 	refresh(frm) {
 		if (
+			!frm.is_new() &&
+			frm.doc.docstatus === 1 &&
+			frappe.model.can_create('Artist Card')
+		) {
+			add_material_request_artist_card_button(frm);
+		}
+
+		if (
 			frm.doc.docstatus !== 1 ||
 			frm.doc.material_request_type !== 'Manufacture' ||
 			!frappe.model.can_create('Work Order')
@@ -14,6 +22,71 @@ frappe.ui.form.on('Material Request', {
 		}, 100);
 	}
 });
+
+function add_material_request_artist_card_button(frm) {
+	frm.add_custom_button(__('Artist Card'), async () => {
+		const sales_order = get_linked_sales_order(frm);
+		const values = {
+			material_request: frm.doc.name,
+			sales_order,
+			company: frm.doc.company,
+			date_created: frappe.datetime.get_today(),
+			deadline: get_material_request_deadline(frm),
+			project: get_material_request_project(frm)
+		};
+
+		if (sales_order) {
+			try {
+				const sales_order_doc = await frappe.db.get_doc('Sales Order', sales_order);
+				Object.assign(values, {
+					customer: sales_order_doc.customer,
+					deadline: sales_order_doc.delivery_date || values.deadline,
+					rush_order: sales_order_doc.custom_rush_order,
+					custom_blue_order: sales_order_doc.custom_blue_order,
+					project: sales_order_doc.project || values.project,
+					branch: sales_order_doc.branch,
+					production_branch: sales_order_doc.custom_production_branch
+				});
+			} catch (error) {
+				frappe.show_alert({
+					message: __('Some Sales Order details could not be loaded.'),
+					indicator: 'orange'
+				});
+			}
+		}
+
+		frappe.new_doc('Artist Card', remove_empty_values(values));
+	}, __('Create'));
+}
+
+function get_linked_sales_order(frm) {
+	if (frm.doc.custom_sales_order) {
+		return frm.doc.custom_sales_order;
+	}
+
+	const linked_row = (frm.doc.items || []).find(row => row.sales_order);
+	return linked_row ? linked_row.sales_order : null;
+}
+
+function get_material_request_deadline(frm) {
+	const schedule_dates = (frm.doc.items || [])
+		.map(row => row.schedule_date)
+		.filter(Boolean)
+		.sort();
+
+	return schedule_dates[0] || frm.doc.schedule_date;
+}
+
+function get_material_request_project(frm) {
+	const project_row = (frm.doc.items || []).find(row => row.project);
+	return project_row ? project_row.project : null;
+}
+
+function remove_empty_values(values) {
+	return Object.fromEntries(
+		Object.entries(values).filter(([, value]) => value !== undefined && value !== null && value !== '')
+	);
+}
 
 function add_material_request_work_order_button(frm) {
 	frm.add_custom_button(__('Work Order'), () => {
