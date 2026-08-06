@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "format:{sales_order}_LO{###}",
+ "autoname": "format:ART-CRD-#####",
  "creation": "2025-04-25 11:09:29.485161",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -11,6 +11,7 @@
   "artist_3",
   "any_artist_search",
   "sales_order",
+  "material_request",
   "rush_order",
   "customer",
   "workflow_state",
@@ -207,6 +208,12 @@
    "fieldtype": "Link",
    "label": "Production Branch",
    "options": "Branch"
+  },
+  {
+   "fieldname": "material_request",
+   "fieldtype": "Link",
+   "label": "Material Request",
+   "options": "Material Request"
   }
  ],
  "grid_page_length": 50,
@@ -219,7 +226,7 @@
   }
  ],
  "make_attachments_public": 1,
- "modified": "2026-07-21 11:35:25.416161",
+ "modified": "2026-08-06 14:43:52.453825",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Card",
