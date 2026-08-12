@@ -319,6 +319,7 @@ frappe.ui.form.on('Work Order', {
 		add_make_to_stock_button(frm);
 		add_repack_damage_button(frm);
 		show_linked_stock_work_orders(frm);
+		pull_material_request_details(frm);
 	},
 
 	sales_order: function(frm) {
@@ -773,6 +774,54 @@ var confirm_mark_workstation_jobs_complete = function(frm, workstation) {
 	});
 
 	d.show();
+};
+
+var pull_material_request_details = async function (frm) {
+    // 1. Silent early exit if no Material Request is linked
+    if (!frm.doc.material_request) {
+        return;
+    }
+
+    try {
+        // 2. Fetch the Parent Material Request Document
+        let mr_doc = await frappe.db.get_doc("Material Request", frm.doc.material_request);
+
+        if (!mr_doc || !mr_doc.items) {
+            return;
+        }
+
+        // 3. Match the child row inside the parent's items table
+        let mr_item_row = null;
+
+        // Primary Match: By material_request_item row ID
+        if (frm.doc.material_request_item) {
+            mr_item_row = mr_doc.items.find(row => row.name === frm.doc.material_request_item);
+        }
+
+        // Fallback Match: By production_item (item_code)
+        if (!mr_item_row && frm.doc.production_item) {
+            mr_item_row = mr_doc.items.find(row => row.item_code === frm.doc.production_item);
+        }
+
+        // 4. Map value if found
+        if (mr_item_row) {
+            let target_val = mr_item_row.custom_particulars || "";
+
+            // Only update if value is different (prevents form turning "Unsaved" unnecessarily)
+            if (frm.doc.custom_particulars !== target_val) {
+                frm.set_value("custom_particulars", target_val);
+            }
+        } else {
+            let hint = `Checked material_request_item=${frm.doc.material_request_item || null} and production_item=${frm.doc.production_item || null}.`;
+            frappe.msgprint({
+                message: `Material Request linked, but could not match item row. ${hint}`,
+                alert: true,
+                indicator: "orange"
+            });
+        }
+    } catch (e) {
+        console.error("Error fetching Material Request details:", e);
+    }
 };
 
 frappe.ui.form.on('CM Jobs', {
