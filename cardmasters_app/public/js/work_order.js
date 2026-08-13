@@ -786,7 +786,22 @@ var pull_material_request_details = async function (frm) {
         // 2. Fetch the Parent Material Request Document
         let mr_doc = await frappe.db.get_doc("Material Request", frm.doc.material_request);
 
-        if (!mr_doc || !mr_doc.items) {
+        // Exit only if the parent doc doesn't exist at all
+        if (!mr_doc) {
+            return;
+        }
+
+        // --- Map Parent-Level Branch Fields ---
+        if (mr_doc.custom_for_branch && frm.doc.custom_for_branch !== mr_doc.custom_for_branch) {
+            frm.set_value("custom_for_branch", mr_doc.custom_for_branch);
+        }
+
+        if (mr_doc.custom_production_branch && frm.doc.custom_production_branch !== mr_doc.custom_production_branch) {
+            frm.set_value("custom_production_branch", mr_doc.custom_production_branch);
+        }
+
+        // --- Stop here if there are no child items to search through ---
+        if (!mr_doc.items || !mr_doc.items.length) {
             return;
         }
 
