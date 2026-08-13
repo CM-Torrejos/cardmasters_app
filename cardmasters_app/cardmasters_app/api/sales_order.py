@@ -295,5 +295,6 @@ def get_customer_dashboard_balance(customer, company):
 
     from erpnext.accounts.party import get_dashboard_info
 
-    dashboard_info = get_dashboard_info("Customer", customer, customer_doc.loyalty_program)
+    # ERPNext returns None when the user cannot read the party's invoice DocType.
+    dashboard_info = get_dashboard_info("Customer", customer, customer_doc.loyalty_program) or []
     return next((info for info in dashboard_info if info.get("company") == company), None)
