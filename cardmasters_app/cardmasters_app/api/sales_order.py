@@ -285,6 +285,27 @@ def get_sales_order_outstanding(so_name):
 
 
 @frappe.whitelist()
+def get_customer_sales_order_outstanding(customer, company):
+    """Sum submitted Sales Order balances visible to the current user."""
+    if not customer or not company:
+        return 0
+
+    sales_orders = frappe.get_list(
+        "Sales Order",
+        filters={
+            "customer": customer,
+            "company": company,
+            "docstatus": 1,
+            "custom_outstanding_balance": [">", 0],
+        },
+        fields=["custom_outstanding_balance"],
+        limit_page_length=0,
+    )
+
+    return sum(sales_order.custom_outstanding_balance or 0 for sales_order in sales_orders)
+
+
+@frappe.whitelist()
 def get_customer_dashboard_balance(customer, company):
     """Return the same company balance shown in the Customer dashboard Stats section."""
     if not customer or not company:
@@ -295,5 +316,6 @@ def get_customer_dashboard_balance(customer, company):
 
     from erpnext.accounts.party import get_dashboard_info
 
-    dashboard_info = get_dashboard_info("Customer", customer, customer_doc.loyalty_program)
+    # ERPNext returns None when the user cannot read the party's invoice DocType.
+    dashboard_info = get_dashboard_info("Customer", customer, customer_doc.loyalty_program) or []
     return next((info for info in dashboard_info if info.get("company") == company), None)

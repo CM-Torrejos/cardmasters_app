@@ -1,5 +1,19 @@
 import frappe
 from frappe import _  # <--- THIS WAS MISSING
+from frappe.utils import flt
+
+
+def get_grant_covered_amount(grant_doc, sales_order_total):
+    """Return the portion of a Sales Order that the grant can still cover."""
+    available_balance = flt(grant_doc.available_balance)
+
+    if available_balance <= 0:
+        frappe.throw(
+            _("Grant {0} has no value left.").format(grant_doc.name)
+        )
+
+    return min(flt(sales_order_total), available_balance)
+
 
 def set_branch_from_creator_employee(doc, _method=None):
     """
@@ -66,19 +80,15 @@ def manage_grant_usage(doc, method):
                      .format(doc.custom_grant, grant_doc.customer, doc.customer))
 
     if method == "on_submit":
-        # Check balance BEFORE allowing the Sales Order to submit
-        if doc.grand_total > grant_doc.available_balance:
-            # Format numbers for better error messages
-            avail = frappe.format_value(grant_doc.available_balance, "Currency")
-            req = frappe.format_value(doc.grand_total, "Currency")
-            frappe.throw(_("Insufficient Grant Balance! Available: {0}, Required: {1}").format(avail, req))
+        covered_amount = get_grant_covered_amount(grant_doc, doc.grand_total)
 
-        # Add row to the child table
+        # Record only the amount covered by the grant. A Sales Order may be
+        # worth more than the remaining grant balance.
         grant_doc.append("grant_entries", {
             "sales_order": doc.name,
             "transaction_date": doc.transaction_date,
-            "grand_total": doc.grand_total,
-            "author": frappe.session.user
+            "grand_total": covered_amount,
+            "created_by": frappe.session.user
         })
         
         # This triggers Grant.validate() which handles redeemed_value and available_balance
@@ -108,17 +118,18 @@ def manage_grant_update_on_submitted_doc(doc, method):
     # Case 1: Grant was added retroactively
     if not old_grant and new_grant:
         grant_doc = frappe.get_doc("Grant", new_grant)
-        
-        # Run standard safety balance check
-        if doc.grand_total > grant_doc.available_balance:
-            frappe.throw(_("Cannot link Grant! Insufficient balance. Available: {0}")
-                         .format(frappe.format_value(grant_doc.available_balance, "Currency")))
-            
+
+        if grant_doc.customer != doc.customer:
+            frappe.throw(_("Grant {0} belongs to {1}, not {2}")
+                         .format(new_grant, grant_doc.customer, doc.customer))
+
+        covered_amount = get_grant_covered_amount(grant_doc, doc.grand_total)
+
         grant_doc.append("grant_entries", {
             "sales_order": doc.name,
             "transaction_date": doc.transaction_date,
-            "grand_total": doc.grand_total,
-            "author": frappe.session.user
+            "grand_total": covered_amount,
+            "created_by": frappe.session.user
         })
         grant_doc.save(ignore_permissions=True)
         frappe.msgprint(_("Grant {0} ledger updated retroactively.").format(new_grant))
