@@ -93,6 +93,7 @@
 
 			// Render the customer's company-specific dashboard balance
 			render_customer_total_unpaid(frm);
+			render_customer_sales_order_outstanding(frm);
 			
 			// Validation check (may no longer be needed since specifics and particulars cna only be updated in update items now)
 			// validate_discrepancy_against_wo(frm)
@@ -110,10 +111,12 @@
 
 		customer: function(frm) {
 			render_customer_total_unpaid(frm);
+			render_customer_sales_order_outstanding(frm);
 		},
 
 		company: function(frm) {
 			render_customer_total_unpaid(frm);
+			render_customer_sales_order_outstanding(frm);
 		},
 		
 		// Grant stuff
@@ -814,6 +817,38 @@
 				field.$wrapper
 					.empty()
 					.append($('<span>', { text: `${__('Total Unpaid')}: ` }), amount_element);
+			}
+		});
+	}
+
+	function render_customer_sales_order_outstanding(frm) {
+		const field = frm.get_field('custom_total_unpaid_sales_orders');
+		if (!field?.$wrapper) return;
+
+		field.$wrapper.empty().css('margin-bottom', '16px');
+		if (!frm.doc.customer || !frm.doc.company) return;
+
+		const customer = frm.doc.customer;
+		const company = frm.doc.company;
+
+		frappe.call({
+			method: 'cardmasters_app.cardmasters_app.api.sales_order.get_customer_sales_order_outstanding',
+			args: { customer, company },
+			callback: function(r) {
+				if (frm.doc.customer !== customer || frm.doc.company !== company) return;
+
+				const amount = Number(r.message) || 0;
+				const amount_element = $('<strong>', {
+					text: format_currency(amount, frm.doc.currency),
+				});
+
+				if (amount > 0) {
+					amount_element.css('color', 'var(--red-600, #dc3545)');
+				}
+
+				field.$wrapper
+					.empty()
+					.append($('<span>', { text: `${__('Total Unpaid Sales Orders')}: ` }), amount_element);
 			}
 		});
 	}
