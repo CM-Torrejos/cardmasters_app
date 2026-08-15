@@ -551,220 +551,211 @@
 	}
 	
 	function render_wo_html_block(frm) {
-		if (!frm.is_new()) {
-			frappe.call({
-				method: 'frappe.client.get_list',
-				args: {
-					doctype: 'Work Order',
-					filters: {
-						docstatus: ["!=", 2]
-					},
-					or_filters: [
-						['Work Order', 'sales_order', '=', frm.doc.name],
-						['Work Order', 'custom_document_id', '=', frm.doc.name]
-					],
-					fields: ['name', 'workflow_state', 'item_name', 'status', 'qty', 'custom_item_specifics', 'custom_particulars', 'custom_bypass', 'sales_order_item', 'custom_document_id', 'custom_document_item_id', 'custom_production_type'],
-					limit: 0
-				},
-				callback: function(response) {
-					let work_orders = response.message || [];
-					let standard_work_orders = work_orders.filter(wo => wo.custom_production_type !== 'Backjob');
-					let backjob_work_orders = work_orders.filter(wo => {
-						return wo.custom_production_type === 'Backjob' && wo.custom_document_id === frm.doc.name;
-					});
-					
-					let html = `
-							<style>
-								.custom-wo-table { table-layout: fixed; width: 100%; border-collapse: collapse; }
-								.custom-wo-table td, .custom-wo-table th { 
-									white-space: normal !important; 
-									word-wrap: break-word; 
-									vertical-align: top; 
-									padding: 10px 8px;
-									font-size: 0.9em;
-									border-bottom: 1px solid var(--border-color);
-								}
-								.status-concluded { color: var(--green-600, #28a745); font-weight: bold; }
-								
-								.no-wo-row { 
-									color: #ff5858 !important; 
-									font-style: italic; 
-								}
-								.missing-label { 
-									font-weight: bold; 
-									color: #ff5858 !important; 
-								}
-							</style>
-							<table class="table table-bordered custom-wo-table">
-								<thead>
-									<tr>
-										<th style="width: 12%;">Work Order</th>
-										<th style="width: 12%;">Item</th>
-										<th style="width: 6%;">Qty</th>
-										<th style="width: 13%;">Specifics</th>
-										<th style="width: 13%;">Particulars</th>
-										<th style="width: 14%;">Production Status</th>
-										<th style="width: 15%;">Consumption</th>
-										<th style="width: 15%;">Claiming Status</th>
-									</tr>
-								</thead>
-								<tbody>`;
-					
-					frm.doc.items.forEach(so_item => {
-						let linked_wos = standard_work_orders.filter(wo => wo.sales_order_item === so_item.name);
-						let total_wo_qty = 0;
-						
-						let safe_so_item_name = frappe.utils.escape_html(so_item.item_name || "");
-						let safe_so_specifics = frappe.utils.escape_html(so_item.custom_item_specifics || "");
-						let safe_so_particulars = frappe.utils.escape_html(so_item.custom_particulars || "");
-						
-						linked_wos.forEach(wo => {
-							total_wo_qty += wo.qty;
-							
-							let production_status = wo.workflow_state || "";
-							
-							if (WO_CONCLUDED_STATES.includes(wo.workflow_state)) {
-								production_status = `<span class="status-concluded">Production Concluded</span>`;
-							} else if (wo.workflow_state === WO_IN_PRODUCTION_STATUS) {
-								production_status = WO_IN_PRODUCTION_STATUS;
-							} else if (wo.workflow_state === WO_DRAFT_STATUS) {
-								production_status = WO_DRAFT_STATUS;
-							} else if (wo.workflow_state === WO_NOT_STARTED_STATUS) {
-								production_status = WO_NOT_STARTED_STATUS;
-							}
-							
-							let consumption_status = wo.status === "Completed" ? "Consumption entry submitted" : "No consumption entry submitted";
-							
-							let claiming_status = "Not In Claiming";
-							if (wo.custom_bypass == 1) {
-								claiming_status = `${WO_IN_CLAIMING_STATUS} (Bypassed)`;
-							} else if (wo.workflow_state === WO_IN_CLAIMING_STATUS) { 
-								claiming_status = WO_IN_CLAIMING_STATUS; 
-							}
-							
-							let safe_wo_item_name = frappe.utils.escape_html(wo.item_name || "");
-							let safe_wo_specifics = frappe.utils.escape_html(wo.custom_item_specifics || "");
-							let safe_wo_particulars = frappe.utils.escape_html(wo.custom_particulars || "");
-							
-							html += `
-									<tr>
-										<td><a href="/app/work-order/${wo.name}" target="_blank"><b>${wo.name}</b></a></td>
-										<td>${safe_wo_item_name}</td>
-										<td>${wo.qty}</td>
-										<td>${safe_wo_specifics}</td>
-										<td>${safe_wo_particulars}</td>
-										<td>${production_status}</td>
-										<td>${consumption_status}</td>
-										<td>${claiming_status}</td>
-									</tr>`;
-						});
-						
-						let remaining_qty = so_item.qty - total_wo_qty;
-						if (remaining_qty > 0) {
-							html += `
-									<tr class="no-wo-row">
-										<td class="missing-label">No Work Order</td>
-										<td>${safe_so_item_name}</td>
-										<td>${remaining_qty}</td>
-										<td>${safe_so_specifics}</td>
-										<td>${safe_so_particulars}</td>
-										<td>Pending Creation</td>
-										<td>N/A</td>
-										<td>N/A</td>
-									</tr>`;
-						}
-					});
-					
-					html += '</tbody></table>';
-					frm.fields_dict['custom_progress_summary'].$wrapper.html(html);
-					render_backjob_html_block(frm, backjob_work_orders);
-				}
-			});
-		}
-	}
-
-	function render_backjob_html_block(frm, backjob_work_orders) {
-		if (!frm.fields_dict.custom_backjob_summary) {
+		if (frm.is_new()) {
 			return;
 		}
 
-		let html = `
-				<style>
-					.custom-backjob-table { table-layout: fixed; width: 100%; border-collapse: collapse; }
-					.custom-backjob-table td, .custom-backjob-table th {
-						white-space: normal !important;
-						word-wrap: break-word;
-						vertical-align: top;
-						padding: 10px 8px;
-						font-size: 0.9em;
-						border-bottom: 1px solid var(--border-color);
-					}
-					.status-concluded { color: var(--green-600, #28a745); font-weight: bold; }
-					.no-backjob-row {
-						color: var(--text-muted);
-						font-style: italic;
-					}
-				</style>
-				<table class="table table-bordered custom-backjob-table">
-					<thead>
-						<tr>
-							<th style="width: 12%;">Work Order</th>
-							<th style="width: 12%;">Item</th>
-							<th style="width: 6%;">Qty</th>
-							<th style="width: 13%;">Specifics</th>
-							<th style="width: 18%;">Particulars</th>
-							<th style="width: 15%;">Production Status</th>
-							<th style="width: 15%;">Consumption</th>
-							<th style="width: 15%;">Claiming Status</th>
-						</tr>
-					</thead>
-					<tbody>`;
+		frappe.call({
+			method: 'frappe.client.get_list',
+			args: {
+				doctype: 'Work Order',
+				filters: {
+					docstatus: ["!=", 2]
+				},
+				or_filters: [
+					['Work Order', 'sales_order', '=', frm.doc.name],
+					['Work Order', 'custom_document_id', '=', frm.doc.name]
+				],
+				fields: ['name', 'workflow_state', 'item_name', 'status', 'qty', 'custom_item_specifics', 'custom_particulars', 'custom_bypass', 'sales_order_item', 'custom_document_id', 'custom_document_item_id', 'custom_production_type'],
+				limit: 0
+			},
+			callback: function(response) {
+				const work_orders = response.message || [];
+				const standard_work_orders = work_orders.filter(wo => wo.custom_production_type !== 'Backjob');
+				const backjob_work_orders = work_orders.filter(wo => {
+					return wo.custom_production_type === 'Backjob' && wo.custom_document_id === frm.doc.name;
+				});
 
-		let rendered_rows = 0;
-
-		frm.doc.items.forEach(so_item => {
-			let linked_backjobs = backjob_work_orders.filter(wo => wo.custom_document_item_id === so_item.name);
-
-			linked_backjobs.forEach(wo => {
-				rendered_rows += 1;
-
-				let production_status = wo.workflow_state || "";
-				if (WO_CONCLUDED_STATES.includes(wo.workflow_state)) {
-					production_status = `<span class="status-concluded">Production Concluded</span>`;
-				}
-
-				let consumption_status = wo.status === "Completed" ? "Consumption entry submitted" : "No consumption entry submitted";
-
-				let claiming_status = "Not In Claiming";
-				if (wo.custom_bypass == 1) {
-					claiming_status = `${WO_IN_CLAIMING_STATUS} (Bypassed)`;
-				} else if (wo.workflow_state === WO_IN_CLAIMING_STATUS) {
-					claiming_status = WO_IN_CLAIMING_STATUS;
-				}
-
-				html += `
-						<tr>
-							<td><a href="/app/work-order/${wo.name}" target="_blank"><b>${wo.name}</b></a></td>
-							<td>${frappe.utils.escape_html(wo.item_name || "")}</td>
-							<td>${wo.qty}</td>
-							<td>${frappe.utils.escape_html(wo.custom_item_specifics || "")}</td>
-							<td>${frappe.utils.escape_html(wo.custom_particulars || "")}</td>
-							<td>${production_status}</td>
-							<td>${consumption_status}</td>
-							<td>${claiming_status}</td>
-						</tr>`;
-			});
+				load_work_order_withdrawals(work_orders, function(withdrawals_by_work_order) {
+					render_work_order_cards(frm, {
+						fieldname: 'custom_progress_summary',
+						work_orders: standard_work_orders,
+						row_link_field: 'sales_order_item',
+						withdrawals_by_work_order,
+						show_all_items: true,
+						empty_message: __('No Work Order created')
+					});
+					render_backjob_html_block(frm, backjob_work_orders, withdrawals_by_work_order);
+				});
+			}
 		});
+	}
 
-		if (!rendered_rows) {
-			html += `
-					<tr class="no-backjob-row">
-						<td colspan="8">No Backjob Work Orders found.</td>
-					</tr>`;
+	function load_work_order_withdrawals(work_orders, callback) {
+		const work_order_names = work_orders.map(wo => wo.name);
+		if (!work_order_names.length) {
+			callback({});
+			return;
 		}
 
-		html += '</tbody></table>';
-		frm.fields_dict.custom_backjob_summary.$wrapper.html(html);
+		frappe.call({
+			method: 'frappe.client.get_list',
+			args: {
+				doctype: 'Stock Entry',
+				filters: {
+					work_order: ['in', work_order_names],
+					stock_entry_type: 'Material Transfer for Manufacture',
+					docstatus: 1
+				},
+				fields: ['name', 'work_order'],
+				order_by: 'posting_date asc, posting_time asc, creation asc',
+				limit: 0
+			},
+			callback: function(response) {
+				const grouped = {};
+				(response.message || []).forEach(stock_entry => {
+					if (!grouped[stock_entry.work_order]) {
+						grouped[stock_entry.work_order] = [];
+					}
+					grouped[stock_entry.work_order].push(stock_entry.name);
+				});
+				callback(grouped);
+			},
+			error: function() {
+				// Keep the progress UI usable if this user cannot read Stock Entries.
+				callback({});
+			}
+		});
+	}
+
+	function render_backjob_html_block(frm, backjob_work_orders, withdrawals_by_work_order) {
+		render_work_order_cards(frm, {
+			fieldname: 'custom_backjob_summary',
+			work_orders: backjob_work_orders,
+			row_link_field: 'custom_document_item_id',
+			withdrawals_by_work_order,
+			show_all_items: false,
+			global_empty_message: __('No Backjob Work Orders found.')
+		});
+	}
+
+	function render_work_order_cards(frm, options) {
+		const field = frm.fields_dict[options.fieldname];
+		if (!field) return;
+
+		const safe = value => frappe.utils.escape_html(String(value ?? ''));
+		const items = options.show_all_items
+			? (frm.doc.items || [])
+			: (frm.doc.items || []).filter(item => options.work_orders.some(wo => wo[options.row_link_field] === item.name));
+
+		if (!items.length && options.global_empty_message) {
+			field.$wrapper.html(`<div class="text-muted wo-global-empty">${options.global_empty_message}</div>`);
+			return;
+		}
+
+		let html = `${work_order_card_styles()}`;
+		items.forEach(so_item => {
+			const linked_work_orders = options.work_orders.filter(wo => wo[options.row_link_field] === so_item.name);
+			const total_work_order_qty = linked_work_orders.reduce((total, wo) => total + Number(wo.qty || 0), 0);
+
+			html += `
+				<section class="so-progress-card">
+					<div class="so-progress-card__meta">
+						<div class="so-progress-card__row">${__('SO Row #')}: ${safe(so_item.idx)}</div>
+						<div class="so-progress-card__item">${__('Item Code')}: ${safe(so_item.item_code)}: ${safe(so_item.item_name)}</div>
+						<div class="so-progress-card__particulars"><span>${__('Particulars')}:</span> ${safe(so_item.custom_particulars)}</div>
+						<div class="so-progress-card__quantity">${__('Quantity')}: ${safe(so_item.qty)}</div>
+					</div>
+					<div class="so-progress-card__table-wrap">
+						<table class="so-progress-wo-table">
+							<thead><tr>
+								<th>${__('Work Order')}</th>
+								<th class="text-right">${__('Qty')}</th>
+								<th>${__('Production Status')}</th>
+								<th>${__('Withdrawals')}</th>
+								<th>${__('Consumption Status')}</th>
+								<th>${__('Delivery Status')}</th>
+							</tr></thead><tbody>`;
+
+			linked_work_orders.forEach(wo => {
+				const wo_name = safe(wo.name);
+				html += `
+					<tr>
+						<td><a href="/app/work-order/${encodeURIComponent(wo.name)}" target="_blank"><strong>${wo_name}</strong></a></td>
+						<td class="text-right">${safe(wo.qty)}</td>
+						<td>${get_work_order_production_status(wo, safe)}</td>
+						<td>${render_withdrawal_links(options.withdrawals_by_work_order[wo.name] || [], safe)}</td>
+						<td>${safe(wo.status === 'Completed' ? __('Consumption entry submitted') : __('No consumption entry submitted'))}</td>
+						<td>${safe(get_work_order_delivery_status(wo))}</td>
+					</tr>`;
+			});
+
+			if (!linked_work_orders.length) {
+				html += `<tr class="so-progress-empty"><td colspan="6">${options.empty_message}</td></tr>`;
+			} else if (options.show_all_items && Number(so_item.qty || 0) > total_work_order_qty) {
+				const remaining_qty = Number(so_item.qty || 0) - total_work_order_qty;
+				html += `<tr class="so-progress-empty"><td colspan="6">${__('No Work Order created for remaining quantity')}: ${safe(remaining_qty)}</td></tr>`;
+			}
+
+			html += '</tbody></table></div></section>';
+		});
+
+		field.$wrapper.html(html);
+	}
+
+	function get_work_order_production_status(wo, safe) {
+		if (WO_CONCLUDED_STATES.includes(wo.workflow_state)) {
+			return `<span class="status-concluded">${__('Production Concluded')}</span>`;
+		}
+		return safe(wo.workflow_state || '');
+	}
+
+	function get_work_order_delivery_status(wo) {
+		if (wo.custom_bypass == 1) {
+			return `${WO_IN_CLAIMING_STATUS} (${__('Bypassed')})`;
+		}
+		return wo.workflow_state === WO_IN_CLAIMING_STATUS ? WO_IN_CLAIMING_STATUS : __('Not In Claiming');
+	}
+
+	function render_withdrawal_links(stock_entry_names, safe) {
+		if (!stock_entry_names.length) return __('None');
+		return stock_entry_names.map(name => {
+			return `<a class="so-progress-withdrawal" href="/app/stock-entry/${encodeURIComponent(name)}" target="_blank">${safe(name)}</a>`;
+		}).join('');
+	}
+
+	function work_order_card_styles() {
+		return `
+			<style>
+				.so-progress-card { border: 1px solid var(--border-color); border-radius: var(--border-radius-md, 8px); margin: 0 0 18px; overflow: hidden; background: var(--card-bg, var(--fg-color)); }
+				.so-progress-card__meta { padding: 14px 16px; border-bottom: 1px solid var(--border-color); background: var(--subtle-fg, var(--control-bg)); }
+				.so-progress-card__meta > div + div { margin-top: 7px; }
+				.so-progress-card__row { font-weight: 600; color: var(--text-muted); }
+				.so-progress-card__item { font-size: 1.05em; font-weight: 600; color: var(--text-color); }
+				.so-progress-card__particulars { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--text-color); }
+				.so-progress-card__particulars span, .so-progress-card__quantity { color: var(--text-muted); }
+				.so-progress-card__table-wrap { overflow-x: auto; }
+				.so-progress-wo-table { width: 100%; min-width: 760px; table-layout: fixed; border-collapse: collapse; margin: 0; }
+				.so-progress-wo-table th, .so-progress-wo-table td { padding: 9px 10px; vertical-align: top; text-align: left; white-space: normal; overflow-wrap: anywhere; border-bottom: 1px solid var(--border-color); }
+				.so-progress-wo-table th { color: var(--text-muted); background: var(--subtle-fg, var(--control-bg)); font-size: var(--text-xs); font-weight: 600; }
+				.so-progress-wo-table th:nth-child(1) { width: 17%; }
+				.so-progress-wo-table th:nth-child(2) { width: 7%; }
+				.so-progress-wo-table th:nth-child(3) { width: 19%; }
+				.so-progress-wo-table th:nth-child(4) { width: 18%; }
+				.so-progress-wo-table th:nth-child(5) { width: 21%; }
+				.so-progress-wo-table th:nth-child(6) { width: 18%; }
+				.so-progress-wo-table tbody tr:last-child td { border-bottom: 0; }
+				.so-progress-wo-table .text-right { text-align: right; }
+				.so-progress-withdrawal { display: block; width: fit-content; max-width: 100%; }
+				.so-progress-withdrawal + .so-progress-withdrawal { margin-top: 3px; }
+				.so-progress-empty, .wo-global-empty { color: var(--text-muted); font-style: italic; }
+				.wo-global-empty { padding: 12px 0; }
+				.status-concluded { color: var(--green-600, #28a745); font-weight: 600; }
+				@media (max-width: 767px) {
+					.so-progress-card__meta { padding: 12px; }
+					.so-progress-wo-table th, .so-progress-wo-table td { padding: 8px; }
+				}
+			</style>`;
 	}
 	
 	function render_outstanding_balance(frm) {
