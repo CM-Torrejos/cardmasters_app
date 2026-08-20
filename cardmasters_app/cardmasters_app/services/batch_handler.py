@@ -374,24 +374,24 @@ def set_batch_no_for_fg_on_manufacture_entry(doc, method):
 		)
 
 	# ------------------------------------------------------------------
-	# Locate the finished-goods receipt row
+	# Locate every finished-goods receipt row. A Stock Entry can contain the
+	# production item more than once, and each matching row belongs to the same
+	# Work Order batch.
 	# ------------------------------------------------------------------
-	fg_row = next(
-		(
-			item
-			for item in doc.items
-			if item.item_code == wo.production_item
-		),
-		None,
-	)
+	fg_rows = [
+		item
+		for item in doc.items
+		if item.item_code == wo.production_item
+	]
 
-	if not fg_row:
+	if not fg_rows:
 		frappe.throw(
 			_("Could not find the FG receipt row for {0}").format(wo.production_item)
 		)
 
-	fg_row.batch_no = batch_name
-	fg_row.db_set("batch_no", fg_row.batch_no)
+	for fg_row in fg_rows:
+		fg_row.batch_no = batch_name
+		fg_row.db_set("batch_no", fg_row.batch_no)
 
 
 # ---------------------------------------------------------------------------
@@ -475,6 +475,7 @@ def set_batch_no_for_delivery_note(doc, method):
 
 	Behavior on save (draft) vs submit
 	------------------------------------
+	- Batched unchecked → leave manually assigned batch numbers unchanged.
 	- Missing batch on SAVE  → orange warning, does not block.
 	- Missing batch on SUBMIT → hard error, blocks submission.
 	"""
@@ -482,8 +483,6 @@ def set_batch_no_for_delivery_note(doc, method):
 		return
 	
 	if not doc.get("custom_batched"):
-		for d in doc.items:
-			d.set("batch_no", None)
 		return
 
 	missing_or_unmatched = []
