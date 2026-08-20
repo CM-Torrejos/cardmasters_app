@@ -9,7 +9,7 @@ from frappe.utils import nowdate
 BATCH_NAME_MAX_LEN = 100
 IDENTITY_SOURCE_SYSTEM = "system_generated"
 IDENTITY_SOURCE_LEGACY = "legacy_unresolved"
-BATCH_ASSIGNMENT_STOCK_ENTRY_TYPES = {"Manufacture", "Repack"}
+BATCH_ASSIGNMENT_STOCK_ENTRY_TYPES = {"Manufacture", "Repack", "Material Transfer for Manufacture"}
 
 
 # ---------------------------------------------------------------------------
@@ -380,7 +380,7 @@ def set_batch_no_for_fg_on_manufacture_entry(doc, method):
 		(
 			item
 			for item in doc.items
-			if item.item_code == wo.production_item and not item.s_warehouse
+			if item.item_code == wo.production_item
 		),
 		None,
 	)
