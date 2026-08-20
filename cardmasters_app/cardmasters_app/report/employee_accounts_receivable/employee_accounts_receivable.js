@@ -66,6 +66,7 @@ frappe.query_reports["Employee Accounts Receivable"] = {
 					filters: {
 						company: company,
 						is_group: 0,
+						account_type: "Receivable",
 					},
 				};
 			},

@@ -35,6 +35,7 @@ class ReceivablePayableReport:
 		self.filters = frappe._dict(filters or {})
 		self.qb_selection_filter = []
 		self.ple = qb.DocType("Payment Ledger Entry")
+		self.account = qb.DocType("Account")
 		self.filters.report_date = getdate(self.filters.report_date or nowdate())
 		self.age_as_on = (
 			getdate(nowdate())
@@ -431,16 +432,17 @@ class ReceivablePayableReport:
 		else:
 			self.qb_selection_filter.append(self.ple.posting_date.lte(self.filters.report_date))
 
-		ple = qb.DocType("Payment Ledger Entry")
 		query = (
-			qb.from_(ple)
+			qb.from_(self.ple)
+			.inner_join(self.account)
+			.on(self.account.name == self.ple.account)
 			.select(
-				ple.name, ple.account, ple.voucher_type, ple.voucher_no,
-				ple.against_voucher_type, ple.against_voucher_no, ple.party_type,
-				ple.cost_center, ple.project, ple.party, ple.posting_date,
-				ple.due_date, ple.account_currency, ple.amount, ple.amount_in_account_currency,
+				self.ple.name, self.ple.account, self.ple.voucher_type, self.ple.voucher_no,
+				self.ple.against_voucher_type, self.ple.against_voucher_no, self.ple.party_type,
+				self.ple.cost_center, self.ple.project, self.ple.party, self.ple.posting_date,
+				self.ple.due_date, self.ple.account_currency, self.ple.amount, self.ple.amount_in_account_currency,
 			)
-			.where(ple.delinked == 0)
+			.where(self.ple.delinked == 0)
 			.where(Criterion.all(self.qb_selection_filter))
 		)
 
@@ -463,6 +465,9 @@ class ReceivablePayableReport:
 		
 		# CRITICAL FIX: Explicitly requiring 'Employee' records in selection conditions
 		self.qb_selection_filter.append(self.ple.party_type == "Employee")
+		# Employee AP entries also use Employee as the party type. Restrict the
+		# linked ledger account so this report can only return Employee AR entries.
+		self.qb_selection_filter.append(self.account.account_type == self.account_type)
 
 		if self.filters.cost_center:
 			self.get_cost_center_conditions()
