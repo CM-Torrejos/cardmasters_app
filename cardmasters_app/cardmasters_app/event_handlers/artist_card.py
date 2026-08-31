@@ -1,4 +1,5 @@
 import frappe
+from frappe import _
 from frappe.utils import nowdate
 from frappe.model.workflow import apply_workflow, get_transitions
 
@@ -29,19 +30,25 @@ def assign_artist_so(doc, _method):
 
 def validate_submission(doc, _method):
 	"""
-	Prevent submitting an Artist Card if its linked Sales Order
-	already has any other Artist Card.
+	Prevent creating an Artist Card if its linked Sales Order or Material Request
+	already has another Artist Card.
 	"""
-	if doc.sales_order:
-		# find any other Artist Card with this SO
-		exists = frappe.db.exists(
-			"Artist Card",{"sales_order": doc.sales_order}
-		)
+	for fieldname, label in (
+		("sales_order", "Sales Order"),
+		("material_request", "Material Request"),
+	):
+		linked_document = doc.get(fieldname)
+		if not linked_document:
+			continue
 
-		if exists:
+		existing_artist_card = frappe.db.exists(
+			"Artist Card", {fieldname: linked_document}
+		)
+		if existing_artist_card:
 			frappe.throw(
-				("Sales Order {0} already has an Artist Card ({1})")
-				.format(doc.sales_order, exists)
+				_("{0} {1} already has an Artist Card ({2})").format(
+					label, linked_document, existing_artist_card
+				)
 			)
 			
 def update_so_workflow_state(doc, _method):
