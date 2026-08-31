@@ -127,7 +127,7 @@ doc_events = {
         ],
         "before_insert": [
             "cardmasters_app.cardmasters_app.event_handlers.artist_card.update_so_workflow_state",
-            "cardmasters_app.cardmasters_app.event_handlers.artist_card.validate_submission", # Force 1 active card rule
+            "cardmasters_app.cardmasters_app.event_handlers.artist_card.validate_submission", # One Artist Card per Sales Order or Material Request
             "cardmasters_app.cardmasters_app.event_handlers.artist_card.assign_artist_so" # Map layout artist back to SO
         ],
         "after_insert": [
