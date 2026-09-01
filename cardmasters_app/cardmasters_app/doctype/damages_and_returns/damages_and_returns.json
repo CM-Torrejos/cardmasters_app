@@ -16,6 +16,8 @@
   "date_of_damage_or_return",
   "company",
   "department",
+  "workstation",
+  "branch",
   "section_break_cxwc",
   "damaged_or_returned_item",
   "section_break_kydy",
@@ -249,12 +251,25 @@
    "fieldname": "is_damage_items_processed",
    "fieldtype": "Check",
    "label": "Is Damage Items Processed"
+  },
+  {
+   "depends_on": "eval:doc.department == \"Production Department - CM CDO\"",
+   "fieldname": "workstation",
+   "fieldtype": "Link",
+   "label": "Workstation",
+   "options": "Workstation"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-07-03 17:53:59.757842",
+ "modified": "2026-09-01 11:10:24.283814",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damages and Returns",
