@@ -3,6 +3,15 @@ frappe.ui.form.on('Material Request', {
 		if (
 			!frm.is_new() &&
 			frm.doc.docstatus === 1 &&
+			frm.doc.status !== 'Stopped' &&
+			frappe.model.can_create('Stock Entry')
+		) {
+			add_material_request_batch_stock_entry_button(frm);
+		}
+
+		if (
+			!frm.is_new() &&
+			frm.doc.docstatus === 1 &&
 			frappe.model.can_create('Artist Card')
 		) {
 			add_material_request_artist_card_button(frm);
@@ -22,6 +31,15 @@ frappe.ui.form.on('Material Request', {
 		}, 100);
 	}
 });
+
+function add_material_request_batch_stock_entry_button(frm) {
+	frm.add_custom_button(__('Batch Stock Entry'), () => {
+		frappe.model.open_mapped_doc({
+			method: 'cardmasters_app.cardmasters_app.api.material_request.make_batched_material_transfer',
+			frm
+		});
+	}, __('Create'));
+}
 
 function add_material_request_artist_card_button(frm) {
 	frm.add_custom_button(__('Artist Card'), async () => {

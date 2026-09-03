@@ -2,6 +2,7 @@ from unittest import TestCase
 from unittest.mock import MagicMock, patch
 
 from cardmasters_app.cardmasters_app.services.batch_handler import (
+	resolve_material_request_batch,
 	set_batch_no_for_fg_on_manufacture_entry,
 	set_batch_no_for_delivery_note,
 )
@@ -52,3 +53,42 @@ class TestSetBatchNoForDeliveryNote(TestCase):
 		self.assertEqual(row.batch_no, "MANUAL-BATCH")
 		row.set.assert_not_called()
 		row.db_set.assert_not_called()
+
+
+class TestResolveMaterialRequestBatch(TestCase):
+	@patch("cardmasters_app.cardmasters_app.services.batch_handler._has_field", return_value=True)
+	@patch("cardmasters_app.cardmasters_app.services.batch_handler.frappe.get_all")
+	def test_prefers_linked_work_order_batch(self, get_all, _has_field):
+		get_all.return_value = [MagicMock(custom_batch="MR-BATCH-0001")]
+
+		result = resolve_material_request_batch("MAT-MR-0001", "MRI-0001", "FG-ITEM")
+
+		self.assertEqual(result, "MR-BATCH-0001")
+		get_all.assert_called_once_with(
+			"Work Order",
+			filters={
+				"material_request": "MAT-MR-0001",
+				"material_request_item": "MRI-0001",
+				"production_item": "FG-ITEM",
+				"docstatus": ["<", 2],
+				"custom_batch": ["!=", ""],
+			},
+			fields=["custom_batch"],
+			order_by="creation asc",
+			limit=1,
+		)
+
+	@patch("cardmasters_app.cardmasters_app.services.batch_handler._has_field", return_value=True)
+	@patch("cardmasters_app.cardmasters_app.services.batch_handler.frappe")
+	def test_falls_back_to_canonical_batch_name(self, frappe_mock, _has_field):
+		frappe_mock.get_all.return_value = []
+		frappe_mock.db.get_value.return_value = "MAT-MR-0001_MRI-0001"
+
+		result = resolve_material_request_batch("MAT-MR-0001", "MRI-0001", "FG-ITEM")
+
+		self.assertEqual(result, "MAT-MR-0001_MRI-0001")
+		frappe_mock.db.get_value.assert_called_once_with(
+			"Batch",
+			"MAT-MR-0001_MRI-0001",
+			"name",
+		)
