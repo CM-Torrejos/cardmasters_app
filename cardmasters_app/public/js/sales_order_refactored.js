@@ -156,7 +156,7 @@
 	}
 
 	function set_batched_material_transfer_button(frm) {
-		frm.add_custom_button(__('Batched Material Transfer'), function() {
+		frm.add_custom_button(__('Batch Stock Entry'), function() {
 			frappe.model.open_mapped_doc({
 				method: 'cardmasters_app.cardmasters_app.api.sales_order.make_batched_material_transfer',
 				frm: frm

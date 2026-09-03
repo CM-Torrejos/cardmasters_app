@@ -23,30 +23,6 @@ def get_current_user_employee_branch():
     )
 
 
-def _get_batch_source_warehouse(batch_no, required_qty, company=None):
-    """Choose the largest positive holding, preferring one that covers the row qty."""
-    if not batch_no:
-        return None
-
-    from erpnext.stock.doctype.batch.batch import get_batch_qty
-
-    holdings = [
-        row for row in (get_batch_qty(batch_no=batch_no) or [])
-        if row.get("warehouse")
-        and (row.get("qty") or 0) > 0
-        and (
-            not company
-            or frappe.get_cached_value("Warehouse", row.get("warehouse"), "company") == company
-        )
-    ]
-    if not holdings:
-        return None
-
-    sufficient = [row for row in holdings if row.get("qty", 0) >= required_qty]
-    candidates = sufficient or holdings
-    return max(candidates, key=lambda row: row.get("qty", 0)).get("warehouse")
-
-
 @frappe.whitelist()
 def make_batched_material_transfer(source_name, target_doc=None):
     """Prepare an unsaved Material Transfer from a submitted Sales Order."""
@@ -61,6 +37,7 @@ def make_batched_material_transfer(source_name, target_doc=None):
 
         if frappe.get_cached_value("Item", source.item_code, "has_batch_no"):
             from cardmasters_app.cardmasters_app.services.batch_handler import (
+                get_batch_source_warehouse,
                 resolve_sales_order_batch,
             )
 
@@ -70,7 +47,7 @@ def make_batched_material_transfer(source_name, target_doc=None):
                 source.item_code,
                 source.get("custom_item_specifics"),
             )
-            target.s_warehouse = _get_batch_source_warehouse(
+            target.s_warehouse = get_batch_source_warehouse(
                 target.batch_no, target.transfer_qty, source_parent.company
             )
 

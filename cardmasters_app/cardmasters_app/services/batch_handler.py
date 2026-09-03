@@ -57,6 +57,30 @@ def _has_field(doctype: str, fieldname: str) -> bool:
 	return bool(frappe.get_meta(doctype).has_field(fieldname))
 
 
+def get_batch_source_warehouse(batch_no, required_qty, company=None):
+	"""Choose the largest positive batch holding, preferring one that covers the row quantity."""
+	if not batch_no:
+		return None
+
+	from erpnext.stock.doctype.batch.batch import get_batch_qty
+
+	holdings = [
+		row for row in (get_batch_qty(batch_no=batch_no) or [])
+		if row.get("warehouse")
+		and (row.get("qty") or 0) > 0
+		and (
+			not company
+			or frappe.get_cached_value("Warehouse", row.get("warehouse"), "company") == company
+		)
+	]
+	if not holdings:
+		return None
+
+	sufficient = [row for row in holdings if row.get("qty", 0) >= required_qty]
+	candidates = sufficient or holdings
+	return max(candidates, key=lambda row: row.get("qty", 0)).get("warehouse")
+
+
 def _set_doc_field_if_exists(doc, fieldname: str, value):
 	if not _has_field(doc.doctype, fieldname):
 		return
@@ -224,6 +248,31 @@ def resolve_sales_order_batch(so_name, so_detail, item_code, item_specifics=None
 		return legacy_name
 
 	return frappe.db.get_value("Batch", {"batch_id": legacy_name}, "name")
+
+
+def resolve_material_request_batch(material_request, material_request_item, item_code):
+	"""Resolve a Material Request Item batch without creating one."""
+	work_order_batch = None
+	if material_request and material_request_item and _has_field("Work Order", "custom_batch"):
+		work_orders = frappe.get_all(
+			"Work Order",
+			filters={
+				"material_request": material_request,
+				"material_request_item": material_request_item,
+				"production_item": item_code,
+				"docstatus": ["<", 2],
+				"custom_batch": ["!=", ""],
+			},
+			fields=["custom_batch"],
+			order_by="creation asc",
+			limit=1,
+		)
+		work_order_batch = work_orders[0].custom_batch if work_orders else None
+	if work_order_batch:
+		return work_order_batch
+
+	batch_name = f"{material_request}_{material_request_item}"
+	return frappe.db.get_value("Batch", batch_name, "name")
 
 
 def _get_or_create_batch(
