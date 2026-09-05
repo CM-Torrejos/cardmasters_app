@@ -1,5 +1,10 @@
 frappe.ui.form.on('Material Request', {
 	refresh(frm) {
+		if (frm.doc.docstatus === 1 && !['Stopped', 'Cancelled'].includes(frm.doc.status)
+			&& frappe.model.can_write('Material Request')) {
+			frm.add_custom_button(__('Update Details'), () => show_material_request_update_details(frm));
+		}
+
 		if (
 			!frm.is_new() &&
 			frm.doc.docstatus === 1 &&
@@ -31,6 +36,147 @@ frappe.ui.form.on('Material Request', {
 		}, 100);
 	}
 });
+
+function show_material_request_update_details(frm) {
+	if (frm.is_dirty()) {
+		frappe.msgprint(__('Save your changes before updating details.'));
+		return;
+	}
+	const meta = frappe.get_meta('Material Request Item');
+	const precision = fieldname => meta.fields.find(field => field.fieldname === fieldname)?.precision;
+	const editable_fields = ['qty', 'rate', 'uom', 'conversion_factor', 'schedule_date', 'warehouse', 'from_warehouse',
+		'custom_item_specifics', 'custom_particulars'];
+	const data = (frm.doc.items || []).map(row => ({
+		docname: row.name,
+		item_code: row.item_code,
+		...Object.fromEntries(editable_fields.map(field => [field, row[field]]))
+	}));
+	const modified = frm.doc.modified;
+	let saving = false;
+	let pending_item_lookups = 0;
+	const dialog = new frappe.ui.Dialog({
+		title: __('Update Details'),
+		size: 'extra-large',
+		fields: [{
+			fieldname: 'items', fieldtype: 'Table', label: __('Items'), reqd: 1,
+			cannot_add_rows: !frappe.model.can_create('Material Request'), cannot_delete_rows: false,
+			in_place_edit: false, data,
+			fields: [
+				{ fieldname: 'docname', fieldtype: 'Data', hidden: 1, read_only: 1 },
+				{
+					fieldname: 'item_code', fieldtype: 'Link', options: 'Item', label: __('Item Code'),
+					reqd: 1, read_only_depends_on: 'eval:!!doc.docname', in_list_view: 1,
+					get_query: () => ({ query: 'erpnext.controllers.queries.item_query' }),
+					async onchange() {
+						const row = this.doc;
+						const item_code = this.value;
+						if (row.docname || !item_code) return;
+						pending_item_lookups++;
+						row.uom = '';
+						row.conversion_factor = 0;
+						try {
+							const response = await frappe.call({
+								method: 'erpnext.stock.get_item_details.get_item_details',
+								args: { doc: frm.doc, args: {
+									doctype: 'Material Request', name: frm.doc.name, item_code,
+									company: frm.doc.company, material_request_type: frm.doc.material_request_type,
+									transaction_date: frm.doc.transaction_date, qty: row.qty || 1,
+									set_warehouse: frm.doc.set_warehouse, buying_price_list: frm.doc.buying_price_list
+								} }
+							});
+							if (row.item_code === item_code && response.message) {
+								const defaults = response.message;
+								Object.assign(row, {
+									uom: defaults.uom || defaults.stock_uom,
+									conversion_factor: defaults.conversion_factor || 1,
+									rate: defaults.rate ?? defaults.price_list_rate ?? 0,
+									warehouse: frm.doc.set_warehouse || defaults.warehouse,
+									from_warehouse: frm.doc.set_from_warehouse,
+									schedule_date: row.schedule_date || frm.doc.schedule_date || defaults.schedule_date
+								});
+								dialog.fields_dict.items.grid.refresh();
+							}
+						} finally {
+							pending_item_lookups--;
+						}
+					}
+				},
+				{ fieldname: 'schedule_date', fieldtype: 'Date', label: __('Required By'), default: frm.doc.schedule_date, reqd: 1, in_list_view: 1 },
+				{ fieldname: 'qty', fieldtype: 'Float', label: __('Qty'), default: 1, reqd: 1, in_list_view: 1, precision: precision('qty') },
+				{ fieldname: 'rate', fieldtype: 'Currency', label: __('Rate'), in_list_view: 1, precision: precision('rate') },
+				{
+					fieldname: 'uom', fieldtype: 'Link', options: 'UOM', label: __('UOM'), reqd: 1,
+					async onchange() {
+						const row = this.doc;
+						const uom = this.value;
+						if (!uom) return;
+						row.conversion_factor = 0;
+						pending_item_lookups++;
+						try {
+							const response = await frappe.call({
+								method: 'erpnext.stock.get_item_details.get_conversion_factor',
+								args: { item_code: row.item_code, uom }
+							});
+							if (row.uom === uom) {
+								row.conversion_factor = response.message?.conversion_factor || 0;
+								dialog.fields_dict.items.grid.refresh();
+							}
+						} finally {
+							pending_item_lookups--;
+						}
+					}
+				},
+				{ fieldname: 'conversion_factor', fieldtype: 'Float', label: __('Conversion Factor'), reqd: 1, precision: precision('conversion_factor') },
+				...['warehouse', 'from_warehouse'].map(fieldname => ({
+					fieldname, fieldtype: 'Link', options: 'Warehouse',
+					label: fieldname === 'warehouse' ? __('Target Warehouse') : __('Source Warehouse'),
+					read_only_depends_on: 'eval:!!doc.docname',
+					get_query: () => ({ filters: { company: frm.doc.company, is_group: 0 } })
+				})),
+				{ fieldname: 'custom_item_specifics', fieldtype: 'Small Text', label: __('Item Specifics'), in_list_view: 1 },
+				{ fieldname: 'custom_particulars', fieldtype: 'Text', label: __('Particulars'), in_list_view: 1 }
+			]
+		}],
+		primary_action_label: __('Update'),
+		primary_action(values) {
+			if (!values || saving) return;
+			if (pending_item_lookups) {
+				frappe.msgprint(__('Please wait for item details and UOM conversion factors to load.'));
+				return;
+			}
+			const items = values.items.map(row => ({
+				...row,
+				custom_item_specifics: String(row.custom_item_specifics || '').trim(),
+				custom_particulars: String(row.custom_particulars || '').trim()
+			}));
+			update(items);
+		}
+	});
+	async function update(items, confirmed = false) {
+		if (saving) return;
+		saving = true;
+		dialog.disable_primary_action();
+		try {
+			const response = await frappe.call({
+				method: 'cardmasters_app.cardmasters_app.api.material_request.update_details',
+				args: { material_request: frm.doc.name, items, modified, confirm_work_orders: confirmed },
+				freeze: true, freeze_message: __('Updating Material Request details...')
+			});
+			if (response.exc) return;
+			if (response.message?.confirmation_required) {
+				frappe.confirm(response.message.message, () => update(items, true));
+				return;
+			}
+			dialog.hide();
+			await frm.reload_doc();
+			frappe.show_alert({ message: __('Material Request details updated.'), indicator: 'green' });
+		} finally {
+			saving = false;
+			dialog.enable_primary_action();
+		}
+	}
+	dialog.show();
+}
 
 function add_material_request_batch_stock_entry_button(frm) {
 	frm.add_custom_button(__('Batch Stock Entry'), () => {
