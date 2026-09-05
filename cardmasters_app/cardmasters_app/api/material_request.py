@@ -4,6 +4,13 @@ from frappe.model.mapper import get_mapped_doc
 
 
 @frappe.whitelist()
+def update_details(material_request, items, modified, confirm_work_orders=False):
+    from cardmasters_app.cardmasters_app.services.material_request import update_material_request_details
+
+    return update_material_request_details(material_request, items, modified, confirm_work_orders)
+
+
+@frappe.whitelist()
 def make_batched_material_transfer(source_name, target_doc=None):
     """Prepare an unsaved batched Material Transfer from a submitted Material Request."""
 
