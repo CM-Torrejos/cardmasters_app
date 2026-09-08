@@ -206,6 +206,7 @@
    "fetch_from": "sales_order.custom_production_branch",
    "fieldname": "production_branch",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "label": "Production Branch",
    "options": "Branch"
   },
@@ -213,7 +214,8 @@
    "fieldname": "material_request",
    "fieldtype": "Link",
    "label": "Material Request",
-   "options": "Material Request"
+   "options": "Material Request",
+   "search_index": 1
   }
  ],
  "grid_page_length": 50,
@@ -226,7 +228,7 @@
   }
  ],
  "make_attachments_public": 1,
- "modified": "2026-08-06 14:43:52.453825",
+ "modified": "2026-09-05 15:03:23.514432",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Card",

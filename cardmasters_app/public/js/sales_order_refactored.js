@@ -551,6 +551,7 @@
 	}
 	
 	function render_wo_html_block(frm) {
+		const render_id = frm.__so_progress_render_id = (frm.__so_progress_render_id || 0) + 1;
 		if (frm.is_new()) {
 			return;
 		}
@@ -570,24 +571,41 @@
 				limit: 0
 			},
 			callback: function(response) {
+				if (frm.__so_progress_render_id !== render_id) return;
 				const work_orders = response.message || [];
 				const standard_work_orders = work_orders.filter(wo => wo.custom_production_type !== 'Backjob');
 				const backjob_work_orders = work_orders.filter(wo => {
 					return wo.custom_production_type === 'Backjob' && wo.custom_document_id === frm.doc.name;
 				});
 
-				load_work_order_withdrawals(work_orders, function(withdrawals_by_work_order) {
+				Promise.all([
+					new Promise(resolve => load_work_order_withdrawals(work_orders, resolve)),
+					load_sales_order_batch_delivery(frm.doc.name)
+				]).then(([withdrawals_by_work_order, batch_delivery_by_work_order]) => {
+					if (frm.__so_progress_render_id !== render_id) return;
 					render_work_order_cards(frm, {
 						fieldname: 'custom_progress_summary',
 						work_orders: standard_work_orders,
 						row_link_field: 'sales_order_item',
 						withdrawals_by_work_order,
+						batch_delivery_by_work_order,
 						show_all_items: true,
 						empty_message: __('No Work Order created')
 					});
-					render_backjob_html_block(frm, backjob_work_orders, withdrawals_by_work_order);
+					render_backjob_html_block(frm, backjob_work_orders, withdrawals_by_work_order, batch_delivery_by_work_order);
 				});
 			}
+		});
+	}
+
+	function load_sales_order_batch_delivery(sales_order_name) {
+		return new Promise(resolve => {
+			frappe.call({
+				method: 'cardmasters_app.cardmasters_app.api.sales_order.get_sales_order_batch_transit',
+				args: { sales_order_name },
+				callback: response => resolve(response.message || {}),
+				error: () => resolve(null)
+			});
 		});
 	}
 
@@ -628,12 +646,13 @@
 		});
 	}
 
-	function render_backjob_html_block(frm, backjob_work_orders, withdrawals_by_work_order) {
+	function render_backjob_html_block(frm, backjob_work_orders, withdrawals_by_work_order, batch_delivery_by_work_order) {
 		render_work_order_cards(frm, {
 			fieldname: 'custom_backjob_summary',
 			work_orders: backjob_work_orders,
 			row_link_field: 'custom_document_item_id',
 			withdrawals_by_work_order,
+			batch_delivery_by_work_order,
 			show_all_items: false,
 			global_empty_message: __('No Backjob Work Orders found.')
 		});
@@ -686,7 +705,7 @@
 						<td>${get_work_order_production_status(wo, safe)}</td>
 						<td>${render_withdrawal_links(options.withdrawals_by_work_order[wo.name] || [], safe)}</td>
 						<td>${safe(wo.status === 'Completed' ? __('Consumption entry submitted') : __('No consumption entry submitted'))}</td>
-						<td>${safe(get_work_order_delivery_status(wo))}</td>
+						<td class="so-progress-delivery">${safe(get_work_order_delivery_status(wo, options.batch_delivery_by_work_order))}</td>
 					</tr>`;
 			});
 
@@ -710,11 +729,25 @@
 		return safe(wo.workflow_state || '');
 	}
 
-	function get_work_order_delivery_status(wo) {
-		if (wo.custom_bypass == 1) {
-			return `${WO_IN_CLAIMING_STATUS} (${__('Bypassed')})`;
+	function get_work_order_delivery_status(wo, batch_delivery_by_work_order) {
+		const balances = batch_delivery_by_work_order && batch_delivery_by_work_order[wo.name];
+		const locations = [
+			['qty', __('In Transit to Branch')],
+			['consignment_qty', __('In Consignment')]
+		];
+		const location_statuses = locations
+			.filter(([field]) => balances && Number(balances[field]) > 0)
+			.map(([field, label]) => {
+				const quantity = format_number(balances[field]);
+				return `${label}\n${quantity} ${balances.stock_uom || ''} (${__('batch total')})`;
+			});
+		if (location_statuses.length) {
+			return location_statuses.join('\n\n');
 		}
-		return wo.workflow_state === WO_IN_CLAIMING_STATUS ? WO_IN_CLAIMING_STATUS : __('Not In Claiming');
+		const status = wo.custom_bypass == 1
+			? `${WO_IN_CLAIMING_STATUS} (${__('Bypassed')})`
+			: (wo.workflow_state === WO_IN_CLAIMING_STATUS ? WO_IN_CLAIMING_STATUS : __('Not In Claiming'));
+		return batch_delivery_by_work_order === null ? `${status}\n${__('Batch location status unavailable')}` : status;
 	}
 
 	function render_withdrawal_links(stock_entry_names, safe) {
@@ -746,6 +779,7 @@
 				.so-progress-wo-table th:nth-child(6) { width: 18%; }
 				.so-progress-wo-table tbody tr:last-child td { border-bottom: 0; }
 				.so-progress-wo-table .text-right { text-align: right; }
+				.so-progress-wo-table .so-progress-delivery { white-space: pre-line; }
 				.so-progress-withdrawal { display: block; width: fit-content; max-width: 100%; }
 				.so-progress-withdrawal + .so-progress-withdrawal { margin-top: 3px; }
 				.so-progress-empty, .wo-global-empty { color: var(--text-muted); font-style: italic; }
