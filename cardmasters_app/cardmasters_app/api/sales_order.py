@@ -5,6 +5,90 @@ import json
 
 
 @frappe.whitelist()
+def get_sales_order_batch_transit(sales_order_name):
+    """Return FG transit and consignment balances without allocating shared stock to WOs.
+
+    The existing endpoint and qty key continue to represent transit for older clients.
+    """
+    from erpnext.stock.doctype.serial_and_batch_bundle.serial_and_batch_bundle import get_auto_batch_nos
+    from frappe.utils import flt, now_datetime
+
+    sales_order = frappe.get_doc("Sales Order", sales_order_name)
+    sales_order.check_permission("read")
+    work_orders = frappe.get_list(
+        "Work Order",
+        filters={"docstatus": ["!=", 2]},
+        or_filters={"sales_order": sales_order.name, "custom_document_id": sales_order.name},
+        fields=["name", "custom_batch", "production_item"],
+        limit_page_length=0,
+    )
+    batch_names = sorted({wo.custom_batch for wo in work_orders if wo.custom_batch})
+    if not batch_names:
+        return {}
+
+    warehouse_types = {
+        warehouse.name: warehouse.warehouse_type
+        for warehouse in frappe.get_list(
+            "Warehouse",
+            filters={
+                "company": sales_order.company,
+                "warehouse_type": ["in", ["Transit", "Consignment"]],
+                "is_group": 0,
+            },
+            fields=["name", "warehouse_type"],
+            limit_page_length=0,
+        )
+    }
+    if not warehouse_types:
+        return {}
+
+    batches = {
+        batch.name: batch
+        for batch in frappe.get_list(
+            "Batch",
+            filters={"name": ["in", batch_names]},
+            fields=["name", "item", "stock_uom"],
+            limit_page_length=0,
+        )
+    }
+    if not batches:
+        return {}
+
+    # ERPNext combines direct batch ledger rows and Serial and Batch Bundles.
+    # Physical stock still counts when expired or reserved.
+    # get_batch_qty's HTTP argument validation only accepts one batch name.
+    # Its underlying query supports lists and keeps this to one grouped lookup.
+    holdings = get_auto_batch_nos(frappe._dict(
+        batch_no=list(batches),
+        warehouse=list(warehouse_types),
+        company=sales_order.company,
+        for_stock_levels=True,
+        ignore_reserved_stock=True,
+        posting_datetime=now_datetime(),
+        do_not_check_future_batches=True,
+    ))
+    quantities = {}
+    for holding in holdings or []:
+        warehouse_type = warehouse_types.get(holding.warehouse)
+        if warehouse_type and flt(holding.qty) > 0:
+            batch_quantities = quantities.setdefault(holding.batch_no, {})
+            batch_quantities[warehouse_type] = batch_quantities.get(warehouse_type, 0) + flt(holding.qty)
+
+    return {
+        wo.name: {
+            "batch_no": wo.custom_batch,
+            "qty": quantities[wo.custom_batch].get("Transit", 0),
+            "consignment_qty": quantities[wo.custom_batch].get("Consignment", 0),
+            "stock_uom": batches[wo.custom_batch].stock_uom,
+        }
+        for wo in work_orders
+        if wo.custom_batch in quantities
+        and wo.custom_batch in batches
+        and batches[wo.custom_batch].item == wo.production_item
+    }
+
+
+@frappe.whitelist()
 def get_current_user_employee_branch():
     """Return the branch from the Employee record linked to the current user."""
     if frappe.session.user in ("Administrator", "Guest"):
