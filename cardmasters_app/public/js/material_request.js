@@ -159,7 +159,7 @@ function show_material_request_update_details(frm) {
 		try {
 			const response = await frappe.call({
 				method: 'cardmasters_app.cardmasters_app.api.material_request.update_details',
-				args: { material_request: frm.doc.name, items, modified, confirm_work_orders: confirmed },
+				args: { material_request: frm.doc.name, items, modified, confirm_work_orders: confirmed ? 1 : 0 },
 				freeze: true, freeze_message: __('Updating Material Request details...')
 			});
 			if (response.exc) return;

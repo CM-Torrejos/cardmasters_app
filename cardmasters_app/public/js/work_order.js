@@ -777,17 +777,21 @@ var confirm_mark_workstation_jobs_complete = function(frm, workstation) {
 };
 
 var pull_material_request_details = async function (frm) {
-    // 1. Silent early exit if no Material Request is linked
-    if (!frm.doc.material_request) {
+    // Inherit defaults only while drafting. Submitted edits go through Update Details.
+    if (frm.doc.docstatus !== 0 || !frm.doc.material_request) {
         return;
     }
 
+    const source_doc = frm.doc;
+    const material_request = source_doc.material_request;
+
     try {
         // 2. Fetch the Parent Material Request Document
-        let mr_doc = await frappe.db.get_doc("Material Request", frm.doc.material_request);
+        let mr_doc = await frappe.db.get_doc("Material Request", material_request);
 
         // Exit only if the parent doc doesn't exist at all
-        if (!mr_doc) {
+        if (!mr_doc || frm.doc !== source_doc || frm.doc.docstatus !== 0
+            || frm.doc.material_request !== material_request) {
             return;
         }
 
