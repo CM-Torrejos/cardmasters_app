@@ -183,6 +183,25 @@ class TestUpdateMaterialRequestDetails(TestCase):
         self.assertEqual(self.update(confirm_work_orders=True), {"updated": True})
         self.doc.save.assert_called_once()
 
+    def test_http_confirmation_values_save_without_repeating_warning(self):
+        self.work_orders.return_value = ["WO-1"]
+        self.data = [{"docname": "MRI-1", "custom_particulars": "Updated particulars"}]
+        for confirmation in ("true", "1", True, 1):
+            with self.subTest(confirmation=confirmation):
+                self.row.custom_particulars = "Original particulars"
+                self.doc.save.reset_mock()
+                self.assertEqual(self.update(confirm_work_orders=confirmation), {"updated": True})
+                self.doc.save.assert_called_once()
+
+    def test_false_http_confirmation_values_do_not_bypass_warning(self):
+        self.work_orders.return_value = ["WO-1"]
+        self.data = [{"docname": "MRI-1", "custom_particulars": "Updated particulars"}]
+        for confirmation in ("false", "0", False, 0, "", "invalid"):
+            with self.subTest(confirmation=confirmation):
+                self.row.custom_particulars = "Original particulars"
+                self.assertTrue(self.update(confirm_work_orders=confirmation)["confirmation_required"])
+                self.doc.save.assert_not_called()
+
     def test_warning_escapes_user_content_and_deduplicates_work_orders(self):
         self.work_orders.return_value = ["WO-1"]
         self.row.custom_item_specifics = "<script>alert(1)</script>"

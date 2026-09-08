@@ -7,7 +7,7 @@ import frappe
 from frappe import _
 from frappe.model.delete_doc import check_if_doc_is_dynamically_linked, check_if_doc_is_linked
 from frappe.model.workflow import get_workflow_name
-from frappe.utils import cint, cstr, flt, get_datetime, getdate
+from frappe.utils import cint, cstr, flt, get_datetime, getdate, sbool
 
 
 EDITABLE_FIELDS = (
@@ -88,7 +88,7 @@ def update_material_request_details(material_request, items, modified, confirm_w
             changes.append((row, before, changed))
 
     warning = _work_order_warning(doc, changes)
-    if warning and not cint(confirm_work_orders):
+    if warning and not cint(sbool(confirm_work_orders)):
         return {"confirmation_required": True, "message": warning}
     if not changes and not quantity_changed:
         return {"updated": False}
