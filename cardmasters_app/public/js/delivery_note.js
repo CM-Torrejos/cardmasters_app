@@ -50,12 +50,14 @@ frappe.ui.form.on('Delivery Note', {
 });
 
 async function make_work_order_from_sales_return(frm) {
+	const existing_items = await get_sales_return_work_order_items(frm);
 	const returned_rows = get_sales_return_delivery_rows(frm).filter(row => {
-		return row.against_sales_order && row.so_detail;
+		return cint(row.custom_for_backjob) === 1 && row.against_sales_order && row.so_detail
+			&& !existing_items.has(row.so_detail);
 	});
 
 	if (!returned_rows.length) {
-		frappe.msgprint(__('Could not find any returned item rows linked to a Sales Order.'));
+		frappe.msgprint(__('No eligible returned items remain. Items must be marked For Backjob, linked to a Sales Order, and have no existing non-cancelled Work Order for this sales return.'));
 		return;
 	}
 
@@ -90,7 +92,22 @@ async function make_work_order_from_sales_return(frm) {
 	dialog.show();
 }
 
+async function get_sales_return_work_order_items(frm) {
+	const response = await frappe.call({
+		method: 'cardmasters_app.cardmasters_app.api.work_order.get_sales_return_work_order_items',
+		args: {delivery_note: frm.doc.name}
+	});
+	return new Set(response.message || []);
+}
+
 async function open_work_order_from_return_row(frm, row) {
+	// Recheck in case another Work Order was saved while the selector was open.
+	const existing_items = await get_sales_return_work_order_items(frm);
+	if (existing_items.has(row.so_detail)) {
+		frappe.msgprint(__('A Work Order already exists for this item on this sales return.'));
+		return;
+	}
+
 	await with_doctype('Work Order');
 
 	const so_item = await get_sales_order_item_details(row.so_detail);

@@ -1,6 +1,25 @@
 import frappe
 
 @frappe.whitelist()
+def get_sales_return_work_order_items(delivery_note):
+    """Return SO item IDs already covered by a saved Work Order for this return."""
+    sales_return = frappe.get_doc("Delivery Note", delivery_note)
+    sales_return.check_permission("read")
+    if not sales_return.is_return or sales_return.docstatus != 1:
+        frappe.throw("Work Orders can only be created from submitted sales returns.")
+
+    # Include drafts and completed orders; only cancellation allows a replacement.
+    # Query all matching orders so permissions cannot hide an existing backjob.
+    return frappe.get_all(
+        "Work Order",
+        filters={
+            "custom_sales_return_reference": sales_return.name,
+            "docstatus": ["<", 2],
+        },
+        pluck="custom_document_item_id",
+    )
+
+@frappe.whitelist()
 def update_work_order_details(docname, qty, item_specifics=None, particulars=None, operations=None):
     from cardmasters_app.cardmasters_app.services.work_order import update_work_order_details as update_details
     return update_details(docname, qty, item_specifics, particulars, operations)
