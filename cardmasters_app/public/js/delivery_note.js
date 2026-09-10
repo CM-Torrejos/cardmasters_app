@@ -23,6 +23,12 @@ frappe.ui.form.on('Delivery Note', {
 	refresh(frm) {
 		toggle_damages_and_returns_requirement(frm);
 
+		if (frm.doc.is_return && frm.doc.docstatus !== 1) {
+			frm.remove_custom_button(__('Credit Note'), __('Create'));
+			frm.remove_custom_button(__('Work Order'), __('Create'));
+			frm.page.get_inner_group_button(__('Create')).hide();
+		}
+
 		if (frm.doc.docstatus === 1 && frm.doc.is_return) {
 			frm.add_custom_button(__('Work Order'), () => {
 				make_work_order_from_sales_return(frm);
@@ -97,6 +103,7 @@ async function open_work_order_from_return_row(frm, row) {
 	set_work_order_value(work_order, 'qty', qty);
 	set_work_order_value(work_order, 'stock_uom', row.stock_uom);
 	set_work_order_value(work_order, 'custom_production_type', 'Backjob');
+	set_work_order_value(work_order, 'custom_sales_return_reference', frm.doc.name);
 	set_work_order_value(work_order, 'custom_document', 'Sales Order');
 	set_work_order_value(work_order, 'custom_document_id', row.against_sales_order);
 	set_work_order_value(work_order, 'custom_document_item_id', row.so_detail);
