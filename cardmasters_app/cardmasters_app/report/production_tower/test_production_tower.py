@@ -12,6 +12,7 @@ class TestProductionTower(TestCase):
         self.records = {
             "Sales Order": [], "Sales Order Item": [], "Material Request": [],
             "Material Request Item": [], "Work Order": [],
+            "Delivery Note": [], "Delivery Note Item": [],
         }
         self.enterContext(patch.object(report.frappe, "get_all", side_effect=self.get_all))
         self.enterContext(patch.object(report, "_", side_effect=lambda text: text))
@@ -143,9 +144,9 @@ class TestProductionTower(TestCase):
     def test_mixed_sources_keep_branches_and_shared_work_order_under_each_source(self):
         self.request()
         self.item()
-        self.work_order(sales_order="SO-1", sales_order_item="SOI-1")
+        self.work_order(sales_order="SO-1", sales_order_item="SOI-1", custom_blue_order=0, custom_rush_order=1)
         self.records["Sales Order"] = [dict(name="SO-1", docstatus=1, customer="Customer",
-            workflow_state="Production", delivery_date="2026-09-11")]
+            workflow_state="Production", delivery_date="2026-09-11", custom_blue_order=1, custom_rush_order=0)]
         self.records["Sales Order Item"] = [dict(name="SOI-1", parent="SO-1", item_code="ITEM",
             item_name="Item", qty=10, bom_no="BOM")]
         rows = report.execute()[1]
@@ -154,3 +155,244 @@ class TestProductionTower(TestCase):
                          ["Sales Order", "Material Request"])
         self.assertEqual([row["completion_rate"] for row in rows if row["indent"] == 0], ["50%", "50%"])
         self.assertEqual([row["reference_name"] for row in rows if row["indent"] == 2], ["WO-1", "WO-1"])
+        self.assertEqual((rows[0]["custom_blue_order"], rows[0]["custom_rush_order"]), (1, 0))
+        for row in (rows[2], rows[5]):
+            self.assertEqual((row["custom_blue_order"], row["custom_rush_order"]), (0, 1))
+        for row in (rows[1], rows[3], rows[4]):
+            self.assertIsNone(row.get("custom_blue_order"))
+            self.assertIsNone(row.get("custom_rush_order"))
+        columns = {column["fieldname"]: column for column in report.get_columns()}
+        self.assertNotIn("is_bypass", columns)
+        self.assertEqual(columns["custom_blue_order"]["fieldtype"], "Check")
+        self.assertEqual(columns["custom_rush_order"]["fieldtype"], "Check")
+
+    def filter_sources(self):
+        self.records["Sales Order"] = [dict(
+            name="SO-1", docstatus=1, customer="Customer", workflow_state="Production",
+            company="Company A", transaction_date="2026-09-01", delivery_date="2026-09-10",
+            branch="Branch A", custom_production_branch="Branch B",
+        )]
+        self.records["Sales Order Item"] = [dict(
+            name="SOI-1", parent="SO-1", item_code="ITEM", item_name="Item", qty=10, bom_no="BOM",
+        )]
+        self.request(company="Company A", custom_production_branch="Branch B")
+        self.item()
+        self.work_order(sales_order="SO-1", sales_order_item="SOI-1")
+
+    def test_company_and_target_date_filter_both_sources_with_complete_trees(self):
+        self.filter_sources()
+        for doctype in ("Sales Order", "Material Request"):
+            self.records[doctype].append(dict(self.records[doctype][0], name="Other-company", company="Company B"))
+        rows = report.execute({"company": "Company A", "target_date": "2026-09-10"})[1]
+        self.assertEqual([row.get("reference_name") for row in rows],
+                         ["SO-1", None, "WO-1", "MR-1", None, "WO-1"])
+        self.assertEqual([row["indent"] for row in rows], [0, 1, 2, 0, 1, 2])
+        self.assertEqual(report.execute({"company": "Missing"})[1], [])
+        # Target date is the displayed delivery/schedule date, not transaction date.
+        self.assertEqual(report.execute({"target_date": "2026-09-01"})[1], [])
+        self.records["Material Request"][0]["schedule_date"] = "2026-09-11"
+        rows = report.execute({"company": "Company A", "target_date": "2026-09-11"})[1]
+        self.assertEqual(rows[0]["reference_name"], "MR-1")
+        self.assertEqual(len(rows), 3)
+
+    def test_branch_source_switches_fields_for_both_sources(self):
+        self.filter_sources()
+        for source, matching_branch, excluded_branch in (
+            ("branch", "Branch A", "Branch B"),
+            ("custom_production_branch", "Branch B", "Branch A"),
+        ):
+            with self.subTest(source=source):
+                filters = dict(company="Company A", target_date="2026-09-10", branch_source=source)
+                rows = report.execute(dict(filters, branch=matching_branch))[1]
+                self.assertEqual([row["reference_name"] for row in rows if row["indent"] == 0],
+                                 ["SO-1", "MR-1"])
+                self.assertEqual(len(rows), 6)
+                self.assertEqual(report.execute(dict(filters, branch=excluded_branch))[1], [])
+                # Selecting a source alone does not restrict the report.
+                self.assertEqual(len(report.execute(filters)[1]), 6)
+        self.assertEqual(len(report.execute({"branch": "Branch A"})[1]), 6)
+        self.assertEqual(report.execute({"branch": "Missing"})[1], [])
+        # API callers cannot use branch_source to filter an arbitrary field.
+        self.assertEqual(report.execute({"branch_source": "company", "branch": "Company A"})[1], [])
+
+    def sales_return(self, name="SR-1", **values):
+        self.records["Delivery Note"].append(dict(
+            dict(name=name, docstatus=1, is_return=1, customer="Customer", company="Company A",
+                 posting_date="2026-09-12", status="Return", branch="Branch A",
+                 custom_production_branch="Branch B"), **values))
+
+    def return_item(self, name="SRI-1", parent="SR-1", **values):
+        self.records["Delivery Note Item"].append(dict(
+            dict(name=name, parent=parent, item_code="ITEM", item_name="Item", qty=-10, stock_qty=-10,
+                 conversion_factor=1, custom_for_backjob=1, against_sales_order="SO-1", so_detail="SOI-1"),
+            **values))
+
+    def backjob(self, name="BACKJOB-1", **values):
+        self.work_order(name, **dict(dict(custom_sales_return_reference="SR-1", custom_document="Sales Order",
+                        custom_document_id="SO-1", custom_document_item_id="SOI-1",
+                        material_request=None, material_request_item=None), **values))
+
+    def test_only_submitted_returns_with_checked_items_are_included_without_work_orders(self):
+        self.sales_return()
+        self.return_item(against_sales_order=None, so_detail=None)
+        self.return_item("Unchecked", custom_for_backjob=0)
+        for name, values in (("Draft", {"docstatus": 0}), ("Cancelled", {"docstatus": 2}),
+                             ("Delivery", {"is_return": 0})):
+            self.sales_return(name, **values)
+            self.return_item(name, parent=name)
+        self.sales_return("No-backjob")
+        self.return_item("No-backjob", parent="No-backjob", custom_for_backjob=0)
+        self.sales_return("Empty")
+        rows = report.execute()[1]
+        self.assertEqual([row.get("reference_name") for row in rows], ["SR-1", None])
+        self.assertEqual(rows[0]["reference_doctype"], "Delivery Note")
+        self.assertIn("[SR] SR-1", rows[0]["label_name"])
+        self.assertEqual(rows[0]["qty"], "0 / 1")
+        self.assertEqual(rows[1]["qty"], "0 / 10")
+        self.assertEqual(rows[1]["planning_status"], "orphan")
+        self.assertIsNone(rows[0]["date"])
+
+    def test_backjobs_use_return_and_exact_so_item_links_without_double_counting_batch_splits(self):
+        self.sales_return()
+        self.return_item(qty=-2, stock_qty=-20, conversion_factor=10)
+        self.return_item("Split", qty=-1, stock_qty=None, conversion_factor=10)
+        self.return_item("Repeated-code", so_detail="SOI-2", stock_qty=-5)
+        self.return_item("Unchecked", so_detail="SOI-3", custom_for_backjob=0)
+        self.backjob(qty=30, produced_qty=15, custom_blue_order=1, custom_rush_order=0)
+        self.backjob("Second-item", custom_document_item_id="SOI-2", qty=5, produced_qty=0, custom_bypass=1)
+        for name, values in (
+            ("Cancelled", {"docstatus": 2}), ("Other-return", {"custom_sales_return_reference": "SR-2"}),
+            ("Original-WO", {"custom_sales_return_reference": None}),
+            ("Other-item", {"production_item": "OTHER"}), ("Other-SO", {"custom_document_id": "SO-OTHER"}),
+            ("Unchecked", {"custom_document_item_id": "SOI-3"}),
+        ):
+            self.backjob(name, **values)
+        rows = report.execute()[1]
+        self.assertEqual([row.get("reference_name") for row in rows],
+                         ["SR-1", None, "BACKJOB-1", None, "Second-item"])
+        self.assertEqual(rows[0]["qty"], "2 / 2")
+        self.assertEqual(rows[1]["qty"], "30 / 30")
+        self.assertEqual(rows[0]["completion_rate"], "57%")
+        self.assertEqual(rows[2]["custom_blue_order"], 1)
+        # Older records with standard SO links also match the exact return item.
+        wo = self.records["Work Order"][0]
+        wo.update(custom_document=None, custom_document_id=None, custom_document_item_id=None,
+                  sales_order="SO-1", sales_order_item="SOI-1")
+        self.assertEqual(report.execute()[1][2]["reference_name"], "BACKJOB-1")
+
+    def test_return_filters_use_own_branches_and_linked_order_date_even_after_so_concludes(self):
+        self.records["Sales Order"] = [dict(
+            name="SO-1", docstatus=1, workflow_state="Production Concluded", delivery_date="2026-09-20",
+            branch="Original Branch", custom_production_branch="Original Production Branch")]
+        self.sales_return()
+        self.return_item()
+        self.backjob()
+        for source, branch in (("branch", "Branch A"), ("custom_production_branch", "Branch B")):
+            filters = dict(company="Company A", target_date="2026-09-20", branch_source=source, branch=branch)
+            rows = report.execute(filters)[1]
+            self.assertEqual(len(rows), 3)
+            self.assertEqual(rows[0]["date"], "2026-09-20")
+            self.assertEqual(report.execute(dict(filters, branch="Missing"))[1], [])
+            original_branch = "Original Production Branch" if source == "custom_production_branch" else "Original Branch"
+            self.assertEqual(report.execute(dict(filters, branch=original_branch))[1], [])
+        self.assertEqual(report.execute({"company": "Other"})[1], [])
+        self.assertEqual(report.execute({"target_date": "2026-09-12"})[1], [])
+        self.assertEqual(report.execute({"from_date": "2026-09-01", "to_date": "2026-09-11"})[1], [])
+        self.assertEqual(len(report.execute({"workflow_state": "Return"})[1]), 3)
+        self.assertEqual(report.execute({"workflow_state": "Approved"})[1], [])
+
+    def test_return_branch_filters_work_without_linked_sales_orders(self):
+        self.sales_return()
+        self.return_item(against_sales_order=None, so_detail=None)
+        for source, branch in (("branch", "Branch A"), ("custom_production_branch", "Branch B")):
+            with self.subTest(source=source):
+                rows = report.execute({"branch_source": source, "branch": branch})[1]
+                self.assertEqual([row["indent"] for row in rows], [0, 1])
+                self.assertEqual(rows[0]["reference_name"], "SR-1")
+                self.assertIsNone(rows[0]["date"])
+                self.assertEqual(report.execute({"branch_source": source, "branch": "Missing"})[1], [])
+        self.assertEqual(len(report.execute({"branch": "Branch A"})[1]), 2)
+        self.assertEqual(report.execute({"branch_source": "company", "branch": "Company A"})[1], [])
+
+    def test_return_blank_branches_do_not_fall_back_to_original_order(self):
+        self.records["Sales Order"] = [dict(
+            name="SO-1", docstatus=1, workflow_state="Production Concluded",
+            branch="Branch A", custom_production_branch="Branch B")]
+        self.sales_return(branch=None, custom_production_branch=None)
+        self.return_item()
+        for source, branch in (("branch", "Branch A"), ("custom_production_branch", "Branch B")):
+            self.assertEqual(report.execute({"branch_source": source, "branch": branch})[1], [])
+            self.assertEqual(len(report.execute({"branch_source": source})[1]), 2)
+
+    def test_return_branch_filter_keeps_all_items_from_different_original_branches(self):
+        self.records["Sales Order"] = [dict(
+            name="SO-1", docstatus=1, workflow_state="Production Concluded", delivery_date="2026-09-20",
+            branch="Branch A", custom_production_branch="Branch B"), dict(
+            name="SO-2", docstatus=1, workflow_state="Production Concluded", delivery_date="2026-09-18",
+            branch="Other Branch", custom_production_branch="Other Production Branch")]
+        self.sales_return()
+        self.return_item()
+        self.return_item("SRI-2", against_sales_order="SO-2", so_detail="SOI-2")
+        self.backjob()
+        self.backjob("BACKJOB-2", custom_document_id="SO-2", custom_document_item_id="SOI-2")
+        for source, branch in (("branch", "Branch A"), ("custom_production_branch", "Branch B")):
+            rows = report.execute({"branch_source": source, "branch": branch})[1]
+            self.assertEqual([row.get("reference_name") for row in rows],
+                             ["SR-1", None, "BACKJOB-1", None, "BACKJOB-2"])
+            self.assertEqual(rows[0]["date"], "2026-09-18")
+
+    def test_returns_sort_with_existing_sources_and_keep_their_own_work_orders(self):
+        self.filter_sources()
+        self.sales_return()
+        self.return_item()
+        self.backjob()
+        rows = report.execute()[1]
+        self.assertEqual([row["reference_name"] for row in rows if row["indent"] == 0],
+                         ["SO-1", "MR-1", "SR-1"])
+        self.assertEqual([row["reference_name"] for row in rows if row["indent"] == 2],
+                         ["WO-1", "WO-1", "BACKJOB-1"])
+        self.assertEqual([row["indent"] for row in rows], [0, 1, 2] * 3)
+
+    def test_hide_completed_removes_complete_sources_and_can_be_disabled(self):
+        self.filter_sources()
+        self.sales_return()
+        self.return_item()
+        self.backjob(produced_qty=10)
+        self.records["Work Order"][0]["produced_qty"] = 10
+        original = report.execute()[1]
+        self.assertEqual(len(original), 9)
+        for enabled in (1, "1", True):
+            self.assertEqual(report.execute({"hide_completed": enabled})[1], [])
+        for disabled in (0, "0", False):
+            self.assertEqual(report.execute({"hide_completed": disabled})[1], original)
+
+    def test_hide_completed_prunes_items_and_work_orders_without_changing_totals(self):
+        self.request()
+        self.item()
+        self.item("MRI-2")
+        self.item("MRI-3")  # Unplanned demand stays visible.
+        self.work_order(produced_qty=10)
+        # An extra unfinished WO below a completed item must not be reparented.
+        self.work_order("Extra", qty=1, produced_qty=0)
+        self.work_order("Bypassed", material_request_item="MRI-2", qty=4,
+                        produced_qty=0, custom_bypass=1)
+        self.work_order("Partial", material_request_item="MRI-2", qty=6, produced_qty=2)
+        original = report.execute()[1]
+        rows = report.execute({"hide_completed": 1})[1]
+        self.assertEqual([row.get("reference_name") for row in rows],
+                         ["MR-1", None, "Partial", None])
+        self.assertEqual([row["indent"] for row in rows], [0, 1, 2, 1])
+        self.assertEqual(rows[0], original[0])
+        self.assertEqual(rows[1], original[4])
+        self.assertEqual(rows[1]["completion_rate"], "60%")
+        self.assertEqual(rows[-1]["planning_status"], "orphan")
+        self.assertFalse(any(row["completion_rate"] == "100%" for row in rows))
+
+    def test_hide_completed_keeps_nearly_complete_and_empty_entries(self):
+        self.request()
+        self.item()
+        self.work_order(produced_qty=9.99)
+        self.request("Empty")
+        original = report.execute()[1]
+        self.assertEqual(original[0]["completion_rate"], "99%")
+        self.assertEqual(report.execute({"hide_completed": 1})[1], original)
