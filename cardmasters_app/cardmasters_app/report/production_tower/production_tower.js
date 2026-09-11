@@ -1,9 +1,47 @@
 frappe.query_reports["Production Tower"] = {
-    "filters": [ /* ... filters remain the same ... */ ],
+    "filters": [
+        {
+            fieldname: "company",
+            label: __("Company"),
+            fieldtype: "Link",
+            options: "Company"
+        },
+        {
+            fieldname: "target_date",
+            label: __("Target Date"),
+            fieldtype: "Date"
+        },
+        {
+            fieldname: "branch_source",
+            label: __("Branch Source"),
+            fieldtype: "Select",
+            options: [
+                { value: "branch", label: __("Sales Order Branch") },
+                { value: "custom_production_branch", label: __("Production Branch") }
+            ],
+            default: "branch"
+        },
+        {
+            fieldname: "branch",
+            label: __("Branch"),
+            fieldtype: "Link",
+            options: "Branch"
+        },
+        {
+            fieldname: "hide_completed",
+            label: __("Hide 100% Completed"),
+            fieldtype: "Check",
+            default: 0
+        }
+    ],
     "treeView": true,
     "name_field": "label_name",
     "initial_depth": 3,
     "formatter": function(value, row, column, data, default_formatter) {
+        // These flags belong to Sales Orders and Work Orders, not grouping rows.
+        if (["custom_blue_order", "custom_rush_order"].includes(column.fieldname) && value == null) {
+            return "";
+        }
         value = default_formatter(value, row, column, data);
 
         const RED = "#d63939";
@@ -57,7 +95,7 @@ frappe.query_reports["Production Tower"] = {
 
             // Keep document identity separate from the display label and sorting.
             // DataTable adds the expand/collapse control outside this link.
-            if (["Sales Order", "Material Request", "Work Order"].includes(data.reference_doctype) && data.reference_name) {
+            if (["Sales Order", "Material Request", "Delivery Note", "Work Order"].includes(data.reference_doctype) && data.reference_name) {
                 const href = frappe.utils.get_form_link(data.reference_doctype, data.reference_name);
                 value = `<a href="${frappe.utils.escape_html(href)}" style="color: inherit; text-decoration: none;">${value}</a>`;
             }
@@ -93,7 +131,7 @@ frappe.query_reports["Production Tower"] = {
             return numeric(value);
         }
         if (field === "completion_rate") return numeric(String(value ?? "").replace(/%$/, ""));
-        if (field === "produced_qty" || field === "is_bypass") return numeric(value);
+        if (["produced_qty", "custom_blue_order", "custom_rush_order"].includes(field)) return numeric(value);
         // ISO dates compare chronologically; text uses natural ordering (WO-2 < WO-10).
         return value == null || String(value).trim() === "" ? null : String(value);
     }
