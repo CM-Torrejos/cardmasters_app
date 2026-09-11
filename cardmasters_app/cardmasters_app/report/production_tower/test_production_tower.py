@@ -396,3 +396,68 @@ class TestProductionTower(TestCase):
         original = report.execute()[1]
         self.assertEqual(original[0]["completion_rate"], "99%")
         self.assertEqual(report.execute({"hide_completed": 1})[1], original)
+
+    def test_concluded_workflow_counts_full_quantity_for_all_sources_until_posted(self):
+        self.filter_sources()
+        self.sales_return()
+        self.return_item()
+        self.backjob()
+        for state in ("Pending Consumption", "Pending Claiming", "In Claiming"):
+            for posted_qty in (0, 4, 10, 12):
+                with self.subTest(state=state, posted_qty=posted_qty):
+                    for wo in self.records["Work Order"]:
+                        wo.update(workflow_state=state, produced_qty=posted_qty)
+                    rows = report.execute()[1]
+                    expected = "100% (Pending Posting)" if posted_qty < 10 else "100%"
+                    self.assertEqual(len(rows), 9)
+                    self.assertTrue(all(row["completion_rate"] == expected for row in rows))
+                    # Workflow completion never invents quantities in Produced.
+                    self.assertTrue(all(row["produced_qty"] == posted_qty for row in rows if row["indent"] > 0))
+                    self.assertEqual(report.execute({"hide_completed": 1})[1], [])
+
+    def test_other_workflow_states_use_posted_quantity_and_preserve_bypass(self):
+        self.request()
+        self.item()
+        self.work_order()
+        for state in (None, "Not Started", "In Production", "Finished Consumption"):
+            for posted_qty in (5, 10):
+                with self.subTest(state=state, posted_qty=posted_qty):
+                    self.records["Work Order"][0].update(workflow_state=state, produced_qty=posted_qty)
+                    expected = "50%" if posted_qty == 5 else "100%"
+                    self.assertTrue(all(row["completion_rate"] == expected for row in report.execute()[1]))
+        self.records["Work Order"][0].update(custom_bypass=1, produced_qty=0, workflow_state="Pending Consumption")
+        self.assertTrue(all(row["completion_rate"] == "100%" for row in report.execute()[1]))
+
+    def test_mixed_posted_and_concluded_work_orders_roll_up_without_double_counting(self):
+        self.request()
+        self.item()
+        self.item("MRI-2")
+        self.work_order(qty=6, produced_qty=2, workflow_state="Pending Consumption")
+        self.work_order("Posted", qty=4, produced_qty=4)
+        self.work_order("Second-item", material_request_item="MRI-2", qty=10, produced_qty=0)
+        self.work_order("Cancelled", docstatus=2, qty=100, workflow_state="Pending Consumption")
+        rows = report.execute()[1]
+        self.assertEqual(rows[0]["completion_rate"], "50% (Pending Posting)")
+        self.assertEqual(rows[1]["completion_rate"], "100% (Pending Posting)")
+        self.assertEqual(rows[1]["produced_qty"], 6)
+        self.assertEqual(rows[1]["qty"], "10 / 10")
+        filtered = report.execute({"hide_completed": 1})[1]
+        self.assertEqual([row.get("reference_name") for row in filtered], ["MR-1", None, "Second-item"])
+        self.assertEqual(filtered[0], rows[0])
+        # Reverting the WO state removes its unposted progress immediately.
+        self.records["Work Order"][0]["workflow_state"] = "In Production"
+        rows = report.execute()[1]
+        self.assertEqual(rows[0]["completion_rate"], "30%")
+        self.assertEqual(rows[1]["completion_rate"], "60%")
+
+    def test_posted_requirement_does_not_inherit_pending_label_from_extra_work_order(self):
+        self.request()
+        self.item()
+        self.item("MRI-2")
+        self.work_order(produced_qty=10)
+        self.work_order("Extra", qty=10, produced_qty=0, workflow_state="Pending Consumption")
+        rows = report.execute()[1]
+        self.assertEqual(rows[0]["completion_rate"], "50%")
+        self.assertEqual(rows[1]["completion_rate"], "100%")
+        extra = next(row for row in rows if row.get("reference_name") == "Extra")
+        self.assertEqual(extra["completion_rate"], "100% (Pending Posting)")

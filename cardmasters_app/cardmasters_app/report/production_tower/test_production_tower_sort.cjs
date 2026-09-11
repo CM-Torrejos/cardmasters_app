@@ -122,6 +122,19 @@ test('natural references and numeric completion, quantities, produced and order 
     assert.equal(s.order().at(-1), 'A11');
 });
 
+test('pending posting labels sort by percentage at every tree level', async () => {
+    const plain = setup(fixture());
+    const pending = setup(fixture().map(row => ({
+        ...row, completion_rate: `${row.completion_rate} (Pending Posting)`
+    })));
+    for (const direction of ['asc', 'desc', 'none']) {
+        await plain.sort('completion_rate', direction);
+        await pending.sort('completion_rate', direction);
+        assert.deepEqual(pending.order(), plain.order());
+        assertHierarchy(pending);
+    }
+});
+
 test('level-specific columns leave other levels in original order; missing dates stay last', async () => {
     const s = setup(fixture());
     await s.sort('date', 'asc');
