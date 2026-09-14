@@ -1,19 +1,68 @@
 import frappe
 from frappe import _
+from frappe.utils import cint
 
 
-WORK_ORDER_FIELDS = ["name", "status", "produced_qty", "qty", "custom_bypass", "production_item"]
+WORK_ORDER_FIELDS = [
+    "name", "produced_qty", "qty", "custom_bypass", "production_item",
+    "custom_blue_order", "custom_rush_order", "workflow_state",
+]
+
+# Keep aligned with work_order_workflow_trigger's production-concluded states.
+PRODUCTION_CONCLUDED_STATES = {"Pending Consumption", "Pending Claiming", "In Claiming"}
+
+
+def completion_label(completed_qty, required_qty, pending_posting=False):
+    percent = int(min(completed_qty / required_qty * 100, 100)) if required_qty > 0 else 0
+    label = f"{percent}%"
+    if pending_posting:
+        label += " ({0})".format(_("Pending Posting"))
+    return label
 
 
 def execute(filters=None):
     filters = frappe._dict(filters or {})
-    branches = get_sales_order_branches(filters) + get_material_request_branches(filters)
+    branches = (get_sales_order_branches(filters) + get_material_request_branches(filters)
+                + get_sales_return_branches(filters))
     # Sort whole branches together by target date; preserve source order for ties.
     branches.sort(key=lambda branch: str(branch[0].get("date") or ""), reverse=True)
-    return get_columns(), [row for branch in branches for row in branch]
+    rows = [row for branch in branches for row in branch]
+    if cint(filters.get("hide_completed")):
+        rows = hide_completed_rows(rows)
+    return get_columns(), rows
 
 
-def apply_source_filters(source_filters, filters):
+def hide_completed_rows(rows):
+    # Filter after calculating totals so hiding finished work does not change
+    # the remaining parents' coverage or completion. Remove a completed row's
+    # descendants too, keeping children attached to their original parent.
+    visible = []
+    hidden_indent = None
+    for row in rows:
+        if hidden_indent is not None:
+            if row["indent"] > hidden_indent:
+                continue
+            hidden_indent = None
+        if (row.get("completion_rate") or "").split("%", 1)[0] == "100":
+            hidden_indent = row["indent"]
+            continue
+        visible.append(row)
+    return visible
+
+
+def apply_source_filters(source_filters, filters, doctype):
+    if filters.get("company"):
+        source_filters["company"] = filters.company
+    if filters.get("target_date"):
+        date_field = "delivery_date" if doctype == "Sales Order" else "schedule_date"
+        source_filters[date_field] = filters.target_date
+    if filters.get("branch"):
+        # Only allow the two supported source fields, including for API callers.
+        if filters.get("branch_source") == "custom_production_branch":
+            branch_field = "custom_production_branch"
+        else:
+            branch_field = "branch" if doctype == "Sales Order" else "custom_for_branch"
+        source_filters[branch_field] = filters.branch
     if filters.get("from_date") and filters.get("to_date"):
         source_filters["transaction_date"] = ["between", [filters.from_date, filters.to_date]]
     if filters.get("workflow_state"):
@@ -24,8 +73,11 @@ def apply_source_filters(source_filters, filters):
 def get_sales_order_branches(filters):
     sales_orders = frappe.get_all(
         "Sales Order",
-        filters=apply_source_filters({"docstatus": 1, "workflow_state": ["!=", "Production Concluded"]}, filters),
-        fields=["name", "customer", "delivery_date", "workflow_state"],
+        filters=apply_source_filters(
+            {"docstatus": 1, "workflow_state": ["!=", "Production Concluded"]}, filters, "Sales Order"
+        ),
+        fields=["name", "customer", "delivery_date", "workflow_state", "custom_blue_order", "custom_rush_order",
+                "custom_quick_production_note"],
         order_by="delivery_date desc, name asc",
     )
     branches = []
@@ -47,6 +99,8 @@ def get_sales_order_branches(filters):
             "label_name": f"{so.name} - {so.customer}",
             "reference_doctype": "Sales Order", "reference_name": so.name,
             "date": so.delivery_date, "workflow_state": so.workflow_state,
+            "custom_blue_order": so.custom_blue_order, "custom_rush_order": so.custom_rush_order,
+            "custom_quick_production_note": so.custom_quick_production_note,
         }, items, work_orders))
     return branches
 
@@ -58,7 +112,7 @@ def get_material_request_branches(filters):
             "docstatus": 1, "material_request_type": "Manufacture",
             "status": ["not in", ["Stopped", "Cancelled"]],
             "workflow_state": ["!=", "Production Concluded"],
-        }, filters),
+        }, filters, "Material Request"),
         fields=["name", "schedule_date", "workflow_state", "status", "custom_for_branch"],
         order_by="schedule_date desc, name asc",
     )
@@ -114,11 +168,102 @@ def get_material_request_branches(filters):
     return branches
 
 
+def get_sales_return_branches(filters):
+    source_filters = {"docstatus": 1, "is_return": 1}
+    if filters.get("company"):
+        source_filters["company"] = filters.company
+    if filters.get("branch"):
+        # Returns own their branch assignments; backjobs may run elsewhere
+        # than the original Sales Order. Delivery Note's For Branch is `branch`.
+        branch_field = "custom_production_branch" if filters.get("branch_source") == "custom_production_branch" else "branch"
+        source_filters[branch_field] = filters.branch
+    if filters.get("from_date") and filters.get("to_date"):
+        source_filters["posting_date"] = ["between", [filters.from_date, filters.to_date]]
+    # Delivery Notes have status, but no workflow_state field.
+    if filters.get("workflow_state"):
+        source_filters["status"] = filters.workflow_state
+    returns = frappe.get_all(
+        "Delivery Note", filters=source_filters,
+        fields=["name", "customer", "posting_date", "status"], order_by="posting_date desc, name asc",
+    )
+    if not returns:
+        return []
+
+    items = frappe.get_all(
+        "Delivery Note Item",
+        filters={"parent": ["in", [row.name for row in returns]], "custom_for_backjob": 1},
+        fields=["parent", "name", "item_code", "item_name", "qty", "stock_qty", "conversion_factor",
+                "against_sales_order", "so_detail"], order_by="parent asc, idx asc",
+    )
+    if not items:
+        return []
+    so_names = sorted({item.against_sales_order for item in items if item.against_sales_order})
+    sales_orders = {so.name: so for so in frappe.get_all(
+        "Sales Order", filters={"name": ["in", so_names]},
+        fields=["name", "delivery_date"], order_by="name asc",
+    )} if so_names else {}
+
+    items_by_parent = {}
+    item_by_key = {}
+    dates_by_parent = {}
+    for item in items:
+        so = sales_orders.get(item.against_sales_order, frappe._dict())
+        if so.delivery_date:
+            dates_by_parent.setdefault(item.parent, []).append(so.delivery_date)
+        item.qty = abs(item.stock_qty if item.stock_qty is not None else item.qty * (item.conversion_factor or 1))
+        # Creation links to the SO item, not the Delivery Note row. Combine batch
+        # splits of that exact SO item so its Work Orders are counted only once.
+        key = (item.parent, item.against_sales_order, item.so_detail, item.item_code)
+        if item.against_sales_order and item.so_detail:
+            if key in item_by_key:
+                item_by_key[key].qty += item.qty
+                continue
+            item_by_key[key] = item
+        items_by_parent.setdefault(item.parent, []).append(item)
+
+    if not items_by_parent:
+        return []
+    work_orders = {}
+    for wo in frappe.get_all(
+        "Work Order",
+        filters={"custom_sales_return_reference": ["in", list(items_by_parent)], "docstatus": ["!=", 2]},
+        fields=WORK_ORDER_FIELDS + ["custom_sales_return_reference", "custom_document", "custom_document_id",
+                                   "custom_document_item_id", "sales_order", "sales_order_item"],
+        order_by="name asc",
+    ):
+        if wo.custom_document == "Sales Order" and wo.custom_document_id and wo.custom_document_item_id:
+            so_name, so_item = wo.custom_document_id, wo.custom_document_item_id
+        else:
+            so_name, so_item = wo.sales_order, wo.sales_order_item
+        item = item_by_key.get((wo.custom_sales_return_reference, so_name, so_item, wo.production_item))
+        if item:
+            work_orders.setdefault(item.name, []).append(wo)
+
+    branches = []
+    for sales_return in returns:
+        return_items = items_by_parent.get(sales_return.name)
+        if not return_items:
+            continue
+        # A return can reference several orders. Show the earliest linked due
+        # date; leave it blank when none exists rather than inventing a deadline.
+        dates = dates_by_parent.get(sales_return.name, [])
+        target_date = min(dates) if dates else None
+        if filters.get("target_date") and str(target_date or "") != str(filters.target_date):
+            continue
+        branches.append(build_branch({
+            "label_name": f"[SR] {sales_return.name} - {sales_return.customer}",
+            "reference_doctype": "Delivery Note", "reference_name": sales_return.name,
+            "date": target_date, "workflow_state": sales_return.status,
+        }, return_items, work_orders))
+    return branches
+
+
 def build_branch(reference, items, work_orders_by_item):
     """Apply the same coverage, completion and bypass rules to each demand source."""
     item_rows = []
     total_qty = 0
-    total_produced = 0
+    total_completed = 0
+    has_pending_posting = False
     has_bypass = 0
 
     eligible_item_count = 0
@@ -131,6 +276,7 @@ def build_branch(reference, items, work_orders_by_item):
 
         l3_rows = []
         item_produced_acc = 0
+        item_completed_acc = 0
         item_planned_acc = 0
 
         for wo in wos:
@@ -138,6 +284,8 @@ def build_branch(reference, items, work_orders_by_item):
             item_planned_acc += wo_qty
             wo_produced = wo_qty if wo.custom_bypass else (wo.produced_qty or 0)
             item_produced_acc += wo_produced
+            wo_completed = max(wo_produced, wo_qty) if wo.workflow_state in PRODUCTION_CONCLUDED_STATES else wo_produced
+            item_completed_acc += wo_completed
 
             if wo.custom_bypass:
                 has_bypass = 1
@@ -146,11 +294,13 @@ def build_branch(reference, items, work_orders_by_item):
                 "label_name": wo.name,
                 "reference_doctype": "Work Order",
                 "reference_name": wo.name,
-                "wo_status": wo.status,
+                "wo_status": wo.workflow_state,
                 "produced_qty": wo.produced_qty,
                 "qty": wo_qty,
-                "completion_rate": f"{int(min((wo_produced / wo_qty * 100), 100)) if wo_qty > 0 else 0}%",
+                "completion_rate": completion_label(wo_completed, wo_qty, wo_completed > wo_produced),
                 "is_bypass": wo.custom_bypass,
+                "custom_blue_order": wo.custom_blue_order,
+                "custom_rush_order": wo.custom_rush_order,
                 "indent": 2
             })
 
@@ -163,9 +313,12 @@ def build_branch(reference, items, work_orders_by_item):
         elif item_planned_acc < item.qty:
             planning_status = "shortfall"
 
-        l2_perc = min((item_produced_acc / item.qty * 100), 100) if item.qty > 0 else 0
+        # Only mark the parent pending when its required progress relies on
+        # unposted work. Extra WOs cannot overstate another item's progress.
+        pending_posting = min(item_completed_acc, item.qty) > min(item_produced_acc, item.qty)
+        has_pending_posting = has_pending_posting or pending_posting
         total_qty += item.qty
-        total_produced += min(item_produced_acc, item.qty)
+        total_completed += min(item_completed_acc, item.qty)
 
         item_rows.append({
             "label_name": f"{item.item_code}: {item.item_name}",
@@ -173,19 +326,18 @@ def build_branch(reference, items, work_orders_by_item):
             # Keep fractional quantities for sorting; the display is rounded.
             "_sort_qty": item_planned_acc / item.qty if item.qty > 0 else None,
             "produced_qty": item_produced_acc,
-            "completion_rate": f"{int(l2_perc)}%",
+            "completion_rate": completion_label(item_completed_acc, item.qty, pending_posting),
             "is_bypass": 1 if any(wo.get('is_bypass') for wo in l3_rows) else 0,
             "planning_status": planning_status,
             "indent": 1
         })
         item_rows.extend(l3_rows)
 
-    completion_percent = min((total_produced / total_qty * 100), 100) if total_qty > 0 else 0
     incomplete_coverage = 1 if fully_planned_item_count != eligible_item_count else 0
 
     data = [{
         **reference,
-        "completion_rate": f"{int(completion_percent)}%",
+        "completion_rate": completion_label(total_completed, total_qty, has_pending_posting),
         "qty": f"{fully_planned_item_count} / {eligible_item_count}",
         "_sort_qty": fully_planned_item_count / eligible_item_count if eligible_item_count else None,
         "is_bypass": has_bypass,
@@ -199,12 +351,14 @@ def build_branch(reference, items, work_orders_by_item):
 
 def get_columns():
     return [
-        {"label": _("Reference (SO / MR / Item / WO)"), "fieldname": "label_name", "fieldtype": "Data", "width": 400},
+        {"label": _("Reference (SO / MR / SR / Item / WO)"), "fieldname": "label_name", "fieldtype": "Data", "width": 400},
         {"label": _("Target Date"), "fieldname": "date", "fieldtype": "Date", "width": 110},
         {"label": _("Stage"), "fieldname": "workflow_state", "fieldtype": "Data", "width": 160},
-        {"label": _("Completion"), "fieldname": "completion_rate", "fieldtype": "Data", "width": 110},
-        {"label": _("Coverage (L0) / Plan (L1)"), "fieldname": "qty", "fieldtype": "Data", "width": 150},
-        {"label": _("WO Status"), "fieldname": "wo_status", "fieldtype": "Data", "width": 130},
+        {"label": _("Work Order Coverage"), "fieldname": "qty", "fieldtype": "Data", "width": 220},
+        {"label": _("Completion"), "fieldname": "completion_rate", "fieldtype": "Data", "width": 210},
+        {"label": _("WO Workflow State"), "fieldname": "wo_status", "fieldtype": "Data", "width": 180},
         {"label": _("Produced"), "fieldname": "produced_qty", "fieldtype": "Float", "width": 100},
-        {"label": _("Bypass"), "fieldname": "is_bypass", "fieldtype": "Check", "width": 80},
+        {"label": _("Blue Order"), "fieldname": "custom_blue_order", "fieldtype": "Check", "width": 100},
+        {"label": _("Rush Order"), "fieldname": "custom_rush_order", "fieldtype": "Check", "width": 100},
+        {"label": _("Quick Production Note"), "fieldname": "custom_quick_production_note", "fieldtype": "Data", "width": 300},
     ]

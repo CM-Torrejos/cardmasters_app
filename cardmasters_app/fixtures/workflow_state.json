@@ -471,15 +471,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2026-02-05 13:27:25.992477",
-  "name": "Not Started",
-  "style": "Info",
-  "workflow_state_name": "Not Started"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2026-02-05 13:27:21.555207",
   "name": "In Production",
   "style": "Warning",
@@ -529,5 +520,14 @@
   "name": "Draft",
   "style": "",
   "workflow_state_name": "Draft"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-02-05 13:27:25.992477",
+  "name": "Not Started",
+  "style": "Info",
+  "workflow_state_name": "Not Started"
  }
 ]

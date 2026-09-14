@@ -1,9 +1,47 @@
 frappe.query_reports["Production Tower"] = {
-    "filters": [ /* ... filters remain the same ... */ ],
+    "filters": [
+        {
+            fieldname: "company",
+            label: __("Company"),
+            fieldtype: "Link",
+            options: "Company"
+        },
+        {
+            fieldname: "target_date",
+            label: __("Target Date"),
+            fieldtype: "Date"
+        },
+        {
+            fieldname: "branch_source",
+            label: __("Branch Source"),
+            fieldtype: "Select",
+            options: [
+                { value: "branch", label: __("Sales Order Branch") },
+                { value: "custom_production_branch", label: __("Production Branch") }
+            ],
+            default: "branch"
+        },
+        {
+            fieldname: "branch",
+            label: __("Branch"),
+            fieldtype: "Link",
+            options: "Branch"
+        },
+        {
+            fieldname: "hide_completed",
+            label: __("Hide 100% Completed"),
+            fieldtype: "Check",
+            default: 0
+        }
+    ],
     "treeView": true,
     "name_field": "label_name",
     "initial_depth": 3,
     "formatter": function(value, row, column, data, default_formatter) {
+        // These flags belong to Sales Orders and Work Orders, not grouping rows.
+        if (["custom_blue_order", "custom_rush_order"].includes(column.fieldname) && value == null) {
+            return "";
+        }
         value = default_formatter(value, row, column, data);
 
         const RED = "#d63939";
@@ -11,6 +49,7 @@ frappe.query_reports["Production Tower"] = {
         const YELLOW = "#f59f00";
         const GREEN = "#2fb344";
         const INFO_BLUE = "#1a73e8";
+        const secondaryLabel = label => ` <span style="color: var(--text-muted, #6c757d); font-size: 0.85em; font-weight: 400;">· ${frappe.utils.escape_html(label)}</span>`;
 
         // 1. Completion Rate Gradient
         if (column.fieldname == "completion_rate" && data.completion_rate) {
@@ -21,22 +60,36 @@ frappe.query_reports["Production Tower"] = {
             else if (rate >= 40) color = ORANGE;
             else color = RED;
             
-            value = `<span style="color: ${color}; font-weight: bold;">${value}</span>`;
+            const pendingPosting = data.completion_rate.endsWith(`(${__("Pending Posting")})`);
+            const percentage = pendingPosting ? `${rate}%` : value;
+            value = `<span style="color: ${color}; font-weight: bold;">${percentage}</span>`;
+            if (pendingPosting) {
+                value += secondaryLabel(__("Pending posting"));
+            }
         }
 
         // 2. Planning Health Warnings
-        if (column.fieldname == "qty") {
-            if (data.indent == 1) { 
-                if (data.planning_status === "orphan") value = `<span style="color: ${RED}; font-weight: bold;">${value} (MISSING)</span>`;
-                else if (data.planning_status === "shortfall") value = `<span style="color: ${ORANGE}; font-weight: bold;">${value} (PARTIAL)</span>`;
-            } else if (data.indent == 0) { 
+        if (column.fieldname == "qty" && [0, 1].includes(data.indent)) {
+            let color = "inherit";
+            let label = "";
+            if (data.indent == 1) {
+                if (data.planning_status === "orphan") {
+                    color = RED;
+                    label = __("No work order");
+                } else if (data.planning_status === "shortfall") {
+                    color = ORANGE;
+                    label = __("Pending");
+                }
+            } else if (data.indent == 0) {
                 if (data.incomplete_coverage) {
-                    // Only this column stays RED for L0 alerts
-                    value = `<span style="color: ${RED}; font-weight: bold;">${value} COVERED</span>`;
-                } else if (data.completion_rate === "100%") {
-                    value = `<span style="color: ${GREEN}; font-weight: bold;">${value}</span>`;
+                    color = RED;
+                    label = __("Pending");
+                } else if (parseFloat(data.completion_rate) === 100) {
+                    color = GREEN;
                 }
             }
+            value = `<span style="color: ${color}; font-weight: bold;">${value}</span>`;
+            if (label) value += secondaryLabel(label);
         }
 
         // 3. Labels and Icons (Neutral L0)
@@ -45,7 +98,7 @@ frappe.query_reports["Production Tower"] = {
             if (data.indent == 0) {
                 if (data.is_orphan_so) {
                     value = `<strong style="color: ${INFO_BLUE}; font-size: 1.1em;">ℹ [SERVICE] ${value}</strong>`;
-                } else if (data.completion_rate === "100%") {
+                } else if (parseFloat(data.completion_rate) === 100) {
                     value = `<strong style="color: ${GREEN}; font-size: 1.1em;">${value}</strong>`;
                 } else {
                     // Bold but no Red distraction
@@ -57,7 +110,7 @@ frappe.query_reports["Production Tower"] = {
 
             // Keep document identity separate from the display label and sorting.
             // DataTable adds the expand/collapse control outside this link.
-            if (["Sales Order", "Material Request", "Work Order"].includes(data.reference_doctype) && data.reference_name) {
+            if (["Sales Order", "Material Request", "Delivery Note", "Work Order"].includes(data.reference_doctype) && data.reference_name) {
                 const href = frappe.utils.get_form_link(data.reference_doctype, data.reference_name);
                 value = `<a href="${frappe.utils.escape_html(href)}" style="color: inherit; text-decoration: none;">${value}</a>`;
             }
@@ -92,8 +145,8 @@ frappe.query_reports["Production Tower"] = {
             }
             return numeric(value);
         }
-        if (field === "completion_rate") return numeric(String(value ?? "").replace(/%$/, ""));
-        if (field === "produced_qty" || field === "is_bypass") return numeric(value);
+        if (field === "completion_rate") return numeric(String(value ?? "").split("%")[0]);
+        if (["produced_qty", "custom_blue_order", "custom_rush_order"].includes(field)) return numeric(value);
         // ISO dates compare chronologically; text uses natural ordering (WO-2 < WO-10).
         return value == null || String(value).trim() === "" ? null : String(value);
     }

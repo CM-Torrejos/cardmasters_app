@@ -11,7 +11,7 @@ const src = path.join(path.dirname(require.resolve('frappe-datatable/package.jso
 
 function setup(data) {
     const context = vm.createContext({
-        frappe: { query_reports: {} }, setTimeout, console,
+        frappe: { query_reports: {} }, __: text => text, setTimeout, console,
         _throttle: fn => fn, _debounce: fn => fn, _uniq: values => [...new Set(values)],
         $: { on() {} }, getComputedStyle: () => ({ width: '100px', height: '100px' }),
         HyperList: class { constructor(_, config) { this.config = config; } refresh(_, config) { this.config = config; } }
@@ -24,7 +24,7 @@ function setup(data) {
         vm.runInContext(source, context);
     }
     vm.runInContext(fs.readFileSync(path.join(__dirname, 'production_tower.js'), 'utf8'), context);
-    const fields = ['label_name', 'date', 'workflow_state', 'completion_rate', 'qty', 'wo_status', 'produced_qty', 'is_bypass'];
+    const fields = ['label_name', 'date', 'workflow_state', 'completion_rate', 'qty', 'wo_status', 'produced_qty', 'custom_blue_order', 'custom_rush_order'];
     const options = {
         columns: fields.map(id => ({ id, fieldname: id, name: id })),
         data, serialNoColumn: true, checkboxColumn: false, treeView: true,
@@ -53,16 +53,16 @@ function setup(data) {
 
 function fixture() {
     return [
-        { key: 'A', indent: 0, label_name: 'SO-10', date: '2026-10-01', workflow_state: 'Queued', completion_rate: '100%', qty: '8 / 10', is_bypass: 1 },
-        { key: 'A1', indent: 1, label_name: 'Same item', completion_rate: '100%', qty: '100 / 100', produced_qty: 100, is_bypass: 1 },
-        { key: 'A11', indent: 2, label_name: 'WO-10', completion_rate: '100%', qty: 90, produced_qty: 90, wo_status: 'Completed', is_bypass: 1 },
-        { key: 'A12', indent: 2, label_name: 'WO-2', completion_rate: '9%', qty: 10, produced_qty: 0.9, wo_status: 'Not Started', is_bypass: 0 },
-        { key: 'A2', indent: 1, label_name: 'Same item', completion_rate: '9%', qty: '1 / 2', produced_qty: 0, is_bypass: 0 },
-        { key: 'A21', indent: 2, label_name: 'WO-1', completion_rate: '0%', qty: 1, produced_qty: 0, wo_status: 'In Process', is_bypass: 0 },
-        { key: 'B', indent: 0, label_name: 'SO-2', date: '2026-09-01', workflow_state: 'Active', completion_rate: '9%', qty: '1 / 2', is_bypass: 0 },
-        { key: 'B1', indent: 1, label_name: 'Same item', completion_rate: '0%', qty: '0 / 2', produced_qty: 0, is_bypass: 0 },
-        { key: 'B11', indent: 2, label_name: 'WO-3', completion_rate: '0%', qty: 2, produced_qty: 0, wo_status: 'Draft', is_bypass: 0 },
-        { key: 'C', indent: 0, label_name: 'SO-3', completion_rate: '0%', qty: '0 / 0', is_bypass: 0 }
+        { key: 'A', indent: 0, label_name: 'SO-10', date: '2026-10-01', workflow_state: 'Queued', completion_rate: '100%', qty: '8 / 10', custom_blue_order: 1, custom_rush_order: 0 },
+        { key: 'A1', indent: 1, label_name: 'Same item', completion_rate: '100%', qty: '100 / 100', produced_qty: 100, custom_blue_order: 1, custom_rush_order: 0 },
+        { key: 'A11', indent: 2, label_name: 'WO-10', completion_rate: '100%', qty: 90, produced_qty: 90, wo_status: 'Completed', custom_blue_order: 1, custom_rush_order: 0 },
+        { key: 'A12', indent: 2, label_name: 'WO-2', completion_rate: '9%', qty: 10, produced_qty: 0.9, wo_status: 'Not Started', custom_blue_order: 0, custom_rush_order: 1 },
+        { key: 'A2', indent: 1, label_name: 'Same item', completion_rate: '9%', qty: '1 / 2', produced_qty: 0, custom_blue_order: 0, custom_rush_order: 1 },
+        { key: 'A21', indent: 2, label_name: 'WO-1', completion_rate: '0%', qty: 1, produced_qty: 0, wo_status: 'In Process', custom_blue_order: 0, custom_rush_order: 1 },
+        { key: 'B', indent: 0, label_name: 'SO-2', date: '2026-09-01', workflow_state: 'Active', completion_rate: '9%', qty: '1 / 2', custom_blue_order: 0, custom_rush_order: 1 },
+        { key: 'B1', indent: 1, label_name: 'Same item', completion_rate: '0%', qty: '0 / 2', produced_qty: 0, custom_blue_order: 0, custom_rush_order: 1 },
+        { key: 'B11', indent: 2, label_name: 'WO-3', completion_rate: '0%', qty: 2, produced_qty: 0, wo_status: 'Draft', custom_blue_order: 0, custom_rush_order: 1 },
+        { key: 'C', indent: 0, label_name: 'SO-3', completion_rate: '0%', qty: '0 / 0', custom_blue_order: 0, custom_rush_order: 1 }
     ];
 }
 
@@ -102,7 +102,7 @@ test('every column preserves branch membership across repeated asc/desc/reset so
     }
 });
 
-test('natural references and numeric completion, quantities, produced and bypass', async () => {
+test('natural references and numeric completion, quantities, produced and order flags', async () => {
     const s = setup(fixture());
     await s.sort('label_name', 'asc');
     assert.deepEqual(s.order(), ['B', 'B1', 'B11', 'C', 'A', 'A1', 'A12', 'A11', 'A2', 'A21']);
@@ -114,9 +114,25 @@ test('natural references and numeric completion, quantities, produced and bypass
     assert.equal(s.order().at(-1), 'C', 'undefined 0/0 ratio stays last descending');
     await s.sort('produced_qty', 'asc');
     assert.deepEqual(s.order(), ['A', 'A2', 'A21', 'A1', 'A12', 'A11', 'B', 'B1', 'B11', 'C']);
-    await s.sort('is_bypass', 'desc');
+    await s.sort('custom_blue_order', 'desc');
     assert.equal(s.order()[0], 'A');
     assert.equal(s.order()[2], 'A11');
+    await s.sort('custom_rush_order', 'desc');
+    assert.equal(s.order()[0], 'B');
+    assert.equal(s.order().at(-1), 'A11');
+});
+
+test('pending posting labels sort by percentage at every tree level', async () => {
+    const plain = setup(fixture());
+    const pending = setup(fixture().map(row => ({
+        ...row, completion_rate: `${row.completion_rate} (Pending Posting)`
+    })));
+    for (const direction of ['asc', 'desc', 'none']) {
+        await plain.sort('completion_rate', direction);
+        await pending.sort('completion_rate', direction);
+        assert.deepEqual(pending.order(), plain.order());
+        assertHierarchy(pending);
+    }
 });
 
 test('level-specific columns leave other levels in original order; missing dates stay last', async () => {
@@ -207,6 +223,28 @@ test('empty reports can sort and reset', async () => {
     await s.sort('qty', 'none');
     assert.deepEqual(s.order(), []);
     assert.deepEqual(s.visible(), []);
+});
+
+test('sales return backjobs remain under their return when sorting and collapsing mixed sources', async () => {
+    const s = setup([...fixture(),
+        { key: 'SR', indent: 0, reference_doctype: 'Delivery Note', label_name: '[SR] DN-1', date: '2026-09-15', qty: '1 / 2' },
+        { key: 'SRI', indent: 1, label_name: 'Returned item', qty: '5 / 10' },
+        { key: 'BACKJOB', indent: 2, label_name: 'Backjob WO', qty: 5, custom_blue_order: 1, custom_rush_order: 1 }
+    ]);
+    for (const column of s.dm.columns) {
+        for (const direction of ['asc', 'desc', 'none']) {
+            await s.sort(column.id, direction);
+            assertHierarchy(s);
+        }
+    }
+    s.table.rowmanager.closeSingleNode(10);
+    await s.sort('date', 'asc');
+    assert.equal(s.visible().includes('SR'), true);
+    assert.equal(s.visible().includes('BACKJOB'), false);
+    assert.equal(s.visible().includes('B11'), true);
+    s.table.rowmanager.openSingleNode(10);
+    s.table.rowmanager.openSingleNode(11);
+    assert.equal(s.visible().includes('BACKJOB'), true);
 });
 
 test('mixed Sales Order and Material Request roots sort together without mixing their items or work orders', async () => {
