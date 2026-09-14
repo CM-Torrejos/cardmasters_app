@@ -76,7 +76,8 @@ def get_sales_order_branches(filters):
         filters=apply_source_filters(
             {"docstatus": 1, "workflow_state": ["!=", "Production Concluded"]}, filters, "Sales Order"
         ),
-        fields=["name", "customer", "delivery_date", "workflow_state", "custom_blue_order", "custom_rush_order"],
+        fields=["name", "customer", "delivery_date", "workflow_state", "custom_blue_order", "custom_rush_order",
+                "custom_quick_production_note"],
         order_by="delivery_date desc, name asc",
     )
     branches = []
@@ -99,6 +100,7 @@ def get_sales_order_branches(filters):
             "reference_doctype": "Sales Order", "reference_name": so.name,
             "date": so.delivery_date, "workflow_state": so.workflow_state,
             "custom_blue_order": so.custom_blue_order, "custom_rush_order": so.custom_rush_order,
+            "custom_quick_production_note": so.custom_quick_production_note,
         }, items, work_orders))
     return branches
 
@@ -358,4 +360,5 @@ def get_columns():
         {"label": _("Produced"), "fieldname": "produced_qty", "fieldtype": "Float", "width": 100},
         {"label": _("Blue Order"), "fieldname": "custom_blue_order", "fieldtype": "Check", "width": 100},
         {"label": _("Rush Order"), "fieldname": "custom_rush_order", "fieldtype": "Check", "width": 100},
+        {"label": _("Quick Production Note"), "fieldname": "custom_quick_production_note", "fieldtype": "Data", "width": 300},
     ]
