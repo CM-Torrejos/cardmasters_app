@@ -42,7 +42,6 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-
           if [ "${{ github.event_name }}" = "push" ]; then
             APP_REF="${{ github.ref_name }}"
             IMAGE_TAG="${{ github.ref_name }}"
@@ -52,32 +51,26 @@ jobs:
             IMAGE_TAG="${{ inputs.image_tag }}"
             NO_CACHE="${{ inputs.no_cache }}"
           fi
-
           if [ -z "$APP_REF" ]; then
             echo "APP_REF is empty."
             exit 1
           fi
-
           if [ -z "$IMAGE_TAG" ]; then
             echo "IMAGE_TAG is empty."
             exit 1
           fi
-
           if [ "$IMAGE_TAG" = "latest" ]; then
             echo "Do not publish production images as latest."
             exit 1
           fi
-
           echo "APP_REF=$APP_REF" >> "$GITHUB_ENV"
           echo "IMAGE_TAG=$IMAGE_TAG" >> "$GITHUB_ENV"
           echo "NO_CACHE=$NO_CACHE" >> "$GITHUB_ENV"
-
           echo "Building cardmasters_app ref: $APP_REF"
           echo "Publishing image tag: $IMAGE_TAG"
           echo "No cache: $NO_CACHE"
-
       - name: Checkout frappe_docker
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: frappe/frappe_docker
           ref: main
@@ -87,7 +80,6 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-
           cat > frappe_docker/apps.json <<EOF
           [
             {
@@ -112,14 +104,12 @@ jobs:
             }
           ]
           EOF
-
           cat frappe_docker/apps.json
-
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -127,7 +117,7 @@ jobs:
 
       - name: Build and push image
         id: build
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: ./frappe_docker
           file: ./frappe_docker/images/custom/Containerfile
@@ -142,19 +132,14 @@ jobs:
             PYTHON_VERSION=3.11.9
             NODE_VERSION=18.20.2
             CACHE_BUST=${{ github.run_id }}
-
       - name: Verify image contents
         shell: bash
         run: |
           set -euo pipefail
-
           IMAGE="${IMAGE_NAME}:${IMAGE_TAG}"
-
           docker pull "$IMAGE"
-
           docker image inspect "$IMAGE" \
             --format 'RepoDigests={{json .RepoDigests}} RepoTags={{json .RepoTags}} Created={{.Created}}'
-
           docker run --rm --entrypoint bash "$IMAGE" -lc '
             set -e
             echo "Installed apps:"
@@ -164,12 +149,10 @@ jobs:
             cd /home/frappe/frappe-bench
             bench version
           '
-
       - name: Build summary
         shell: bash
         run: |
           set -euo pipefail
-
           {
             echo "## Production ERPNext Image Build"
             echo
