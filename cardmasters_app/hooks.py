@@ -109,6 +109,9 @@ doc_events = {
         ]
     },
     "Stock Entry": {
+        "before_validate": [
+            "cardmasters_app.cardmasters_app.event_handlers.stock_entry.apply_material_request_reason_account"
+        ],
         "validate": [
             "cardmasters_app.cardmasters_app.event_handlers.stock_entry.before_save_stock_entry" # Set stock consumption accounts
         ],

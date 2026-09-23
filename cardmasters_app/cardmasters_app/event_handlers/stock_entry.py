@@ -3,6 +3,35 @@ import frappe
 from frappe.utils import flt
 from frappe import _
 
+
+def apply_material_request_reason_account(doc, _method=None):
+	"""Keep request-linked issue rows on their reason's mapped account."""
+	if doc.purpose != "Material Issue":
+		return
+
+	accounts = {}
+	for row in doc.items or []:
+		request = row.get("material_request")
+		if not request:
+			continue
+		if request not in accounts:
+			reason = frappe.db.get_value("Material Request", request, "custom_reason")
+			account = None
+			if reason:
+				account = frappe.db.get_value("Material Request Reason", reason, "account")
+				if not account:
+					frappe.throw(_("Set an Account for Material Request Reason {0} (Material Request {1}).").format(reason, request))
+				account_details = frappe.db.get_value(
+					"Account", account, ["company", "is_group", "disabled"], as_dict=True
+				)
+				if (not account_details or account_details.company != doc.company
+					or account_details.is_group or account_details.disabled):
+					frappe.throw(_("Account {0} for Material Request Reason {1} must be an enabled ledger account in company {2}.").format(account, reason, doc.company))
+			accounts[request] = account
+		if accounts[request]:
+			row.expense_account = accounts[request]
+
+
 def inherit_item_details_on_insert(doc, _method):
 	# Only for Transfer for Manufacture with batching
 	if doc.purpose != "Material Transfer for Manufacture" or not doc.custom_batched:
