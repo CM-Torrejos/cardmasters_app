@@ -65,7 +65,7 @@ def add_operation_rows(rows):
                 "date": str(operation.planned_end_time)[:10] if operation.planned_end_time else None,
                 "qty": row["qty"],
                 "completion_rate": operation.custom_progress or "",
-                "wo_status": row.get("wo_status"),
+                "wo_status": operation.custom_progress or "",
                 "produced_qty": operation.completed_qty or 0,
                 "custom_blue_order": row.get("custom_blue_order"),
                 "custom_rush_order": row.get("custom_rush_order"),
