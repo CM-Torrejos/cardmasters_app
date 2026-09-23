@@ -7649,22 +7649,6 @@
  },
  {
   "default_value": null,
-  "doc_type": "Material Request",
-  "docstatus": 0,
-  "doctype": "Property Setter",
-  "doctype_or_field": "DocType",
-  "field_name": null,
-  "is_system_generated": 0,
-  "modified": "2026-09-10 15:00:45.197379",
-  "module": null,
-  "name": "Material Request-main-field_order",
-  "property": "field_order",
-  "property_type": "Data",
-  "row_name": null,
-  "value": "[\"workflow_state\", \"type_section\", \"naming_series\", \"title\", \"material_request_type\", \"customer\", \"custom_for_branch\", \"custom_production_branch\", \"company\", \"custom_sales_order\", \"custom_damages_and_returns\", \"column_break_2\", \"transaction_date\", \"schedule_date\", \"buying_price_list\", \"amended_from\", \"custom_from_revolving_fund\", \"custom_received\", \"warehouse_section\", \"scan_barcode\", \"last_scanned_warehouse\", \"set_from_warehouse\", \"column_break5\", \"set_warehouse\", \"items_section\", \"items\", \"custom_section_break_ioqui\", \"custom_column_break_f2alc\", \"custom_column_break_xki6r\", \"custom_received_by_requesting_party\", \"terms_tab\", \"terms_section_break\", \"tc_name\", \"terms\", \"more_info_tab\", \"status_section\", \"status\", \"per_ordered\", \"custom_has_unregistered_items\", \"column_break2\", \"transfer_status\", \"per_received\", \"printing_details\", \"letter_head\", \"column_break_31\", \"select_print_heading\", \"reference\", \"job_card\", \"column_break_35\", \"work_order\", \"connections_tab\"]"
- },
- {
-  "default_value": null,
   "doc_type": "Sales Order",
   "docstatus": 0,
   "doctype": "Property Setter",
@@ -7678,22 +7662,6 @@
   "property_type": "Check",
   "row_name": null,
   "value": "1"
- },
- {
-  "default_value": null,
-  "doc_type": "Material Request",
-  "docstatus": 0,
-  "doctype": "Property Setter",
-  "doctype_or_field": "DocType",
-  "field_name": null,
-  "is_system_generated": 0,
-  "modified": "2026-09-10 15:01:54.104555",
-  "module": null,
-  "name": "Material Request-main-links_order",
-  "property": "links_order",
-  "property_type": "Small Text",
-  "row_name": null,
-  "value": "[\"kc5k4l9j0e\"]"
  },
  {
   "default_value": null,
@@ -7838,5 +7806,37 @@
   "property_type": "Data",
   "row_name": null,
   "value": "[\"details\", \"operation\", \"status\", \"completed_qty\", \"process_loss_qty\", \"column_break_4\", \"bom\", \"workstation_type\", \"workstation\", \"custom_workstation_hidden\", \"sequence_id\", \"custom_progress\", \"section_break_10\", \"description\", \"estimated_time_and_cost\", \"planned_start_time\", \"hour_rate\", \"time_in_mins\", \"column_break_10\", \"planned_end_time\", \"batch_size\", \"planned_operating_cost\", \"section_break_9\", \"actual_start_time\", \"actual_operation_time\", \"column_break_11\", \"actual_end_time\", \"actual_operating_cost\"]"
+ },
+ {
+  "default_value": null,
+  "doc_type": "Material Request",
+  "docstatus": 0,
+  "doctype": "Property Setter",
+  "doctype_or_field": "DocType",
+  "field_name": null,
+  "is_system_generated": 0,
+  "modified": "2026-09-23 11:33:54.656246",
+  "module": null,
+  "name": "Material Request-main-field_order",
+  "property": "field_order",
+  "property_type": "Data",
+  "row_name": null,
+  "value": "[\"workflow_state\", \"type_section\", \"naming_series\", \"title\", \"material_request_type\", \"custom_reason\", \"customer\", \"custom_for_branch\", \"custom_production_branch\", \"company\", \"custom_sales_order\", \"custom_damages_and_returns\", \"column_break_2\", \"transaction_date\", \"schedule_date\", \"buying_price_list\", \"amended_from\", \"custom_from_revolving_fund\", \"custom_received\", \"warehouse_section\", \"scan_barcode\", \"last_scanned_warehouse\", \"set_from_warehouse\", \"column_break5\", \"set_warehouse\", \"items_section\", \"items\", \"custom_section_break_ioqui\", \"custom_column_break_f2alc\", \"custom_column_break_xki6r\", \"custom_received_by_requesting_party\", \"terms_tab\", \"terms_section_break\", \"tc_name\", \"terms\", \"more_info_tab\", \"status_section\", \"status\", \"per_ordered\", \"custom_has_unregistered_items\", \"column_break2\", \"transfer_status\", \"per_received\", \"printing_details\", \"letter_head\", \"column_break_31\", \"select_print_heading\", \"reference\", \"job_card\", \"column_break_35\", \"work_order\", \"connections_tab\"]"
+ },
+ {
+  "default_value": null,
+  "doc_type": "Material Request",
+  "docstatus": 0,
+  "doctype": "Property Setter",
+  "doctype_or_field": "DocType",
+  "field_name": null,
+  "is_system_generated": 0,
+  "modified": "2026-09-23 11:33:54.985310",
+  "module": null,
+  "name": "Material Request-main-links_order",
+  "property": "links_order",
+  "property_type": "Small Text",
+  "row_name": null,
+  "value": "[\"kc5k4l9j0e\"]"
  }
 ]
