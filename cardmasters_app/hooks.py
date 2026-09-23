@@ -44,6 +44,7 @@ doctype_js = {
     "Artist Card": "public/js/artist_card.js",
     "Work Order": [
         "public/js/work_order.js", # Controlled qty edit form
+        "public/js/work_order/operation_progress.js", # Submitted operation Progress dropdown
         "public/js/work_order/skip_material_transfer.js" # Quick action to skip transfers
     ],
     "Petty Cash Request": "public/js/petty_cash_request.js",

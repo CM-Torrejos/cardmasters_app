@@ -27,9 +27,51 @@ def execute(filters=None):
     # Sort whole branches together by target date; preserve source order for ties.
     branches.sort(key=lambda branch: str(branch[0].get("date") or ""), reverse=True)
     rows = [row for branch in branches for row in branch]
+    rows = add_operation_rows(rows)
     if cint(filters.get("hide_completed")):
         rows = hide_completed_rows(rows)
     return get_columns(), rows
+
+
+def add_operation_rows(rows):
+    """Fetch operation lines once and attach them to each occurrence of their WO."""
+    names = sorted({row["reference_name"] for row in rows if row.get("reference_doctype") == "Work Order"})
+    if not names:
+        return rows
+    operations = frappe.get_all(
+        "Work Order Operation",
+        filters={"parent": ["in", names], "parenttype": "Work Order", "parentfield": "operations"},
+        fields=["name", "parent", "operation", "custom_progress", "planned_end_time", "completed_qty"],
+        order_by="parent asc, idx asc",
+    )
+    by_work_order = {}
+    for operation in operations:
+        by_work_order.setdefault(operation.parent, []).append(operation)
+    result = []
+    for row in rows:
+        result.append(row)
+        if row.get("reference_doctype") != "Work Order":
+            continue
+        work_order_operations = by_work_order.get(row["reference_name"], [])
+        row["has_no_operations"] = not work_order_operations
+        for operation in work_order_operations:
+            result.append({
+                "label_name": "{0}: {1}".format(_("Operations"), operation.operation),
+                "row_type": "operation",
+                "operation_row": operation.name,
+                # A child line opens its owning Work Order, not an unrelated master.
+                "reference_doctype": "Work Order",
+                "reference_name": row["reference_name"],
+                "date": str(operation.planned_end_time)[:10] if operation.planned_end_time else None,
+                "qty": row["qty"],
+                "completion_rate": operation.custom_progress or "",
+                "wo_status": row.get("wo_status"),
+                "produced_qty": operation.completed_qty or 0,
+                "custom_blue_order": row.get("custom_blue_order"),
+                "custom_rush_order": row.get("custom_rush_order"),
+                "indent": 3,
+            })
+    return result
 
 
 def hide_completed_rows(rows):
@@ -43,7 +85,8 @@ def hide_completed_rows(rows):
             if row["indent"] > hidden_indent:
                 continue
             hidden_indent = None
-        if (row.get("completion_rate") or "").split("%", 1)[0] == "100":
+        if ((row.get("completion_rate") or "").split("%", 1)[0] == "100"
+                or (row.get("row_type") == "operation" and row.get("completion_rate") == "Done")):
             hidden_indent = row["indent"]
             continue
         visible.append(row)
@@ -351,7 +394,7 @@ def build_branch(reference, items, work_orders_by_item):
 
 def get_columns():
     return [
-        {"label": _("Reference (SO / MR / SR / Item / WO)"), "fieldname": "label_name", "fieldtype": "Data", "width": 400},
+        {"label": _("Reference (SO / MR / SR / Item / WO / Operations)"), "fieldname": "label_name", "fieldtype": "Data", "width": 460},
         {"label": _("Target Date"), "fieldname": "date", "fieldtype": "Date", "width": 110},
         {"label": _("Stage"), "fieldname": "workflow_state", "fieldtype": "Data", "width": 160},
         {"label": _("Work Order Coverage"), "fieldname": "qty", "fieldtype": "Data", "width": 220},

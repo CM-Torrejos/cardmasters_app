@@ -269,3 +269,28 @@ test('mixed Sales Order and Material Request roots sort together without mixing 
     await s.sort('date', 'asc');
     assert.deepEqual(s.visible(), ['MR', 'SO', 'SOI', 'SOWO']);
 });
+
+
+test('operation leaves retain their work order during sorting and collapse', async () => {
+    const rows = fixture().flatMap(row => row.indent === 2 ? [row,
+        ...['Done', 'On Hold', 'Not Started', 'In Progress', ''].map((progress, i) => ({
+            key: `${row.key}-OP${i}`, indent: 3, row_type: 'operation',
+            label_name: 'Operations: Cutting', completion_rate: progress
+        }))] : [row]);
+    const s = setup(rows);
+    for (const column of s.dm.columns) {
+        for (const direction of ['asc', 'desc', 'none']) {
+            await s.sort(column.id, direction);
+            assertHierarchy(s);
+        }
+    }
+    await s.sort('completion_rate', 'asc');
+    assert.deepEqual(s.order().filter(key => key.startsWith('A11-')),
+        ['A11-OP2', 'A11-OP3', 'A11-OP1', 'A11-OP0', 'A11-OP4']);
+    s.table.rowmanager.closeSingleNode(2);
+    await s.sort('completion_rate', 'desc');
+    assert.equal(s.visible().some(key => key.startsWith('A11-')), false);
+    assert.equal(s.visible().some(key => key.startsWith('A12-')), true);
+    s.table.rowmanager.openSingleNode(2);
+    assert.equal(s.visible().filter(key => key.startsWith('A11-')).length, 5);
+});
