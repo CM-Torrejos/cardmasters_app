@@ -95,3 +95,74 @@ test('confirming Material Request discrepancy sends one confirmed retry and relo
 	assert.equal(reloads, 1);
 	assert.equal(dialog.hidden, true);
 });
+
+test('Quotation replaces only its own editor and restricts it to writable open submissions', () => {
+	let events;
+	load('quotation.js', { ui: { form: { on(doctype, handlers) {
+		assert.equal(doctype, 'Quotation'); events = handlers;
+	} } } });
+	for (const [docstatus, status, write, expected] of [
+		[1, 'Open', true, 1], [1, 'Partially Ordered', true, 1],
+		[0, 'Draft', true, 0], [2, 'Cancelled', true, 0],
+		[1, 'Ordered', true, 0], [1, 'Lost', true, 0], [1, 'Open', false, 0]
+	]) {
+		const added = [], removed = [];
+		events.refresh({ doc: { docstatus, status }, has_perm: () => write,
+			add_custom_button: label => added.push(label), remove_custom_button: label => removed.push(label) });
+		assert.equal(added.length, expected);
+		assert.ok(removed.includes('Update Items'));
+	}
+});
+
+test('Quotation sends particulars without deprecated specifics and reloads only after success', async () => {
+	let dialog, request, reloads = 0, failure = true;
+	const context = load('quotation.js', {
+		ui: { form: { on() {} }, Dialog: class {
+			constructor(options) { Object.assign(this, options); dialog = this; }
+			show() {} hide() { this.hidden = true; }
+			disable_primary_action() {} enable_primary_action() {}
+		} },
+		model: { can_create: () => true }, get_meta: () => ({ fields: [] }),
+		call: async options => { request = options; return failure ? { exc: 'failed' } : { message: { updated: true } }; },
+		show_alert() {}
+	});
+	const frm = { is_dirty: () => false, doc: { name: 'QTN-1', modified: 'original',
+		items: [{ name: 'ROW-1', item_code: 'ITEM-1', custom_particulars: 'Old particulars', custom_item_specifics: 'Legacy value' }] },
+		reload_doc: async () => { reloads++; } };
+	context.show_quotation_update_details(frm);
+	assert.equal(dialog.fields[0].data[0].custom_particulars, 'Old particulars');
+	assert.equal(dialog.fields[0].data[0].custom_item_specifics, undefined);
+	assert.ok(!dialog.fields[0].fields.some(field => field.fieldname === 'custom_item_specifics'));
+	const values = { items: [{ docname: 'ROW-1', custom_particulars: ' New particulars ' }] };
+	dialog.primary_action(values);
+	await new Promise(setImmediate);
+	assert.equal(reloads, 0);
+	assert.ok(!dialog.hidden);
+	failure = false;
+	dialog.primary_action(values);
+	await new Promise(setImmediate);
+	assert.equal(request.method, 'cardmasters_app.cardmasters_app.api.quotation.update_details');
+	assert.equal(request.args.modified, 'original');
+	assert.equal(request.args.items[0].custom_particulars, 'New particulars');
+	assert.equal(request.args.items[0].custom_item_specifics, undefined);
+	assert.equal(reloads, 1);
+	assert.equal(dialog.hidden, true);
+});
+
+
+test('Quotation removes Update Items after the legacy controller and preserves custom refresh', async () => {
+	let events, previousCalls = 0;
+	load('quotation.js', { ui: { form: { on(doctype, handlers) { events = handlers; } } } });
+	const buttons = new Set(['Update Details']);
+	const frm = {
+		cscript: { async custom_refresh() { previousCalls++; buttons.add('Update Items'); } },
+		remove_custom_button(label) { buttons.delete(label); }
+	};
+	events.setup(frm);
+	for (let refresh = 0; refresh < 2; refresh++) {
+		buttons.add('Update Items');
+		await frm.cscript.custom_refresh();
+		assert.deepEqual([...buttons], ['Update Details']);
+	}
+	assert.equal(previousCalls, 2);
+});
