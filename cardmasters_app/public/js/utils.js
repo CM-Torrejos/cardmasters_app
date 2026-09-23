@@ -1,4 +1,5 @@
 frappe.provide('cardmasters.utils');
+frappe.provide("erpnext.utils");
 
 cardmasters.utils.sales_order_print_preview = function(frm) {
     const target_field = frm.fields_dict.custom_sales_order_print || frm.fields_dict.sales_order_print;
@@ -92,3 +93,17 @@ function render_sales_order_print_preview(target_field, sales_order_name) {
         }
     });
 }
+
+// Override core ERPNext function to force-update child rows every time
+erpnext.utils.copy_value_in_all_rows = function (doc, dt, dn, table_fieldname, fieldname) {
+    console.log(`Fired copy_value_in_all_rows for field: ${fieldname}`);
+    var d = (locals[dt] && locals[dt][dn]) || doc;
+    if (d) {
+        var val = d[fieldname] || "";
+        var cl = doc[table_fieldname] || [];
+        for (var i = 0; i < cl.length; i++) {
+            cl[i][fieldname] = val;
+        }
+    }
+    refresh_field(table_fieldname);
+};
