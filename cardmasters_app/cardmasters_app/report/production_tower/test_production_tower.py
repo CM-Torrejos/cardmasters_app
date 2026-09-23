@@ -12,7 +12,7 @@ class TestProductionTower(TestCase):
         self.records = {
             "Sales Order": [], "Sales Order Item": [], "Material Request": [],
             "Material Request Item": [], "Work Order": [],
-            "Delivery Note": [], "Delivery Note Item": [],
+            "Delivery Note": [], "Delivery Note Item": [], "Work Order Operation": [],
         }
         self.enterContext(patch.object(report.frappe, "get_all", side_effect=self.get_all))
         self.enterContext(patch.object(report, "_", side_effect=lambda text: text))
@@ -461,3 +461,54 @@ class TestProductionTower(TestCase):
         self.assertEqual(rows[1]["completion_rate"], "100%")
         extra = next(row for row in rows if row.get("reference_name") == "Extra")
         self.assertEqual(extra["completion_rate"], "100% (Pending Posting)")
+
+    def test_operation_leaves_use_manual_progress_without_changing_parent_totals(self):
+        self.filter_sources()
+        self.sales_return()
+        self.return_item()
+        self.backjob()
+        original = report.execute()[1]
+        for parent in ("WO-1", "BACKJOB-1"):
+            for index, progress in enumerate(("Not Started", "In Progress", "On Hold", "Done", None)):
+                self.records["Work Order Operation"].append(dict(
+                    name=f"{parent}-OP-{index}", parent=parent, parenttype="Work Order",
+                    parentfield="operations", operation="Cutting", custom_progress=progress,
+                    planned_end_time="2026-09-20 12:30:00", completed_qty=2.5))
+        rows = report.execute()[1]
+        # Operation presence changes the coverage hint, not parent totals.
+        for row in original:
+            if row["indent"] == 2:
+                self.assertTrue(row["has_no_operations"])
+                row["has_no_operations"] = False
+        self.assertEqual([row for row in rows if row["indent"] < 3], original)
+        leaves = [row for row in rows if row["indent"] == 3]
+        self.assertEqual(len(leaves), 15)  # Shared WO appears under SO and MR, plus backjob.
+        current_wo = None
+        for row in rows:
+            if row["indent"] == 2:
+                current_wo = row["reference_name"]
+            if row["indent"] == 3:
+                self.assertEqual(row["reference_name"], current_wo)
+                self.assertEqual(row["label_name"], "Operations: Cutting")
+                self.assertEqual(row["date"], "2026-09-20")
+                self.assertEqual(row["produced_qty"], 2.5)
+                self.assertEqual(row["qty"], 10)
+        self.assertEqual([row["completion_rate"] for row in leaves[:5]],
+                         ["Not Started", "In Progress", "On Hold", "Done", ""])
+        visible = report.execute({"hide_completed": 1})[1]
+        self.assertEqual(len([row for row in visible if row["indent"] == 3]), 12)
+        self.assertFalse(any(row["completion_rate"] == "Done" for row in visible))
+        for wo in self.records["Work Order"]:
+            wo["produced_qty"] = 10
+        self.assertEqual(report.execute({"hide_completed": 1})[1], [])
+
+    def test_operations_only_attach_to_exact_work_order_operations_table(self):
+        self.request()
+        self.item()
+        self.work_order()
+        for parent, parenttype, parentfield in (("Other", "Work Order", "operations"),
+                                               ("WO-1", "Other", "operations"),
+                                               ("WO-1", "Work Order", "other")):
+            self.records["Work Order Operation"].append(dict(
+                parent=parent, parenttype=parenttype, parentfield=parentfield))
+        self.assertEqual([row["indent"] for row in report.execute()[1]], [0, 1, 2])
