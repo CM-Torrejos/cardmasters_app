@@ -36,7 +36,7 @@ frappe.query_reports["Production Tower"] = {
     ],
     "treeView": true,
     "name_field": "label_name",
-    "initial_depth": 3,
+    "initial_depth": 4,
     "formatter": function(value, row, column, data, default_formatter) {
         // These flags belong to Sales Orders and Work Orders, not grouping rows.
         if (["custom_blue_order", "custom_rush_order"].includes(column.fieldname) && value == null) {
@@ -52,7 +52,11 @@ frappe.query_reports["Production Tower"] = {
         const secondaryLabel = label => ` <span style="color: var(--text-muted, #6c757d); font-size: 0.85em; font-weight: 400;">· ${frappe.utils.escape_html(label)}</span>`;
 
         // 1. Completion Rate Gradient
-        if (column.fieldname == "completion_rate" && data.completion_rate) {
+        if (column.fieldname === "completion_rate" && data.row_type === "operation") {
+            const colors = { "Not Started": RED, "In Progress": INFO_BLUE, "On Hold": ORANGE, "Done": GREEN };
+            const color = colors[data.completion_rate] || "inherit";
+            value = `<span style="color: ${color}; font-weight: bold;">${frappe.utils.escape_html(__(data.completion_rate || ""))}</span>`;
+        } else if (column.fieldname == "completion_rate" && data.completion_rate) {
             let rate = parseFloat(data.completion_rate.replace('%', ''));
             let color;
             if (rate === 100) color = GREEN;
@@ -90,6 +94,9 @@ frappe.query_reports["Production Tower"] = {
             }
             value = `<span style="color: ${color}; font-weight: bold;">${value}</span>`;
             if (label) value += secondaryLabel(label);
+        }
+        if (column.fieldname === "qty" && data.indent === 2 && data.has_no_operations) {
+            value += secondaryLabel(__("No Operations"));
         }
 
         // 3. Labels and Icons (Neutral L0)
@@ -145,7 +152,12 @@ frappe.query_reports["Production Tower"] = {
             }
             return numeric(value);
         }
-        if (field === "completion_rate") return numeric(String(value ?? "").split("%")[0]);
+        if (field === "completion_rate") {
+            if (data.row_type === "operation") {
+                return ({ "Not Started": 0, "In Progress": 1, "On Hold": 2, "Done": 3 })[value] ?? null;
+            }
+            return numeric(String(value ?? "").split("%")[0]);
+        }
         if (["produced_qty", "custom_blue_order", "custom_rush_order"].includes(field)) return numeric(value);
         // ISO dates compare chronologically; text uses natural ordering (WO-2 < WO-10).
         return value == null || String(value).trim() === "" ? null : String(value);
