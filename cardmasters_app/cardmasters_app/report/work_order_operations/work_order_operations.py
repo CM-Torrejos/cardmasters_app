@@ -35,8 +35,10 @@ def build_result(work_orders, operations):
     for index, (operation_name, entries) in enumerate(sorted(groups.items())):
         prefix = f"operation_{index}"
         for suffix, label, fieldtype, options, width in (
-            ("work_order", _("Work Orders"), "Link", "Work Order", 210),
             ("source_order", _("Source Order"), "Dynamic Link", f"{prefix}_source_type", 210),
+            ("work_order", _("Work Order"), "Link", "Work Order", 210),
+            ("item_name", _("Item Name"), "Data", None, 200),
+            ("particulars", _("Particulars"), "Text", None, 300),
             ("progress", _("Progress"), "Data", None, 130),
         ):
             columns.append({
@@ -51,9 +53,12 @@ def build_result(work_orders, operations):
         for row_index, entry in enumerate(entries):
             if row_index == len(data):
                 data.append({})
-            source_type, source_name = source_order(orders[entry["parent"]])
+            work_order = orders[entry["parent"]]
+            source_type, source_name = source_order(work_order)
             data[row_index].update({
                 f"{prefix}_work_order": entry["parent"],
+                f"{prefix}_item_name": work_order.get("item_name") or "",
+                f"{prefix}_particulars": work_order.get("custom_particulars") or "",
                 f"{prefix}_source_type": source_type,
                 f"{prefix}_source_order": source_name,
                 f"{prefix}_progress": entry.get("custom_progress") or "",
@@ -76,7 +81,9 @@ def execute(filters=None):
         )
         conditions[branch_field] = filters.branch
     meta = frappe.get_meta("Work Order")
-    fields = ["name"] + [field for field in SOURCE_FIELDS if meta.has_field(field)]
+    fields = ["name", "item_name"] + [
+        field for field in [*SOURCE_FIELDS, "custom_particulars"] if meta.has_field(field)
+    ]
     # Apply Work Order permissions before reading any of its child rows.
     orders = frappe.get_list(
         "Work Order", filters=conditions, fields=fields,
