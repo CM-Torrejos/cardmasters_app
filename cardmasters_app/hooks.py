@@ -67,6 +67,7 @@ override_doctype_class = {
 # Global JS files loaded in Desk
 app_include_js = [
     "/assets/cardmasters_app/js/utils.js",
+    "/assets/cardmasters_app/js/workspace_filter_routes.js", # Preserve filter DocTypes in workspace links
     "/assets/cardmasters_app/js/address_contact_quick_entry_patch.js", # Address patching
     "/assets/cardmasters_app/js/artist_card/multi_artist_filter.js" # Custom list filter for assigned artists
 ]
