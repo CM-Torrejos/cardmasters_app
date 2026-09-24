@@ -31,7 +31,7 @@ class TestWorkOrderOperations(TestCase):
             {"parent": "UNAUTHORIZED", "operation": "Other", "custom_progress": "Done"},
         ]
         columns, rows = report.build_result(orders, operations)
-        self.assertEqual(len(columns), 8)  # Three visible and one hidden per group.
+        self.assertEqual(len(columns), 12)  # Five visible and one hidden per group.
         self.assertEqual(len(rows), 3)
         self.assertEqual(columns[0]["operation_group"], "Cut")
         self.assertEqual(rows[0]["operation_0_work_order"], "WO-2")

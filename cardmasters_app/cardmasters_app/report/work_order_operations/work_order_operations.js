@@ -51,7 +51,12 @@ frappe.query_reports["Work Order Operations"] = {
         }).join("\n");
         datatable.wrapper.appendChild(separators);
 
+        let frame = null;
+        let disposed = false;
+        let groupCells = [];
         const sync = () => {
+            frame = null;
+            if (disposed) return;
             const columns = datatable.datamanager.getColumns();
             const cells = header.querySelectorAll(".dt-row-header > .dt-cell");
             const groups = [];
@@ -64,19 +69,36 @@ frappe.query_reports["Work Order Operations"] = {
                 }
                 group.width += cell.getBoundingClientRect().width;
             });
-            band.replaceChildren(...groups.map(group => {
-                const cell = document.createElement("div");
-                cell.textContent = group.name;
-                cell.title = group.name;
-                cell.style.cssText = `flex:none;box-sizing:border-box;width:${group.width}px;` +
-                    "padding:8px;text-align:center;font-weight:600;overflow:hidden;" +
-                    "text-overflow:ellipsis;white-space:nowrap;border:1px solid var(--border-color);" +
-                    "background:var(--subtle-fg,var(--fg-color));" +
-                    "box-shadow:inset -3px 0 0 var(--text-muted, #6c757d)";
-                return cell;
-            }));
+            const structureChanged = groups.length !== groupCells.length ||
+                groups.some((group, index) => group.name !== groupCells[index]?.name);
+            if (structureChanged) {
+                groupCells = groups.map(group => {
+                    const cell = document.createElement("div");
+                    cell.textContent = group.name;
+                    cell.title = group.name;
+                    cell.style.cssText = `flex:none;box-sizing:border-box;width:${group.width}px;` +
+                        "padding:8px;text-align:center;font-weight:600;overflow:hidden;" +
+                        "text-overflow:ellipsis;white-space:nowrap;border:1px solid var(--border-color);" +
+                        "background:var(--subtle-fg,var(--fg-color));" +
+                        "box-shadow:inset -3px 0 0 var(--text-muted, #6c757d)";
+                    return { name: group.name, width: group.width, cell };
+                });
+                band.replaceChildren(...groupCells.map(group => group.cell));
+            } else {
+                groups.forEach((group, index) => {
+                    if (group.width !== groupCells[index].width) {
+                        groupCells[index].cell.style.width = `${group.width}px`;
+                        groupCells[index].width = group.width;
+                    }
+                });
+            }
         };
-        const observer = new ResizeObserver(sync);
+        // The grid sets every column width during refresh. Measuring the entire
+        // header after each write forces repeated browser layouts on wide reports.
+        const scheduleSync = () => {
+            if (!disposed && frame === null) frame = requestAnimationFrame(sync);
+        };
+        const observer = new ResizeObserver(scheduleSync);
         header.querySelectorAll(".dt-row-header > .dt-cell").forEach(cell => observer.observe(cell));
         // Update during the grid's drag handler as well as browser layout changes.
         // This override belongs only to this report's DataTable instance.
@@ -84,11 +106,13 @@ frappe.query_reports["Work Order Operations"] = {
         const setHeaderWidth = manager.setColumnHeaderWidth;
         manager.setColumnHeaderWidth = function(...args) {
             const result = setHeaderWidth.apply(this, args);
-            sync();
+            scheduleSync();
             return result;
         };
-        sync();
+        scheduleSync();
         const cleanup = () => {
+            disposed = true;
+            if (frame !== null) cancelAnimationFrame(frame);
             observer.disconnect();
             manager.setColumnHeaderWidth = setHeaderWidth;
             band.remove();
