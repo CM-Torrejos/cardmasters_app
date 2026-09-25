@@ -5,6 +5,31 @@ import frappe
 from frappe.model.workflow import apply_workflow  # get_transitions no longer used
 from frappe import _
 
+def start_production_from_operation_progress(doc, method=None):
+    """Advance a submitted, unstarted WO when an operation's progress changes.
+
+    Run before update-after-submit so normal workflow validation, persistence,
+    and version tracking handle the transition together with the operation edit.
+    """
+    if doc.docstatus != 1 or doc.get("workflow_state") != "Not Started":
+        return
+
+    previous = doc.get_doc_before_save()
+    if not previous:
+        return
+
+    old_progress = {
+        row.name: row.get("custom_progress")
+        for row in previous.get("operations") or []
+    }
+    for row in doc.get("operations") or []:
+        progress = row.get("custom_progress")
+        if progress and progress not in ("Not Started", "On Hold"):
+            if progress != old_progress.get(row.name):
+                doc.workflow_state = "In Production"
+                return
+
+
 def pull_sales_order_details(doc, method=None):
 	"""Runs on Work Order (e.g., validate/before_save).
 	Copies header + line-level fields from Sales Order when linked,
