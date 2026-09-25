@@ -11,7 +11,11 @@ const src = path.join(path.dirname(require.resolve('frappe-datatable/package.jso
 
 function setup(data) {
     const context = vm.createContext({
-        frappe: { query_reports: {} }, __: text => text, setTimeout, console,
+        frappe: { query_reports: {}, utils: {
+            escape_html: value => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;').replaceAll('"', '&quot;'),
+            get_form_link: (doctype, name) => `/app/${doctype.toLowerCase().replaceAll(' ', '-')}/${name}`
+        } }, __: text => text, setTimeout, console,
         _throttle: fn => fn, _debounce: fn => fn, _uniq: values => [...new Set(values)],
         $: { on() {} }, getComputedStyle: () => ({ width: '100px', height: '100px' }),
         HyperList: class { constructor(_, config) { this.config = config; } refresh(_, config) { this.config = config; } }
@@ -41,7 +45,7 @@ function setup(data) {
     const install = context.frappe.query_reports['Production Tower'].after_datatable_render;
     install(table);
     return {
-        table, dm, install,
+        table, dm, install, settings: context.frappe.query_reports['Production Tower'],
         order: () => Array.from(dm.rowViewOrder, i => dm.data[i].key),
         visible: () => Array.from(table.bodyRenderer.visibleRows, row => dm.data[row.meta.rowIndex].key),
         async sort(field, direction) {
@@ -293,4 +297,28 @@ test('operation leaves retain their work order during sorting and collapse', asy
     assert.equal(s.visible().some(key => key.startsWith('A12-')), true);
     s.table.rowmanager.openSingleNode(2);
     assert.equal(s.visible().filter(key => key.startsWith('A11-')).length, 5);
+});
+
+test('presentation retains warnings, progress, flag meaning and escaped document identity', () => {
+    const { settings } = setup([]);
+    const format = (fieldname, value, data) => settings.formatter(value, null, { fieldname }, data,
+        value => String(value ?? ''));
+    assert.match(format('completion_rate', '100% (Pending Posting)', {}), /100%.*Pending posting/);
+    assert.match(format('qty', '0 / 10', { indent: 1, planning_status: 'orphan' }), /0 \/ 10.*No work order/);
+    assert.match(format('qty', 10, { indent: 2, has_no_operations: true }), /10.*No operations/);
+    for (const progress of ['Not Started', 'In Progress', 'On Hold', 'Done']) {
+        assert.ok(format('completion_rate', progress, { row_type: 'operation' }).includes(progress));
+    }
+    assert.equal(format('custom_blue_order', null, {}), '');
+    assert.match(format('custom_blue_order', 0, {}), /Not a blue order/);
+    assert.match(format('custom_rush_order', 1, {}), /Rush/);
+    const label = format('label_name', '', {
+        indent: 0, reference_doctype: 'Sales Order', reference_name: 'SO-1',
+        label_name: 'Customer <img src=x> "name"', is_orphan_so: 1
+    });
+    assert.match(label, /href="\/app\/sales-order\/SO-1"/);
+    assert.match(label, /&lt;img src=x&gt;/);
+    assert.match(label, /&quot;name&quot;/);
+    assert.ok(!label.includes('<img'));
+    assert.match(label, /Service/);
 });

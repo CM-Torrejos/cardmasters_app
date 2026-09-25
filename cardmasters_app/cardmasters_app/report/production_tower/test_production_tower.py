@@ -179,6 +179,33 @@ class TestProductionTower(TestCase):
         self.item()
         self.work_order(sales_order="SO-1", sales_order_item="SOI-1")
 
+    def test_sales_orders_are_batched_and_work_orders_keep_exact_item_links(self):
+        self.filter_sources()
+        self.records["Material Request"] = []
+        self.records["Work Order"] = []
+        self.records["Sales Order Item"].append(dict(
+            self.records["Sales Order Item"][0], name="SOI-2"))
+        self.work_order("First", sales_order="SO-1", sales_order_item="SOI-1", qty=4)
+        self.work_order("Second", sales_order="SO-1", sales_order_item="SOI-2", qty=6)
+        self.work_order("Wrong-code", sales_order="SO-1", sales_order_item="SOI-1", production_item="OTHER")
+        self.work_order("Wrong-parent", sales_order="SO-OTHER", sales_order_item="SOI-1")
+        self.work_order("Cancelled", sales_order="SO-1", sales_order_item="SOI-1", docstatus=2)
+        rows = report.execute()[1]
+        self.assertEqual([row.get("reference_name") for row in rows],
+                         ["SO-1", None, "First", None, "Second"])
+        self.assertEqual([row["qty"] for row in rows if row["indent"] == 1], ["4 / 10", "6 / 10"])
+
+        # Crossing a batch boundary adds two queries, not one per order/item.
+        for index in range(501):
+            name = f"BATCH-{index}"
+            self.records["Sales Order"].append(dict(self.records["Sales Order"][0], name=name))
+            self.records["Sales Order Item"].append(dict(
+                self.records["Sales Order Item"][0], name=f"ITEM-{index}", parent=name))
+        report.frappe.get_all.reset_mock()
+        branches = report.get_sales_order_branches(frappe._dict())
+        self.assertEqual(len(branches), 502)
+        self.assertEqual(report.frappe.get_all.call_count, 5)
+
     def test_company_and_target_date_filter_both_sources_with_complete_trees(self):
         self.filter_sources()
         for doctype in ("Sales Order", "Material Request"):
