@@ -123,28 +123,40 @@ def get_sales_order_branches(filters):
                 "custom_quick_production_note"],
         order_by="delivery_date desc, name asc",
     )
+    # Read whole batches, not one query per order and another per item.
+    # Retain exact parent + item-row + item-code matching (including repeats).
+    items_by_parent = {}
+    work_orders = {}
+    for start in range(0, len(sales_orders), 500):
+        names = [so.name for so in sales_orders[start:start + 500]]
+        items_by_key = {}
+        for item in frappe.get_all(
+            "Sales Order Item", filters={"parent": ["in", names]},
+            fields=["parent", "item_code", "item_name", "qty", "name", "bom_no"],
+            order_by="parent asc, idx asc",
+        ):
+            if item.bom_no:
+                items_by_parent.setdefault(item.parent, []).append(item)
+                items_by_key[(item.parent, item.name, item.item_code)] = item
+        if not items_by_key:
+            continue
+        for wo in frappe.get_all(
+            "Work Order", filters={"sales_order": ["in", names], "docstatus": ["!=", 2]},
+            fields=WORK_ORDER_FIELDS + ["sales_order", "sales_order_item"], order_by="name asc",
+        ):
+            item = items_by_key.get((wo.sales_order, wo.sales_order_item, wo.production_item))
+            if item:
+                work_orders.setdefault(item.name, []).append(wo)
+
     branches = []
     for so in sales_orders:
-        items = frappe.get_all(
-            "Sales Order Item", filters={"parent": so.name},
-            fields=["item_code", "item_name", "qty", "name", "bom_no"], order_by="idx asc",
-        )
-        items = [item for item in items if item.bom_no]
-        work_orders = {
-            item.name: frappe.get_all(
-                "Work Order",
-                filters={"sales_order": so.name, "sales_order_item": item.name,
-                         "production_item": item.item_code, "docstatus": ["!=", 2]},
-                fields=WORK_ORDER_FIELDS, order_by="name asc",
-            ) for item in items
-        }
         branches.append(build_branch({
             "label_name": f"{so.name} - {so.customer}",
             "reference_doctype": "Sales Order", "reference_name": so.name,
             "date": so.delivery_date, "workflow_state": so.workflow_state,
             "custom_blue_order": so.custom_blue_order, "custom_rush_order": so.custom_rush_order,
             "custom_quick_production_note": so.custom_quick_production_note,
-        }, items, work_orders))
+        }, items_by_parent.get(so.name, []), work_orders))
     return branches
 
 
@@ -394,11 +406,11 @@ def build_branch(reference, items, work_orders_by_item):
 
 def get_columns():
     return [
-        {"label": _("Reference (SO / MR / SR / Item / WO / Operations)"), "fieldname": "label_name", "fieldtype": "Data", "width": 460},
+        {"label": _("Reference"), "fieldname": "label_name", "fieldtype": "Data", "width": 420, "sticky": True},
         {"label": _("Target Date"), "fieldname": "date", "fieldtype": "Date", "width": 110},
         {"label": _("Stage"), "fieldname": "workflow_state", "fieldtype": "Data", "width": 160},
-        {"label": _("Work Order Coverage"), "fieldname": "qty", "fieldtype": "Data", "width": 220},
-        {"label": _("Completion"), "fieldname": "completion_rate", "fieldtype": "Data", "width": 210},
+        {"label": _("Work Order Coverage"), "fieldname": "qty", "fieldtype": "Data", "width": 190},
+        {"label": _("Completion"), "fieldname": "completion_rate", "fieldtype": "Data", "width": 220},
         {"label": _("WO Workflow State"), "fieldname": "wo_status", "fieldtype": "Data", "width": 180},
         {"label": _("Produced"), "fieldname": "produced_qty", "fieldtype": "Float", "width": 100},
         {"label": _("Blue Order"), "fieldname": "custom_blue_order", "fieldtype": "Check", "width": 100},

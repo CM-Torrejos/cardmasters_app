@@ -12,11 +12,37 @@ frappe.query_reports["Work Order Operations"] = {
         { fieldname: "operation", label: __("Operations"), fieldtype: "MultiSelectList",
             options: "Operation",
             get_data(txt) { return frappe.db.get_link_options("Operation", txt); } },
-        { fieldname: "progress", label: __("Progress"), fieldtype: "Select",
-            options: "\nNot Started\nIn Progress\nOn Hold\nDone" },
+        { fieldname: "progress", label: __("Progress"), fieldtype: "MultiSelectList",
+            get_data(txt) {
+                return ["Not Started", "In Progress", "On Hold", "Done"]
+                    .filter(value => __(value).toLowerCase().includes((txt || "").toLowerCase()))
+                    .map(value => ({ value, description: __(value) }));
+            } },
         { fieldname: "status", label: __("Work Order Status"), fieldtype: "Select",
             options: "\nDraft\nNot Started\nIn Process\nCompleted\nStopped\nClosed" },
     ],
+
+    onload(report) {
+        // Let several quick multi-select clicks settle before requesting the grid.
+        const refresh = frappe.utils.debounce(() => {
+            if (!report._no_refresh && report.report_name === "Work Order Operations") {
+                report.refresh(true);
+            }
+        }, 350);
+        report.filters.filter(filter => ["operation", "progress"].includes(filter.fieldname))
+            .forEach(filter => {
+                filter.on_change = () => {
+                    if (!report._no_refresh) refresh();
+                };
+            });
+    },
+
+    formatter(value, row, column, data, default_formatter) {
+        const formatted = default_formatter(value, row, column, data);
+        if (!column.fieldname?.endsWith("_source_order")) return formatted;
+        const label = data?.[column.fieldname.replace(/_source_order$/, "_source_label")];
+        return label ? `${formatted} · ${frappe.utils.escape_html(label)}` : formatted;
+    },
 
     get_datatable_options(options) {
         return Object.assign(options, {
@@ -38,17 +64,39 @@ frappe.query_reports["Work Order Operations"] = {
         header.style.flexDirection = "column";
         header.appendChild(band);
 
-        // Inset rules emphasize group boundaries without changing cell widths.
-        // Column selectors also cover rows created later by grid virtualization.
-        datatable.wrapper.classList.add("cm-operation-grid");
+        // Scope real borders to this grid, including virtualized rows and headers.
+        // A shared rule keeps the upper band and group-ending columns identical.
         const separators = document.createElement("style");
         const columns = datatable.datamanager.getColumns();
-        separators.textContent = columns.flatMap((column, index) => {
+        const scope = `.${datatable.style.scopeClass}`;
+        const groupEnds = columns.flatMap((column, index) => {
             if (!column.operation_group ||
                 column.operation_group === columns[index + 1]?.operation_group) return [];
-            return [`.cm-operation-grid .dt-cell--col-${column.colIndex} {` +
-                "box-shadow:inset -3px 0 0 var(--text-muted, #6c757d) !important;} "];
-        }).join("\n");
+            return [`${scope} .dt-cell--col-${column.colIndex}`];
+        });
+        separators.textContent = `
+            ${scope} .dt-cell {
+                border-right: 1px solid var(--border-color, #d1d8dd);
+            }
+            ${scope} .cm-operation-group {
+                flex: none;
+                box-sizing: border-box;
+                padding: 8px;
+                text-align: center;
+                font-weight: 600;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                border-top: 1px solid var(--border-color, #d1d8dd);
+                background: var(--subtle-fg, var(--fg-color, #f5f7fa));
+            }
+            ${scope} .cm-operation-group:first-child {
+                border-left: 1px solid var(--border-color, #d1d8dd);
+            }
+            ${[`${scope} .cm-operation-group`, ...groupEnds].join(",")} {
+                border-right: 2px solid var(--text-light, #98a2b3);
+            }
+        `;
         datatable.wrapper.appendChild(separators);
 
         let frame = null;
@@ -74,13 +122,10 @@ frappe.query_reports["Work Order Operations"] = {
             if (structureChanged) {
                 groupCells = groups.map(group => {
                     const cell = document.createElement("div");
+                    cell.className = "cm-operation-group";
                     cell.textContent = group.name;
                     cell.title = group.name;
-                    cell.style.cssText = `flex:none;box-sizing:border-box;width:${group.width}px;` +
-                        "padding:8px;text-align:center;font-weight:600;overflow:hidden;" +
-                        "text-overflow:ellipsis;white-space:nowrap;border:1px solid var(--border-color);" +
-                        "background:var(--subtle-fg,var(--fg-color));" +
-                        "box-shadow:inset -3px 0 0 var(--text-muted, #6c757d)";
+                    cell.style.width = `${group.width}px`;
                     return { name: group.name, width: group.width, cell };
                 });
                 band.replaceChildren(...groupCells.map(group => group.cell));
@@ -100,8 +145,7 @@ frappe.query_reports["Work Order Operations"] = {
         };
         const observer = new ResizeObserver(scheduleSync);
         header.querySelectorAll(".dt-row-header > .dt-cell").forEach(cell => observer.observe(cell));
-        // Update during the grid's drag handler as well as browser layout changes.
-        // This override belongs only to this report's DataTable instance.
+        // Schedule during drag too; observer delivery can lag behind pointer updates.
         const manager = datatable.columnmanager;
         const setHeaderWidth = manager.setColumnHeaderWidth;
         manager.setColumnHeaderWidth = function(...args) {

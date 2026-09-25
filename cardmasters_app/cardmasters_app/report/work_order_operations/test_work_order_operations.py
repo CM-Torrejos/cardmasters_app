@@ -50,7 +50,10 @@ class TestWorkOrderOperations(TestCase):
         get_all.return_value = []
         report.execute({"operation": "Cut", "progress": "On Hold", "company": "Example"})
         self.assertEqual(get_list.call_args.args, ("Work Order",))
-        self.assertEqual(get_list.call_args.kwargs["filters"]["docstatus"], ["<", 2])
+        self.assertIn(["Work Order", "docstatus", "<", 2], get_list.call_args.kwargs["filters"])
+        self.assertIn(["Work Order Operation", "operation", "=", "Cut"],
+                      get_list.call_args.kwargs["filters"])
+        self.assertTrue(get_list.call_args.kwargs["distinct"])
         child_filters = get_all.call_args.kwargs["filters"]
         self.assertEqual(child_filters["parent"], ["in", ["VISIBLE-WO"]])
         self.assertEqual(child_filters["operation"], "Cut")
@@ -70,14 +73,37 @@ class TestWorkOrderOperations(TestCase):
             with self.subTest(source=source):
                 report.execute({"branch": "Branch A", "branch_source": source,
                                 "operation": ["Cut", "Print"]})
-                self.assertEqual(get_list.call_args.kwargs["filters"], {
-                    "docstatus": ["<", 2], expected: "Branch A",
-                })
+                self.assertEqual(get_list.call_args.kwargs["filters"], [
+                    ["Work Order", "docstatus", "<", 2],
+                    ["Work Order", expected, "=", "Branch A"],
+                    ["Work Order Operation", "operation", "in", ["Cut", "Print"]],
+                ])
                 self.assertEqual(get_all.call_args.kwargs["filters"]["operation"],
                                  ["in", ["Cut", "Print"]])
         report.execute({"branch_source": "custom_production_branch", "operation": []})
-        self.assertEqual(get_list.call_args.kwargs["filters"], {"docstatus": ["<", 2]})
-        self.assertNotIn("operation", get_all.call_args.kwargs["filters"])
+        self.assertEqual(get_list.call_args.kwargs["filters"], [
+            ["Work Order", "docstatus", "<", 2],
+            ["Work Order Operation", "operation", "is", "set"],
+        ])
+        self.assertEqual(get_all.call_args.kwargs["filters"]["operation"], ["is", "set"])
+
+    @patch.object(report.frappe, "get_meta")
+    @patch.object(report.frappe, "get_list")
+    @patch.object(report.frappe, "get_all", return_value=[])
+    def test_progress_filters_parents_and_children(self, get_all, get_list, get_meta):
+        get_list.return_value = [frappe._dict(name="VISIBLE-WO")]
+        for value, expected in [
+            (["Not Started", "On Hold"], ["in", ["Not Started", "On Hold"]]),
+            ("Done", ["=", "Done"]),
+        ]:
+            with self.subTest(value=value):
+                report.execute({"progress": value})
+                self.assertIn(["Work Order Operation", "custom_progress", *expected],
+                              get_list.call_args.kwargs["filters"])
+                self.assertEqual(get_all.call_args.kwargs["filters"]["custom_progress"],
+                                 expected if isinstance(value, list) else value)
+        report.execute({"progress": []})
+        self.assertNotIn("custom_progress", get_all.call_args.kwargs["filters"])
 
     @patch.object(report.frappe, "get_meta")
     @patch.object(report.frappe, "get_list", return_value=[])

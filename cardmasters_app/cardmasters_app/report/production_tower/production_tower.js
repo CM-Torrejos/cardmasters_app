@@ -36,94 +36,135 @@ frappe.query_reports["Production Tower"] = {
     ],
     "treeView": true,
     "name_field": "label_name",
-    "initial_depth": 4,
-    "formatter": function(value, row, column, data, default_formatter) {
-        // These flags belong to Sales Orders and Work Orders, not grouping rows.
-        if (["custom_blue_order", "custom_rush_order"].includes(column.fieldname) && value == null) {
-            return "";
+    "initial_depth": 0,
+    get_datatable_options(options) {
+        return Object.assign(options, { serialNoColumn: false, checkboxColumn: false, cellHeight: 40 });
+    },
+    formatter(value, row, column, data, default_formatter) {
+        if (!data) return default_formatter(value, row, column, data);
+        const escape = value => frappe.utils.escape_html(String(value ?? ""));
+        const secondary = label => ` <span class="pt-secondary">${escape(label)}</span>`;
+        const field = column.fieldname;
+
+        if (["custom_blue_order", "custom_rush_order"].includes(field)) {
+            if (value == null) return "";
+            const blue = field === "custom_blue_order";
+            return Number(value) ? `<span class="pt-badge pt-${blue ? "blue" : "rush"}">${escape(__(blue ? "Blue" : "Rush"))}</span>`
+                : `<span class="pt-muted" title="${escape(__(blue ? "Not a blue order" : "Not a rush order"))}">—</span>`;
         }
-        value = default_formatter(value, row, column, data);
-
-        const RED = "#d63939";
-        const ORANGE = "#f76707";
-        const YELLOW = "#f59f00";
-        const GREEN = "#2fb344";
-        const INFO_BLUE = "#1a73e8";
-        const secondaryLabel = label => ` <span style="color: var(--text-muted, #6c757d); font-size: 0.85em; font-weight: 400;">· ${frappe.utils.escape_html(label)}</span>`;
-
-        // 1. Completion Rate Gradient
-        if (column.fieldname === "completion_rate" && data.row_type === "operation") {
-            const colors = { "Not Started": RED, "In Progress": INFO_BLUE, "On Hold": ORANGE, "Done": GREEN };
-            const color = colors[data.completion_rate] || "inherit";
-            value = `<span style="color: ${color}; font-weight: bold;">${frappe.utils.escape_html(__(data.completion_rate || ""))}</span>`;
-        } else if (column.fieldname == "completion_rate" && data.completion_rate) {
-            let rate = parseFloat(data.completion_rate.replace('%', ''));
-            let color;
-            if (rate === 100) color = GREEN;
-            else if (rate >= 75) color = YELLOW;
-            else if (rate >= 40) color = ORANGE;
-            else color = RED;
-            
-            const pendingPosting = data.completion_rate.endsWith(`(${__("Pending Posting")})`);
-            const percentage = pendingPosting ? `${rate}%` : value;
-            value = `<span style="color: ${color}; font-weight: bold;">${percentage}</span>`;
-            if (pendingPosting) {
-                value += secondaryLabel(__("Pending posting"));
-            }
-        }
-
-        // 2. Planning Health Warnings
-        if (column.fieldname == "qty" && [0, 1].includes(data.indent)) {
-            let color = "inherit";
-            let label = "";
-            if (data.indent == 1) {
-                if (data.planning_status === "orphan") {
-                    color = RED;
-                    label = __("No work order");
-                } else if (data.planning_status === "shortfall") {
-                    color = ORANGE;
-                    label = __("Pending");
-                }
-            } else if (data.indent == 0) {
-                if (data.incomplete_coverage) {
-                    color = RED;
-                    label = __("Pending");
-                } else if (parseFloat(data.completion_rate) === 100) {
-                    color = GREEN;
-                }
-            }
-            value = `<span style="color: ${color}; font-weight: bold;">${value}</span>`;
-            if (label) value += secondaryLabel(label);
-        }
-        if (column.fieldname === "qty" && data.indent === 2 && data.has_no_operations) {
-            value += secondaryLabel(__("No Operations"));
-        }
-
-        // 3. Labels and Icons (Neutral L0)
-        if (column.fieldname == "label_name") {
-            value = frappe.utils.escape_html(data.label_name || "");
-            if (data.indent == 0) {
-                if (data.is_orphan_so) {
-                    value = `<strong style="color: ${INFO_BLUE}; font-size: 1.1em;">ℹ [SERVICE] ${value}</strong>`;
-                } else if (parseFloat(data.completion_rate) === 100) {
-                    value = `<strong style="color: ${GREEN}; font-size: 1.1em;">${value}</strong>`;
-                } else {
-                    // Bold but no Red distraction
-                    value = `<strong>${value}</strong>`;
-                }
-            } else if (data.planning_status === "orphan") {
-                value = `<span style="color: ${RED}; font-weight: bold;">⚠ ${value}</span>`;
-            }
-
-            // Keep document identity separate from the display label and sorting.
-            // DataTable adds the expand/collapse control outside this link.
-            if (["Sales Order", "Material Request", "Delivery Note", "Work Order"].includes(data.reference_doctype) && data.reference_name) {
+        if (field === "label_name") {
+            const types = { "Sales Order": "SO", "Material Request": "MR", "Delivery Note": "SR", "Work Order": "WO" };
+            const kind = data.row_type === "operation" ? __("Op") : types[data.reference_doctype] || __("Item");
+            let label = `<span class="pt-kind">${escape(kind)}</span> <span class="${data.indent === 0 ? "pt-source" : "pt-label"}" title="${escape(data.label_name)}">${escape(data.label_name)}</span>`;
+            if (data.is_orphan_so) label += secondary(__("Service"));
+            if (types[data.reference_doctype] && data.reference_name) {
                 const href = frappe.utils.get_form_link(data.reference_doctype, data.reference_name);
-                value = `<a href="${frappe.utils.escape_html(href)}" style="color: inherit; text-decoration: none;">${value}</a>`;
+                label = `<a class="pt-reference" href="${escape(href)}" title="${escape(data.label_name)}">${label}</a>`;
             }
+            return label;
+        }
+        if (field === "completion_rate" && data.row_type === "operation") {
+            const tone = { "Not Started": "neutral", "In Progress": "blue", "On Hold": "warning", "Done": "done" }[value] || "neutral";
+            return value ? `<span class="pt-badge pt-${tone}">${escape(__(value))}</span>` : "";
+        }
+        if (field === "completion_rate" && value) {
+            const rate = Math.max(0, Math.min(100, parseFloat(value) || 0));
+            const pending = String(value).includes(`(${__("Pending Posting")})`);
+            return `<span class="pt-completion" title="${escape(value)}"><span class="pt-meter" aria-hidden="true"><span class="${rate === 100 ? "pt-meter-done" : ""}" style="width:${rate}%"></span></span><span>${rate}%</span></span>`
+                + (pending ? secondary(__("Pending posting")) : "");
         }
 
-        return value;
+        const formatted = default_formatter(value, row, column, data);
+        if (field === "qty") {
+            let hint = "";
+            if (data.indent === 1 && data.planning_status === "orphan") hint = __("No work order");
+            else if ((data.indent === 1 && data.planning_status === "shortfall") ||
+                (data.indent === 0 && data.incomplete_coverage)) hint = __("Pending");
+            else if (data.indent === 2 && data.has_no_operations) hint = __("No operations");
+            return `<span class="pt-quantity">${formatted}</span>`
+                + (hint ? ` <span class="pt-attention">${escape(hint)}</span>` : "");
+        }
+        if (field === "custom_quick_production_note" && value) {
+            return `<span title="${escape(value)}">${formatted}</span>`;
+        }
+        return formatted;
+    },
+
+    setup_presentation(datatable) {
+        // The tree/sort tests also use this hook without a browser DOM.
+        if (!datatable.wrapper) return;
+        datatable.productionTowerPresentationCleanup?.();
+        const scope = `.${datatable.style.scopeClass}`;
+        const style = document.createElement("style");
+        style.textContent = `
+            ${scope} .pt-kind { display:inline-block; min-width:28px; font-size:10px; letter-spacing:.03em; color:var(--text-muted); font-weight:600; }
+            ${scope} .pt-source { font-weight:600; }
+            ${scope} .pt-reference { color:var(--text-color); text-decoration:none; }
+            ${scope} .pt-reference:hover { text-decoration:underline; }
+            ${scope} .pt-secondary, ${scope} .pt-muted { color:var(--text-muted); font-size:11px; }
+            ${scope} .pt-attention { color:var(--text-on-orange, #b45309); font-size:11px; margin-left:4px; }
+            ${scope} .pt-quantity { font-variant-numeric:tabular-nums; }
+            ${scope} .pt-badge { display:inline-block; border-radius:4px; padding:2px 6px; line-height:18px; font-size:11px; font-weight:500; }
+            ${scope} .pt-neutral { background:var(--control-bg); color:var(--text-muted); }
+            ${scope} .pt-blue { background:var(--bg-blue, #eff6ff); color:var(--text-on-blue, #1d4ed8); }
+            ${scope} .pt-rush, ${scope} .pt-warning { background:var(--bg-orange, #fff7ed); color:var(--text-on-orange, #9a3412); }
+            ${scope} .pt-done { background:var(--bg-green, #f0fdf4); color:var(--text-on-green, #15803d); }
+            ${scope} .pt-completion { display:inline-flex; align-items:center; gap:7px; font-variant-numeric:tabular-nums; }
+            ${scope} .pt-meter { display:inline-block; width:44px; height:4px; overflow:hidden; border-radius:3px; background:var(--border-color); }
+            ${scope} .pt-meter > span { display:block; height:100%; background:var(--blue-400, #60a5fa); }
+            ${scope} .pt-meter > .pt-meter-done { background:var(--green-500, #22c55e); }
+            ${scope} .dt-row:has(.pt-source) .dt-cell { background-color:var(--subtle-fg); }
+            ${scope} .dt-cell__content { line-height:24px; }
+        `;
+        datatable.wrapper.appendChild(style);
+
+        const toolbar = document.createElement("div");
+        toolbar.className = "pt-toolbar";
+        toolbar.style.cssText = "display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;";
+        const levels = document.createElement("div");
+        levels.className = "btn-group";
+        levels.setAttribute("role", "group");
+        levels.setAttribute("aria-label", __("Show detail level"));
+        const buttons = [];
+        const select = depth => {
+            datatable.productionTowerDepth = depth;
+            buttons.forEach((button, index) => {
+                button.classList.toggle("btn-primary", index === depth);
+                button.classList.toggle("btn-default", index !== depth);
+                button.setAttribute("aria-pressed", String(index === depth));
+            });
+            datatable.rowmanager.setTreeDepth(depth);
+        };
+        [__("Orders"), __("Items"), __("Work Orders"), __("All details")].forEach((label, depth) => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "btn btn-sm";
+            button.textContent = label;
+            button.title = depth === 3 ? __("Show every level, including all rows for export") : label;
+            button.onclick = () => select(depth);
+            levels.appendChild(button);
+            buttons.push(button);
+        });
+        const counts = { "Sales Order": 0, "Material Request": 0, "Delivery Note": 0 };
+        datatable.datamanager.data.forEach(row => {
+            if (row.indent === 0 && row.reference_doctype in counts) counts[row.reference_doctype]++;
+        });
+        const summary = document.createElement("span");
+        summary.className = "text-muted small";
+        summary.textContent = [
+            [counts["Sales Order"], __("Sales Orders")],
+            [counts["Material Request"], __("Material Requests")],
+            [counts["Delivery Note"], __("Sales Returns")],
+        ].map(([count, label]) => `${count} ${label}`).join(" · ");
+        toolbar.append(levels, summary);
+        datatable.wrapper.insertBefore(toolbar, datatable.datatableWrapper);
+        // Restore the chosen level after changing report filters; no server call.
+        select(datatable.productionTowerDepth ?? 0);
+        datatable.productionTowerPresentationCleanup = () => { toolbar.remove(); style.remove(); };
+        if (!datatable.productionTowerPresentationDestroyBound) {
+            datatable.on("onDestroy", () => datatable.productionTowerPresentationCleanup?.());
+            datatable.productionTowerPresentationDestroyBound = true;
+        }
     }
 };
 // Sorting is local to this report. Keep DataTable's row identities intact: its
@@ -165,7 +206,10 @@ frappe.query_reports["Production Tower"] = {
 
     frappe.query_reports["Production Tower"].after_datatable_render = function(datatable) {
         const manager = datatable.datamanager;
-        if (manager.productionTowerTreeSort) return;
+        if (manager.productionTowerTreeSort) {
+            frappe.query_reports["Production Tower"].setup_presentation(datatable);
+            return;
+        }
         manager.productionTowerTreeSort = true;
 
         let sourceRows, roots, nodes;
@@ -273,5 +317,6 @@ frappe.query_reports["Production Tower"] = {
             // ordered too, so CSV export agrees with the table after expanding.
             return renderRows.call(this, visible);
         };
+        frappe.query_reports["Production Tower"].setup_presentation(datatable);
     };
 })();
