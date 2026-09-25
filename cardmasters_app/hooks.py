@@ -96,7 +96,8 @@ doc_events = {
             "cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_submit" # Transition SO state to "Begin Production"
         ],
         "before_update_after_submit": [
-            "cardmasters_app.cardmasters_app.event_handlers.work_order.start_production_from_operation_progress"
+            "cardmasters_app.cardmasters_app.event_handlers.work_order.start_production_from_operation_progress",
+            "cardmasters_app.cardmasters_app.event_handlers.work_order.revert_production_to_not_started"
         ],
         "on_update_after_submit": [
             "cardmasters_app.cardmasters_app.event_handlers.work_order.work_order_workflow_trigger" # Track completed manufacturing progress
