@@ -30,55 +30,36 @@ def start_production_from_operation_progress(doc, method=None):
                 return
 
 def revert_production_to_not_started(doc, method=None):
-    """Revert a submitted WO to 'Not Started' if all operations are reset.
+    """Revert a submitted WO when every operation is explicitly reset.
 
-    Only triggers if the Work Order is currently 'In Production'.
-    Run before update-after-submit.
+    Run before update-after-submit so Frappe validates the workflow transition
+    and saves it together with the operation edits.
     """
-    # GUARDRAIL 1: Document state and exact workflow state
-    # doc.get() prevents AttributeError if the workflow_state field is ever deleted
     if doc.docstatus != 1 or doc.get("workflow_state") != "In Production":
         return
 
-    # GUARDRAIL 2: Safely retrieve the previous document state
-    try:
-        previous = doc.get_doc_before_save()
-    except Exception:
-        return
-        
+    previous = doc.get_doc_before_save()
     if not previous:
         return
 
-    # GUARDRAIL 3: Safe retrieval of child tables
-    # Passing [] as a default ensures the result is always iterable, preventing TypeError
-    operations = doc.get("operations", [])
-    if not operations:
+    operations = doc.get("operations") or []
+    if not operations or any(
+        row.get("custom_progress") != "Not Started" for row in operations
+    ):
         return
 
-    # 1. Check if ANY operation is currently active.
-    for row in operations:
-        progress = row.get("custom_progress")
-        # GUARDRAIL 4: Data sanitization
-        # Force string conversion and strip whitespace just in case data gets corrupted
-        if progress and str(progress).strip() != "Not Started":
-            return  # An operation is still active; abort.
-
-    # 2. Map old values safely, checking that row names exist
-    old_progress_map = {
+    old_progress = {
         row.name: row.get("custom_progress")
-        for row in previous.get("operations", [])
-        if row.get("name")
+        for row in previous.get("operations") or []
     }
-    
-    # 3. Ensure we only change the WO state if an operation was ACTUALLY just changed
-    for row in operations:
-        current_progress = row.get("custom_progress")
-        old_progress = old_progress_map.get(row.get("name"))
-        
-        if current_progress != old_progress:
-            # All operations are 'Not Started', and a change triggered it. Revert state.
-            doc.workflow_state = "Not Started"
-            return
+    # An unrelated save must not undo a manually started Work Order.
+    if any(
+        row.name in old_progress
+        and old_progress[row.name] != row.get("custom_progress")
+        for row in operations
+    ):
+        doc.workflow_state = "Not Started"
+
 
 def pull_sales_order_details(doc, method=None):
 	"""Runs on Work Order (e.g., validate/before_save).
