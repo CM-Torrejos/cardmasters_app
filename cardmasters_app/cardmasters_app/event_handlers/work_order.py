@@ -29,6 +29,56 @@ def start_production_from_operation_progress(doc, method=None):
                 doc.workflow_state = "In Production"
                 return
 
+def revert_production_to_not_started(doc, method=None):
+    """Revert a submitted WO to 'Not Started' if all operations are reset.
+
+    Only triggers if the Work Order is currently 'In Production'.
+    Run before update-after-submit.
+    """
+    # GUARDRAIL 1: Document state and exact workflow state
+    # doc.get() prevents AttributeError if the workflow_state field is ever deleted
+    if doc.docstatus != 1 or doc.get("workflow_state") != "In Production":
+        return
+
+    # GUARDRAIL 2: Safely retrieve the previous document state
+    try:
+        previous = doc.get_doc_before_save()
+    except Exception:
+        return
+        
+    if not previous:
+        return
+
+    # GUARDRAIL 3: Safe retrieval of child tables
+    # Passing [] as a default ensures the result is always iterable, preventing TypeError
+    operations = doc.get("operations", [])
+    if not operations:
+        return
+
+    # 1. Check if ANY operation is currently active.
+    for row in operations:
+        progress = row.get("custom_progress")
+        # GUARDRAIL 4: Data sanitization
+        # Force string conversion and strip whitespace just in case data gets corrupted
+        if progress and str(progress).strip() != "Not Started":
+            return  # An operation is still active; abort.
+
+    # 2. Map old values safely, checking that row names exist
+    old_progress_map = {
+        row.name: row.get("custom_progress")
+        for row in previous.get("operations", [])
+        if row.get("name")
+    }
+    
+    # 3. Ensure we only change the WO state if an operation was ACTUALLY just changed
+    for row in operations:
+        current_progress = row.get("custom_progress")
+        old_progress = old_progress_map.get(row.get("name"))
+        
+        if current_progress != old_progress:
+            # All operations are 'Not Started', and a change triggered it. Revert state.
+            doc.workflow_state = "Not Started"
+            return
 
 def pull_sales_order_details(doc, method=None):
 	"""Runs on Work Order (e.g., validate/before_save).
