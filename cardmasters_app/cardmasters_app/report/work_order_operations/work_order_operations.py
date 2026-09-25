@@ -24,7 +24,29 @@ def source_order(work_order):
     return "", ""
 
 
-def build_result(work_orders, operations):
+def get_source_labels(work_orders):
+    sources = {}
+    for work_order in work_orders:
+        source_type, source_name = source_order(work_order)
+        if source_type in ("Sales Order", "Material Request"):
+            sources.setdefault(source_type, set()).add(source_name)
+    labels = {}
+    for source_type, names in sources.items():
+        if not frappe.has_permission(source_type, "read"):
+            continue
+        field = "customer_name" if source_type == "Sales Order" else "company"
+        names = sorted(names)
+        for start in range(0, len(names), 500):
+            for source in frappe.get_list(
+                source_type, filters={"name": ["in", names[start:start + 500]]},
+                fields=["name", field], limit_page_length=0,
+            ):
+                labels[(source_type, source.name)] = source.get(field) or ""
+    return labels
+
+
+def build_result(work_orders, operations, source_labels=None):
+    source_labels = source_labels or {}
     orders = {row["name"]: row for row in work_orders}
     groups = {}
     for operation in operations:
@@ -35,7 +57,7 @@ def build_result(work_orders, operations):
     for index, (operation_name, entries) in enumerate(sorted(groups.items())):
         prefix = f"operation_{index}"
         for suffix, label, fieldtype, options, width in (
-            ("source_order", _("Source Order"), "Dynamic Link", f"{prefix}_source_type", 210),
+            ("source_order", _("Source Order"), "Dynamic Link", f"{prefix}_source_type", 340),
             ("work_order", _("Work Order"), "Link", "Work Order", 210),
             ("item_name", _("Item Name"), "Data", None, 200),
             ("particulars", _("Particulars"), "Text", None, 300),
@@ -61,6 +83,7 @@ def build_result(work_orders, operations):
                 f"{prefix}_particulars": work_order.get("custom_particulars") or "",
                 f"{prefix}_source_type": source_type,
                 f"{prefix}_source_order": source_name,
+                f"{prefix}_source_label": source_labels.get((source_type, source_name), ""),
                 f"{prefix}_progress": entry.get("custom_progress") or "",
             })
     return columns, data
@@ -68,44 +91,48 @@ def build_result(work_orders, operations):
 
 def execute(filters=None):
     filters = frappe._dict(filters or {})
-    conditions = {"docstatus": ["<", 2]}
+    conditions = [["Work Order", "docstatus", "<", 2]]
     for field in ("company", "name", "status"):
         value = filters.get("work_order" if field == "name" else field)
         if value:
-            conditions[field] = value
+            conditions.append(["Work Order", field, "=", value])
     if filters.branch:
         branch_field = (
             "custom_production_branch"
             if filters.branch_source == "custom_production_branch"
             else "custom_for_branch"
         )
-        conditions[branch_field] = filters.branch
+        conditions.append(["Work Order", branch_field, "=", filters.branch])
     meta = frappe.get_meta("Work Order")
     fields = ["name", "item_name"] + [
         field for field in [*SOURCE_FIELDS, "custom_particulars"] if meta.has_field(field)
     ]
+    if not frappe.get_meta("Work Order Operation").has_field("custom_progress"):
+        frappe.throw(_("Work Order Operation requires the custom_progress field."))
+    operation_filters = {"operation": ["is", "set"]}
+    for field, value in (("operation", filters.operation), ("custom_progress", filters.progress)):
+        if value:
+            # Preserve single-value URLs/API calls alongside multi-select filters.
+            operation_filters[field] = ["in", value] if isinstance(value, list) else value
+    for field, value in operation_filters.items():
+        operator, operand = value if isinstance(value, list) else ("=", value)
+        conditions.append(["Work Order Operation", field, operator, operand])
     # Apply Work Order permissions before reading any of its child rows.
+    # Joining matching operations avoids loading thousands of unrelated orders.
     orders = frappe.get_list(
-        "Work Order", filters=conditions, fields=fields,
-        order_by="creation asc, name asc", limit_page_length=0,
+        "Work Order", filters=conditions, fields=fields, distinct=True,
+        order_by="`tabWork Order`.creation asc, `tabWork Order`.name asc", limit_page_length=0,
     )
     if not orders:
         return [], []
-    if not frappe.get_meta("Work Order Operation").has_field("custom_progress"):
-        frappe.throw(_("Work Order Operation requires the custom_progress field."))
     operations = []
     names = [row.name for row in orders]
     for start in range(0, len(names), 500):
         child_filters = {
             "parent": ["in", names[start:start + 500]],
             "parenttype": "Work Order", "parentfield": "operations",
+            **operation_filters,
         }
-        if filters.operation:
-            # Keep older single-operation URLs/API calls working too.
-            selected = filters.operation
-            child_filters["operation"] = ["in", selected] if isinstance(selected, list) else selected
-        if filters.progress:
-            child_filters["custom_progress"] = filters.progress
         operations.extend(frappe.get_all(
             "Work Order Operation", filters=child_filters,
             fields=["parent", "operation", "custom_progress", "idx"],
@@ -113,4 +140,4 @@ def execute(filters=None):
         ))
     order_position = {name: index for index, name in enumerate(names)}
     operations.sort(key=lambda row: (order_position[row.parent], row.idx))
-    return build_result(orders, operations)
+    return build_result(orders, operations, get_source_labels(orders))
