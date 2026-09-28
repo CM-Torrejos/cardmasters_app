@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"K71SWC1QvW\",\"type\":\"paragraph\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Quick Access</span>\",\"col\":12}},{\"id\":\"TzMQrZJtBA\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Work Order\",\"col\":3}},{\"id\":\"bpoQspyYR1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Job Card\",\"col\":3}},{\"id\":\"MH3V-AYHOf\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Damage/Returns\",\"col\":3}},{\"id\":\"udkCq6L706\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Calendar\",\"col\":3}},{\"id\":\"mdvKsOd580\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"fjeLUBBUFj\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"lhpeTR87v6\",\"type\":\"card\",\"data\":{\"card_name\":\"Production Tools\",\"col\":4}},{\"id\":\"ZvAcGkWdFt\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}}]",
+ "content": "[{\"id\":\"K71SWC1QvW\",\"type\":\"paragraph\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Quick Access</span>\",\"col\":12}},{\"id\":\"TzMQrZJtBA\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Work Order\",\"col\":3}},{\"id\":\"bpoQspyYR1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Job Card\",\"col\":3}},{\"id\":\"MH3V-AYHOf\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Damage/Returns\",\"col\":3}},{\"id\":\"udkCq6L706\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Calendar\",\"col\":3}},{\"id\":\"51QVCMXW9Q\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Need to Production Concluded\",\"col\":3}},{\"id\":\"fHoitc2IZK\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Production Tower\",\"col\":3}},{\"id\":\"D16EZx6lHG\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Projects\",\"col\":3}},{\"id\":\"u4MxwCZVD-\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Damage Slip\",\"col\":3}},{\"id\":\"LGUUkAoogU\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"WORK ORDER EXPORT IN PRODUCTION\",\"col\":3}},{\"id\":\"Viee6v4XHX\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Damages Report\",\"col\":3}},{\"id\":\"ZqbSEl7qMl\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"For Consumption Work Orders\",\"col\":3}},{\"id\":\"mdvKsOd580\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"fjeLUBBUFj\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"lhpeTR87v6\",\"type\":\"card\",\"data\":{\"card_name\":\"Production Tools\",\"col\":4}},{\"id\":\"ZvAcGkWdFt\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":3}},{\"id\":\"xTL4uiblwL\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"id\":\"gmk0N3xue9\",\"type\":\"paragraph\",\"data\":{\"text\":\"Completed SO - Not updated WO is a report that shows all sales orders where all their work orders are not properly set beyond \\\"In Production\\\".\",\"col\":12}}]",
  "creation": "2025-07-03 15:57:52.410871",
  "custom_blocks": [],
  "docstatus": 0,
@@ -14,6 +14,210 @@
  "label": "Production Department",
  "links": [
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Production Tools",
+   "link_count": 5,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "BOMs",
+   "link_count": 0,
+   "link_to": "BOM",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Operation",
+   "link_count": 0,
+   "link_to": "Operation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Workstation",
+   "link_count": 0,
+   "link_to": "Workstation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Damage and Returns",
+   "link_count": 0,
+   "link_to": "Damages and Returns",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Damage Reason",
+   "link_count": 0,
+   "link_to": "Damage Reason",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Orders",
+   "link_count": 5,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Order",
+   "link_count": 0,
+   "link_to": "Sales Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Artist Card",
+   "link_count": 0,
+   "link_to": "Artist Card",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Work Order",
+   "link_count": 0,
+   "link_to": "Work Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Job Card",
+   "link_count": 0,
+   "link_to": "Job Card",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Projects",
+   "link_count": 0,
+   "link_to": "Project",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Reports",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Production Tower",
+   "link_count": 0,
+   "link_to": "Production Tower",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Need to Production Concluded",
+   "link_count": 0,
+   "link_to": "Need to Production Concluded",
+   "link_type": "Report",
+   "onboard": 0,
+   "report_ref_doctype": "Sales Order",
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Completed SO - Not updated WO",
+   "link_count": 0,
+   "link_to": "Completed - WO Not Updated",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Garments Monitoring",
+   "link_count": 0,
+   "link_to": "Garments Monitoring",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Items and Stock",
@@ -23,6 +227,9 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_filters": "[]",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Item",
@@ -33,6 +240,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Item Group",
@@ -43,6 +252,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Check Stock Availability",
@@ -54,6 +265,9 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Orange",
+   "custom_card_filters": "[[\"Material Request\",\"custom_production_branch\",\"=\",\"Cebu\",false]]",
+   "custom_card_show_count": 1,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Material Request",
@@ -62,117 +276,9 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Orders",
-   "link_count": 4,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Sales Order",
-   "link_count": 0,
-   "link_to": "Sales Order",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Artist Card",
-   "link_count": 0,
-   "link_to": "Artist Card",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Work Order",
-   "link_count": 0,
-   "link_to": "Work Order",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Job Card",
-   "link_count": 0,
-   "link_to": "Job Card",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Production Tools",
-   "link_count": 5,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "BOMs",
-   "link_count": 0,
-   "link_to": "BOM",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Operation",
-   "link_count": 0,
-   "link_to": "Operation",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Workstation",
-   "link_count": 0,
-   "link_to": "Workstation",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Damage and Returns",
-   "link_count": 0,
-   "link_to": "Damages and Returns",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Damage Reason",
-   "link_count": 0,
-   "link_to": "Damage Reason",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
   }
  ],
- "modified": "2026-01-09 14:37:22.208799",
+ "modified": "2026-09-28 09:40:37.035485",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Production Department",
@@ -183,17 +289,51 @@
  "quick_lists": [],
  "roles": [
   {
-   "role": "CM Production Coordinator"
-  },
-  {
    "role": "CM Production Head"
   },
   {
-   "role": "CM Cost Accountant"
+   "role": "CM Assembler"
+  },
+  {
+   "role": "CMv2 Production Head"
+  },
+  {
+   "role": "CMv2 Production Coordinator"
+  },
+  {
+   "role": "CMv2 Cost Accountant"
+  },
+  {
+   "role": "CMv2 Inventory Claiming Associate"
+  },
+  {
+   "role": "CMv2 WL Cutting and Engrave"
+  },
+  {
+   "role": "CMv2 WL Embroidery"
+  },
+  {
+   "role": "CMv2 Office Sales"
   }
  ],
  "sequence_id": 4.0,
  "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Damage Slip",
+   "link_to": "Damages and Returns",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Projects",
+   "link_to": "Project",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
   {
    "color": "Grey",
    "doc_view": "Calendar",
@@ -201,6 +341,46 @@
    "link_to": "Sales Order",
    "stats_filter": "[]",
    "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "WORK ORDER EXPORT IN PRODUCTION",
+   "link_to": "EXPORT WORK ORDERS IN PRODUCTION",
+   "report_ref_doctype": "Work Order",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Production Tower",
+   "link_to": "Production Tower",
+   "report_ref_doctype": "Sales Order",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Need to Production Concluded",
+   "link_to": "Need to Production Concluded",
+   "report_ref_doctype": "Sales Order",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Damages Report",
+   "link_to": "Damages Report",
+   "report_ref_doctype": "Damages and Returns",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "For Consumption Work Orders",
+   "link_to": "For Consumption Work Orders",
+   "report_ref_doctype": "Work Order",
+   "type": "Report"
   },
   {
    "color": "Grey",

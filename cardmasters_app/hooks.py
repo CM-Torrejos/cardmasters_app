@@ -8,6 +8,8 @@ app_license = "mit"
 # Hydrate specific settings and configurations to JS session boot
 boot_session = "cardmasters_app.boot.boot_session"
 
+after_install = "cardmasters_app.cardmasters_app.patches.add_workspace_card_filters.execute"
+
 # Fixtures to export custom fields, workflow structures, and property setters
 fixtures = [
     {
@@ -59,6 +61,7 @@ doctype_js = {
 
 # Override core classes for custom calculations and accounting entry injections
 override_doctype_class = {
+    "Workspace": "cardmasters_app.cardmasters_app.overrides.workspace.CustomWorkspace",
     "Work Order": "cardmasters_app.cardmasters_app.overrides.work_order.CustomWorkOrder",
     "Stock Entry": "cardmasters_app.cardmasters_app.overrides.stock_entry.CustomStockEntry",
     "Payroll Entry": "cardmasters_app.cardmasters_app.overrides.payroll_entry.CustomPayrollEntry"
@@ -68,6 +71,7 @@ override_doctype_class = {
 app_include_js = [
     "/assets/cardmasters_app/js/utils.js",
     "/assets/cardmasters_app/js/workspace_filter_routes.js", # Preserve filter DocTypes in workspace links
+    "/assets/cardmasters_app/js/workspace_card_filters.js",
     "/assets/cardmasters_app/js/address_contact_quick_entry_patch.js", # Address patching
     "/assets/cardmasters_app/js/artist_card/multi_artist_filter.js" # Custom list filter for assigned artists
 ]
