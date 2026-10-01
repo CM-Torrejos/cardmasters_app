@@ -227,9 +227,9 @@ doc_events = {
     }
 }
 
-# Override whitelisted endpoints to support propagation rules on Tag removals
 override_whitelisted_methods = {
-    "frappe.desk.doctype.tag.tag.remove_tag": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_linked_documents_on_master_document_tags_removal"
+    "frappe.desk.doctype.tag.tag.remove_tag": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_linked_documents_on_master_document_tags_removal",
+    "erpnext.selling.doctype.sales_order.sales_order.make_work_orders": "cardmasters_app.cardmasters_app.event_handlers.sales_order.make_work_orders"
 }
 
 # Restrict Artist Cards to only show cards where the artist profile is matching the logged-in user
