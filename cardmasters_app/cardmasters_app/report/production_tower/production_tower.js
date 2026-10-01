@@ -38,6 +38,10 @@ frappe.query_reports["Production Tower"] = {
     "name_field": "label_name",
     "initial_depth": 0,
     get_datatable_options(options) {
+        // Enable filtering on the Tree / Reference column
+        if (options.columns && options.columns.length > 0) {
+            options.columns[0].filterable = true;
+        }
         return Object.assign(options, { serialNoColumn: false, checkboxColumn: false, cellHeight: 40 });
     },
     formatter(value, row, column, data, default_formatter) {
@@ -164,6 +168,11 @@ frappe.query_reports["Production Tower"] = {
         if (!datatable.productionTowerPresentationDestroyBound) {
             datatable.on("onDestroy", () => datatable.productionTowerPresentationCleanup?.());
             datatable.productionTowerPresentationDestroyBound = true;
+        }
+        // Ensure Reference filter input is enabled
+        const refInput = datatable.wrapper.querySelector('.dt-filter[data-name="Reference"], .dt-filter[data-col-index="0"]');
+        if (refInput) {
+            refInput.removeAttribute("disabled");
         }
     }
 };
@@ -299,6 +308,32 @@ frappe.query_reports["Production Tower"] = {
             const requested = new Set(rows.map(row => row.meta.rowIndex));
             const visibleBeforeSort = pendingVisibleRows;
             pendingVisibleRows = null;
+
+            // Detect if this is a column-filter call (not a sort or expand/collapse).
+            // During filtering, pendingVisibleRows is null and the requested set is a
+            // true subset of all rows (filterRows returns only matching row indices).
+            // In that case the tree-collapse guard must be skipped: it would hide every
+            // child row whose parent node happens to be closed (the default at depth 0),
+            // making the filter appear to do nothing. Instead, we walk up each matching
+            // row's ancestry and include all ancestor rows so results are visible.
+            const isFilterCall = !visibleBeforeSort && requested.size > 0
+                && requested.size < manager.rowViewOrder.length;
+
+            if (isFilterCall) {
+                const toShow = new Set(requested);
+                for (const index of requested) {
+                    let ancestor = nodes.get(index)?.parent;
+                    while (ancestor) {
+                        toShow.add(ancestor.index);
+                        ancestor = ancestor.parent;
+                    }
+                }
+                const visible = manager.rowViewOrder
+                    .filter(index => toShow.has(index))
+                    .map(index => manager.getRow(index));
+                return renderRows.call(this, visible);
+            }
+
             const visible = [];
             const hidden = new Set();
             // View order is preorder, so the parent's visibility is known first.
