@@ -263,13 +263,14 @@
    "fieldname": "branch",
    "fieldtype": "Link",
    "label": "Branch",
-   "options": "Branch"
+   "options": "Branch",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-09-01 11:10:24.283814",
+ "modified": "2026-10-01 11:43:30.146035",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damages and Returns",
