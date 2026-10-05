@@ -19,11 +19,17 @@ from erpnext.stock.utils import get_incoming_rate
 
 
 def execute(filters=None):
+	return build_report(filters)
+
+
+def build_report(filters=None, gross_profit_data=None):
+	"""Build the shared report layout, optionally using a specialized generator."""
 	if not filters:
 		filters = frappe._dict()
 	filters.currency = frappe.get_cached_value("Company", filters.company, "default_currency")
 
-	gross_profit_data = GrossProfitGenerator(filters)
+	if gross_profit_data is None:
+		gross_profit_data = GrossProfitGenerator(filters)
 
 	data = []
 

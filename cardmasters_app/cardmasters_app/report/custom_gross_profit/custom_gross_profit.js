@@ -114,4 +114,4 @@ frappe.query_reports["Custom Gross Profit"] = {
 	},
 };
 
-erpnext.utils.add_dimensions("Gross Profit", 15);
+erpnext.utils.add_dimensions("Custom Gross Profit", 15);
