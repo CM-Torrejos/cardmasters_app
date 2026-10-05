@@ -141,6 +141,22 @@ def _warn_if_finished_goods_target_is_not_flagged(doc):
 		indicator="orange",
 	)
 
+def validate_and_adjust_fg_completed_qty(doc, method):
+	if not doc.work_order:
+		return
+
+	wo = frappe.get_doc("Work Order", doc.work_order)
+
+	allowance_pct = flt(frappe.db.get_single_value("Manufacturing Settings", "overproduction_percentage_for_work_order"))
+	max_allowed_qty = wo.qty + (allowance_pct / 100.0 * wo.qty)
+
+	purpose = doc.purpose
+	if purpose != "Material Transfer for Manufacture":
+		return
+
+	current_transferred = flt(wo.material_transferred_for_manufacturing)
+	if (current_transferred + flt(doc.fg_completed_qty)) > max_allowed_qty:
+		doc.fg_completed_qty = 0
 
 # def after_insert_stock_entry(doc, method=None):
 # 	entry_type = (getattr(doc, "stock_entry_type", None) or getattr(doc, "purpose", None) or "").strip()

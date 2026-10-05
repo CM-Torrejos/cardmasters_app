@@ -83,12 +83,12 @@ app_include_css = [
 
 # Server-side document hooks and handlers
 doc_events = {
-	"Item": {
-		"before_insert": "cardmasters_app.cardmasters_app.event_handlers.item.apply_accounting_defaults",
-		"after_insert": "cardmasters_app.cardmasters_app.event_handlers.item.create_company_boms"
-	},
-	"Petty Cash Voucher": {
-    	"after_submit": "cardmasters_app.cardmasters_app.event_handlers.petty_cash_voucher.update_pcr_onpcv"
+    "Item": {
+        "before_insert": "cardmasters_app.cardmasters_app.event_handlers.item.apply_accounting_defaults",
+        "after_insert": "cardmasters_app.cardmasters_app.event_handlers.item.create_company_boms"
+    },
+    "Petty Cash Voucher": {
+        "after_submit": "cardmasters_app.cardmasters_app.event_handlers.petty_cash_voucher.update_pcr_onpcv"
     },
     "Work Order": {
         "after_insert" : [
@@ -132,6 +132,9 @@ doc_events = {
         ],
         "before_save": [
             "cardmasters_app.cardmasters_app.services.batch_handler.set_batch_no_for_fg_on_manufacture_entry" # Assign WO batch to FG row
+        ],
+        "before_submit": [
+            "cardmasters_app.cardmasters_app.event_handlers.stock_entry.validate_and_adjust_fg_completed_qty"
         ]
     },
     "Artist Card": {
