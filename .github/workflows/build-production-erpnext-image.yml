@@ -130,6 +130,7 @@ jobs:
             FRAPPE_PATH=https://github.com/frappe/frappe
             FRAPPE_BRANCH=version-15
             PYTHON_VERSION=3.11.9
+            DEBIAN_BASE=bookworm
             NODE_VERSION=22.23.2
             CACHE_BUST=${{ github.run_id }}
       - name: Verify image contents
