@@ -1,7 +1,5 @@
 import frappe
 from frappe.utils import cstr
-
-import frappe
 from frappe.model.workflow import apply_workflow  # get_transitions no longer used
 from frappe import _
 
@@ -59,7 +57,6 @@ def revert_production_to_not_started(doc, method=None):
         for row in operations
     ):
         doc.workflow_state = "Not Started"
-
 
 def pull_sales_order_details(doc, method=None):
 	"""Runs on Work Order (e.g., validate/before_save).
