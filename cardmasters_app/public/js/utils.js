@@ -94,15 +94,46 @@ function render_sales_order_print_preview(target_field, sales_order_name) {
     });
 }
 
-// Override core ERPNext function to force-update child rows every time
-erpnext.utils.copy_value_in_all_rows = function (doc, dt, dn, table_fieldname, fieldname) {
-    console.log(`Fired copy_value_in_all_rows for field: ${fieldname}`);
+/**
+ * OVERRIDE: erpnext.utils.copy_value_in_all_rows
+ * 
+ * Reason for Modification:
+ * The native ERPNext utility has specific limitations that prevent it from working
+ * effectively with customized header-to-child field syncing. This override patches 
+ * those limitations while remaining backward-compatible with standard Frappe calls.
+ * 
+ * Key Changes Introduced:
+ * 1. Force-Updates Child Rows: The native code only sets the child value if the child 
+ *    field is completely empty (`if (!cl[i][fieldname])`). This override removes that 
+ *    check, forcing all child rows to update every time the parent field changes.
+ * 
+ * 2. Mismatched Fieldname Mapping: The native code requires the parent field and child 
+ *    field to have the exact same name. We added an optional `target_fieldname` parameter 
+ *    so custom parent fields (e.g., `custom_branch`) can populate standard child fields 
+ *    (e.g., `branch`). If omitted, it gracefully falls back to the parent `fieldname`.
+ * 
+ * 3. Supports Value Clearing: By setting `var val = d[fieldname] || ""`, if a user clears 
+ *    the parent field, that blank/empty state will now properly cascade to the children.
+ * 
+ * 4. Safer Doc Fetching: Added a fallback to `doc` in case `locals[dt][dn]` is not yet 
+ *    fully initialized in the DOM.
+ * 
+ * @param {Object} doc - The current document object
+ * @param {String} dt - Parent Doctype
+ * @param {String} dn - Parent Docname
+ * @param {String} table_fieldname - Fieldname of the child table
+ * @param {String} fieldname - Fieldname on the parent to read from
+ * @param {String} [target_fieldname] - (Custom) Fieldname on the child to write to. Defaults to `fieldname`.
+ */
+erpnext.utils.copy_value_in_all_rows = function (doc, dt, dn, table_fieldname, fieldname, target_fieldname) {
     var d = (locals[dt] && locals[dt][dn]) || doc;
     if (d) {
         var val = d[fieldname] || "";
         var cl = doc[table_fieldname] || [];
+        var target = target_fieldname || fieldname;
+
         for (var i = 0; i < cl.length; i++) {
-            cl[i][fieldname] = val;
+            cl[i][target] = val;
         }
     }
     refresh_field(table_fieldname);
