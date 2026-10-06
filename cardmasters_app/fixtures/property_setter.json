@@ -2829,7 +2829,7 @@
   "property": "autoname",
   "property_type": "Data",
   "row_name": null,
-  "value": "format:SO-{######}"
+  "value": "SO-.######"
  },
  {
   "default_value": null,

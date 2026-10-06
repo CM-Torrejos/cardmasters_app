@@ -1,0 +1,121 @@
+{
+ "doctype": "DocType",
+ "name": "SOA Template",
+ "module": "Cardmasters App",
+ "autoname": "field:template_name",
+ "allow_rename": 1,
+ "engine": "InnoDB",
+ "track_changes": 1,
+ "field_order": [
+  "template_name",
+  "report_type",
+  "enabled",
+  "is_default",
+  "html_section",
+  "html",
+  "css_section",
+  "css",
+  "help_section",
+  "template_help"
+ ],
+ "fields": [
+  {
+   "fieldname": "template_name",
+   "fieldtype": "Data",
+   "label": "Template Name",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "report_type",
+   "fieldtype": "Select",
+   "label": "Report Type",
+   "options": "General Ledger\nAccounts Receivable",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enabled",
+   "default": "1",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "is_default",
+   "fieldtype": "Check",
+   "label": "Default for This Report",
+   "default": "0",
+   "description": "Used when no template is selected on the statement. Leave unchecked to retain the native layout."
+  },
+  {
+   "fieldname": "html_section",
+   "fieldtype": "Section Break",
+   "label": "HTML Template"
+  },
+  {
+   "fieldname": "html",
+   "fieldtype": "Code",
+   "label": "HTML (Jinja)",
+   "options": "HTML",
+   "reqd": 1
+  },
+  {
+   "fieldname": "css_section",
+   "fieldtype": "Section Break",
+   "label": "Styles"
+  },
+  {
+   "fieldname": "css",
+   "fieldtype": "Code",
+   "label": "CSS",
+   "options": "CSS"
+  },
+  {
+   "fieldname": "help_section",
+   "fieldtype": "Section Break",
+   "label": "Template Variables",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "template_help",
+   "fieldtype": "HTML",
+   "options": "<p>Use <code>customer</code>, <code>company</code>, <code>doc</code>, <code>filters</code>, <code>report</code>, <code>data</code> (all native rows), <code>transactions</code> (voucher rows), <code>totals</code>, <code>currency</code>, <code>ageing</code>, <code>letter_head</code>, <code>terms_and_conditions</code>, and <code>invoices</code> (keyed by Sales Invoice number). Format with <code>frappe.format(value, \"Date\")</code> or <code>frappe.utils.fmt_money(value, currency=currency)</code>. HTML values are escaped by default; use <code>|safe</code> only for trusted letterhead/terms HTML. CSS is plain CSS, without Jinja. Preview uses a saved statement and does not send email.</p>"
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "share": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1
+  },
+  {
+   "role": "Accounts Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "share": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1
+  },
+  {
+   "role": "Accounts User",
+   "read": 1,
+   "print": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "actions": [],
+ "links": [],
+ "states": []
+}

@@ -18751,5 +18751,17 @@
   "translatable": 0,
   "unique": 0,
   "width": null
+ },
+ {
+  "doctype": "Custom Field",
+  "name": "Process Statement Of Accounts-custom_soa_template",
+  "dt": "Process Statement Of Accounts",
+  "fieldname": "custom_soa_template",
+  "fieldtype": "Link",
+  "label": "SOA Template",
+  "options": "SOA Template",
+  "insert_after": "letter_head",
+  "is_system_generated": 0,
+  "description": "Choose an editable HTML/CSS layout. Blank uses the report's default template, or the native layout if no default exists."
  }
 ]

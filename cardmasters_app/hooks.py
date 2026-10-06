@@ -8,7 +8,10 @@ app_license = "mit"
 # Hydrate specific settings and configurations to JS session boot
 boot_session = "cardmasters_app.boot.boot_session"
 
-after_install = "cardmasters_app.cardmasters_app.patches.add_workspace_card_filters.execute"
+after_install = [
+    "cardmasters_app.cardmasters_app.patches.add_workspace_card_filters.execute",
+    "cardmasters_app.cardmasters_app.patches.add_soa_templates.execute",
+]
 
 # Fixtures to export custom fields, workflow structures, and property setters
 fixtures = [
@@ -34,6 +37,7 @@ fixtures = [
 
 # Client Scripts mapping per DocType
 doctype_js = {
+    "Process Statement Of Accounts": "public/js/process_statement_of_accounts.js",
     "Customer": "public/js/customer.js",
     "Sales Order": [
         "public/js/sales_order_refactored.js", # SO client validations, edits, and discrepancy warning logic
@@ -62,6 +66,7 @@ doctype_js = {
 
 # Override core classes for custom calculations and accounting entry injections
 override_doctype_class = {
+    "Scheduled Job Type": "cardmasters_app.cardmasters_app.overrides.scheduled_job_type.CustomScheduledJobType",
     "Workspace": "cardmasters_app.cardmasters_app.overrides.workspace.CustomWorkspace",
     "Work Order": "cardmasters_app.cardmasters_app.overrides.work_order.CustomWorkOrder",
     "Stock Entry": "cardmasters_app.cardmasters_app.overrides.stock_entry.CustomStockEntry",
@@ -70,6 +75,7 @@ override_doctype_class = {
 
 # Global JS files loaded in Desk
 app_include_js = [
+    "/assets/cardmasters_app/js/soa_preview.js",
     "/assets/cardmasters_app/js/utils.js",
     "/assets/cardmasters_app/js/workspace_filter_routes.js", # Preserve filter DocTypes in workspace links
     "/assets/cardmasters_app/js/workspace_card_filters.js",
@@ -84,6 +90,9 @@ app_include_css = [
 
 # Server-side document hooks and handlers
 doc_events = {
+    "Process Statement Of Accounts": {
+        "validate": "cardmasters_app.cardmasters_app.services.soa_templates.validate_statement"
+    },
     "Item": {
         "before_insert": "cardmasters_app.cardmasters_app.event_handlers.item.apply_accounting_defaults",
         "after_insert": "cardmasters_app.cardmasters_app.event_handlers.item.create_company_boms"
@@ -232,6 +241,9 @@ doc_events = {
 }
 
 override_whitelisted_methods = {
+    "erpnext.accounts.doctype.process_statement_of_accounts.process_statement_of_accounts.download_statements": "cardmasters_app.cardmasters_app.services.soa_templates.download_statements",
+    "erpnext.accounts.doctype.process_statement_of_accounts.process_statement_of_accounts.send_emails": "cardmasters_app.cardmasters_app.services.soa_templates.send_emails",
+    "erpnext.accounts.doctype.process_statement_of_accounts.process_statement_of_accounts.send_auto_email": "cardmasters_app.cardmasters_app.services.soa_templates.send_auto_email",
     "frappe.desk.doctype.tag.tag.remove_tag": "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_linked_documents_on_master_document_tags_removal",
     "erpnext.selling.doctype.sales_order.sales_order.make_work_orders": "cardmasters_app.cardmasters_app.event_handlers.sales_order.make_work_orders"
 }
@@ -475,3 +487,12 @@ doctype_list_js = {"Work Order": "public/js/work_order_list.js"}
 # default_log_clearing_doctypes = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
+
+# Desk-managed SOA templates: native report/PDF/email pipeline, custom presentation.
+process_soa_html = {
+    "General Ledger": "cardmasters_app/templates/soa/dispatcher.html",
+    "Accounts Receivable": "cardmasters_app/templates/soa/dispatcher.html",
+}
+jinja = {"methods": ["cardmasters_app.cardmasters_app.services.soa_templates.render_soa_template"]}
+# Idempotent setup also installs starter templates on fresh sites and preserves Desk edits.
+after_migrate = ["cardmasters_app.cardmasters_app.patches.add_soa_templates.execute"]

@@ -1,0 +1,57 @@
+<div class="soa">
+  <div id="header-html" class="hidden-pdf">
+    {% if letter_head and letter_head.get('content') %}{{ letter_head.content | safe }}{% endif %}
+  </div>
+  <div id="footer-html" class="visible-pdf">
+    {% if letter_head and letter_head.get('footer') %}{{ letter_head.footer | safe }}{% endif %}
+  </div>
+  <h1>Statement of Accounts</h1>
+  <div class="soa-heading">
+    <div><strong>{{ company.company_name }}</strong><br>{{ customer.customer_name }}<br>
+      {% if customer.get('tax_id') %}Tax ID: {{ customer.tax_id }}{% endif %}
+    </div>
+    <div>
+      {% if report.report_name == 'General Ledger' %}
+        {{ frappe.format(doc.from_date, 'Date') }} – {{ frappe.format(doc.to_date, 'Date') }}
+      {% else %}As of {{ frappe.format(doc.posting_date, 'Date') }}{% endif %}<br>
+      Currency: {{ currency }}
+    </div>
+  </div>
+  {% if report.report_name == 'General Ledger' %}
+  <p class="soa-summary">Opening balance: {{ frappe.utils.fmt_money(totals.opening_balance, currency=currency) }}</p>
+  <table><thead><tr><th>Date</th><th>Reference</th><th>Remarks</th><th class="amount">Debit</th><th class="amount">Credit</th><th class="amount">Balance</th></tr></thead><tbody>
+  {% for row in transactions %}
+    <tr><td>{{ frappe.format(row.posting_date, 'Date') }}</td><td>{{ row.voucher_type }}<br>{{ row.voucher_no }}</td>
+      <td>{{ row.get('remarks') or '' }}</td>
+      <td class="amount">{{ frappe.utils.fmt_money(row.get('debit') or 0, currency=currency) }}</td>
+      <td class="amount">{{ frappe.utils.fmt_money(row.get('credit') or 0, currency=currency) }}</td>
+      <td class="amount">{{ frappe.utils.fmt_money(row.get('balance') or 0, currency=currency) }}</td></tr>
+  {% endfor %}
+  </tbody><tfoot><tr><td colspan="3">Closing balance</td>
+    <td class="amount">{{ frappe.utils.fmt_money(totals.debit, currency=currency) }}</td>
+    <td class="amount">{{ frappe.utils.fmt_money(totals.credit, currency=currency) }}</td>
+    <td class="amount">{{ frappe.utils.fmt_money(totals.balance, currency=currency) }}</td></tr></tfoot></table>
+  {% else %}
+  <table><thead><tr><th>Date</th><th>Reference / PO</th><th>Due date</th><th class="amount">Invoiced</th><th class="amount">Paid</th><th class="amount">Credit note</th><th class="amount">Outstanding</th></tr></thead><tbody>
+  {% for row in transactions %}
+    {% set invoice = invoices.get(row.voucher_no, {}) %}
+    <tr><td>{{ frappe.format(row.posting_date, 'Date') }}</td><td>{{ row.voucher_no }}
+      {% if invoice.get('po_no') %}<br>PO: {{ invoice.po_no }}{% endif %}</td>
+      <td>{{ frappe.format(row.get('due_date'), 'Date') if row.get('due_date') else '' }}</td>
+      <td class="amount">{{ frappe.utils.fmt_money(row.get('invoiced') or 0, currency=currency) }}</td>
+      <td class="amount">{{ frappe.utils.fmt_money(row.get('paid') or 0, currency=currency) }}</td>
+      <td class="amount">{{ frappe.utils.fmt_money(row.get('credit_note') or 0, currency=currency) }}</td>
+      <td class="amount">{{ frappe.utils.fmt_money(row.get('outstanding') or 0, currency=currency) }}</td></tr>
+  {% endfor %}
+  </tbody><tfoot><tr><td colspan="3">Totals</td>
+    {% for key in ['invoiced', 'paid', 'credit_note', 'outstanding'] %}<td class="amount">{{ frappe.utils.fmt_money(totals[key], currency=currency) }}</td>{% endfor %}
+  </tr></tfoot></table>
+  {% endif %}
+  {% if ageing %}
+  <h3>Ageing ({{ ageing.get('ageing_based_on') or doc.ageing_based_on }})</h3>
+  <table><thead><tr><th>0–30 days</th><th>31–60 days</th><th>61–90 days</th><th>91–120 days</th><th>Above 120 days</th></tr></thead><tbody><tr>
+    {% for key in ['range1', 'range2', 'range3', 'range4', 'range5'] %}<td class="amount">{{ frappe.utils.fmt_money(ageing.get(key) or 0, currency=currency) }}</td>{% endfor %}
+  </tr></tbody></table>
+  {% endif %}
+  {% if terms_and_conditions %}<div class="soa-terms">{{ terms_and_conditions | safe }}</div>{% endif %}
+</div>
