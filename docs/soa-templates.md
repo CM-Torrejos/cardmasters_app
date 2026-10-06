@@ -35,3 +35,11 @@ Deploy with the normal app release, `bench --site <site> migrate`, asset setup/b
 For direct Python callers that need an explicit selection, enter `statement_context(doc)` before calling the native `get_report_pdf`/`get_statement_dict`. The Desk endpoints and scheduled sender do this automatically. Raw native calls outside that context can use the configured default, but do not receive a statement-specific selection.
 
 Tests: `cardmasters_app.cardmasters_app.services.test_soa_templates`. The real-data integration check uses rollback-only statement and template records; email enqueue is intercepted. Native PDF checks require `wkhtmltopdf` and a reachable local web server for print assets. Native letterheads, terms, orientation, and report filtering remain available.
+
+## CSV and Excel exports
+
+Save a **Process Statement Of Accounts**, then choose **Export → CSV** or **Export → Excel**. Leave the customer blank for all customers on the statement, or select one included customer. Both General Ledger and Accounts Receivable are supported. The download uses the saved dates and report filters.
+
+CSV contains one combined UTF-8 table with customer identifiers on every row. Excel (.xlsx) contains one sheet per customer, with numeric monetary values, real dates, frozen column headings, and filters. References and PO numbers remain text so leading zeroes are preserved. The export includes invoice PO/due-date metadata, native transaction rows, native balance/total rows, and ageing when enabled. The **Row Type** column distinguishes transactions, summaries, and ageing summaries; filter to **Transaction** when calculating transaction-only sums. Ageing summary rows identify the currency used by the native ageing report, which can differ from a General Ledger presentation currency.
+
+These are structured data exports. HTML/CSS, branding, and terms remain part of the PDF layout. Export generation does not render or depend on the selected HTML template. Statement read/export permission and customer read permission are required. Exports do not send emails or create stored attachments. Tests are in `cardmasters_app.cardmasters_app.services.test_soa_exports`.
