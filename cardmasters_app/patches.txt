@@ -14,3 +14,5 @@ cardmasters_app.cardmasters_app.patches.make_production_tower_interactive
 cardmasters_app.cardmasters_app.patches.add_soa_templates
 
 cardmasters_app.cardmasters_app.patches.add_sales_order_soa_template
+
+cardmasters_app.cardmasters_app.patches.separate_company_automation_settings

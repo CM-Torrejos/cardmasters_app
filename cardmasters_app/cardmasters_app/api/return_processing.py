@@ -57,7 +57,7 @@ def get_cardmasters_return_warehouses(company, require_master=False, require_dam
 @frappe.whitelist()
 def get_sales_return_destination_defaults(company):
 	settings = get_cardmasters_return_warehouses(company)
-	default_warehouse = settings.master_warehouse if _warehouse_accepts_returns(settings.master_warehouse) else None
+	default_warehouse = settings.return_warehouse if _warehouse_accepts_returns(settings.return_warehouse) else None
 
 	return {
 		"return_warehouse": default_warehouse,

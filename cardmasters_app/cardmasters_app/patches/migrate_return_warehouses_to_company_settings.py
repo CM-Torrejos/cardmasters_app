@@ -49,7 +49,7 @@ def execute():
 	else:
 		settings = frappe.new_doc("Cardmasters Company Settings")
 		settings.company = company
-		settings.disabled = 1
+		settings.enable_item_accounting_defaults = 0
 		settings.update(legacy_values)
 		settings.insert(ignore_permissions=True)
 

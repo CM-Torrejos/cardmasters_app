@@ -4,6 +4,7 @@
 from unittest.mock import patch
 
 import frappe
+from frappe.model.document import Document
 from frappe.tests.utils import FrappeTestCase
 
 from cardmasters_app.cardmasters_app.event_handlers.item import (
@@ -56,19 +57,81 @@ class TestItemAccountingDefaults(FrappeTestCase):
 
 		self.assertEqual(len(item.item_defaults), 1)
 		self.assertEqual(existing.default_warehouse, "Main - CDO")
+		self.assertEqual(get_all.call_args.kwargs["filters"], {"enable_item_accounting_defaults": 1})
 		self.assertEqual(existing.income_account, "Sales - CDO")
 
 	@patch("cardmasters_app.cardmasters_app.event_handlers.item.frappe.get_doc")
 	@patch("cardmasters_app.cardmasters_app.event_handlers.item.frappe.get_all")
-	def test_missing_mapping_blocks_item_creation(self, get_all, get_doc):
+	def test_missing_mapping_preserves_existing_defaults(self, get_all, get_doc):
 		get_all.return_value = ["Cardmasters CDO"]
 		get_doc.return_value = frappe._dict(
 			company="Cardmasters CDO",
 			item_group_account_mappings=[],
 		)
 
-		with self.assertRaises(frappe.ValidationError):
-			apply_accounting_defaults(ItemStub("Garments"))
+		existing = frappe._dict(company="Cardmasters CDO", default_warehouse="Existing - CDO")
+		item = ItemStub("Garments", [existing])
+
+		apply_accounting_defaults(item)
+
+		self.assertEqual(item.item_defaults, [existing])
+		self.assertEqual(existing, {"company": "Cardmasters CDO", "default_warehouse": "Existing - CDO"})
+
+	@patch("cardmasters_app.cardmasters_app.event_handlers.item.frappe.get_doc")
+	@patch("cardmasters_app.cardmasters_app.event_handlers.item.frappe.get_all")
+	def test_unmapped_company_does_not_block_matching_company(self, get_all, get_doc):
+		get_all.return_value = ["ADMASTERS", "Cardmasters CDO"]
+		get_doc.side_effect = [
+			make_configuration("ADMASTERS", "ADHESIVES", "Sales - AD", "Adhesives - AD"),
+			make_configuration("Cardmasters CDO", "Garments", "Sales - CDO", "Garments - CDO"),
+		]
+		item = ItemStub("Garments")
+
+		apply_accounting_defaults(item)
+
+		self.assertEqual(len(item.item_defaults), 1)
+		self.assertEqual(item.item_defaults[0].company, "Cardmasters CDO")
+		self.assertEqual(item.item_defaults[0].income_account, "Sales - CDO")
+
+	@patch("cardmasters_app.cardmasters_app.event_handlers.item.frappe.get_doc")
+	@patch("cardmasters_app.cardmasters_app.event_handlers.item.frappe.get_all")
+	def test_no_matching_company_keeps_native_item_group_defaults(self, get_all, get_doc):
+		get_all.return_value = ["ADMASTERS"]
+		get_doc.return_value = make_configuration(
+			"ADMASTERS", "ADHESIVES", "Sales - AD", "Adhesives - AD"
+		)
+		item = ItemStub("Garments")
+		native_default = frappe._dict(company="Cardmasters CDO", income_account="Native Sales - CDO")
+		item.update_defaults_from_item_group = lambda: item.item_defaults.append(native_default)
+
+		apply_accounting_defaults(item)
+
+		self.assertEqual(item.item_defaults, [native_default])
+
+	@patch("cardmasters_app.cardmasters_app.event_handlers.item.frappe.get_doc")
+	@patch("cardmasters_app.cardmasters_app.event_handlers.item.frappe.get_all")
+	def test_only_empty_fields_are_filled(self, get_all, get_doc):
+		get_all.return_value = ["Cardmasters CDO"]
+		get_doc.return_value = make_configuration(
+			"Cardmasters CDO", "Garments", "Sales - CDO", "Garments - CDO"
+		)
+		existing = Document({
+			"doctype": "Item Default",
+			"company": "Cardmasters CDO",
+			"default_warehouse": "Manual Warehouse",
+			"income_account": "Manual Sales",
+			"buying_cost_center": "",
+			"selling_cost_center": None,
+		})
+		item = ItemStub("Garments", [existing])
+
+		apply_accounting_defaults(item)
+
+		self.assertEqual(len(item.item_defaults), 1)
+		self.assertEqual(existing.default_warehouse, "Manual Warehouse")
+		self.assertEqual(existing.income_account, "Manual Sales")
+		self.assertEqual(existing.buying_cost_center, "Garments - CDO")
+		self.assertEqual(existing.selling_cost_center, "Garments - CDO")
 
 	@patch("cardmasters_app.cardmasters_app.event_handlers.item.frappe.get_all")
 	def test_non_stock_item_does_not_create_bom(self, get_all):
@@ -76,15 +139,17 @@ class TestItemAccountingDefaults(FrappeTestCase):
 
 		get_all.assert_not_called()
 
+	@patch("cardmasters_app.cardmasters_app.event_handlers.item.frappe.db.get_single_value")
 	@patch("cardmasters_app.cardmasters_app.event_handlers.item.frappe.get_cached_value")
 	@patch("cardmasters_app.cardmasters_app.event_handlers.item.frappe.new_doc")
 	@patch("cardmasters_app.cardmasters_app.event_handlers.item.frappe.get_all")
 	def test_creates_company_boms_and_submits_global_default_last(
-		self, get_all, new_doc, get_cached_value
+		self, get_all, new_doc, get_cached_value, get_single_value
 	):
+		get_single_value.return_value = "Cardmasters CDO"
 		get_all.return_value = [
-			make_bom_configuration("Cardmasters CDO", make_default=1),
-			make_bom_configuration("Cardmasters Manila", make_default=0),
+			make_bom_configuration("Cardmasters CDO"),
+			make_bom_configuration("Cardmasters Manila"),
 		]
 		created_boms = [BOMStub(), BOMStub()]
 		new_doc.side_effect = created_boms
@@ -101,21 +166,23 @@ class TestItemAccountingDefaults(FrappeTestCase):
 		self.assertEqual(created_boms[0].items[0].source_warehouse, "Stores - CM")
 		self.assertTrue(all(bom.inserted and bom.submitted for bom in created_boms))
 
+	@patch("cardmasters_app.cardmasters_app.event_handlers.item.frappe.db.get_single_value")
 	@patch("cardmasters_app.cardmasters_app.event_handlers.item.frappe.get_all")
-	def test_bom_automation_requires_one_global_default_company(self, get_all):
-		get_all.return_value = [make_bom_configuration("Cardmasters CDO", make_default=0)]
+	def test_bom_automation_requires_one_global_default_company(self, get_all, get_single_value):
+		get_single_value.return_value = None
+		get_all.return_value = [make_bom_configuration("Cardmasters CDO")]
 
 		with self.assertRaises(frappe.ValidationError):
 			create_company_boms(frappe._dict(name="FG-001", is_stock_item=1))
 
 	@patch("cardmasters_app.cardmasters_app.event_handlers.item.frappe.get_all")
-	def test_bom_automation_ignores_disabled_company_settings(self, get_all):
+	def test_bom_automation_is_independent_of_accounting_defaults(self, get_all):
 		get_all.return_value = []
 
 		create_company_boms(frappe._dict(name="FG-001", is_stock_item=1))
 
 		get_all.assert_called_once()
-		self.assertEqual(get_all.call_args.kwargs["filters"], {"disabled": 0, "enable_bom_automation": 1})
+		self.assertEqual(get_all.call_args.kwargs["filters"], {"enable_bom_automation": 1})
 
 
 def make_configuration(company, item_group, income_account, cost_center):
@@ -134,13 +201,12 @@ def make_configuration(company, item_group, income_account, cost_center):
 	)
 
 
-def make_bom_configuration(company, make_default):
+def make_bom_configuration(company):
 	return frappe._dict(
 		company=company,
 		default_bom_component="NEW-BOM",
 		default_bom_component_qty=1,
 		default_bom_source_warehouse="Stores - CM",
-		make_generated_bom_default=make_default,
 	)
 
 

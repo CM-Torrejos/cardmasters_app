@@ -31,7 +31,7 @@ frappe.ui.form.on("Cardmasters Company Settings", {
 			},
 		}));
 
-		for (const fieldname of ["return_warehouse", "master_warehouse", "damage_warehouse"]) {
+		for (const fieldname of ["master_warehouse", "damage_warehouse"]) {
 			frm.set_query(fieldname, () => ({
 				filters: {
 					company: frm.doc.company,
@@ -40,6 +40,15 @@ frappe.ui.form.on("Cardmasters Company Settings", {
 				},
 			}));
 		}
+
+		frm.set_query("return_warehouse", () => ({
+			filters: {
+				company: frm.doc.company,
+				is_group: 0,
+				disabled: 0,
+				custom_accepts_returns: 1,
+			},
+		}));
 
 		frm.set_query("default_bom_component", () => ({
 			filters: {
