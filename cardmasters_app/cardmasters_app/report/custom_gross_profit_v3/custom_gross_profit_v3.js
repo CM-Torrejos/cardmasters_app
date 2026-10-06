@@ -1,8 +1,15 @@
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 // License: GNU General Public License v3. See license.txt
 
-frappe.query_reports["Custom Gross Profit v2"] = {
+frappe.query_reports["Custom Gross Profit v3"] = {
 	filters: [
+		{
+			fieldname: "show_cost_breakdown",
+			label: __("Show Manufacturing Cost Breakdown"),
+			fieldtype: "Check",
+			default: 1,
+			depends_on: "eval:doc.group_by == 'Invoice'",
+		},
 		{
 			fieldname: "company",
 			label: __("Company"),
@@ -93,14 +100,13 @@ frappe.query_reports["Custom Gross Profit v2"] = {
 		},
 	],
 	tree: true,
-	name_field: "parent",
-	parent_field: "parent_invoice",
-	initial_depth: 3,
+	name_field: "report_row_id",
+	parent_field: "parent_row_id",
+	initial_depth: 2,
 	formatter: function (value, row, column, data, default_formatter) {
-		if (column.fieldname == "sales_invoice" && column.options == "Item" && data && data.indent == 0) {
-			column._options = "Sales Invoice";
-		} else {
-			column._options = "";
+		if (column.fieldname == "sales_invoice") {
+			column._options = data && data.row_type === "invoice" ? "Sales Invoice"
+				: data && ["item", "material", "scrap"].includes(data.row_type) ? "Item" : "";
 		}
 		value = default_formatter(value, row, column, data);
 
@@ -114,4 +120,4 @@ frappe.query_reports["Custom Gross Profit v2"] = {
 	},
 };
 
-erpnext.utils.add_dimensions("Custom Gross Profit v2", 15);
+erpnext.utils.add_dimensions("Custom Gross Profit v3", 15);
