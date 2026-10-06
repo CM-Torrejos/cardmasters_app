@@ -1,0 +1,17 @@
+.soa { font-size: 10pt; color: #1f2937; }
+.soa h1 { font-size: 22pt; color: #17365d; margin: 0 0 18px; }
+.soa h3 { font-size: 12pt; margin-top: 20px; }
+.soa-heading { display: table; width: 100%; margin-bottom: 20px; }
+.soa-heading > div { display: table-cell; width: 50%; vertical-align: top; }
+.soa-heading > div:last-child { text-align: right; }
+.soa table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+.soa th, .soa td { border: 1px solid #d1d5db; padding: 7px; vertical-align: top; }
+.soa th { background: #edf2f7; font-size: 9pt; }
+.soa .amount { text-align: right; white-space: nowrap; }
+.soa tfoot td { font-weight: bold; background: #edf2f7; }
+.soa-terms { margin-top: 24px; font-size: 9pt; }
+@media print {
+  .soa thead { display: table-header-group; }
+  .soa tfoot { display: table-row-group; }
+  .soa tr { page-break-inside: avoid; }
+}

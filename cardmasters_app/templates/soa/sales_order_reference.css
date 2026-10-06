@@ -1,0 +1,36 @@
+.print-format { margin-top: 4mm; margin-bottom: 5mm; margin-left: 10mm; margin-right: 10mm; }
+body { margin: 0; padding: 0; }
+.reference-soa { font-family: Arial, sans-serif; color: #000; font-size: 7pt; }
+.reference-soa table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.reference-heading { height: 68pt; margin-bottom: 6pt; }
+.reference-heading td { vertical-align: top; }
+.reference-heading .brand { width: 24%; padding-left: 30pt; }
+.reference-heading .brand img { width: 115pt; height: 64pt;  }
+.reference-heading .heading-title { width: 43%; text-align: center; padding-top: 18pt; }
+.reference-heading h1 { margin: 0; display: inline-block; border-bottom: 1.5pt solid #000; font-size: 17pt; white-space: nowrap; }
+.reference-heading .heading-contact { width: 33%; font-size: 6.6pt; line-height: 1.3; padding-left: 12pt; }
+.reference-soa .customer-chip { background: #3d4142; color: white; border-radius: 15pt; padding: 6pt 10pt; margin: 8pt 22pt 10pt 20pt; font-size: 7pt; }
+.reference-soa .customer-chip span { float: right; max-width: 70%; white-space: nowrap; overflow: hidden;  }
+.reference-meta { margin-bottom: 6pt; font-weight: bold; }
+.reference-meta .meta-label { width: 12%; text-align: center; font-size: 7pt; }
+.reference-meta .meta-value { width: 13%; text-align: center; font-size: 7pt; }
+.reference-meta .customer-title { position: relative; left: -12.5%; width: 75%; text-align: center; font-size: 11pt; }
+.reference-lines { border: 1px solid #555; font-size: 6.2pt; }
+.reference-lines th { background: #dfe4ea; font-style: italic; text-align: center; padding: 5pt 2pt; border-bottom: 1pt solid #8396b5; line-height: 1.15; }
+.reference-lines th.money-heading { background: #8396b5; color: #fff; font-style: normal; }
+.reference-lines tbody td { background: #f4f6f8; border-right: .4pt solid #fff; padding: 3.0pt 2pt; vertical-align: top; line-height: 1.15;  }
+.reference-lines tbody td.number { background: #fff; }
+.reference-lines .center, .reference-lines .customer-cell { text-align: center; }
+.reference-lines .number { text-align: right; white-space: nowrap; }
+.reference-lines tfoot td { background: #dfe4ea; padding: 5pt 2pt; font-weight: bold; border-top: 1px solid #555; }
+.reference-lines tfoot td:first-child { padding-left: 28pt; }
+.reference-footer { page-break-inside: avoid; }
+.reference-soa .payment-box { border: 1px solid #555; width: 70%; margin: 52pt auto 10pt; text-align: center; font-size: 8pt; line-height: 1.6; }
+.reference-soa .red { color: #f00; }
+.reference-soa .reminder { font-size: 8.5pt; font-style: italic; line-height: 1.3; margin-bottom: 10pt; }
+.reference-soa .signatures { font-size: 6pt; }
+.reference-soa .signatures td { vertical-align: top; padding: 2pt 4pt; }
+.reference-soa .signature-label { width: 8%; font-weight: bold; padding-top: 15pt; }
+.reference-soa .signature-name { width: 25%; text-align: center; }
+.reference-soa .signature-name div { border-bottom: 1px solid #555; margin-top: 10pt; font-weight: bold; padding-bottom: 2pt; }
+@media print { .reference-lines thead { display: table-header-group; } .reference-lines tfoot { display: table-row-group; } .reference-lines tr { page-break-inside: avoid; } }
