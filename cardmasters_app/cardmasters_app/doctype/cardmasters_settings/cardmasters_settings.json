@@ -17,6 +17,8 @@
   "sales_order_price_list_rate_and_rate_validation_section",
   "bypass_rate_validation_role",
   "production_configurations",
+  "starter_bom_section",
+  "default_bom_company",
   "job_cards_section",
   "disable_job_cards",
   "work_order_creation_validation_section",
@@ -259,6 +261,18 @@
    "fieldname": "disable_job_cards",
    "fieldtype": "Check",
    "label": "Disable Job Cards"
+  },
+  {
+   "fieldname": "starter_bom_section",
+   "fieldtype": "Section Break",
+   "label": "Starter BOM Automation"
+  },
+  {
+   "fieldname": "default_bom_company",
+   "fieldtype": "Link",
+   "label": "Default BOM Company",
+   "options": "Company",
+   "description": "The company whose generated starter BOM becomes the shared Item default. Required whenever any company has BOM automation enabled."
   }
  ],
  "grid_page_length": 50,

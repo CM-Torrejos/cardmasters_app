@@ -7,10 +7,32 @@ from cardmasters_app.cardmasters_app.api.return_processing import (
 	_get_value_allocation,
 	_validate_damage_rows,
 	get_cardmasters_return_warehouses,
+	get_sales_return_destination_defaults,
 )
 
 
 class TestReturnProcessing(FrappeTestCase):
+	@patch("cardmasters_app.cardmasters_app.api.return_processing._warehouse_accepts_returns")
+	@patch("cardmasters_app.cardmasters_app.api.return_processing.get_cardmasters_return_warehouses")
+	def test_return_destination_suggests_return_warehouse(self, get_settings, accepts_returns):
+		get_settings.return_value = frappe._dict(
+			return_warehouse="Returns - CM", master_warehouse="Master - CM"
+		)
+		accepts_returns.return_value = True
+		self.assertEqual(
+			get_sales_return_destination_defaults("Cardmasters"), {"return_warehouse": "Returns - CM"}
+		)
+		accepts_returns.assert_called_once_with("Returns - CM")
+
+	@patch("cardmasters_app.cardmasters_app.api.return_processing._warehouse_accepts_returns")
+	@patch("cardmasters_app.cardmasters_app.api.return_processing.get_cardmasters_return_warehouses")
+	def test_invalid_return_default_does_not_fall_back_to_master(self, get_settings, accepts_returns):
+		get_settings.return_value = frappe._dict(
+			return_warehouse="Returns - CM", master_warehouse="Master - CM"
+		)
+		accepts_returns.return_value = False
+		self.assertEqual(get_sales_return_destination_defaults("Cardmasters"), {"return_warehouse": None})
+
 	@patch("cardmasters_app.cardmasters_app.api.return_processing.frappe.db.get_value")
 	def test_return_warehouses_are_loaded_for_transaction_company(self, get_value):
 		get_value.return_value = frappe._dict(

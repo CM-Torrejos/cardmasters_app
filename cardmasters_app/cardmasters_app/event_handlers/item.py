@@ -2,6 +2,10 @@ import frappe
 from frappe import _
 from frappe.utils import flt
 
+from cardmasters_app.cardmasters_app.doctype.cardmasters_settings.cardmasters_settings import (
+	validate_default_bom_company,
+)
+
 
 def apply_accounting_defaults(doc, method=None):
 	"""Apply enabled, company-specific accounting mappings to a new Item."""
@@ -10,7 +14,7 @@ def apply_accounting_defaults(doc, method=None):
 
 	configuration_names = frappe.get_all(
 		"Cardmasters Company Settings",
-		filters={"disabled": 0},
+		filters={"enable_item_accounting_defaults": 1},
 		pluck="name",
 		order_by="company asc",
 	)
@@ -42,14 +46,14 @@ def apply_accounting_defaults(doc, method=None):
 			item_default = doc.append("item_defaults", {"company": configuration.company})
 			existing_defaults[configuration.company] = item_default
 
-		item_default.update(
-			{
-				"default_warehouse": mapping.default_warehouse,
-				"income_account": mapping.income_account,
-				"buying_cost_center": mapping.buying_cost_center,
-				"selling_cost_center": mapping.selling_cost_center,
-			}
-		)
+		for fieldname, value in {
+			"default_warehouse": mapping.default_warehouse,
+			"income_account": mapping.income_account,
+			"buying_cost_center": mapping.buying_cost_center,
+			"selling_cost_center": mapping.selling_cost_center,
+		}.items():
+			if not item_default.get(fieldname):
+				item_default.update({fieldname: value})
 
 
 def _get_existing_defaults_by_company(doc):
@@ -71,29 +75,24 @@ def create_company_boms(doc, method=None):
 
 	configurations = frappe.get_all(
 		"Cardmasters Company Settings",
-		filters={"disabled": 0, "enable_bom_automation": 1},
+		filters={"enable_bom_automation": 1},
 		fields=[
 			"company",
 			"default_bom_component",
 			"default_bom_component_qty",
 			"default_bom_source_warehouse",
-			"make_generated_bom_default",
 		],
 		order_by="company asc",
 	)
 	if not configurations:
 		return
 
-	default_configurations = [row for row in configurations if row.make_generated_bom_default]
-	if len(default_configurations) != 1:
-		frappe.throw(
-			_("Exactly one BOM-enabled company must have Make Generated BOM the Default checked."),
-			title=_("Invalid BOM Automation Configuration"),
-		)
+	default_company = frappe.db.get_single_value("Cardmasters Settings", "default_bom_company")
+	validate_default_bom_company([row.company for row in configurations], default_company)
 
 	# Submit the designated default last. ERPNext's default BOM is global per Item,
 	# so its submission must supersede any default assigned automatically to the first BOM.
-	configurations.sort(key=lambda row: bool(row.make_generated_bom_default))
+	configurations.sort(key=lambda row: row.company == default_company)
 	for configuration in configurations:
 		if configuration.default_bom_component == doc.name:
 			frappe.throw(
@@ -113,7 +112,7 @@ def create_company_boms(doc, method=None):
 			"Company", configuration.company, "default_currency"
 		)
 		bom.is_active = 1
-		bom.is_default = configuration.make_generated_bom_default
+		bom.is_default = int(configuration.company == default_company)
 		bom.append(
 			"items",
 			{

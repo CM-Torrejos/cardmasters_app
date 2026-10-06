@@ -6,6 +6,10 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import flt
 
+from cardmasters_app.cardmasters_app.doctype.cardmasters_settings.cardmasters_settings import (
+	validate_default_bom_company,
+)
+
 
 class CardmastersCompanySettings(Document):
 	def validate(self):
@@ -13,6 +17,7 @@ class CardmastersCompanySettings(Document):
 		self.validate_unique_item_groups()
 		self.validate_accounting_dimensions()
 		self.validate_bom_automation()
+		self.validate_shared_bom_default()
 		self.validate_return_warehouses()
 
 	def validate_company(self):
@@ -49,11 +54,13 @@ class CardmastersCompanySettings(Document):
 			warehouse = self.get(fieldname)
 			if warehouse:
 				_validate_warehouse(warehouse, self.company, label)
+				if fieldname == "return_warehouse" and not frappe.db.get_value(
+					"Warehouse", warehouse, "custom_accepts_returns"
+				):
+					frappe.throw(_("Return Warehouse must be marked as Accepts Returns."))
 
 	def validate_bom_automation(self):
 		if not self.enable_bom_automation:
-			if self.make_generated_bom_default:
-				frappe.throw(_("Enable BOM Automation before marking its generated BOM as default."))
 			return
 
 		if not self.default_bom_component:
@@ -89,24 +96,19 @@ class CardmastersCompanySettings(Document):
 			_("Placeholder Source Warehouse"),
 		)
 
-		if self.make_generated_bom_default:
-			other_default_company = frappe.db.get_value(
-				"Cardmasters Company Settings",
-				{
-					"name": ("!=", self.name or ""),
-					"disabled": 0,
-					"enable_bom_automation": 1,
-					"make_generated_bom_default": 1,
-				},
-				"company",
-			)
-			if other_default_company:
-				frappe.throw(
-					_("Company {0} is already configured to generate the default BOM.").format(
-						frappe.bold(other_default_company)
-					),
-					title=_("Duplicate Default BOM Company"),
-				)
+	def validate_shared_bom_default(self, removing=False):
+		enabled_companies = frappe.get_all(
+			"Cardmasters Company Settings",
+			filters={"company": ("!=", self.company), "enable_bom_automation": 1},
+			pluck="company",
+		)
+		if self.enable_bom_automation and not removing:
+			enabled_companies.append(self.company)
+		default_company = frappe.db.get_single_value("Cardmasters Settings", "default_bom_company")
+		validate_default_bom_company(enabled_companies, default_company)
+
+	def on_trash(self):
+		self.validate_shared_bom_default(removing=True)
 
 
 def _validate_income_account(account: str, company: str, row_number: int) -> None:

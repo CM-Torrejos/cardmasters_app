@@ -1,8 +1,7 @@
-// Copyright (c) 2026, Shan Torrejos and contributors
-// For license information, please see license.txt
-
-// frappe.ui.form.on("Cardmasters Settings", {
-// 	refresh(frm) {
-
-// 	},
-// });
+frappe.ui.form.on("Cardmasters Settings", {
+	setup(frm) {
+		frm.set_query("default_bom_company", () => ({
+			filters: { is_group: 0 },
+		}));
+	},
+});

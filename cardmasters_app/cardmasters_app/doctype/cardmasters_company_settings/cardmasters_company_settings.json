@@ -5,11 +5,10 @@
  "engine": "InnoDB",
  "field_order": [
   "company",
-  "disabled",
+  "enable_item_accounting_defaults",
   "item_group_account_mappings",
   "bom_automation_section",
   "enable_bom_automation",
-  "make_generated_bom_default",
   "default_bom_component",
   "bom_component_column",
   "default_bom_component_qty",
@@ -32,12 +31,12 @@
    "unique": 1
   },
   {
-   "default": "0",
-   "description": "Return processing remains available when configured below.",
-   "fieldname": "disabled",
+   "default": "1",
+   "description": "Fill empty company defaults on new Items with an exact Item Group mapping. Existing Items and entered values are preserved.",
+   "fieldname": "enable_item_accounting_defaults",
    "fieldtype": "Check",
    "in_list_view": 1,
-   "label": "Disable Item Accounting Defaults"
+   "label": "Enable Item Accounting Defaults"
   },
   {
    "fieldname": "item_group_account_mappings",
@@ -52,18 +51,10 @@
   },
   {
    "default": "0",
-   "description": "Create and submit a company-specific BOM when a new stock Item is inserted.",
+   "description": "Create and submit a starter BOM for every new stock Item, independently of Item accounting defaults. Select Default BOM Company in Cardmasters Settings before enabling.",
    "fieldname": "enable_bom_automation",
    "fieldtype": "Check",
    "label": "Enable BOM Automation"
-  },
-  {
-   "default": "0",
-   "depends_on": "enable_bom_automation",
-   "description": "ERPNext supports only one global default BOM per Item. Exactly one enabled company must be selected.",
-   "fieldname": "make_generated_bom_default",
-   "fieldtype": "Check",
-   "label": "Make Generated BOM the Default"
   },
   {
    "depends_on": "enable_bom_automation",
@@ -101,7 +92,7 @@
    "label": "Sales Return Processing"
   },
   {
-   "description": "Warehouse that initially receives stock from Sales Return Delivery Notes.",
+   "description": "Suggested initial destination for Sales Returns. Must be marked Accepts Returns; another valid destination can be selected on the return.",
    "fieldname": "return_warehouse",
    "fieldtype": "Link",
    "label": "Return Warehouse",
