@@ -637,3 +637,38 @@ def set_batch_received_date_on_population(doc, method):
 				)
 				batch_doc = frappe.get_doc("Batch", item.batch_no)
 				batch_doc.add_comment("Info", comment_text)
+
+def remove_sales_order_item_reference(doc, method):
+	"""
+	Triggered via 'on_trash' of Sales Order Item.
+	Unlinks connected Batches if all Work Orders are cancelled 
+	by clearing the 'custom_sales_order_item' field, and leaves an audit trail.
+	"""
+	active_work_orders = frappe.get_all(
+		"Work Order",
+		filters={
+			"sales_order": doc.parent,
+			"sales_order_item": doc.name,
+			"docstatus": ["<", 2] 
+		},
+		limit=1,
+		ignore_permissions=True
+	)
+
+	if active_work_orders:
+		return
+
+	linked_batches = frappe.get_all(
+		"Batch", 
+		filters={
+			"custom_sales_order_item": doc.name
+		},
+		ignore_permissions=True
+	)
+
+	for batch in linked_batches:
+		frappe.db.set_value("Batch", batch.name, "custom_sales_order_item", None)
+		
+		comment_text = f"**System Action:** Automatically unlinked from Sales Order **{doc.parent}** (Item: {doc.item_code}) because the item row was deleted."
+		
+		frappe.get_doc("Batch", batch.name).add_comment("Comment", comment_text)

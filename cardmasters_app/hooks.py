@@ -187,6 +187,9 @@ doc_events = {
     "Sales Order Item": {
         "before_save": [
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.update_item_class_on_update" # Auto-fill default cost center
+        ],
+        "on_trash": [
+            "cardmasters_app.cardmasters_app.services.batch_handler.remove_sales_order_item_reference"
         ]
     },
     "Job Card": {
