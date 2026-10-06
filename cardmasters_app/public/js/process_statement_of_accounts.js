@@ -4,7 +4,7 @@ frappe.ui.form.on("Process Statement Of Accounts", {
     },
     refresh(frm) {
         if (!frm.is_new()) {
-            [["CSV", "csv"], ["Excel", "xlsx"]].forEach(([label, format]) => {
+            [["CSV", "csv", "data"], ["Excel", "xlsx", "template"], ["Excel (Data Table)", "xlsx", "data"]].forEach(([label, format, layout]) => {
                 frm.add_custom_button(__(label), () => {
                     if (frm.is_dirty()) {
                         frappe.msgprint(__("Save the statement before exporting."));
@@ -19,7 +19,7 @@ frappe.ui.form.on("Process Statement Of Accounts", {
                         primary_action_label: __("Download {0}", [label]),
                         primary_action(values) {
                             open_url_post("/api/method/cardmasters_app.cardmasters_app.services.soa_exports.download_export", {
-                                document_name: frm.doc.name, file_format: format, customer: values.customer || "",
+                                document_name: frm.doc.name, file_format: format, layout, customer: values.customer || "",
                             }, true);
                             dialog.hide();
                         },

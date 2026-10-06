@@ -9,8 +9,21 @@
  "field_order": [
   "template_name",
   "report_type",
+  "data_source",
+  "excel_layout",
   "enabled",
   "is_default",
+  "reference_section",
+  "contact_phone",
+  "contact_email",
+  "bank_name",
+  "bank_account",
+  "bank_payee",
+  "payment_reminder",
+  "prepared_by",
+  "prepared_title",
+  "checked_by",
+  "checked_title",
   "html_section",
   "html",
   "css_section",
@@ -36,6 +49,24 @@
    "in_list_view": 1
   },
   {
+   "fieldname": "data_source",
+   "fieldtype": "Select",
+   "label": "Data Source",
+   "options": "Native Report\nSales Orders",
+   "default": "Native Report",
+   "reqd": 1,
+   "description": "Sales Orders uses submitted orders and their items, with payment-ledger balances as of the statement date."
+  },
+  {
+   "fieldname": "excel_layout",
+   "fieldtype": "Select",
+   "label": "Excel Layout",
+   "options": "Data Table\nSales Order Statement",
+   "default": "Data Table",
+   "reqd": 1,
+   "description": "Sales Order Statement exports the matching designed workbook. HTML/CSS controls the PDF; workbook styling is maintained separately."
+  },
+  {
    "fieldname": "enabled",
    "fieldtype": "Check",
    "label": "Enabled",
@@ -48,6 +79,72 @@
    "label": "Default for This Report",
    "default": "0",
    "description": "Used when no template is selected on the statement. Leave unchecked to retain the native layout."
+  },
+  {
+   "fieldname": "reference_section",
+   "fieldtype": "Section Break",
+   "label": "Sales Order Statement Details",
+   "depends_on": "eval:doc.data_source == \"Sales Orders\""
+  },
+  {
+   "fieldname": "contact_phone",
+   "fieldtype": "Data",
+   "label": "Contact Phone",
+   "depends_on": "eval:doc.data_source == \"Sales Orders\""
+  },
+  {
+   "fieldname": "contact_email",
+   "fieldtype": "Small Text",
+   "label": "Contact Email",
+   "depends_on": "eval:doc.data_source == \"Sales Orders\""
+  },
+  {
+   "fieldname": "bank_name",
+   "fieldtype": "Data",
+   "label": "Bank",
+   "depends_on": "eval:doc.data_source == \"Sales Orders\""
+  },
+  {
+   "fieldname": "bank_account",
+   "fieldtype": "Data",
+   "label": "Bank Account Number",
+   "depends_on": "eval:doc.data_source == \"Sales Orders\""
+  },
+  {
+   "fieldname": "bank_payee",
+   "fieldtype": "Data",
+   "label": "Bank Account / Check Payee",
+   "depends_on": "eval:doc.data_source == \"Sales Orders\""
+  },
+  {
+   "fieldname": "payment_reminder",
+   "fieldtype": "Small Text",
+   "label": "Payment Reminder",
+   "depends_on": "eval:doc.data_source == \"Sales Orders\""
+  },
+  {
+   "fieldname": "prepared_by",
+   "fieldtype": "Data",
+   "label": "Prepared By",
+   "depends_on": "eval:doc.data_source == \"Sales Orders\""
+  },
+  {
+   "fieldname": "prepared_title",
+   "fieldtype": "Data",
+   "label": "Prepared By Title",
+   "depends_on": "eval:doc.data_source == \"Sales Orders\""
+  },
+  {
+   "fieldname": "checked_by",
+   "fieldtype": "Data",
+   "label": "Checked By",
+   "depends_on": "eval:doc.data_source == \"Sales Orders\""
+  },
+  {
+   "fieldname": "checked_title",
+   "fieldtype": "Data",
+   "label": "Checked By Title",
+   "depends_on": "eval:doc.data_source == \"Sales Orders\""
   },
   {
    "fieldname": "html_section",
@@ -81,7 +178,7 @@
   {
    "fieldname": "template_help",
    "fieldtype": "HTML",
-   "options": "<p>Use <code>customer</code>, <code>company</code>, <code>doc</code>, <code>filters</code>, <code>report</code>, <code>data</code> (all native rows), <code>transactions</code> (voucher rows), <code>totals</code>, <code>currency</code>, <code>ageing</code>, <code>letter_head</code>, <code>terms_and_conditions</code>, and <code>invoices</code> (keyed by Sales Invoice number). Format with <code>frappe.format(value, \"Date\")</code> or <code>frappe.utils.fmt_money(value, currency=currency)</code>. HTML values are escaped by default; use <code>|safe</code> only for trusted letterhead/terms HTML. CSS is plain CSS, without Jinja. Preview uses a saved statement and does not send email.</p>"
+   "options": "<p>Use <code>customer</code>, <code>company</code>, <code>doc</code>, <code>filters</code>, <code>report</code>, <code>data</code> (all native rows), <code>transactions</code> (voucher rows), <code>totals</code>, <code>currency</code>, <code>ageing</code>, <code>letter_head</code>, <code>terms_and_conditions</code>, and <code>invoices</code> (keyed by Sales Invoice number). Format with <code>frappe.format(value, \"Date\")</code> or <code>frappe.utils.fmt_money(value, currency=currency)</code>. HTML values are escaped by default; use <code>|safe</code> only for trusted letterhead/terms HTML. CSS is plain CSS, without Jinja. Preview uses a saved statement and does not send email.</p><p>Sales Order templates also expose <code>statement</code>: rows, totals, customer, company, date, number, currency, settings, and logo_url. Item amounts include their proportional share of order-level taxes/discounts; payments are allocated proportionally with exact currency rounding.</p>"
   }
  ],
  "permissions": [

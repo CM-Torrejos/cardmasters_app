@@ -64,6 +64,29 @@ def collect_export(document_name, customer=None):
         customer_doc = frappe.get_doc("Customer", entry.customer)
         customer_doc.check_permission("read")
         customers[entry.customer] = customer_doc
+    from cardmasters_app.cardmasters_app.services.soa_templates import get_selected_template
+    template = get_selected_template(doc, doc.report, check_permission=True)
+    if template and template.get("data_source") == "Sales Orders":
+        from cardmasters_app.cardmasters_app.services.soa_sales_orders import collect_statement
+        columns = [("customer_name", "Customer", "text"), ("invoice_date", "Invoice Date", "date"),
+                   ("sales_order", "Sales Order", "text"), ("delivery_receipt", "Delivery Receipt", "text"),
+                   ("csi_invoice", "CSI Invoice", "text"), ("item_description", "Item Description", "text"),
+                   ("po_no", "PO", "text"), ("aged", "Aged", "text"), ("remarks", "Remarks", "text"),
+                   ("amount", "Amount", "money"), ("payment", "Payment", "money"), ("balance", "Balance", "money"),
+                   ("currency", "Currency", "text"), ("row_type", "Row Type", "text")]
+        groups = []
+        for customer_id in customers:
+            statement = collect_statement(doc, customer_id, template)
+            if statement:
+                rows = [dict(row, currency=statement.currency, row_type="Transaction") for row in statement.rows]
+                rows.append(dict(statement.totals, customer_name=statement.customer.customer_name,
+                                 currency=statement.currency, row_type="Summary", item_description="Grand Total"))
+                groups.append({"customer": customer_id, "customer_name": statement.customer.customer_name,
+                    "rows": [[cell_value(row.get(key), kind) for key, label, kind in columns] for row in rows],
+                    "statement": statement})
+        if not groups:
+            frappe.throw(_("No outstanding Sales Orders were found for these customers and statement date."))
+        return doc, columns, groups
     report_doc = copy.deepcopy(doc)
     report_doc.set("customers", [row.as_dict() for row in selected])
     # This native mode returns the very same rows used for PDF generation, without
@@ -198,12 +221,20 @@ def xlsx_content(columns, groups):
 
 
 @frappe.whitelist()
-def download_export(document_name, file_format="xlsx", customer=None):
+def download_export(document_name, file_format="xlsx", customer=None, layout="template"):
     file_format = (file_format or "").lower()
     if file_format not in ("csv", "xlsx"):
         frappe.throw(_("Choose CSV or Excel (.xlsx)."))
+    if layout not in ("template", "data"):
+        frappe.throw(_("Choose the template layout or data table layout."))
     doc, columns, groups = collect_export(document_name, customer=customer)
-    content = csv_content(columns, groups) if file_format == "csv" else xlsx_content(columns, groups)
+    from cardmasters_app.cardmasters_app.services.soa_templates import get_selected_template
+    template = get_selected_template(doc, doc.report, check_permission=True)
+    if file_format == "xlsx" and layout == "template" and template and template.get("excel_layout") == "Sales Order Statement":
+        from cardmasters_app.cardmasters_app.services.soa_excel_layouts import designed_workbook
+        content = designed_workbook([group["statement"] for group in groups])
+    else:
+        content = csv_content(columns, groups) if file_format == "csv" else xlsx_content(columns, groups)
     filename = re.sub(r'[\x00-\x1f\\/:*?"<>|]', "_", doc.name).strip(" .") or "Statement of Accounts"
     frappe.local.response.filename = f"{filename}.{file_format}"
     frappe.local.response.filecontent = content

@@ -73,7 +73,7 @@ class TestSOATemplates(unittest.TestCase):
 
     def test_wrappers_keep_native_generation_and_scope_context(self):
         doc = frappe._dict(name="test", custom_soa_template="layout")
-        with patch.object(soa, "load_statement", return_value=doc), patch.object(soa, "native") as native:
+        with patch.object(soa, "load_statement", return_value=doc), patch.object(soa, "get_selected_template", return_value=None), patch.object(soa, "native") as native:
             def download(name):
                 self.assertIs(soa._active_statement.get(), doc)
                 return "native-result"

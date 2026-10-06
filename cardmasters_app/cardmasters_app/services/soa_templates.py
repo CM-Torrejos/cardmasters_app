@@ -42,6 +42,10 @@ def validate_template_document(doc):
         frappe.throw(_("Select a supported statement report."))
     if not (doc.html or "").strip():
         frappe.throw(_("HTML template is required."))
+    if doc.get("data_source") == "Sales Orders" and doc.report_type != "Accounts Receivable":
+        frappe.throw(_("Sales Order templates must use the Accounts Receivable report type."))
+    if doc.get("excel_layout") == "Sales Order Statement" and doc.get("data_source") != "Sales Orders":
+        frappe.throw(_("The Sales Order Excel layout requires the Sales Orders data source."))
     if doc.is_default and not doc.enabled:
         frappe.throw(_("A default template must be enabled."))
     if re.search(r"</?\s*script\b", doc.html, re.I):
@@ -170,6 +174,16 @@ def load_statement(document_name):
 @frappe.whitelist()
 def download_statements(document_name):
     doc = load_statement(document_name)
+    template = get_selected_template(doc, doc.report, check_permission=True)
+    if template and template.get("data_source") == "Sales Orders":
+        from cardmasters_app.cardmasters_app.services.soa_sales_order_delivery import report_pdf
+        pdf = report_pdf(doc, template)
+        if not pdf:
+            frappe.throw(_("No outstanding Sales Orders were found for these customers and statement date."))
+        frappe.local.response.filename = doc.name + ".pdf"
+        frappe.local.response.filecontent = pdf
+        frappe.local.response.type = "download"
+        return
     with statement_context(doc):
         return native().download_statements(document_name)
 
@@ -177,6 +191,10 @@ def download_statements(document_name):
 @frappe.whitelist()
 def send_emails(document_name, from_scheduler=False, posting_date=None):
     doc = load_statement(document_name)
+    template = get_selected_template(doc, doc.report, check_permission=True)
+    if template and template.get("data_source") == "Sales Orders":
+        from cardmasters_app.cardmasters_app.services.soa_sales_order_delivery import send_emails as send_sales_order_emails
+        return send_sales_order_emails(doc, template, from_scheduler=from_scheduler, posting_date=posting_date)
     with statement_context(doc):
         return native().send_emails(document_name, from_scheduler=from_scheduler, posting_date=posting_date)
 
@@ -208,7 +226,9 @@ def preview(document_name, customer=None, template_name=None, template_document=
         else:
             frappe.has_permission("SOA Template", "create", throw=True)
             template = frappe.new_doc("SOA Template")
-        for field in ("html", "css", "report_type"):
+        for field in ("html", "css", "report_type", "data_source", "excel_layout", "contact_phone", "contact_email",
+                      "bank_name", "bank_account", "bank_payee", "payment_reminder", "prepared_by", "prepared_title",
+                      "checked_by", "checked_title"):
             template.set(field, payload.get(field))
         template.enabled = 1
         template.is_default = 0
@@ -229,14 +249,25 @@ def preview(document_name, customer=None, template_name=None, template_document=
     frappe.get_doc("Customer", customer).check_permission("read")
     preview_doc = copy.deepcopy(doc)
     preview_doc.set("customers", [entry.as_dict()])
-    with statement_context(preview_doc, template):
-        statements = native().get_statement_dict(preview_doc)
+    template = template or get_selected_template(doc, doc.report, check_permission=True)
+    is_sales_order = template and template.get("data_source") == "Sales Orders"
+    if is_sales_order:
+        from cardmasters_app.cardmasters_app.services.soa_sales_order_delivery import get_statement_dict
+        statements = get_statement_dict(preview_doc, template)
+    else:
+        with statement_context(preview_doc, template):
+            statements = native().get_statement_dict(preview_doc)
     html = statements.get(customer)
     if not html:
         frappe.throw(_("No statement transactions were found for this customer and these filters."))
     if cint(as_pdf):
         frappe.local.response.filename = "SOA Preview.pdf"
-        frappe.local.response.filecontent = get_pdf(html, {"orientation": doc.orientation})
+        if is_sales_order:
+            from cardmasters_app.cardmasters_app.services.soa_sales_order_delivery import PDF_OPTIONS
+            options = dict(PDF_OPTIONS)
+        else:
+            options = {"orientation": doc.orientation}
+        frappe.local.response.filecontent = get_pdf(html, options)
         frappe.local.response.type = "download"
         return
     # The native print wrapper includes links without statement document metadata.

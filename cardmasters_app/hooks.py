@@ -11,6 +11,7 @@ boot_session = "cardmasters_app.boot.boot_session"
 after_install = [
     "cardmasters_app.cardmasters_app.patches.add_workspace_card_filters.execute",
     "cardmasters_app.cardmasters_app.patches.add_soa_templates.execute",
+    "cardmasters_app.cardmasters_app.patches.add_sales_order_soa_template.execute",
 ]
 
 # Fixtures to export custom fields, workflow structures, and property setters
@@ -495,4 +496,7 @@ process_soa_html = {
 }
 jinja = {"methods": ["cardmasters_app.cardmasters_app.services.soa_templates.render_soa_template"]}
 # Idempotent setup also installs starter templates on fresh sites and preserves Desk edits.
-after_migrate = ["cardmasters_app.cardmasters_app.patches.add_soa_templates.execute"]
+after_migrate = [
+    "cardmasters_app.cardmasters_app.patches.add_soa_templates.execute",
+    "cardmasters_app.cardmasters_app.patches.add_sales_order_soa_template.execute",
+]
