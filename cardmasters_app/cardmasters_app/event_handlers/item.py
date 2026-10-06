@@ -34,12 +34,8 @@ def apply_accounting_defaults(doc, method=None):
 			None,
 		)
 		if not mapping:
-			frappe.throw(
-				_("No Item accounting mapping exists for Item Group {0} in Company {1}.").format(
-					frappe.bold(doc.item_group), frappe.bold(configuration.company)
-				),
-				title=_("Missing Item Accounting Mapping"),
-			)
+			# Items are shared; a company only participates for its mapped Item Groups.
+			continue
 
 		item_default = existing_defaults.get(configuration.company)
 		if not item_default:

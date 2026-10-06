@@ -60,15 +60,51 @@ class TestItemAccountingDefaults(FrappeTestCase):
 
 	@patch("cardmasters_app.cardmasters_app.event_handlers.item.frappe.get_doc")
 	@patch("cardmasters_app.cardmasters_app.event_handlers.item.frappe.get_all")
-	def test_missing_mapping_blocks_item_creation(self, get_all, get_doc):
+	def test_missing_mapping_preserves_existing_defaults(self, get_all, get_doc):
 		get_all.return_value = ["Cardmasters CDO"]
 		get_doc.return_value = frappe._dict(
 			company="Cardmasters CDO",
 			item_group_account_mappings=[],
 		)
 
-		with self.assertRaises(frappe.ValidationError):
-			apply_accounting_defaults(ItemStub("Garments"))
+		existing = frappe._dict(company="Cardmasters CDO", default_warehouse="Existing - CDO")
+		item = ItemStub("Garments", [existing])
+
+		apply_accounting_defaults(item)
+
+		self.assertEqual(item.item_defaults, [existing])
+		self.assertEqual(existing, {"company": "Cardmasters CDO", "default_warehouse": "Existing - CDO"})
+
+	@patch("cardmasters_app.cardmasters_app.event_handlers.item.frappe.get_doc")
+	@patch("cardmasters_app.cardmasters_app.event_handlers.item.frappe.get_all")
+	def test_unmapped_company_does_not_block_matching_company(self, get_all, get_doc):
+		get_all.return_value = ["ADMASTERS", "Cardmasters CDO"]
+		get_doc.side_effect = [
+			make_configuration("ADMASTERS", "ADHESIVES", "Sales - AD", "Adhesives - AD"),
+			make_configuration("Cardmasters CDO", "Garments", "Sales - CDO", "Garments - CDO"),
+		]
+		item = ItemStub("Garments")
+
+		apply_accounting_defaults(item)
+
+		self.assertEqual(len(item.item_defaults), 1)
+		self.assertEqual(item.item_defaults[0].company, "Cardmasters CDO")
+		self.assertEqual(item.item_defaults[0].income_account, "Sales - CDO")
+
+	@patch("cardmasters_app.cardmasters_app.event_handlers.item.frappe.get_doc")
+	@patch("cardmasters_app.cardmasters_app.event_handlers.item.frappe.get_all")
+	def test_no_matching_company_keeps_native_item_group_defaults(self, get_all, get_doc):
+		get_all.return_value = ["ADMASTERS"]
+		get_doc.return_value = make_configuration(
+			"ADMASTERS", "ADHESIVES", "Sales - AD", "Adhesives - AD"
+		)
+		item = ItemStub("Garments")
+		native_default = frappe._dict(company="Cardmasters CDO", income_account="Native Sales - CDO")
+		item.update_defaults_from_item_group = lambda: item.item_defaults.append(native_default)
+
+		apply_accounting_defaults(item)
+
+		self.assertEqual(item.item_defaults, [native_default])
 
 	@patch("cardmasters_app.cardmasters_app.event_handlers.item.frappe.get_all")
 	def test_non_stock_item_does_not_create_bom(self, get_all):
