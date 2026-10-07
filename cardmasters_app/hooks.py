@@ -42,7 +42,8 @@ doctype_js = {
     "Customer": "public/js/customer.js",
     "Sales Order": [
         "public/js/sales_order_refactored.js", # SO client validations, edits, and discrepancy warning logic
-        "public/js/sales_order/grid_resize.js"  # UI Grid resizing enhancement
+        "public/js/sales_order/grid_resize.js",  # UI Grid resizing enhancement
+        "public/js/sales_order/delivery_backlog.js"
     ],
     "Quotation": "public/js/quotation.js",
     "Job Card": [
