@@ -2,6 +2,71 @@
 // License: GNU General Public License v3. See license.txt
 
 frappe.query_reports["Custom Gross Profit v3"] = {
+	onload: function (report) {
+		if (!frappe.model.can_export(report.report_doc.ref_doctype)) return;
+		report.page.add_inner_button(__("Export Machine-readable CSV"), () => {
+			if (!frappe.model.can_export(report.report_doc.ref_doctype)) return;
+			if (!report.data || !report.data.length) {
+				frappe.msgprint(__("Run the report before exporting."));
+				return;
+			}
+			const export_rows = this.get_flat_export_rows(report.data);
+			const fields = [...new Set([
+				"sales_invoice", "item_code", "item_name", "manufacture_entry",
+				"component_item_code", "component_item_name", "manufacturing_breakdown",
+				"source_stock_entry", "work_order", "row_type", "currency",
+				...report.columns.map((column) => column.fieldname)
+					.filter((field) => field && !["indent", "report_row_id", "parent_row_id"].includes(field)),
+			])];
+			const csv_cell = (value) => {
+				const text = value == null ? "" : String(value);
+				return /[",\r\n]/.test(text) ? '"' + text.replace(/"/g, '""') + '"' : text;
+			};
+			const rows = export_rows.map((row) => fields.map((field) => row[field]));
+			const csv = [fields, ...rows].map((row) => row.map(csv_cell).join(",")).join("\r\n");
+			const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+			const link = document.createElement("a");
+			link.href = url;
+			link.download = "custom_gross_profit_v3.csv";
+			document.body.appendChild(link);
+			link.click();
+			link.remove();
+			setTimeout(() => URL.revokeObjectURL(url), 1000);
+			report.make_access_log("Export", "CSV");
+		});
+	},
+	get_flat_export_rows: function (data) {
+		const by_id = new Map(data.filter((row) => row.report_row_id)
+			.map((row) => [row.report_row_id, row]));
+		return data.map((row) => {
+			const ancestry = [];
+			const visited = new Set();
+			let ancestor = row;
+			while (ancestor && !visited.has(ancestor)) {
+				visited.add(ancestor);
+				ancestry.push(ancestor);
+				ancestor = by_id.get(ancestor.parent_row_id);
+			}
+			const invoice = ancestry.find((parent) => parent.row_type === "invoice");
+			const item = ancestry.find((parent) => parent.row_type === "item");
+			const manufacture = ancestry.find((parent) => parent.row_type === "manufacture");
+			const is_component = ["material", "scrap"].includes(row.row_type);
+			const is_breakdown = row.row_type && !["invoice", "item"].includes(row.row_type);
+			return {
+				...row,
+				row_type: row.row_type || (row.sales_invoice === "Total" ? "total" : "group"),
+				sales_invoice: invoice ? invoice.sales_invoice : (row.row_type ? "" : row.sales_invoice),
+				item_code: item ? (item.item_code || item.sales_invoice) : row.item_code,
+				item_name: item ? item.item_name : (is_component ? "" : row.item_name),
+				manufacture_entry: manufacture ? manufacture.manufacture_entry : row.manufacture_entry,
+				component_item_code: is_component ? row.sales_invoice : "",
+				component_item_name: is_component ? row.item_name : "",
+				manufacturing_breakdown: is_breakdown ? row.sales_invoice : "",
+				source_stock_entry: is_breakdown ? row.manufacture_entry : "",
+				work_order: row.work_order || (manufacture && manufacture.work_order),
+			};
+		});
+	},
 	filters: [
 		{
 			fieldname: "show_cost_breakdown",
