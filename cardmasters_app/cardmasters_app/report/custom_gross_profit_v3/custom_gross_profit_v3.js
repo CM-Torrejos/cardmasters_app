@@ -4,7 +4,7 @@
 frappe.query_reports["Custom Gross Profit v3"] = {
 	onload: function (report) {
 		if (!frappe.model.can_export(report.report_doc.ref_doctype)) return;
-		report.page.add_inner_button(__("Export Machine-readable CSV"), () => {
+		report.page.add_inner_button(__("Custom Export"), () => {
 			if (!frappe.model.can_export(report.report_doc.ref_doctype)) return;
 			if (!report.data || !report.data.length) {
 				frappe.msgprint(__("Run the report before exporting."));
