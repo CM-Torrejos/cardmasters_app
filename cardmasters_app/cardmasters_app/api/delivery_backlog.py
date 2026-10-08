@@ -43,7 +43,7 @@ def _payment_method(order):
     """, (order.customer, order.company, order.name))
     methods = {PAYMENT_METHODS.get(row[0]) for row in payments}
     if len(methods) != 1 or None in methods:
-        frappe.throw(_("Cannot infer Payment Method from linked submitted advance payments. Set it on the Sales Order first."))
+        return "Cash"
     return methods.pop()
 
 

@@ -114,21 +114,22 @@ class TestDeliveryBacklog(TestCase):
         self.assertEqual(order.add_comment.call_count, 2)
 
     def test_payment_method_preserves_existing_value(self):
-        order = frappe._dict(custom_payment_method="Credit")
-        with patch.object(backlog.frappe.db, "sql") as sql:
-            self.assertEqual(backlog._payment_method(order), "Credit")
-        sql.assert_not_called()
+        for method in ("Cash", "Credit", "Credit Memo"):
+            order = frappe._dict(custom_payment_method=method)
+            with patch.object(backlog.frappe.db, "sql") as sql:
+                self.assertEqual(backlog._payment_method(order), method)
+            sql.assert_not_called()
 
-    def test_receipt_types_and_ambiguous_payments(self):
+    def test_receipt_types_and_cash_fallback(self):
         order = frappe._dict(name="SO-TEST", customer="CUSTOMER", company="COMPANY")
         for receipt, expected in backlog.PAYMENT_METHODS.items():
             with patch.object(backlog.frappe.db, "sql", return_value=[(receipt,)]):
                 self.assertEqual(backlog._payment_method(order), expected)
-        for receipts in ([], [("Acknowledgement Receipt",), ("Collection Receipt",)], [("Other",)]):
-            with patch.object(backlog.frappe.db, "sql", return_value=receipts), \
-                    patch.object(backlog.frappe, "throw", side_effect=frappe.ValidationError):
-                with self.assertRaises(frappe.ValidationError):
-                    backlog._payment_method(order)
+        for receipts in ([], [("Acknowledgement Receipt",), ("Collection Receipt",)],
+                         [("Other",)], [(None,)], [("",)], [("Collection Receipt",), ("Other",)]):
+            with self.subTest(receipts=receipts), \
+                    patch.object(backlog.frappe.db, "sql", return_value=receipts):
+                self.assertEqual(backlog._payment_method(order), "Cash")
 
     def test_system_manager_is_required_server_side(self):
         with patch.object(backlog.frappe, "only_for", side_effect=frappe.PermissionError), \

@@ -2,7 +2,7 @@
 
 On a submitted Sales Order, System Managers can use **Actions → Submit Delivery Backlog**, choose draft Delivery Notes, and choose a target month. The selected month defaults to the selected note's posting month. New stock entries and selected Delivery Notes post on the first day at midnight.
 
-The server enforces the System Manager role and normal document permissions, workflow transitions, manufacturing validations, and stock/accounting validations. Each selected note must belong entirely to the Sales Order, customer, and company. The action sets Production Branch to Cagayan de Oro and fills an empty Payment Method from submitted advance Payment Entries: Acknowledgement Receipt → Cash; Collection Receipt → Credit. Missing, unsupported, or conflicting receipt types require a manual payment choice.
+The server enforces the System Manager role and normal document permissions, workflow transitions, manufacturing validations, and stock/accounting validations. Each selected note must belong entirely to the Sales Order, customer, and company. The action sets Production Branch to Cagayan de Oro and preserves an existing Payment Method. It fills an empty Payment Method from submitted advance Payment Entries: Acknowledgement Receipt → Cash; Collection Receipt → Credit. When no qualifying payments exist or receipt types are blank, unsupported, or conflicting, Payment Method defaults to Cash.
 
 Work Orders are matched by Sales Order item row. Missing orders use the active default company BOM. Inactive BOM orders are cancelled and amended only when they have no non-cancelled stock entries. Multiple matching orders, unlinked legacy orders, existing draft stock entries, product bundles, and serialized or unbatched stock items require manual resolution.
 
