@@ -183,7 +183,60 @@ class TestSalesOrderSOA(unittest.TestCase):
         ]) as get_all, patch("frappe.get_doc", return_value=invoice_doc), patch("frappe.db.sql", return_value=[]) as sql:
             result = sales.linked_data({"SO"}, "Company", "Customer", cutoff)
         self.assertEqual(result[0][0].posted_total, 0)
+        invoice_call = next(call for call in get_all.call_args_list if call.args[0] == "Sales Invoice")
+        self.assertIn("custom_dr_billing_reference", invoice_call.kwargs["fields"])
+        self.assertIn("custom_bir_series", invoice_call.kwargs["fields"])
         ledger_call = next(call for call in get_all.call_args_list if call.args[0] == "Payment Ledger Entry")
         self.assertEqual(ledger_call.kwargs["filters"]["posting_date"], ["<=", cutoff])
         self.assertEqual(sql.call_args.args[1][2], cutoff)
         self.assertEqual(sql.call_args.args[1][6], cutoff)
+
+    def test_invoice_reference_variant_preserves_original_mapping_and_item_cutoff(self):
+        cutoff = date(2026, 3, 1)
+        doc = row(company="Company", posting_date=cutoff, cost_center=[], name="STATEMENT")
+        customer = row(customer_name="Customer", check_permission=lambda kind: None)
+        customer.as_dict = lambda: row(customer_name="Customer")
+        company = row(check_permission=lambda kind: None)
+        company.as_dict = lambda: row(company_name="Company")
+        order = row(name="SO", transaction_date=cutoff, currency="PHP", grand_total=100,
+                    rounded_total=100, disable_rounded_total=0)
+        items = [row(name=name, parent="SO", item_name=name, qty=1, uom="PCS", net_amount=50)
+                 for name in ("ITEM1", "ITEM2")]
+        invoices = [
+            row(name="SI1", posting_date=cutoff, is_return=0, custom_bir_series="000123",
+                custom_dr_billing_reference="000456"),
+            row(name="SI2", posting_date=cutoff, is_return=0, custom_bir_series="000123",
+                custom_dr_billing_reference="000456"),
+            row(name="BLANK", posting_date=cutoff, is_return=0, custom_bir_series="",
+                custom_dr_billing_reference=""),
+            row(name="FUTURE", posting_date=date(2026, 3, 2), is_return=0,
+                custom_bir_series="FUTURE-BIR", custom_dr_billing_reference="FUTURE-DR"),
+            row(name="RETURN", posting_date=cutoff, is_return=1,
+                custom_bir_series="RETURN-BIR", custom_dr_billing_reference="RETURN-DR"),
+        ]
+        links = [row(parent=invoice.name, sales_order="SO", so_detail="ITEM1") for invoice in invoices]
+        delivery_items = [row(parent="DN", so_detail="ITEM1")]
+        with patch("frappe.get_doc", side_effect=[customer, company]), \
+                patch("erpnext.get_company_currency", return_value="PHP"), \
+                patch("frappe.get_list", return_value=[order]), \
+                patch("frappe.get_all", side_effect=[items, [], [("SO", "")], delivery_items,
+                    [row(name="DN", custom_reference_no="ORIGINAL-DR")]]), \
+                patch.object(sales, "linked_data", return_value=(invoices, links, [], [], {})), \
+                patch.object(sales, "paid_as_of", return_value={"SO": Decimal(0)}):
+            statement = sales.collect_statement(doc, "Customer", row(as_dict=lambda: {}))
+        first, second = statement.rows
+        self.assertEqual(first.dr_billing_reference, "000456")
+        self.assertEqual(first.bir_series, "000123")
+        self.assertEqual(first.delivery_receipt, "ORIGINAL-DR")
+        self.assertEqual(first.csi_invoice, "BLANK, 000123")
+        self.assertEqual(second.dr_billing_reference, "")
+        self.assertEqual(second.bir_series, "")
+        self.assertEqual(statement.totals.balance, 100)
+        from pathlib import Path
+        html = Path(frappe.get_app_path("cardmasters_app", "templates", "soa",
+                                        "sales_order_invoice_references.html")).read_text()
+        rendered = templates.template_environment().from_string(html).render(statement=statement)
+        self.assertIn("000456", rendered)
+        self.assertIn("000123", rendered)
+        for excluded in ("ORIGINAL-DR", "BLANK", "FUTURE-DR", "RETURN-DR"):
+            self.assertNotIn(excluded, rendered)
