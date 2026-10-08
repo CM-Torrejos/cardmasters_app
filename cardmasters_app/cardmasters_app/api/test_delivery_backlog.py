@@ -8,6 +8,95 @@ from cardmasters_app.cardmasters_app.api import delivery_backlog as backlog
 
 
 class TestDeliveryBacklog(TestCase):
+    def test_existing_batch_stock_still_advances_work_order_before_delivery_submission(self):
+        order = MagicMock()
+        order.name, order.company, order.customer = "SO-TEST", "COMPANY", "CUSTOMER"
+        order.items = [frappe._dict(name="SOI-TEST", item_code="FG")]
+        note = MagicMock()
+        note.name, note.docstatus, note.is_return = "DN-TEST", 0, 0
+        note.company, note.customer = order.company, order.customer
+        note.get.return_value = []
+        note.items = [frappe._dict(so_detail="SOI-TEST", against_sales_order=order.name,
+                                  item_code="FG", stock_qty=5, warehouse="FG-WH", idx=1)]
+        branch = frappe._dict(custom_source_warehouse="SOURCE", custom_workinprogress_warehouse="WIP")
+        item = frappe._dict(is_stock_item=1, has_batch_no=1, has_serial_no=0)
+        work = MagicMock()
+        work.custom_batch = "SO-TEST_SOI-TEST"
+        events = []
+        with patch.object(backlog.frappe.db, "sql"), \
+                patch.object(backlog.frappe, "get_doc", return_value=note), \
+                patch.object(backlog.frappe, "get_cached_doc", side_effect=lambda doctype, name: branch if doctype == "Branch" else item), \
+                patch.object(backlog.frappe.db, "get_value", return_value=frappe._dict(company=order.company, is_group=0, disabled=0)), \
+                patch.object(backlog, "_update_order_header"), \
+                patch.object(backlog, "_work_order", return_value=work), \
+                patch("erpnext.stock.doctype.batch.batch.get_batch_qty", return_value=5), \
+                patch.object(backlog, "_stock_entry") as stock_entry, \
+                patch.object(backlog, "_advance_work_order_to_claiming", side_effect=lambda doc: events.append("claiming")) as advance, \
+                patch.object(backlog, "_workflow_action", side_effect=lambda doc, status: events.append("delivery")):
+            result = backlog._submit(order, [note.name], date(2026, 9, 1))
+        stock_entry.assert_not_called()
+        advance.assert_called_once_with(work)
+        self.assertEqual(events, ["claiming", "delivery"])
+        self.assertEqual(result["delivery_notes"], [note.name])
+
+    def test_claiming_walks_forward_from_each_supported_state(self):
+        actions = ["Start", "For Consumption", "For Claiming", "Finished Manufacture Entry"]
+        for initial_state in backlog.CLAIMING_STATES:
+            with self.subTest(state=initial_state):
+                work = MagicMock(name="work")
+                work.name = "WO-TEST"
+                work.docstatus = 1
+                current = [initial_state]
+                work.get.side_effect = lambda field: current[0]
+
+                def transitions(doc):
+                    index = backlog.CLAIMING_STATES.index(current[0])
+                    transition = frappe._dict(action=actions[index], next_state=backlog.CLAIMING_STATES[index + 1])
+                    return [transition, transition]  # Same action allowed for multiple roles.
+
+                def apply(doc, action):
+                    index = backlog.CLAIMING_STATES.index(current[0])
+                    self.assertEqual(action, actions[index])
+                    current[0] = backlog.CLAIMING_STATES[index + 1]
+                    return doc
+
+                with patch("frappe.model.workflow.get_workflow_name", return_value="WO-WORKFLOW"), \
+                        patch.object(backlog.frappe, "get_cached_doc", return_value=frappe._dict(workflow_state_field="workflow_state")), \
+                        patch("frappe.model.workflow.get_transitions", side_effect=transitions), \
+                        patch("frappe.model.workflow.apply_workflow", side_effect=apply) as apply_workflow:
+                    self.assertIs(backlog._advance_work_order_to_claiming(work), work)
+                self.assertEqual(current[0], "In Claiming")
+                self.assertEqual(apply_workflow.call_count, 4 - backlog.CLAIMING_STATES.index(initial_state))
+                work.reload.assert_called_once()
+                self.assertEqual(work.add_comment.call_count, int(initial_state != "In Claiming"))
+
+    def test_claiming_rejects_blocked_or_ambiguous_transitions(self):
+        work = MagicMock()
+        work.name = "WO-TEST"
+        work.get.return_value = "In Production"
+        for transitions in ([], [frappe._dict(action="A", next_state="Pending Consumption"),
+                                frappe._dict(action="B", next_state="Pending Consumption")]):
+            with patch("frappe.model.workflow.get_workflow_name", return_value="WO-WORKFLOW"), \
+                    patch.object(backlog.frappe, "get_cached_doc", return_value=frappe._dict(workflow_state_field="workflow_state")), \
+                    patch("frappe.model.workflow.get_transitions", return_value=transitions), \
+                    patch("frappe.model.workflow.apply_workflow") as apply_workflow, \
+                    patch.object(backlog.frappe, "throw", side_effect=frappe.ValidationError):
+                with self.assertRaises(frappe.ValidationError):
+                    backlog._advance_work_order_to_claiming(work)
+            apply_workflow.assert_not_called()
+
+    def test_claiming_rejects_missing_workflow_and_unsupported_state(self):
+        work = MagicMock()
+        work.get.return_value = "Production"
+        for workflow_name in (None, "WO-WORKFLOW"):
+            with patch("frappe.model.workflow.get_workflow_name", return_value=workflow_name), \
+                    patch.object(backlog.frappe, "get_cached_doc", return_value=frappe._dict(workflow_state_field="workflow_state")), \
+                    patch("frappe.model.workflow.apply_workflow") as apply_workflow, \
+                    patch.object(backlog.frappe, "throw", side_effect=frappe.ValidationError):
+                with self.assertRaises(frappe.ValidationError):
+                    backlog._advance_work_order_to_claiming(work)
+            apply_workflow.assert_not_called()
+
     def test_header_update_does_not_save_or_unlock_submitted_item_fields(self):
         order = MagicMock()
         row = frappe._dict(name="SOI-TEST", idx=1, custom_item_specifics="  Legacy specifics  ", custom_particulars=" Details ")
@@ -25,21 +114,22 @@ class TestDeliveryBacklog(TestCase):
         self.assertEqual(order.add_comment.call_count, 2)
 
     def test_payment_method_preserves_existing_value(self):
-        order = frappe._dict(custom_payment_method="Credit")
-        with patch.object(backlog.frappe.db, "sql") as sql:
-            self.assertEqual(backlog._payment_method(order), "Credit")
-        sql.assert_not_called()
+        for method in ("Cash", "Credit", "Credit Memo"):
+            order = frappe._dict(custom_payment_method=method)
+            with patch.object(backlog.frappe.db, "sql") as sql:
+                self.assertEqual(backlog._payment_method(order), method)
+            sql.assert_not_called()
 
-    def test_receipt_types_and_ambiguous_payments(self):
+    def test_receipt_types_and_cash_fallback(self):
         order = frappe._dict(name="SO-TEST", customer="CUSTOMER", company="COMPANY")
         for receipt, expected in backlog.PAYMENT_METHODS.items():
             with patch.object(backlog.frappe.db, "sql", return_value=[(receipt,)]):
                 self.assertEqual(backlog._payment_method(order), expected)
-        for receipts in ([], [("Acknowledgement Receipt",), ("Collection Receipt",)], [("Other",)]):
-            with patch.object(backlog.frappe.db, "sql", return_value=receipts), \
-                    patch.object(backlog.frappe, "throw", side_effect=frappe.ValidationError):
-                with self.assertRaises(frappe.ValidationError):
-                    backlog._payment_method(order)
+        for receipts in ([], [("Acknowledgement Receipt",), ("Collection Receipt",)],
+                         [("Other",)], [(None,)], [("",)], [("Collection Receipt",), ("Other",)]):
+            with self.subTest(receipts=receipts), \
+                    patch.object(backlog.frappe.db, "sql", return_value=receipts):
+                self.assertEqual(backlog._payment_method(order), "Cash")
 
     def test_system_manager_is_required_server_side(self):
         with patch.object(backlog.frappe, "only_for", side_effect=frappe.PermissionError), \

@@ -6,6 +6,7 @@ from frappe.utils import cint, flt, getdate
 
 BRANCH = "Cagayan de Oro"
 PAYMENT_METHODS = {"Acknowledgement Receipt": "Cash", "Collection Receipt": "Credit"}
+CLAIMING_STATES = ("Not Started", "In Production", "Pending Consumption", "Pending Claiming", "In Claiming")
 
 
 def _authorize(sales_order):
@@ -42,7 +43,7 @@ def _payment_method(order):
     """, (order.customer, order.company, order.name))
     methods = {PAYMENT_METHODS.get(row[0]) for row in payments}
     if len(methods) != 1 or None in methods:
-        frappe.throw(_("Cannot infer Payment Method from linked submitted advance payments. Set it on the Sales Order first."))
+        return "Cash"
     return methods.pop()
 
 
@@ -81,6 +82,36 @@ def _update_order_header(order):
     if cleaned_rows:
         order.add_comment("Comment", "Trimmed surrounding whitespace from Item Specifics/Particulars on rows "
                           + ", ".join(cleaned_rows) + " through the System Manager backlog action; Allow on Submit remains off.")
+
+
+def _advance_work_order_to_claiming(work):
+    """Walk forward through allowed workflow actions after stock preparation."""
+    from frappe.model.workflow import apply_workflow, get_transitions, get_workflow_name
+
+    workflow_name = get_workflow_name("Work Order")
+    if not workflow_name:
+        frappe.throw(_("Configure a Work Order workflow leading to In Claiming before submitting delivery backlog."))
+    workflow = frappe.get_cached_doc("Workflow", workflow_name)
+    work.reload()
+    state_field = workflow.workflow_state_field
+    state = work.get(state_field)
+    if state not in CLAIMING_STATES:
+        frappe.throw(_("Work Order {0}: cannot advance unsupported workflow state {1} to In Claiming.").format(work.name, state))
+    if state == "In Claiming":
+        return work
+    for next_state in CLAIMING_STATES[CLAIMING_STATES.index(state) + 1:]:
+        # Several roles may expose the same action; count distinct actions.
+        actions = {transition.action for transition in get_transitions(work)
+                   if transition.next_state == next_state}
+        if len(actions) != 1:
+            frappe.throw(_("Work Order {0}: expected one allowed workflow action from {1} to {2}; found {3}. "
+                           "Check your workflow roles and transition conditions.").format(
+                               work.name, work.get(state_field), next_state, len(actions)))
+        work = apply_workflow(work, actions.pop())
+        if work.docstatus != 1 or work.get(state_field) != next_state:
+            frappe.throw(_("Work Order {0}: workflow did not reach submitted state {1}.").format(work.name, next_state))
+    work.add_comment("Comment", "Advanced the Work Order to In Claiming through the Sales Order backlog automation.")
+    return work
 
 
 def _active_bom(item, company):
@@ -241,8 +272,10 @@ def _submit(order, selected, posting_date):
         if not details or details.company != order.company or details.is_group or details.disabled:
             frappe.throw(_("Configure enabled Cagayan de Oro warehouses belonging to {0}; invalid warehouse: {1}.").format(order.company, warehouse))
     _update_order_header(order)
+    prepared_work_orders = []
     for (row_name, warehouse), qty in demand.items():
         work = _work_order(order, rows[row_name], warehouse, branch, posting_date, result)
+        prepared_work_orders.append(work)
         available = flt(get_batch_qty(batch_no=work.custom_batch, warehouse=warehouse,
                                      posting_datetime=f"{posting_date} 00:00:00", ignore_reserved_stock=True,
                                      do_not_check_future_batches=True))
@@ -260,6 +293,8 @@ def _submit(order, selected, posting_date):
             if transfer_qty > 0.000001:
                 _stock_entry(work, "Material Transfer for Manufacture", transfer_qty, posting_date, branch, result)
         _stock_entry(work, "Manufacture", missing, posting_date, branch, result)
+    for work in prepared_work_orders:
+        _advance_work_order_to_claiming(work)
     for note in notes:
         note.set_posting_time = 1
         note.posting_date = posting_date

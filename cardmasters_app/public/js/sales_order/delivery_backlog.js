@@ -31,7 +31,7 @@ frappe.ui.form.on('Sales Order', {
                     {fieldtype: 'Date', fieldname: 'target_month', label: __('Target Month'), reqd: 1,
                         default: notes[0].posting_date.slice(0, 7) + '-01',
                         description: __('All new stock entries and selected Delivery Notes will post on the first day of this month at 00:00:00.')},
-                    {fieldtype: 'HTML', options: `<p>${__('This submits the selected Delivery Notes and creates or amends the required Work Orders and stock entries. Production Branch will be Cagayan de Oro.')}</p>`}
+                    {fieldtype: 'HTML', options: `<p>${__('This submits the selected Delivery Notes, creates or amends the required Work Orders and stock entries, and advances the Work Orders to In Claiming. Your workflow roles and transition conditions must allow each step. Production Branch will be Cagayan de Oro.')}</p>`}
                 ],
                 primary_action_label: __('Submit Selected Backlog'),
                 async primary_action(values) {
