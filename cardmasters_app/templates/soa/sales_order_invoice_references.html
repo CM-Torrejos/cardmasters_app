@@ -1,0 +1,58 @@
+<div class="reference-soa">
+  <table class="reference-heading"><tr>
+    <td class="brand"><img src="{{ statement.logo_url }}" alt="CardMasters"></td>
+    <td class="heading-title"><h1>STATEMENT OF ACCOUNT</h1></td>
+    <td class="heading-contact">
+      <div class="customer-chip">CUSTOMER <span>{{ statement.customer.customer_name }}</span></div>
+      <strong>Phone:</strong><br>{{ statement.settings.get('contact_phone') or '' }}<br>
+      <strong>E-mail:</strong> {{ statement.settings.get('contact_email') or '' }}
+    </td>
+  </tr></table>
+  <table class="reference-meta"><tr>
+    <td class="meta-label">Statement No:<br>Date:</td>
+    <td class="meta-value">{{ statement.number }}<br>{{ frappe.utils.formatdate(statement.date, 'd-MMM-yy') }}</td>
+    <td class="customer-title">{{ statement.customer.customer_name }}</td>
+  </tr></table>
+  <table class="reference-lines">
+    <colgroup><col style="width:12.2%"><col style="width:9.9%"><col style="width:9.3%"><col style="width:8%"><col style="width:7.3%"><col style="width:16.1%"><col style="width:7.5%"><col style="width:6.1%"><col style="width:4.9%"><col style="width:6.9%"><col style="width:5.8%"><col style="width:5.9%"></colgroup>
+    <thead><tr><th>CUSTOMER</th><th>INVOICE DATE</th><th>SALES ORDER #</th><th>Delivery Receipt#</th><th>CSI Invoice#</th><th>ITEM DESCRIPTION</th><th>PO #</th><th>AGED</th><th>Remarks</th><th class="money-heading">SUM of AMOUNT</th><th class="money-heading">SUM of<br>PAYMENT</th><th class="money-heading">SUM of<br>BALANCE</th></tr></thead>
+    <tbody>
+      {% for row in statement.rows %}
+      <tr>
+        <td class="customer-cell">{{ row.customer_name if loop.first else '' }}</td>
+        <td class="center">{{ frappe.utils.formatdate(row.invoice_date, 'MMMM d, yyyy') }}</td>
+        <td class="center">{{ row.sales_order if row.first_in_order else '' }}</td>
+        <td>{{ row.dr_billing_reference if row.first_in_order or row.dr_billing_reference != statement.rows[loop.index0 - 1].dr_billing_reference else '' }}</td>
+        <td>{{ row.bir_series if row.first_in_order or row.bir_series != statement.rows[loop.index0 - 1].bir_series else '' }}</td>
+        <td>{{ row.item_description }}</td><td class="center">{{ row.po_no }}</td>
+        <td class="center">{{ row.aged }}</td><td class="center">{{ row.remarks }}</td>
+        <td class="number">{{ frappe.utils.fmt_money(row.amount, precision=2) }}</td>
+        <td class="number">{{ frappe.utils.fmt_money(row.payment, precision=2) }}</td>
+        <td class="number">{{ frappe.utils.fmt_money(row.balance, precision=2) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot><tr><td colspan="9">Grand Total</td>
+      <td class="number">{{ frappe.utils.fmt_money(statement.totals.amount, precision=2) }}</td>
+      <td class="number">{{ frappe.utils.fmt_money(statement.totals.payment, precision=2) }}</td>
+      <td class="number">{{ frappe.utils.fmt_money(statement.totals.balance, precision=2) }}</td>
+    </tr></tfoot>
+  </table>
+  <div class="reference-footer">
+    <div class="payment-box"><strong class="red">FOR ONLINE PAYMENT</strong><br>
+      <strong>{{ statement.settings.get('bank_name') or '' }} ACCOUNT: {{ statement.settings.get('bank_account') or '' }}</strong><br>
+      <strong>{{ statement.settings.get('bank_payee') or '' }}</strong>
+    </div>
+    <div class="reminder">
+      <div>{{ statement.settings.get('payment_reminder') or '' }}</div>
+      <div class="red">Please make all checks payable to {{ statement.settings.get('bank_payee') or '' }}</div>
+      <div>Please send us an email once payment has been made</div>
+      <div>E-mail: {{ statement.settings.get('contact_email') or '' }}</div>
+    </div>
+    <table class="signatures"><tr>
+      <td class="signature-label">Prepared By:</td><td class="signature-name"><div>{{ statement.settings.get('prepared_by') or '' }}</div>{{ statement.settings.get('prepared_title') or '' }}</td>
+      <td class="signature-label">Check By:</td><td class="signature-name"><div>{{ statement.settings.get('checked_by') or '' }}</div>{{ statement.settings.get('checked_title') or '' }}</td>
+      <td class="signature-label">Conforme &amp;<br>Received By:</td><td class="signature-name"><div>&nbsp;</div>Print Name and Signature<br>Date: __________________</td>
+    </tr></table>
+  </div>
+</div>

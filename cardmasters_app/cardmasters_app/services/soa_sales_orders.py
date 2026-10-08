@@ -115,7 +115,7 @@ def linked_data(order_names, company, customer, cutoff):
         invoices = frappe.get_all("Sales Invoice", filters={
             "name": ["in", invoice_names], "company": company, "customer": customer, "docstatus": 1,
         }, fields=["name", "posting_date", "due_date", "is_return", "base_grand_total", "base_rounded_total",
-                   "disable_rounded_total", "custom_bir_series"])
+                   "disable_rounded_total", "custom_bir_series", "custom_dr_billing_reference"])
         for invoice in invoices:
             frappe.get_doc("Sales Invoice", invoice.name).check_permission("read")
             total = invoice.base_grand_total if invoice.disable_rounded_total else (invoice.base_rounded_total or invoice.base_grand_total)
@@ -244,6 +244,10 @@ def collect_statement(doc, customer, template):
                 "invoice_date": linked_invoices[0].posting_date if linked_invoices else order.transaction_date,
                 "delivery_receipt": ", ".join(dict.fromkeys(by_item_dr[item.name])),
                 "csi_invoice": ", ".join(dict.fromkeys(inv.custom_bir_series or inv.name for inv in linked_invoices)),
+                "dr_billing_reference": ", ".join(dict.fromkeys(
+                    inv.custom_dr_billing_reference for inv in linked_invoices if inv.custom_dr_billing_reference)),
+                "bir_series": ", ".join(dict.fromkeys(
+                    inv.custom_bir_series for inv in linked_invoices if inv.custom_bir_series)),
                 "item_description": plain_description(item), "po_no": po_numbers.get(order.name) or "",
                 "due_date": due, "aged": "Past Due" if due and due < cutoff else "Current" if due else "No Due Date",
                 "remarks": "UNPAID" if payment <= 0 else "PARTLY PAID", "amount": float(amount),
