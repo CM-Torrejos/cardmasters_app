@@ -6,19 +6,26 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "reason"
+  "reason",
+  "error_type"
  ],
  "fields": [
   {
    "fieldname": "reason",
    "fieldtype": "Data",
    "label": "Reason"
+  },
+  {
+   "fieldname": "error_type",
+   "fieldtype": "Select",
+   "label": "Error Type",
+   "options": "For Investigation\nFactory Defect\nHuman\nMachine\nOutsource\nN/A"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-10-08 11:27:57.145938",
+ "modified": "2026-10-09 11:39:13.814540",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damage Reason",
