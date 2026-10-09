@@ -114,10 +114,32 @@ def sync_linked_documents_on_master_document_tags_addition(doc, _method):
     Hook: Tag Link - after_insert
     Action: When a new tag is added to a source document, propagate it
             to all linked documents defined in PROPAGATION_MAP.
+            Also handles Work Order -> Sales Order reverse propagation.
     """
     source_doctype = doc.document_type
     source_name = doc.document_name
     new_tag = doc.tag
+
+    if source_doctype == "Work Order":
+        try:
+            wo_doc = frappe.get_doc(source_doctype, source_name)
+
+            # Create comment
+            frappe.get_doc({
+                "doctype": "Comment",
+                "comment_type": "Comment",
+                "reference_doctype": source_doctype,
+                "reference_name": source_name,
+                "content": f"<b>{frappe.session.user}</b> added this tag: <b>{new_tag}</b>",
+            }).insert(ignore_permissions=True)
+
+            if wo_doc.sales_order:
+                so_doc = frappe.get_doc("Sales Order", wo_doc.sales_order)
+                so_doc.add_tag(new_tag)
+                logger.info(f"Reverse synced tag '{new_tag}' from Work Order '{source_name}' to Sales Order '{wo_doc.sales_order}'")
+
+        except Exception as e:
+            frappe.log_error(f"Error in Work Order reverse tag sync: {e}", tagging_error)
 
     if source_doctype not in PROPAGATION_MAP:
         return
@@ -137,6 +159,18 @@ def sync_linked_documents_on_master_document_tags_removal(tag, dt, dn):
     before performing the actual Tag Link deletion.
     """
     logger.info(f"OVERRIDE 'remove_tag' fired for: {dt} '{dn}' (Tag: {tag})")
+
+    if dt == "Work Order":
+        try:
+            wo_doc = frappe.get_doc(dt, dn)
+            if wo_doc.sales_order:
+                so_doc = frappe.get_doc("Sales Order", wo_doc.sales_order)
+                so_doc.remove_tag(tag)
+                # Save is needed to commit the tag string update in older Frappe versions
+                so_doc.save(ignore_permissions=True) 
+                logger.info(f"Reverse synced removed tag '{tag}' from Work Order '{dn}' to Sales Order '{wo_doc.sales_order}'")
+        except Exception as e:
+            frappe.log_error(f"Error in Work Order reverse tag removal sync: {e}", tagging_error)
 
     # 1. Custom propagation removal
     if dt in PROPAGATION_MAP:
