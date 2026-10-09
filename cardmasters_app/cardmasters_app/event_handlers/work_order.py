@@ -179,28 +179,57 @@ def pull_sales_order_details(doc, method=None):
 			after_commit=True
 		)
 
-def before_work_order_submit(doc, method):
-	"""On WO submit, advance the SO workflow from 'Artist' → 'Begin Production' when linked."""
+def sales_order_state_transition(doc, method):
+	# check if work order's sales order field is not empty
 	if not doc.sales_order:
 		return
 
 	so_name = doc.sales_order
+
+	# check if work order's sales order value exist in db 
 	if not frappe.db.exists("Sales Order", so_name):
-		frappe.msgprint(f"Sales Order {so_name} not found; skipping workflow transition.",
-						alert=True, indicator="orange")
+		frappe.msgprint(
+			f"Sales Order {so_name} not found; skipping workflow transition.", 
+			alert=True,
+			indicator="orange"
+		)
 		return
 
 	so = frappe.get_doc("Sales Order", so_name)
+	artist_workflow_state = frappe.db.get_single_value(
+		'Cardmasters Settings',
+		'so_layout_workflow_state'
+	)
+	no_artist_workflow_state = frappe.db.get_single_value(
+		'Cardmasters Settings',
+		'so_no_layout_workflow_state'
+	)
+	prod_workflow_action = frappe.db.get_single_value(
+		'Cardmasters Settings',
+		'so_transition_to_production_workflow_action'
+	)
 
-	if so.workflow_state == "Artist":
+	if not artist_workflow_state or not no_artist_workflow_state or not prod_workflow_action:
+		frappe.msgprint(
+			indicator="red",
+			title="Sales Order's Workflow Transition Skipped",
+			msg="Cardmasters Settings for Sales Order Workflow are missing. Please contact IT to configure them."
+		)
+		return
+
+	if so.workflow_state in [artist_workflow_state, no_artist_workflow_state]:
 		try:
-			apply_workflow(so, "Begin Production")
-			so.save()
+			apply_workflow(so, prod_workflow_action)
 		except Exception:
-			frappe.log_error(frappe.get_traceback(),
-							 f"Failed to advance Sales Order workflow for {so.name}")
-			frappe.msgprint("Could not advance Sales Order workflow. Check state/permissions.",
-							alert=True, indicator="red")
+			frappe.log_error(
+				frappe.get_traceback(),
+				f"Failed to advance Sales Order workflow for {so.name}"
+			)
+			frappe.throw(
+				indicator="red",
+				title="Error",
+				msg="Could not advance Sales Order workflow. Check state/permissions."
+			)
 
 def validate_so_workflow_state(doc, method):
     # Only check if there is a linked Sales Order
