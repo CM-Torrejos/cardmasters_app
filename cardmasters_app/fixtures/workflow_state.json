@@ -336,6 +336,15 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
+  "modified": "2026-07-03 13:52:34.182762",
+  "name": "Processing",
+  "style": "",
+  "workflow_state_name": "Processing"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
   "modified": "2026-05-11 11:12:54.282983",
   "name": "For Withdrawal",
   "style": "",
@@ -367,6 +376,15 @@
   "name": "Pending Audit",
   "style": "",
   "workflow_state_name": "Pending Audit"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-07-03 13:29:21.353833",
+  "name": "For Processing",
+  "style": "Info",
+  "workflow_state_name": "For Processing"
  },
  {
   "docstatus": 0,
@@ -511,23 +529,5 @@
   "name": "Draft",
   "style": "",
   "workflow_state_name": "Draft"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2026-07-03 13:52:34.182762",
-  "name": "Processing",
-  "style": "",
-  "workflow_state_name": "Processing"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2026-07-03 13:29:21.353833",
-  "name": "For Processing",
-  "style": "Info",
-  "workflow_state_name": "For Processing"
  }
 ]
