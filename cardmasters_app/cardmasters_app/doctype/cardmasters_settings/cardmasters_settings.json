@@ -1,6 +1,5 @@
 {
  "actions": [],
- "allow_rename": 1,
  "creation": "2026-05-26 08:59:20.044470",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -26,6 +25,8 @@
   "transition_to_production_automation_section",
   "artist_workflow_states_column",
   "so_layout_workflow_state",
+  "no_artist_workflow_states_column",
+  "so_no_layout_workflow_state",
   "to_production_transitions_column",
   "so_transition_to_production_workflow_action",
   "sales_order_production_status_transition_automation_section",
@@ -268,18 +269,30 @@
    "label": "Starter BOM Automation"
   },
   {
+   "description": "The company whose generated starter BOM becomes the shared Item default. Required whenever any company has BOM automation enabled.",
    "fieldname": "default_bom_company",
    "fieldtype": "Link",
    "label": "Default BOM Company",
-   "options": "Company",
-   "description": "The company whose generated starter BOM becomes the shared Item default. Required whenever any company has BOM automation enabled."
+   "options": "Company"
+  },
+  {
+   "fieldname": "no_artist_workflow_states_column",
+   "fieldtype": "Column Break",
+   "label": "No Artist Workflow States"
+  },
+  {
+   "description": "Input the workflow state that describes the sales order skipping design/layout.",
+   "fieldname": "so_no_layout_workflow_state",
+   "fieldtype": "Link",
+   "label": "Sales Order No-layout Workflow State",
+   "options": "Workflow State"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-06-19 11:07:24.298407",
+ "modified": "2026-10-09 14:04:00.846538",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Cardmasters Settings",
