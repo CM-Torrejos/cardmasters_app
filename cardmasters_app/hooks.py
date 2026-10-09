@@ -399,23 +399,23 @@ doctype_list_js = {"Work Order": "public/js/work_order_list.js"}
 # Scheduled Tasks
 # ---------------
 
-scheduler_events = {
-	# "all": [
-	# 	"cardmasters_app.tasks.all"
-	# ],
-	"daily": [
-		"cardmasters_app.tasks.process_rolling_resets"
-	],
-	# "hourly": [
-	# 	"cardmasters_app.tasks.hourly"
-	# ],
-	# "weekly": [
-	# 	"cardmasters_app.tasks.weekly"
-	# ],
-	# "monthly": [
-	# 	"cardmasters_app.tasks.monthly"
-	# ],
-}
+# scheduler_events = {
+# 	"all": [
+# 		"cardmasters_app.tasks.all"
+# 	],
+# 	"daily": [
+# 		"cardmasters_app.tasks.daily"
+# 	],
+# 	"hourly": [
+# 		"cardmasters_app.tasks.hourly"
+# 	],
+# 	"weekly": [
+# 		"cardmasters_app.tasks.weekly"
+# 	],
+# 	"monthly": [
+# 		"cardmasters_app.tasks.monthly"
+# 	],
+# }
 
 # Testing
 # -------

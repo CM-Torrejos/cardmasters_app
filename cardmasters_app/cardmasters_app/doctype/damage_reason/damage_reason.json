@@ -18,11 +18,11 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-10-08 11:27:57.145938",
+ "modified": "2025-08-09 15:27:11.201950",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damage Reason",
- "naming_rule": "Expression (old style)",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {
