@@ -109,7 +109,7 @@ doc_events = {
         ],
         "before_submit" : [
             "cardmasters_app.cardmasters_app.services.batch_handler.create_or_assign_work_order_batch", # Create/link SO Item batch on submission
-            "cardmasters_app.cardmasters_app.event_handlers.work_order.before_work_order_submit" # Transition SO state to "Begin Production"
+            "cardmasters_app.cardmasters_app.event_handlers.work_order.sales_order_state_transition" # Transition SO state to "Begin Production" 
         ],
         "before_update_after_submit": [
             "cardmasters_app.cardmasters_app.event_handlers.work_order.start_production_from_operation_progress",
