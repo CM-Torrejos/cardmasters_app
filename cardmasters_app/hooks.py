@@ -14,7 +14,7 @@ after_install = [
     "cardmasters_app.cardmasters_app.patches.add_sales_order_soa_template.execute",
 ]
 
-# Fixtures to export custom fields, workflow structures, and property setters
+# Fixtures to export custom fields, workflow structures, property setters, and workspaces
 fixtures = [
     {
         "doctype": "Custom Field",
@@ -32,6 +32,10 @@ fixtures = [
     },
     {
         "doctype": "Workflow Action Master",
+        "sync_on_migrate": True
+    },
+    {
+        "doctype": "Workspace",
         "sync_on_migrate": True
     }
 ]

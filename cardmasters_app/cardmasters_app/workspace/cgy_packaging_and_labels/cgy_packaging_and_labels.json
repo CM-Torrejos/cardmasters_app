@@ -1,0 +1,185 @@
+{
+ "name": "CGY Packaging and Labels",
+ "modified": "2026-10-08 13:25:06.879223",
+ "docstatus": 0,
+ "idx": 1,
+ "label": "CGY Packaging and Labels",
+ "title": "CGY Packaging and Labels",
+ "sequence_id": 19.0,
+ "for_user": "",
+ "parent_page": "CGY Hub",
+ "module": "Cardmasters App",
+ "icon": "stock",
+ "indicator_color": "green",
+ "restrict_to_domain": null,
+ "hide_custom": 1,
+ "public": 1,
+ "is_hidden": 0,
+ "content": "[{\"id\": \"cgy-0\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\">CGY Packaging and Labels</span>\", \"col\": 12}}, {\"id\": \"cgy-1\", \"type\": \"paragraph\", \"data\": {\"text\": \"<span class=\\\"h4\\\">Quick Access</span>\", \"col\": 12}}, {\"id\": \"cgy-2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"PNL Station\", \"col\": 3}}, {\"id\": \"cgy-3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Ribbon Printing\", \"col\": 3}}, {\"id\": \"cgy-4\", \"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"id\": \"cgy-5\", \"type\": \"card\", \"data\": {\"card_name\": \"Not Started\", \"col\": 3}}, {\"id\": \"cgy-6\", \"type\": \"card\", \"data\": {\"card_name\": \"In Progress\", \"col\": 3}}, {\"id\": \"cgy-7\", \"type\": \"card\", \"data\": {\"card_name\": \"On Hold\", \"col\": 3}}, {\"id\": \"cgy-8\", \"type\": \"card\", \"data\": {\"card_name\": \"Done\", \"col\": 3}}]",
+ "doctype": "Workspace",
+ "shortcuts": [
+  {
+   "docstatus": 0,
+   "idx": 1,
+   "type": "DocType",
+   "link_to": "Work Order",
+   "url": null,
+   "doc_view": "List",
+   "kanban_board": null,
+   "label": "PNL Station",
+   "icon": null,
+   "restrict_to_domain": null,
+   "report_ref_doctype": null,
+   "stats_filter": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"PNL STICKERING AND ASSEMBLY\", false]]",
+   "color": "Blue",
+   "format": null,
+   "doctype": "Workspace Shortcut"
+  },
+  {
+   "label": "Ribbon Printing",
+   "type": "DocType",
+   "link_to": "Work Order",
+   "url": null,
+   "doc_view": "List",
+   "stats_filter": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"RIBBON PRINTING\", false]]",
+   "color": "Blue",
+   "idx": 2
+  }
+ ],
+ "custom_blocks": [],
+ "links": [
+  {
+   "type": "Card Break",
+   "label": "Not Started",
+   "link_count": 2,
+   "idx": 1
+  },
+  {
+   "type": "Link",
+   "label": "PNL Station",
+   "link_type": "DocType",
+   "link_to": "Work Order",
+   "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"PNL STICKERING AND ASSEMBLY\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"Not Started\", false]]",
+   "custom_card_show_count": 1,
+   "custom_card_count_color": "Red",
+   "idx": 2
+  },
+  {
+   "type": "Link",
+   "label": "Ribbon Printing",
+   "link_type": "DocType",
+   "link_to": "Work Order",
+   "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"RIBBON PRINTING\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"Not Started\", false]]",
+   "custom_card_show_count": 1,
+   "custom_card_count_color": "Red",
+   "idx": 3
+  },
+  {
+   "type": "Card Break",
+   "label": "In Progress",
+   "link_count": 2,
+   "idx": 4
+  },
+  {
+   "type": "Link",
+   "label": "PNL Station",
+   "link_type": "DocType",
+   "link_to": "Work Order",
+   "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"PNL STICKERING AND ASSEMBLY\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"In Progress\", false]]",
+   "custom_card_show_count": 1,
+   "custom_card_count_color": "Yellow",
+   "idx": 5
+  },
+  {
+   "type": "Link",
+   "label": "Ribbon Printing",
+   "link_type": "DocType",
+   "link_to": "Work Order",
+   "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"RIBBON PRINTING\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"In Progress\", false]]",
+   "custom_card_show_count": 1,
+   "custom_card_count_color": "Yellow",
+   "idx": 6
+  },
+  {
+   "type": "Card Break",
+   "label": "On Hold",
+   "link_count": 2,
+   "idx": 7
+  },
+  {
+   "type": "Link",
+   "label": "PNL Station",
+   "link_type": "DocType",
+   "link_to": "Work Order",
+   "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"PNL STICKERING AND ASSEMBLY\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"On Hold\", false]]",
+   "custom_card_show_count": 1,
+   "custom_card_count_color": "Orange",
+   "idx": 8
+  },
+  {
+   "type": "Link",
+   "label": "Ribbon Printing",
+   "link_type": "DocType",
+   "link_to": "Work Order",
+   "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"RIBBON PRINTING\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"On Hold\", false]]",
+   "custom_card_show_count": 1,
+   "custom_card_count_color": "Orange",
+   "idx": 9
+  },
+  {
+   "type": "Card Break",
+   "label": "Done",
+   "link_count": 2,
+   "idx": 10
+  },
+  {
+   "type": "Link",
+   "label": "PNL Station",
+   "link_type": "DocType",
+   "link_to": "Work Order",
+   "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"PNL STICKERING AND ASSEMBLY\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"Done\", false]]",
+   "custom_card_show_count": 1,
+   "custom_card_count_color": "Green",
+   "idx": 11
+  },
+  {
+   "type": "Link",
+   "label": "Ribbon Printing",
+   "link_type": "DocType",
+   "link_to": "Work Order",
+   "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"RIBBON PRINTING\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"Done\", false]]",
+   "custom_card_show_count": 1,
+   "custom_card_count_color": "Green",
+   "idx": 12
+  }
+ ],
+ "number_cards": [],
+ "quick_lists": [],
+ "roles": [
+  {
+   "docstatus": 0,
+   "idx": 1,
+   "role": "CMv2 WL Packaging and Labels",
+   "doctype": "Has Role"
+  },
+  {
+   "docstatus": 0,
+   "idx": 2,
+   "role": "CM Packaging and Labels Workstation Leader",
+   "doctype": "Has Role"
+  },
+  {
+   "docstatus": 0,
+   "idx": 3,
+   "role": "CMv2 Production Coordinator",
+   "doctype": "Has Role"
+  },
+  {
+   "docstatus": 0,
+   "idx": 4,
+   "role": "CMv2 Office Sales",
+   "doctype": "Has Role"
+  }
+ ],
+ "charts": []
+}

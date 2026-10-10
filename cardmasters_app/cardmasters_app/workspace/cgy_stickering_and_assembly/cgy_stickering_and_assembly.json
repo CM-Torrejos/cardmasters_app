@@ -1,0 +1,186 @@
+{
+ "name": "CGY Stickering and Assembly",
+ "modified": "2026-10-08 13:25:06.781559",
+ "docstatus": 0,
+ "idx": 1,
+ "label": "CGY Stickering and Assembly",
+ "title": "CGY Stickering and Assembly",
+ "sequence_id": 18.0,
+ "for_user": "",
+ "parent_page": "CGY Hub",
+ "module": "Cardmasters App",
+ "icon": "tool",
+ "indicator_color": "",
+ "restrict_to_domain": null,
+ "hide_custom": 1,
+ "public": 1,
+ "is_hidden": 0,
+ "content": "[{\"id\": \"cgy-0\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\">CGY Stickering and Assembly</span>\", \"col\": 12}}, {\"id\": \"cgy-1\", \"type\": \"paragraph\", \"data\": {\"text\": \"<span class=\\\"h4\\\">Quick Access</span>\", \"col\": 12}}, {\"id\": \"cgy-2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Stickering and Assembly Jobs\", \"col\": 3}}, {\"id\": \"cgy-3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Frames Assembly\", \"col\": 3}}, {\"id\": \"cgy-4\", \"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"id\": \"cgy-5\", \"type\": \"card\", \"data\": {\"card_name\": \"Not Started\", \"col\": 3}}, {\"id\": \"cgy-6\", \"type\": \"card\", \"data\": {\"card_name\": \"In Progress\", \"col\": 3}}, {\"id\": \"cgy-7\", \"type\": \"card\", \"data\": {\"card_name\": \"On Hold\", \"col\": 3}}, {\"id\": \"cgy-8\", \"type\": \"card\", \"data\": {\"card_name\": \"Done\", \"col\": 3}}]",
+ "doctype": "Workspace",
+ "shortcuts": [
+  {
+   "docstatus": 0,
+   "idx": 1,
+   "type": "DocType",
+   "link_to": "Work Order",
+   "url": null,
+   "doc_view": "List",
+   "kanban_board": null,
+   "label": "Stickering and Assembly Jobs",
+   "icon": null,
+   "restrict_to_domain": null,
+   "report_ref_doctype": null,
+   "stats_filter": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"STICKERING AND ASSEMBLY\", false]]",
+   "color": "Blue",
+   "format": null,
+   "doctype": "Workspace Shortcut"
+  },
+  {
+   "docstatus": 0,
+   "idx": 2,
+   "type": "DocType",
+   "link_to": "Work Order",
+   "url": null,
+   "doc_view": "List",
+   "kanban_board": null,
+   "label": "Frames Assembly",
+   "icon": null,
+   "restrict_to_domain": null,
+   "report_ref_doctype": null,
+   "stats_filter": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"FRAMES ASSEMBLY\", false]]",
+   "color": "Blue",
+   "format": null,
+   "doctype": "Workspace Shortcut"
+  }
+ ],
+ "custom_blocks": [],
+ "links": [
+  {
+   "type": "Card Break",
+   "label": "Not Started",
+   "link_count": 2,
+   "idx": 1
+  },
+  {
+   "type": "Link",
+   "label": "Stickering and Assembly Jobs",
+   "link_type": "DocType",
+   "link_to": "Work Order",
+   "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"STICKERING AND ASSEMBLY\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"Not Started\", false]]",
+   "custom_card_show_count": 1,
+   "custom_card_count_color": "Red",
+   "idx": 2
+  },
+  {
+   "type": "Link",
+   "label": "Frames Assembly",
+   "link_type": "DocType",
+   "link_to": "Work Order",
+   "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"FRAMES ASSEMBLY\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"Not Started\", false]]",
+   "custom_card_show_count": 1,
+   "custom_card_count_color": "Red",
+   "idx": 3
+  },
+  {
+   "type": "Card Break",
+   "label": "In Progress",
+   "link_count": 2,
+   "idx": 4
+  },
+  {
+   "type": "Link",
+   "label": "Stickering and Assembly Jobs",
+   "link_type": "DocType",
+   "link_to": "Work Order",
+   "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"STICKERING AND ASSEMBLY\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"In Progress\", false]]",
+   "custom_card_show_count": 1,
+   "custom_card_count_color": "Yellow",
+   "idx": 5
+  },
+  {
+   "type": "Link",
+   "label": "Frames Assembly",
+   "link_type": "DocType",
+   "link_to": "Work Order",
+   "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"FRAMES ASSEMBLY\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"In Progress\", false]]",
+   "custom_card_show_count": 1,
+   "custom_card_count_color": "Yellow",
+   "idx": 6
+  },
+  {
+   "type": "Card Break",
+   "label": "On Hold",
+   "link_count": 2,
+   "idx": 7
+  },
+  {
+   "type": "Link",
+   "label": "Stickering and Assembly Jobs",
+   "link_type": "DocType",
+   "link_to": "Work Order",
+   "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"STICKERING AND ASSEMBLY\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"On Hold\", false]]",
+   "custom_card_show_count": 1,
+   "custom_card_count_color": "Orange",
+   "idx": 8
+  },
+  {
+   "type": "Link",
+   "label": "Frames Assembly",
+   "link_type": "DocType",
+   "link_to": "Work Order",
+   "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"FRAMES ASSEMBLY\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"On Hold\", false]]",
+   "custom_card_show_count": 1,
+   "custom_card_count_color": "Orange",
+   "idx": 9
+  },
+  {
+   "type": "Card Break",
+   "label": "Done",
+   "link_count": 2,
+   "idx": 10
+  },
+  {
+   "type": "Link",
+   "label": "Stickering and Assembly Jobs",
+   "link_type": "DocType",
+   "link_to": "Work Order",
+   "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"STICKERING AND ASSEMBLY\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"Done\", false]]",
+   "custom_card_show_count": 1,
+   "custom_card_count_color": "Green",
+   "idx": 11
+  },
+  {
+   "type": "Link",
+   "label": "Frames Assembly",
+   "link_type": "DocType",
+   "link_to": "Work Order",
+   "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"FRAMES ASSEMBLY\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"Done\", false]]",
+   "custom_card_show_count": 1,
+   "custom_card_count_color": "Green",
+   "idx": 12
+  }
+ ],
+ "number_cards": [],
+ "quick_lists": [],
+ "roles": [
+  {
+   "docstatus": 0,
+   "idx": 1,
+   "role": "CMv2 WL Stickering and Assembly",
+   "doctype": "Has Role"
+  },
+  {
+   "docstatus": 0,
+   "idx": 2,
+   "role": "CM Stickering and Assembly Workstation Leader",
+   "doctype": "Has Role"
+  },
+  {
+   "docstatus": 0,
+   "idx": 3,
+   "role": "CMv2 Production Coordinator",
+   "doctype": "Has Role"
+  }
+ ],
+ "charts": []
+}
