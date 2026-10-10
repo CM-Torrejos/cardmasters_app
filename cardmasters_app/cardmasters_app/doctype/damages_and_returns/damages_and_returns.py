@@ -40,6 +40,7 @@ class DamagesandReturns(Document):
 				if existing_ledger:
 					# If it exists, update the points (even if it changes to 0)
 					frappe.db.set_value("Damage Point Ledger", existing_ledger, "points", self.damage_points)
+					frappe.db.set_value("Damage Point Ledger", existing_ledger, "incident_date", self.date_of_damage_or_return)
 				else:
 					# If it does not exist, only create it if points are greater than 0
 					if self.damage_points > 0:
