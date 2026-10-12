@@ -134,12 +134,17 @@ doc_events = {
             "cardmasters_app.cardmasters_app.event_handlers.stock_entry.apply_material_request_reason_account"
         ],
         "validate": [
+            "cardmasters_app.cardmasters_app.doctype.withdrawal.withdrawal.validate_generated_transfer",
             "cardmasters_app.cardmasters_app.event_handlers.stock_entry.before_save_stock_entry" # Set stock consumption accounts
+        ],
+        "before_cancel": [
+            "cardmasters_app.cardmasters_app.doctype.withdrawal.withdrawal.before_cancel_generated_transfer"
         ],
         "on_submit": [
             "cardmasters_app.cardmasters_app.services.batch_handler.set_batch_received_date_on_population" # Timestamp batch receive date
         ],
         "on_cancel": [
+            "cardmasters_app.cardmasters_app.doctype.withdrawal.withdrawal.before_cancel_generated_transfer",
             "cardmasters_app.cardmasters_app.api.return_processing.handle_return_processing_stock_entry_cancel" # Reopen returned item processing status when linked entry is cancelled
         ],
         "before_save": [

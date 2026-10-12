@@ -19,7 +19,6 @@
    "fieldtype": "Link",
    "label": "Work Order",
    "options": "Work Order",
-   "reqd": 1,
    "in_list_view": 1,
    "columns": 4
   },
@@ -28,7 +27,6 @@
    "fieldtype": "Float",
    "label": "Net Material Quantity",
    "description": "Total net material quantity for this work order in this withdrawal, excluding shared borders and gaps. Enter in the withdrawal UOM.",
-   "reqd": 1,
    "in_list_view": 1,
    "columns": 3,
    "precision": "6"

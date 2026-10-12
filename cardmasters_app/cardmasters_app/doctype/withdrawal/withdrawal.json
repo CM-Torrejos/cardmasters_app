@@ -40,7 +40,6 @@
    "fieldtype": "Link",
    "label": "Material",
    "options": "Item",
-   "reqd": 1,
    "in_list_view": 1,
    "description": "Material used for this grouped withdrawal."
   },
@@ -71,7 +70,6 @@
    "fieldtype": "Date",
    "label": "Posting Date",
    "default": "Today",
-   "reqd": 1,
    "in_list_view": 1
   },
   {
@@ -84,8 +82,7 @@
    "fieldname": "company",
    "fieldtype": "Link",
    "label": "Company",
-   "options": "Company",
-   "reqd": 1
+   "options": "Company"
   },
   {
    "fieldname": "warehouses_section",
@@ -97,7 +94,6 @@
    "fieldtype": "Link",
    "label": "Source Warehouse",
    "options": "Warehouse",
-   "reqd": 1,
    "description": "Advanced WIP warehouse holding the material being withdrawn."
   },
   {
@@ -108,8 +104,7 @@
    "fieldname": "wip_warehouse",
    "fieldtype": "Link",
    "label": "Target WIP Warehouse",
-   "options": "Warehouse",
-   "reqd": 1
+   "options": "Warehouse"
   },
   {
    "fieldname": "pass_measurements",
@@ -121,7 +116,6 @@
    "fieldtype": "Float",
    "label": "Total Withdrawal Quantity",
    "description": "Total material quantity for this withdrawal, including net job material and shared allowance, in the selected material’s UOM.",
-   "reqd": 1,
    "precision": "6"
   },
   {
@@ -134,7 +128,6 @@
    "fieldtype": "Table",
    "label": "Work Orders",
    "options": "Withdrawal Work Order",
-   "reqd": 1,
    "description": "Enter each work order’s total net material quantity included in this withdrawal, excluding shared allowance, in the withdrawal UOM."
   },
   {
@@ -205,7 +198,31 @@
    "role": "System Manager",
    "share": 1,
    "submit": 1,
-   "write": 1
+   "write": 1,
+   "cancel": 1,
+   "amend": 1
+  },
+  {
+   "role": "Stock User",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "print": 1,
+   "report": 1
+  },
+  {
+   "role": "Stock Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "print": 1,
+   "report": 1
   }
  ],
  "row_format": "Dynamic",
