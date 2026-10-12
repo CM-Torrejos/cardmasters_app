@@ -1,0 +1,83 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-10-12 10:18:58.416572",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "work_order",
+  "net_print_qty",
+  "allowance_share_pct",
+  "allocated_allowance_qty",
+  "withdrawal_qty",
+  "stock_entry"
+ ],
+ "fields": [
+  {
+   "fieldname": "work_order",
+   "fieldtype": "Link",
+   "label": "Work Order",
+   "options": "Work Order",
+   "in_list_view": 1,
+   "columns": 4
+  },
+  {
+   "fieldname": "net_print_qty",
+   "fieldtype": "Float",
+   "label": "Net Material Quantity",
+   "description": "Total net material quantity for this work order in this withdrawal, excluding shared borders and gaps. Enter in the withdrawal UOM.",
+   "in_list_view": 1,
+   "columns": 3,
+   "precision": "6"
+  },
+  {
+   "fieldname": "allowance_share_pct",
+   "fieldtype": "Percent",
+   "label": "Allowance Share (%)",
+   "read_only": 1,
+   "description": "This row’s share of total net material quantity; rows for the same work order are combined when assessing that work order’s share.",
+   "precision": "6"
+  },
+  {
+   "fieldname": "allocated_allowance_qty",
+   "fieldtype": "Float",
+   "label": "Allocated Allowance",
+   "read_only": 1,
+   "precision": "6"
+  },
+  {
+   "fieldname": "withdrawal_qty",
+   "fieldtype": "Float",
+   "label": "Total Withdrawal",
+   "read_only": 1,
+   "description": "Net material quantity plus allocated shared allowance.",
+   "in_list_view": 1,
+   "columns": 3,
+   "precision": "6"
+  },
+  {
+   "fieldname": "stock_entry",
+   "fieldtype": "Link",
+   "label": "Material Transfer for Manufacture",
+   "options": "Stock Entry",
+   "read_only": 1,
+   "no_copy": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-10-12 10:20:29.865758",
+ "modified_by": "Administrator",
+ "module": "Cardmasters App",
+ "name": "Withdrawal Work Order",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
