@@ -49,7 +49,6 @@ doctype_js = {
     "Job Card": [
         "public/js/job_card/remove_assign_job_to_employee.js" # Remove employee assignment restrictions
     ],
-    "Artist Card": "public/js/artist_card.js",
     "Work Order": [
         "public/js/work_order.js", # Controlled qty edit form
         "public/js/work_order/operation_progress.js", # Submitted operation Progress dropdown
