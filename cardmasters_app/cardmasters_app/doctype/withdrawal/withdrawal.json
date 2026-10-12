@@ -1,0 +1,219 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-10-12 10:13:49.824033",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "pass_details",
+  "item",
+  "stock_uom",
+  "uom",
+  "pass_details_column",
+  "posting_date",
+  "posting_time",
+  "company",
+  "warehouses_section",
+  "source_warehouse",
+  "warehouses_column",
+  "wip_warehouse",
+  "pass_measurements",
+  "planned_withdrawal_qty",
+  "work_orders_section",
+  "work_orders",
+  "allocation_section",
+  "net_print_qty",
+  "allowance_qty",
+  "remarks_section",
+  "remarks",
+  "amendment_section",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "pass_details",
+   "fieldtype": "Section Break",
+   "label": "Withdrawal Details"
+  },
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "label": "Material",
+   "options": "Item",
+   "reqd": 1,
+   "in_list_view": 1,
+   "description": "Material used for this grouped withdrawal."
+  },
+  {
+   "fieldname": "stock_uom",
+   "fieldtype": "Link",
+   "label": "Stock UOM",
+   "options": "UOM",
+   "fetch_from": "item.stock_uom",
+   "read_only": 1
+  },
+  {
+   "fieldname": "uom",
+   "fieldtype": "Link",
+   "label": "UOM",
+   "options": "UOM",
+   "fetch_from": "item.stock_uom",
+   "read_only": 1,
+   "fetch_if_empty": 0,
+   "description": "Unit used for this withdrawal. Currently defaults to the item’s stock UOM; unit conversions are not enabled."
+  },
+  {
+   "fieldname": "pass_details_column",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date",
+   "default": "Today",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "posting_time",
+   "fieldtype": "Time",
+   "label": "Posting Time",
+   "default": "Now"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "warehouses_section",
+   "fieldtype": "Section Break",
+   "label": "Warehouses"
+  },
+  {
+   "fieldname": "source_warehouse",
+   "fieldtype": "Link",
+   "label": "Source Warehouse",
+   "options": "Warehouse",
+   "reqd": 1,
+   "description": "Advanced WIP warehouse holding the material being withdrawn."
+  },
+  {
+   "fieldname": "warehouses_column",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "wip_warehouse",
+   "fieldtype": "Link",
+   "label": "Target WIP Warehouse",
+   "options": "Warehouse",
+   "reqd": 1
+  },
+  {
+   "fieldname": "pass_measurements",
+   "fieldtype": "Section Break",
+   "label": "Total Withdrawal Quantity"
+  },
+  {
+   "fieldname": "planned_withdrawal_qty",
+   "fieldtype": "Float",
+   "label": "Total Withdrawal Quantity",
+   "description": "Total material quantity for this withdrawal, including net job material and shared allowance, in the selected material’s UOM.",
+   "reqd": 1,
+   "precision": "6"
+  },
+  {
+   "fieldname": "work_orders_section",
+   "fieldtype": "Section Break",
+   "label": "Work Orders"
+  },
+  {
+   "fieldname": "work_orders",
+   "fieldtype": "Table",
+   "label": "Work Orders",
+   "options": "Withdrawal Work Order",
+   "reqd": 1,
+   "description": "Enter each work order’s total net material quantity included in this withdrawal, excluding shared allowance, in the withdrawal UOM."
+  },
+  {
+   "fieldname": "allocation_section",
+   "fieldtype": "Section Break",
+   "label": "Planned Material Allocation"
+  },
+  {
+   "fieldname": "net_print_qty",
+   "fieldtype": "Float",
+   "label": "Total Net Material Quantity",
+   "read_only": 1,
+   "description": "Total material occupied by the jobs, before allowance.",
+   "precision": "6"
+  },
+  {
+   "fieldname": "allowance_qty",
+   "fieldtype": "Float",
+   "label": "Shared Allowance",
+   "read_only": 1,
+   "description": "Total withdrawal quantity minus net material quantity. Normal borders and gaps; allocated proportionally to net material usage.",
+   "precision": "6"
+  },
+  {
+   "fieldname": "remarks_section",
+   "fieldtype": "Section Break",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks",
+   "description": "Withdrawal context. Record extra withdrawals separately, with their reason and a reference to this withdrawal."
+  },
+  {
+   "fieldname": "amendment_section",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "options": "Withdrawal",
+   "no_copy": 1,
+   "read_only": 1,
+   "print_hide": 1,
+   "search_index": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-10-12 10:29:57.465193",
+ "modified_by": "Administrator",
+ "module": "Cardmasters App",
+ "name": "Withdrawal",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "autoname": "format:WD-{YYYY}-{#####}",
+ "search_fields": "item,source_warehouse",
+ "track_changes": 1
+}
