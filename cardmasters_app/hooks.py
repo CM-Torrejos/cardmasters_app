@@ -408,7 +408,7 @@ scheduler_events = {
 	# 	"cardmasters_app.tasks.all"
 	# ],
 	"daily": [
-		"cardmasters_app.tasks.process_rolling_resets"
+		"cardmasters_app.cardmasters_app.tasks.process_rolling_resets"
 	],
 	# "hourly": [
 	# 	"cardmasters_app.tasks.hourly"
