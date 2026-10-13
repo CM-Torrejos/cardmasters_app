@@ -44,6 +44,7 @@
   "section_break_cvch",
   "audit_remarks",
   "section_break_egrm",
+  "charge_employee",
   "value_of_damages",
   "damage_points"
  ],
@@ -286,12 +287,18 @@
    "fieldname": "damage_points",
    "fieldtype": "Float",
    "label": "Damage Points"
+  },
+  {
+   "fieldname": "charge_employee",
+   "fieldtype": "Table",
+   "label": "Charge Employee",
+   "options": "Damages and Returns Employee Table"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-10-08 11:30:59.866459",
+ "modified": "2026-10-13 09:15:36.216736",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damages and Returns",
