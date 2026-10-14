@@ -1,0 +1,209 @@
+{
+ "name": "CGY Embroidery",
+ "modified": "2026-10-08 13:25:06.663586",
+ "docstatus": 0,
+ "idx": 2,
+ "label": "CGY Embroidery",
+ "title": "CGY Embroidery",
+ "sequence_id": 16.0,
+ "for_user": "",
+ "parent_page": "CGY Hub",
+ "module": "Cardmasters App",
+ "icon": "quantity-1",
+ "indicator_color": "",
+ "restrict_to_domain": null,
+ "hide_custom": 1,
+ "public": 1,
+ "is_hidden": 0,
+ "content": "[{\"id\": \"cgy-0\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\">CGY Embroidery</span>\", \"col\": 12}}, {\"id\": \"cgy-1\", \"type\": \"paragraph\", \"data\": {\"text\": \"<span class=\\\"h4\\\">Quick Access</span>\", \"col\": 12}}, {\"id\": \"cgy-2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Embroidery\", \"col\": 3}}, {\"id\": \"cgy-3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Grando\", \"col\": 3}}, {\"id\": \"cgy-4\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Artist Card\", \"col\": 3}}, {\"id\": \"cgy-5\", \"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"id\": \"cgy-6\", \"type\": \"card\", \"data\": {\"card_name\": \"Not Started\", \"col\": 3}}, {\"id\": \"cgy-7\", \"type\": \"card\", \"data\": {\"card_name\": \"In Progress\", \"col\": 3}}, {\"id\": \"cgy-8\", \"type\": \"card\", \"data\": {\"card_name\": \"On Hold\", \"col\": 3}}, {\"id\": \"cgy-9\", \"type\": \"card\", \"data\": {\"card_name\": \"Done\", \"col\": 3}}]",
+ "doctype": "Workspace",
+ "shortcuts": [
+  {
+   "docstatus": 0,
+   "idx": 1,
+   "type": "DocType",
+   "link_to": "Work Order",
+   "url": null,
+   "doc_view": "List",
+   "kanban_board": null,
+   "label": "Embroidery",
+   "icon": null,
+   "restrict_to_domain": null,
+   "report_ref_doctype": null,
+   "stats_filter": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"EMBROIDERY\", false]]",
+   "color": "Blue",
+   "format": null,
+   "doctype": "Workspace Shortcut"
+  },
+  {
+   "docstatus": 0,
+   "idx": 2,
+   "type": "DocType",
+   "link_to": "Work Order",
+   "url": null,
+   "doc_view": "List",
+   "kanban_board": null,
+   "label": "Grando",
+   "icon": null,
+   "restrict_to_domain": null,
+   "report_ref_doctype": null,
+   "stats_filter": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"SUBLI PRINTING-GRANDO\", false]]",
+   "color": "Blue",
+   "format": null,
+   "doctype": "Workspace Shortcut"
+  },
+  {
+   "docstatus": 0,
+   "idx": 3,
+   "type": "DocType",
+   "link_to": "Artist Card",
+   "url": null,
+   "doc_view": "List",
+   "kanban_board": null,
+   "label": "Artist Card",
+   "icon": null,
+   "restrict_to_domain": null,
+   "report_ref_doctype": null,
+   "stats_filter": "[]",
+   "color": "Grey",
+   "format": null,
+   "doctype": "Workspace Shortcut"
+  }
+ ],
+ "custom_blocks": [],
+ "links": [
+  {
+   "type": "Card Break",
+   "label": "Not Started",
+   "link_count": 2,
+   "idx": 1
+  },
+  {
+   "type": "Link",
+   "label": "Embroidery",
+   "link_type": "DocType",
+   "link_to": "Work Order",
+   "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"EMBROIDERY\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"Not Started\", false]]",
+   "custom_card_show_count": 1,
+   "custom_card_count_color": "Red",
+   "idx": 2
+  },
+  {
+   "type": "Link",
+   "label": "Grando",
+   "link_type": "DocType",
+   "link_to": "Work Order",
+   "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"SUBLI PRINTING-GRANDO\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"Not Started\", false]]",
+   "custom_card_show_count": 1,
+   "custom_card_count_color": "Red",
+   "idx": 3
+  },
+  {
+   "type": "Card Break",
+   "label": "In Progress",
+   "link_count": 2,
+   "idx": 4
+  },
+  {
+   "type": "Link",
+   "label": "Embroidery",
+   "link_type": "DocType",
+   "link_to": "Work Order",
+   "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"EMBROIDERY\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"In Progress\", false]]",
+   "custom_card_show_count": 1,
+   "custom_card_count_color": "Yellow",
+   "idx": 5
+  },
+  {
+   "type": "Link",
+   "label": "Grando",
+   "link_type": "DocType",
+   "link_to": "Work Order",
+   "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"SUBLI PRINTING-GRANDO\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"In Progress\", false]]",
+   "custom_card_show_count": 1,
+   "custom_card_count_color": "Yellow",
+   "idx": 6
+  },
+  {
+   "type": "Card Break",
+   "label": "On Hold",
+   "link_count": 2,
+   "idx": 7
+  },
+  {
+   "type": "Link",
+   "label": "Embroidery",
+   "link_type": "DocType",
+   "link_to": "Work Order",
+   "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"EMBROIDERY\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"On Hold\", false]]",
+   "custom_card_show_count": 1,
+   "custom_card_count_color": "Orange",
+   "idx": 8
+  },
+  {
+   "type": "Link",
+   "label": "Grando",
+   "link_type": "DocType",
+   "link_to": "Work Order",
+   "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"SUBLI PRINTING-GRANDO\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"On Hold\", false]]",
+   "custom_card_show_count": 1,
+   "custom_card_count_color": "Orange",
+   "idx": 9
+  },
+  {
+   "type": "Card Break",
+   "label": "Done",
+   "link_count": 2,
+   "idx": 10
+  },
+  {
+   "type": "Link",
+   "label": "Embroidery",
+   "link_type": "DocType",
+   "link_to": "Work Order",
+   "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"EMBROIDERY\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"Done\", false]]",
+   "custom_card_show_count": 1,
+   "custom_card_count_color": "Green",
+   "idx": 11
+  },
+  {
+   "type": "Link",
+   "label": "Grando",
+   "link_type": "DocType",
+   "link_to": "Work Order",
+   "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"SUBLI PRINTING-GRANDO\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"Done\", false]]",
+   "custom_card_show_count": 1,
+   "custom_card_count_color": "Green",
+   "idx": 12
+  }
+ ],
+ "number_cards": [],
+ "quick_lists": [],
+ "roles": [
+  {
+   "docstatus": 0,
+   "idx": 1,
+   "role": "CMv2 WL Embroidery",
+   "doctype": "Has Role"
+  },
+  {
+   "docstatus": 0,
+   "idx": 2,
+   "role": "CM Embroidery Workstation Leader",
+   "doctype": "Has Role"
+  },
+  {
+   "docstatus": 0,
+   "idx": 3,
+   "role": "CMv2 Artist",
+   "doctype": "Has Role"
+  },
+  {
+   "docstatus": 0,
+   "idx": 4,
+   "role": "CMv2 Production Coordinator",
+   "doctype": "Has Role"
+  }
+ ],
+ "charts": []
+}
