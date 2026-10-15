@@ -16,3 +16,5 @@ cardmasters_app.cardmasters_app.patches.add_soa_templates
 cardmasters_app.cardmasters_app.patches.add_sales_order_soa_template
 
 cardmasters_app.cardmasters_app.patches.separate_company_automation_settings
+
+cardmasters_app.cardmasters_app.patches.migrate_damage_tier_rule_to_child_table
