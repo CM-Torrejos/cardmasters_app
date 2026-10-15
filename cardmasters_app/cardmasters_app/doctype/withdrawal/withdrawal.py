@@ -31,6 +31,7 @@ class Withdrawal(Document):
 			# Transfer references are created exclusively during submission.
 			for row in self.work_orders:
 				row.stock_entry = None
+				row.allowance_stock_entry = None
 
 	def calculate_allocation(self, strict=False):
 		scale = 10 ** self.quantity_precision()
@@ -143,32 +144,42 @@ class Withdrawal(Document):
 			grouped[row.work_order].append(row)
 		for name in sorted(grouped):
 			wo = orders[name]
-			qty = flt(sum(Decimal(str(row.withdrawal_qty)) for row in grouped[name]), self.quantity_precision())
+			net_qty = flt(sum(Decimal(str(row.net_print_qty)) for row in grouped[name]), self.quantity_precision())
+			allowance_qty = flt(sum(Decimal(str(row.allocated_allowance_qty)) for row in grouped[name]), self.quantity_precision())
 			transferred = frappe.db.sql("""select coalesce(sum(fg_completed_qty), 0)
 				from `tabStock Entry` where work_order=%s and purpose=%s and docstatus=1
 				for update""", (name, TRANSFER_PURPOSE))[0][0]
-			entry = frappe.new_doc("Stock Entry")
-			entry.update({"stock_entry_type": TRANSFER_PURPOSE, "purpose": TRANSFER_PURPOSE,
-				"company": self.company, "work_order": name, "bom_no": wo.bom_no, "from_bom": 1,
-				"fg_completed_qty": max(0, flt(wo.qty) - flt(transferred)),
-				"from_warehouse": self.source_warehouse, "to_warehouse": self.wip_warehouse,
-				"posting_date": self.posting_date, "posting_time": self.posting_time, "set_posting_time": 1,
-				"project": wo.project, "custom_withdrawal": self.name,
-				"remarks": _("Generated from Withdrawal {0}.").format(self.name) + ("\n" + self.remarks if self.remarks else "")})
-			details = entry.get_item_details(frappe._dict(item_code=self.item, qty=qty, uom=self.uom))
-			details.update(item_code=self.item, qty=qty, uom=self.uom, stock_uom=self.stock_uom,
-				conversion_factor=1, s_warehouse=self.source_warehouse, t_warehouse=self.wip_warehouse)
-			entry.append("items", details)
-			entry.flags.withdrawal_creation = self.name
-			entry.insert()
-			entry.submit()
+			entry = self.create_transfer(wo, net_qty, max(0, flt(wo.qty) - flt(transferred)), "Net Material")
+			# Allowance carries material and cost, but never advances the WO's BOM quantity twice.
+			allowance_entry = self.create_transfer(wo, allowance_qty, 0, "Allowance") if allowance_qty else None
 			for row in grouped[name]:
 				row.db_set("stock_entry", entry.name, update_modified=False)
+				row.db_set("allowance_stock_entry", allowance_entry.name if allowance_entry else None, update_modified=False)
+
+	def create_transfer(self, wo, qty, fg_completed_qty, component):
+		entry = frappe.new_doc("Stock Entry")
+		entry.update({"stock_entry_type": TRANSFER_PURPOSE, "purpose": TRANSFER_PURPOSE,
+			"company": self.company, "work_order": wo.name, "bom_no": wo.bom_no, "from_bom": 1,
+			"fg_completed_qty": fg_completed_qty,
+			"from_warehouse": self.source_warehouse, "to_warehouse": self.wip_warehouse,
+			"posting_date": self.posting_date, "posting_time": self.posting_time, "set_posting_time": 1,
+			"project": wo.project, "custom_withdrawal": self.name, "custom_withdrawal_component": component,
+			"remarks": _("{0} transfer from Withdrawal {1}.").format(component, self.name)
+				+ ("\n" + self.remarks if self.remarks else "")})
+		details = entry.get_item_details(frappe._dict(item_code=self.item, qty=qty, uom=self.uom))
+		details.update(item_code=self.item, qty=qty, uom=self.uom, stock_uom=self.stock_uom,
+			conversion_factor=1, s_warehouse=self.source_warehouse, t_warehouse=self.wip_warehouse)
+		entry.append("items", details)
+		entry.flags.withdrawal_creation = self.name
+		entry.insert()
+		entry.submit()
+		return entry
 
 	def before_cancel(self):
 		self.get_work_orders()
-		entries = frappe.get_all("Stock Entry", filters={"custom_withdrawal": self.name}, fields=["name", "docstatus"], order_by="name desc")
-		linked = {row.stock_entry for row in self.work_orders if row.stock_entry}
+		entries = frappe.get_all("Stock Entry", filters={"custom_withdrawal": self.name}, fields=["name", "docstatus"], order_by="creation desc, name desc")
+		linked = {row.get(field) for row in self.work_orders
+			for field in ("stock_entry", "allowance_stock_entry") if row.get(field)}
 		if linked != {entry.name for entry in entries}:
 			frappe.throw(_("Generated material transfer links are inconsistent. Resolve them before cancellation."))
 		for entry in entries:

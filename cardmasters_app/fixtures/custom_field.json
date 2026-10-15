@@ -19036,5 +19036,37 @@
   "translatable": 0,
   "unique": 0,
   "width": null
+ },
+ {
+  "doctype": "Custom Field",
+  "name": "Stock Entry-custom_withdrawal",
+  "dt": "Stock Entry",
+  "fieldname": "custom_withdrawal",
+  "label": "Withdrawal",
+  "fieldtype": "Link",
+  "options": "Withdrawal",
+  "insert_after": "work_order",
+  "read_only": 1,
+  "no_copy": 1,
+  "search_index": 1,
+  "is_system_generated": 0,
+  "module": "Cardmasters App"
+ },
+ {
+  "doctype": "Custom Field",
+  "name": "Stock Entry-custom_withdrawal_component",
+  "dt": "Stock Entry",
+  "fieldname": "custom_withdrawal_component",
+  "label": "Withdrawal Component",
+  "fieldtype": "Select",
+  "options": "\nNet Material\nAllowance",
+  "insert_after": "custom_withdrawal",
+  "read_only": 1,
+  "no_copy": 1,
+  "in_standard_filter": 1,
+  "depends_on": "eval:doc.custom_withdrawal",
+  "is_system_generated": 0,
+  "module": "Cardmasters App",
+  "in_list_view": 1
  }
 ]

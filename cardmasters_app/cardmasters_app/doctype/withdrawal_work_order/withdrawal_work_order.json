@@ -11,7 +11,8 @@
   "allowance_share_pct",
   "allocated_allowance_qty",
   "withdrawal_qty",
-  "stock_entry"
+  "stock_entry",
+  "allowance_stock_entry"
  ],
  "fields": [
   {
@@ -59,10 +60,20 @@
   {
    "fieldname": "stock_entry",
    "fieldtype": "Link",
-   "label": "Material Transfer for Manufacture",
+   "label": "Net Material Transfer",
    "options": "Stock Entry",
    "read_only": 1,
-   "no_copy": 1
+   "no_copy": 1,
+   "description": "Net material transfer for new withdrawals. Older withdrawals may link a combined net material and allowance transfer."
+  },
+  {
+   "fieldname": "allowance_stock_entry",
+   "fieldtype": "Link",
+   "label": "Allowance Transfer",
+   "options": "Stock Entry",
+   "read_only": 1,
+   "no_copy": 1,
+   "description": "Separate transfer for this work order’s proportional share of normal allowance. Empty when no allowance is allocated."
   }
  ],
  "grid_page_length": 50,
