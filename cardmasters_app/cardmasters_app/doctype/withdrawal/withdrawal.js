@@ -54,7 +54,14 @@ frappe.ui.form.on("Withdrawal", {
 			frm.set_value("company", frappe.defaults.get_user_default("Company"));
 		}
 	},
-	refresh: update_withdrawal_allocation,
+	refresh(frm) {
+		update_withdrawal_allocation(frm);
+		if (!frm.is_new() && frm.doc.docstatus !== 0) {
+			frm.add_custom_button(__("Material Transfers"), () => {
+				frappe.set_route("List", "Stock Entry", { custom_withdrawal: frm.doc.name });
+			});
+		}
+	},
 	planned_withdrawal_qty: update_withdrawal_allocation,
 	validate: update_withdrawal_allocation,
 });

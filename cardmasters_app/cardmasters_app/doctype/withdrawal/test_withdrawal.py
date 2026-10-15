@@ -17,6 +17,12 @@ class TestWithdrawal(TestCase):
 		self.throw = patch("frappe.throw", side_effect=frappe.ValidationError)
 		self.throw.start()
 		self.addCleanup(self.throw.stop)
+		# Posting tests mock the DB; keep numeric rounding independent of those mocks.
+		original_settings = frappe.get_system_settings
+		settings = patch("frappe.get_system_settings", side_effect=lambda key, *args, **kwargs:
+			"Commercial Rounding" if key == "rounding_method" else original_settings(key, *args, **kwargs))
+		settings.start()
+		self.addCleanup(settings.stop)
 
 	def doc(self, quantity, rows):
 		return frappe.get_doc({"doctype": "Withdrawal", "planned_withdrawal_qty": quantity,
@@ -130,11 +136,48 @@ class TestWithdrawal(TestCase):
 			db.sql.return_value = [(2,)]
 			with patch("frappe.model.document.Document.db_set") as db_set:
 				doc.on_submit()
-				self.assertEqual(db_set.call_count, 3)
-		self.assertEqual(len(entries), 2)
-		self.assertEqual([entry.append.call_args.args[1].qty for entry in entries], [6.25, 3.75])
+				self.assertEqual(db_set.call_count, 6)
+		self.assertEqual(len(entries), 4)
+		self.assertEqual([entry.append.call_args.args[1].qty for entry in entries], [5, 1.25, 3, .75])
+		self.assertEqual([entry.update.call_args.args[0]["custom_withdrawal_component"] for entry in entries],
+			["Net Material", "Allowance", "Net Material", "Allowance"])
 		for entry in entries:
 			self.assertEqual(entry.update.call_args.args[0]["fg_completed_qty"], 0)
 			self.assertEqual(entry.update.call_args.args[0]["custom_withdrawal"], doc.name)
 			entry.insert.assert_called_once()
 			entry.submit.assert_called_once()
+
+	def test_allowance_does_not_advance_bom_quantity_and_zero_allowance_is_skipped(self):
+		for total, expected in [(10, [(8, 2, "Net Material"), (2, 0, "Allowance")]),
+			(8, [(8, 2, "Net Material")])]:
+			with self.subTest(total=total):
+				doc = self.doc(total, [("A", 5), ("A", 3)])
+				doc.name = "WD-TEST"
+				doc.calculate_allocation(strict=True)
+				wo = frappe._dict(name="A", qty=2)
+				doc.flags.withdrawal_work_orders = {"A": wo}
+				with patch("frappe.db", new=MagicMock()) as db, \
+					patch.object(doc, "create_transfer", return_value=frappe._dict(name="STE")) as create, \
+					patch("frappe.model.document.Document.db_set") as db_set:
+					db.sql.return_value = [(0,)]
+					doc.on_submit()
+					self.assertEqual([call.args[1:] for call in create.call_args_list], expected)
+					if total == 8:
+						self.assertTrue(any(call.args == ("allowance_stock_entry", None)
+							for call in db_set.call_args_list))
+
+	def test_cancellation_includes_allowance_and_accepts_legacy_combined_transfers(self):
+		for allowance in (None, "ALLOWANCE"):
+			with self.subTest(allowance=allowance):
+				doc = self.doc(10, [("A", 8)])
+				doc.name = "WD-TEST"
+				doc.work_orders[0].stock_entry = "NET"
+				doc.work_orders[0].allowance_stock_entry = allowance
+				entries = [frappe._dict(name=name, docstatus=1) for name in (allowance, "NET") if name]
+				transfers = {entry.name: MagicMock(flags=frappe._dict()) for entry in entries}
+				with patch.object(doc, "get_work_orders"), patch("frappe.get_all", return_value=entries), \
+					patch("frappe.get_doc", side_effect=lambda dt, name, **kw: transfers[name]):
+					doc.before_cancel()
+				for entry in transfers.values():
+					entry.cancel.assert_called_once()
+					self.assertEqual(entry.flags.withdrawal_cancellation, doc.name)
