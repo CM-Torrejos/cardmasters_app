@@ -2,69 +2,6 @@
  {
   "docstatus": 0,
   "doctype": "Workflow Action Master",
-  "modified": "2026-05-11 11:13:40.025205",
-  "name": "For Withdrawal",
-  "workflow_action_name": "For Withdrawal"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow Action Master",
-  "modified": "2026-06-22 10:47:04.933922",
-  "name": "Revert to Layout",
-  "workflow_action_name": "Revert to Layout"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow Action Master",
-  "modified": "2026-06-27 08:45:00.135518",
-  "name": "For Holding",
-  "workflow_action_name": "For Holding"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow Action Master",
-  "modified": "2026-06-27 08:46:50.523403",
-  "name": "For Disposition",
-  "workflow_action_name": "For Disposition"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow Action Master",
-  "modified": "2026-06-27 08:47:15.050156",
-  "name": "Progress Disposition",
-  "workflow_action_name": "Progress Disposition"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow Action Master",
-  "modified": "2026-06-27 08:47:27.543660",
-  "name": "Resolve",
-  "workflow_action_name": "Resolve"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow Action Master",
-  "modified": "2026-03-03 13:03:30.062039",
-  "name": "Revert to Draft",
-  "workflow_action_name": "Revert to Draft"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow Action Master",
-  "modified": "2026-03-04 11:14:24.649895",
-  "name": "Revert to Not Started",
-  "workflow_action_name": "Revert to Not Started"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow Action Master",
-  "modified": "2025-09-22 13:49:31.526488",
-  "name": "Redo BOM",
-  "workflow_action_name": "Redo BOM"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow Action Master",
   "modified": "2026-02-05 10:08:55.219406",
   "name": "Partially Conclude Production",
   "workflow_action_name": "Partially Conclude Production"
@@ -439,5 +376,68 @@
   "modified": "2026-05-26 09:56:15.546241",
   "name": "Revert to Consumption",
   "workflow_action_name": "Revert to Consumption"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-05-11 11:13:40.025205",
+  "name": "For Withdrawal",
+  "workflow_action_name": "For Withdrawal"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-06-22 10:47:04.933922",
+  "name": "Revert to Layout",
+  "workflow_action_name": "Revert to Layout"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-06-27 08:45:00.135518",
+  "name": "For Holding",
+  "workflow_action_name": "For Holding"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-06-27 08:46:50.523403",
+  "name": "For Disposition",
+  "workflow_action_name": "For Disposition"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-06-27 08:47:15.050156",
+  "name": "Progress Disposition",
+  "workflow_action_name": "Progress Disposition"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-06-27 08:47:27.543660",
+  "name": "Resolve",
+  "workflow_action_name": "Resolve"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-03-03 13:03:30.062039",
+  "name": "Revert to Draft",
+  "workflow_action_name": "Revert to Draft"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-03-04 11:14:24.649895",
+  "name": "Revert to Not Started",
+  "workflow_action_name": "Revert to Not Started"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-09-22 13:49:31.526488",
+  "name": "Redo BOM",
+  "workflow_action_name": "Redo BOM"
  }
 ]
