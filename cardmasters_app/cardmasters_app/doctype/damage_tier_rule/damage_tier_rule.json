@@ -17,53 +17,46 @@
    "default": "0",
    "fieldname": "is_active",
    "fieldtype": "Check",
+   "in_list_view": 1,
    "label": "Is Active"
   },
   {
    "fieldname": "tier_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Tier Name",
    "unique": 1
   },
   {
    "fieldname": "minimum_amount",
    "fieldtype": "Currency",
+   "in_list_view": 1,
    "label": "Minimum Amount"
   },
   {
    "fieldname": "maximum_amount",
    "fieldtype": "Currency",
+   "in_list_view": 1,
    "label": "Maximum Amount"
   },
   {
    "fieldname": "points_to_assign",
    "fieldtype": "Float",
+   "in_list_view": 1,
    "label": "Points to Assign"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
+ "istable": 1,
  "links": [],
- "modified": "2026-10-08 14:08:59.755186",
+ "modified": "2026-10-13 13:57:16.749079",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damage Tier Rule",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
- "permissions": [
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "System Manager",
-   "share": 1,
-   "write": 1
-  }
- ],
+ "permissions": [],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
  "sort_field": "modified",
