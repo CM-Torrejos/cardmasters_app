@@ -17,9 +17,13 @@ def get_columns():
     ]
 
 def get_data(filters):
+    # Added "docstatus": 1 to exclusively fetch submitted ledgers
     ledgers = frappe.db.get_all(
         "Damage Point Ledger",
-        filters={"status": "Active"},
+        filters={
+            "status": "Active",
+            "docstatus": 1 
+        },
         fields=["employee", "points", "incident_date"],
         order_by="incident_date asc"
     )
