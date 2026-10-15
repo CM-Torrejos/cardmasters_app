@@ -7,22 +7,8 @@ from frappe.utils import flt
 
 class DamagesandReturns(Document):
 	def validate(self):
-		# 1. Detect if we need to force a recalculation
-		needs_recalc = False
-		if self.is_new():
-			needs_recalc = True
-		else:
-			old_doc = self.get_doc_before_save()
-			if old_doc:
-				# Check if the total value changed
-				if flt(old_doc.value_of_damages) != flt(self.value_of_damages):
-					needs_recalc = True
-				else:
-					# Check if the list of employees changed (added or removed)
-					old_emps = {row.employee for row in (old_doc.point_persons or []) if row.employee}
-					new_emps = {row.employee for row in (self.point_persons or []) if row.employee}
-					if old_emps != new_emps:
-						needs_recalc = True
+		# detect if need to force recalculation
+		needs_recalc = self.needs_recalculation()
 
 		# 2. Synchronize Point Persons with Charge Employee
 		self.sync_charge_employees(needs_recalc)
@@ -103,6 +89,27 @@ class DamagesandReturns(Document):
 					self.create_and_submit_ledger(emp)
 
 	# --- HELPER METHODS ---
+
+	def needs_recalculation(self) -> bool:
+		if self.is_new():
+			return True
+
+		old_doc = self.get_doc_before_save()
+		if not old_doc:
+			return True
+		
+		# damage value changed
+		if flt(old_doc.value_of_damages) != flt(self.value_of_damages):
+			return True
+
+		# point person exist, but charge employee table is empty
+		if self.point_persons and not self.charge_employee:
+			return True
+		
+		# point person roster changed (added or removed)
+		old_emps = {row.employee for row in (old_doc.point_persons or []) if row.employee}
+		new_emps = {row.employee for row in (self.point_persons or []) if row.employee}
+		return old_emps != new_emps
 
 	def cancel_all_active_ledgers(self, reason: str):
 		"""Cancels all submitted ledgers attached to this document."""
