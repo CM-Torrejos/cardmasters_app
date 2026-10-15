@@ -4,7 +4,14 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "months_required_for_reset"
+  "months_required_for_reset",
+  "column_break_mnui",
+  "trigger_workflow_state",
+  "cancel_workflow_state",
+  "section_break_vhtm",
+  "error_type",
+  "tier_rule_tab",
+  "damage_tier_rules"
  ],
  "fields": [
   {
@@ -12,13 +19,51 @@
    "fieldname": "months_required_for_reset",
    "fieldtype": "Int",
    "label": "Months Required for Reset"
+  },
+  {
+   "description": "Add the error types that should trigger damage point calculation. ",
+   "fieldname": "error_type",
+   "fieldtype": "Table",
+   "label": "Error Type",
+   "options": "Damages and Returns Error Type Table"
+  },
+  {
+   "fieldname": "column_break_mnui",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "trigger_workflow_state",
+   "fieldtype": "Link",
+   "label": "Trigger Workflow State",
+   "options": "Workflow State"
+  },
+  {
+   "fieldname": "cancel_workflow_state",
+   "fieldtype": "Link",
+   "label": "Cancel Workflow State",
+   "options": "Workflow State"
+  },
+  {
+   "fieldname": "section_break_vhtm",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "tier_rule_tab",
+   "fieldtype": "Tab Break",
+   "label": "Tier Rule"
+  },
+  {
+   "fieldname": "damage_tier_rules",
+   "fieldtype": "Table",
+   "label": "Damage Tier Rules",
+   "options": "Damage Tier Rule"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-10-08 13:47:09.868684",
+ "modified": "2026-10-13 14:01:22.936310",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damage Point Settings",

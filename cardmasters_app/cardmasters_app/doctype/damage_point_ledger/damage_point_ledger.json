@@ -11,47 +11,68 @@
   "reference_document",
   "points",
   "status",
-  "reset_date"
+  "reset_date",
+  "amended_from"
  ],
  "fields": [
   {
    "fieldname": "employee",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Employee",
-   "options": "Employee"
+   "options": "Employee",
+   "reqd": 1
   },
   {
    "fieldname": "incident_date",
    "fieldtype": "Date",
-   "label": "Incident Date"
+   "in_list_view": 1,
+   "label": "Incident Date",
+   "reqd": 1
   },
   {
    "fieldname": "reference_document",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Reference Document",
-   "options": "Damages and Returns"
+   "options": "Damages and Returns",
+   "reqd": 1
   },
   {
    "fieldname": "points",
    "fieldtype": "Float",
-   "label": "Points"
+   "in_list_view": 1,
+   "label": "Points",
+   "reqd": 1
   },
   {
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Active\nReset"
+   "options": "Active\nReset",
+   "reqd": 1
   },
   {
    "fieldname": "reset_date",
    "fieldtype": "Date",
    "label": "Reset Date"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Damage Point Ledger",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2026-10-08 14:58:55.620683",
+ "modified": "2026-10-13 11:02:57.299029",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damage Point Ledger",
@@ -75,5 +96,6 @@
  "rows_threshold_for_grid_search": 20,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1
 }

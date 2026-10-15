@@ -15,8 +15,10 @@ def get_columns():
     ]
 
 def get_data(filters):
-    # Setup conditions based on the filter
-    query_filters = {}
+    # Setup conditions based on the filter.
+    # Set docstatus to 1 to exclusively fetch submitted ledgers.
+    query_filters = {"docstatus": 1}
+    
     if filters and filters.get("employee"):
         query_filters["employee"] = filters.get("employee")
         
