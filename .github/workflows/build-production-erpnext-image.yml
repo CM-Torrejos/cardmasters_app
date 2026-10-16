@@ -69,6 +69,51 @@ jobs:
           echo "Building cardmasters_app ref: $APP_REF"
           echo "Publishing image tag: $IMAGE_TAG"
           echo "No cache: $NO_CACHE"
+      - name: Checkout app for version validation
+        uses: actions/checkout@v6
+        with:
+          repository: CM-Torrejos/cardmasters_app
+          ref: ${{ env.APP_REF }}
+          path: app_version_check
+          persist-credentials: false
+
+      - name: Validate release version
+        shell: python
+        run: |
+          import ast
+          import os
+          import re
+          from pathlib import Path
+
+          source = Path("app_version_check/cardmasters_app/__init__.py")
+          versions = []
+          for node in ast.parse(source.read_text()).body:
+              if isinstance(node, ast.Assign) and any(
+                  isinstance(target, ast.Name) and target.id == "__version__"
+                  for target in node.targets
+              ):
+                  versions.append(ast.literal_eval(node.value))
+          if len(versions) != 1 or not isinstance(versions[0], str) or not re.fullmatch(
+              r"[0-9]+\.[0-9]+\.[0-9]+(?:[a-zA-Z0-9.+-]*)", versions[0]
+          ):
+              raise SystemExit("::error::Expected one literal __version__ string in cardmasters_app/__init__.py.")
+
+          version = versions[0]
+          app_ref = os.environ["APP_REF"].removeprefix("refs/tags/")
+          image_tag = os.environ["IMAGE_TAG"]
+          for label, ref in (("app_ref", app_ref), ("image_tag", image_tag)):
+              is_release = re.match(r"v?[0-9]+\.[0-9]+\.[0-9]+", ref)
+              if label == "app_ref" and os.environ["GITHUB_EVENT_NAME"] == "push":
+                  is_release = True
+              if is_release and ref.removeprefix("v") != version:
+                  raise SystemExit(
+                      f"::error::{label} {ref} does not match __version__ {version}. "
+                      "Update cardmasters_app/__init__.py, commit, and create a matching release tag before building."
+                  )
+          print(f"Validated cardmasters_app version: {version}")
+          with open(os.environ["GITHUB_ENV"], "a") as env_file:
+              env_file.write(f"APP_VERSION={version}\n")
+
       - name: Checkout frappe_docker
         uses: actions/checkout@v6
         with:
@@ -160,6 +205,7 @@ jobs:
             echo "| Field | Value |"
             echo "| --- | --- |"
             echo "| cardmasters_app ref | \`${APP_REF}\` |"
+            echo "| cardmasters_app version | \`${APP_VERSION}\` |"
             echo "| image tag | \`${IMAGE_NAME}:${IMAGE_TAG}\` |"
             echo "| image digest | \`${{ steps.build.outputs.digest }}\` |"
             echo "| no cache | \`${NO_CACHE}\` |"
