@@ -41,7 +41,7 @@ function show_quotation_update_details(frm) {
 		size: 'extra-large',
 		fields: [{
 			fieldname: 'items', fieldtype: 'Table', label: __('Items'), reqd: 1,
-			cannot_add_rows: !frappe.model.can_create('Quotation'), cannot_delete_rows: false,
+			cannot_add_rows: !frappe.model.can_create('Quotation'), cannot_delete_rows: !frm.has_perm('write'),
 			in_place_edit: false, data,
 			fields: [
 				{ fieldname: 'docname', fieldtype: 'Data', hidden: 1, read_only: 1 },

@@ -126,7 +126,7 @@ test('Quotation sends particulars without deprecated specifics and reloads only 
 		call: async options => { request = options; return failure ? { exc: 'failed' } : { message: { updated: true } }; },
 		show_alert() {}
 	});
-	const frm = { is_dirty: () => false, doc: { name: 'QTN-1', modified: 'original',
+	const frm = { is_dirty: () => false, has_perm: () => true, doc: { name: 'QTN-1', modified: 'original',
 		items: [{ name: 'ROW-1', item_code: 'ITEM-1', custom_particulars: 'Old particulars', custom_item_specifics: 'Legacy value' }] },
 		reload_doc: async () => { reloads++; } };
 	context.show_quotation_update_details(frm);
@@ -147,6 +147,26 @@ test('Quotation sends particulars without deprecated specifics and reloads only 
 	assert.equal(request.args.items[0].custom_item_specifics, undefined);
 	assert.equal(reloads, 1);
 	assert.equal(dialog.hidden, true);
+});
+
+test('Quotation writers can remove rows without Cancel or Delete permission', () => {
+	let dialog;
+	const context = load('quotation.js', {
+		ui: { form: { on() {} }, Dialog: class {
+			constructor(options) { Object.assign(this, options); dialog = this; }
+			show() {}
+		} },
+		model: { can_create: () => true }, get_meta: () => ({ fields: [] })
+	});
+	for (const [write, cancel, remove] of [[true, false, false], [true, false, true],
+		[true, true, false], [true, true, true], [false, true, true]]) {
+		const permissions = { write, cancel, delete: remove };
+		context.show_quotation_update_details({
+			is_dirty: () => false, has_perm: permission => permissions[permission],
+			doc: { name: 'QTN-1', modified: 'original', items: [] }
+		});
+		assert.equal(dialog.fields[0].cannot_delete_rows, !write);
+	}
 });
 
 

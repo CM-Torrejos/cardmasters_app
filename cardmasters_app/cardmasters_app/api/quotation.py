@@ -9,7 +9,8 @@ from frappe.utils import cstr, get_datetime
 
 @frappe.whitelist()
 def update_details(quotation, items, modified):
-    from erpnext.controllers.accounts_controller import update_child_qty_rate
+    from erpnext.controllers.accounts_controller import update_child_qty_rate, validate_and_delete_children
+    from erpnext.selling.doctype.quotation.quotation import get_ordered_items
 
     doc = frappe.get_doc("Quotation", quotation, for_update=True)
     doc.check_permission("write")
@@ -41,6 +42,16 @@ def update_details(quotation, items, modified):
                     field, _("non-negative") if field == "rate" else _("positive")))
         if not values.get("uom"):
             frappe.throw(_("UOM is required for every row."))
+
+    # Row removal is a write to this Quotation. Core cancels/deletes children as
+    # standalone documents; authorize only these owned rows through the parent write
+    # check above, while retaining core's ordered-item and linked-document checks.
+    removed_rows = [row for name, row in existing.items() if name not in names]
+    if removed_rows:
+        for row in removed_rows:
+            row.check_permission("write")
+            row.flags.ignore_permissions = True
+        validate_and_delete_children(doc, data, get_ordered_items(quotation))
 
     # Core enforces workflow/permissions and ordered-item restrictions, and recalculates totals.
     update_child_qty_rate("Quotation", frappe.as_json(data), quotation, "items")
