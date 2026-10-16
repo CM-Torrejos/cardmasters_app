@@ -1,8 +1,11 @@
-// Copyright (c) 2026, Shan Torrejos and contributors
-// For license information, please see license.txt
-
 frappe.query_reports["HR Damage Point Summary"] = {
-	"filters": [
-
-	]
+    "filters": [
+        {
+            "fieldname": "workstation",
+            "label": __("Workstation Incurred"),
+            "fieldtype": "Link",
+            "options": "Workstation", 
+            "reqd": 0
+        }
+    ]
 };
