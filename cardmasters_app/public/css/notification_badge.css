@@ -1,0 +1,50 @@
+.navbar .dropdown-notifications .notifications-icon {
+	position: relative;
+	overflow: visible;
+}
+
+.navbar .dropdown-notifications .cm-notification-count {
+	position: absolute;
+	top: -3px;
+	right: -7px;
+	min-width: 18px;
+	height: 18px;
+	padding: 0 4px;
+	border: 2px solid var(--navbar-bg, var(--bg-color, #fff));
+	border-radius: 999px;
+	background: #dc2626;
+	color: #fff;
+	font-size: 10px;
+	font-weight: 700;
+	line-height: 14px;
+	text-align: center;
+	pointer-events: none;
+}
+
+.navbar .dropdown-notifications .cm-notification-count[hidden] {
+	display: none;
+}
+
+.navbar .dropdown-notifications .cm-has-unread .es-icon,
+.navbar .dropdown-notifications .cm-has-unread .icon {
+	color: #dc2626;
+	--icon-stroke: #dc2626;
+	--icon-fill: #dc2626;
+	filter: drop-shadow(0 0 4px rgba(220, 38, 38, 0.65));
+}
+
+.navbar .dropdown-notifications .cm-has-unread .cm-notification-count {
+	animation: cm-notification-glow 2s ease-in-out infinite;
+	box-shadow: 0 0 8px rgba(220, 38, 38, 0.55);
+}
+
+@keyframes cm-notification-glow {
+	0%, 100% { box-shadow: 0 0 4px rgba(220, 38, 38, 0.4); }
+	50% { box-shadow: 0 0 12px rgba(220, 38, 38, 0.8); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.navbar .dropdown-notifications .cm-has-unread .cm-notification-count {
+		animation: none;
+	}
+}

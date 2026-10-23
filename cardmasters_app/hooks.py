@@ -80,6 +80,7 @@ override_doctype_class = {
 
 # Global JS files loaded in Desk
 app_include_js = [
+    "/assets/cardmasters_app/js/notification_badge.js",
     "/assets/cardmasters_app/js/soa_preview.js",
     "/assets/cardmasters_app/js/utils.js",
     "/assets/cardmasters_app/js/workspace_filter_routes.js", # Preserve filter DocTypes in workspace links
@@ -90,6 +91,7 @@ app_include_js = [
 
 # Global CSS files loaded in Desk
 app_include_css = [
+    "/assets/cardmasters_app/css/notification_badge.css",
     "/assets/cardmasters_app/css/sales_order_grid.css"
 ]
 
