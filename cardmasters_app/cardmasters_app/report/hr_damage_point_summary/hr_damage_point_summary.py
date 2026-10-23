@@ -11,12 +11,13 @@ def execute(filters=None):
 def get_columns():
     return [
         {"fieldname": "employee_name", "label": "Employee Name", "fieldtype": "Data", "width": 250},
-        {"fieldname": "current_month_points", "label": "Current Month Points", "fieldtype": "Float", "width": 160},
-        {"fieldname": "consecutive_points", "label": "Consecutive Months Points", "fieldtype": "Float", "width": 200},
+        {"fieldname": "current_month_points", "label": "Current Month Points", "fieldtype": "Float", "width": 170},
+        {"fieldname": "consecutive_points", "label": "Consecutive Months Points", "fieldtype": "Float", "width": 210},
         {"fieldname": "consecutive_streak", "label": "Consecutive Months", "fieldtype": "Int", "width": 160},
-        {"fieldname": "total_active_points", "label": "Total Active Points", "fieldtype": "Data", "width": 160},
-        {"fieldname": "total_damage_value", "label": "Total Damage Value", "fieldtype": "Currency", "width": 160},
-        {"fieldname": "total_employee_charge", "label": "Total Employee Charge", "fieldtype": "Currency", "width": 160}
+        {"fieldname": "total_active_points", "label": "Total Active Points", "fieldtype": "Data", "width": 150},
+        {"fieldname": "total_damage_value", "label": "Total Active Damage Value", "fieldtype": "Currency", "width": 200},
+        {"fieldname": "total_employee_charge", "label": "Total Active Employee Charge", "fieldtype": "Currency", "width": 240},
+        {"fieldname": "total_all_points", "label": "All-time Points", "fieldtype": "Float", "width": 120}
     ]
 
 def get_data(filters):
@@ -31,6 +32,15 @@ def get_data(filters):
         order_by="incident_date asc"
     )
     
+    # 2. Fetch the absolute total points (Active + Inactive) per employee efficiently
+    all_points_query = frappe.db.get_all(
+        "Damage Point Ledger",
+        filters={"docstatus": 1},
+        fields=["employee", "sum(points) as total_points"],
+        group_by="employee"
+    )
+    total_points_map = {row.employee: row.total_points for row in all_points_query}
+
     dnr_names = list(set(row.reference_document for row in ledgers if row.reference_document))
     
     dnr_data = {}
@@ -59,7 +69,7 @@ def get_data(filters):
         emp = row.employee
         if emp not in summary:
             summary[emp] = {
-                "total_points": 0.0, 
+                "total_active_points": 0.0, 
                 "current_month_points": 0.0, 
                 "monthly_totals": {},
                 "total_damage_value": 0.0,
@@ -68,7 +78,7 @@ def get_data(filters):
                 "workstations": set() # Track all workstations this employee has incidents in
             }
         
-        summary[emp]["total_points"] += row.points
+        summary[emp]["total_active_points"] += row.points
         
         if row.reference_document and row.reference_document not in summary[emp]["seen_dnrs"]:
             doc_info = dnr_data.get(row.reference_document, {})
@@ -96,8 +106,6 @@ def get_data(filters):
     for emp, stats in summary.items():
         
         # --- SAFE FILTER LOGIC ---
-        # If a filter is applied, only show employees who have an incident at that workstation.
-        # But because this happens AFTER the math, their totals are completely untouched!
         if filter_ws and filter_ws not in stats["workstations"]:
             continue
 
@@ -130,16 +138,17 @@ def get_data(filters):
         emp_link = f"<a href='/app/employee/{emp_encoded}' style='color: var(--text-color); font-weight: 500;'>{emp_name}</a>"
         
         dnr_list = list(stats["seen_dnrs"])
-        total_points = stats["total_points"]
+        total_active = stats["total_active_points"]
+        absolute_total_points = total_points_map.get(emp, 0.0)
         
-        if dnr_list and total_points > 0:
+        if dnr_list and total_active > 0:
             filter_value = json.dumps(["in", dnr_list])
             encoded_filter = urllib.parse.quote(filter_value)
             
             url = f"/app/damages-and-returns?name={encoded_filter}"
-            points_display = f"<a href='{url}' style='color: var(--blue-500); font-weight: bold; text-align: right; display: block;'>{total_points:,.2f}</a>"
+            points_display = f"<a href='{url}' style='color: var(--blue-500); font-weight: bold; text-align: right; display: block;'>{total_active:,.2f}</a>"
         else:
-            points_display = f"<span style='text-align: right; display: block;'>{total_points:,.2f}</span>"
+            points_display = f"<span style='text-align: right; display: block;'>{total_active:,.2f}</span>"
         
         data.append({
             "employee_name": emp_link,
@@ -147,6 +156,7 @@ def get_data(filters):
             "consecutive_points": consecutive_pts,
             "consecutive_streak": streak,
             "total_active_points": points_display,
+            "total_all_points": absolute_total_points,
             "total_damage_value": stats["total_damage_value"],
             "total_employee_charge": stats["total_employee_charge"]
         })
