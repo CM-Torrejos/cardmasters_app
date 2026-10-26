@@ -1,129 +1,137 @@
 {
- "name": "CGY Bulua Cutting",
- "modified": "2026-10-08 13:25:06.961534",
- "docstatus": 0,
- "idx": 1,
- "label": "CGY Bulua Cutting",
- "title": "CGY Bulua Cutting",
- "sequence_id": 20.0,
- "for_user": "",
- "parent_page": "CGY Hub",
- "module": "Cardmasters App",
- "icon": "organization",
- "indicator_color": "green",
- "restrict_to_domain": null,
- "hide_custom": 1,
- "public": 1,
- "is_hidden": 0,
+ "charts": [],
  "content": "[{\"id\": \"cgy-0\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\">CGY Bulua Cutting</span>\", \"col\": 12}}, {\"id\": \"cgy-1\", \"type\": \"paragraph\", \"data\": {\"text\": \"<span class=\\\"h4\\\">Quick Access</span>\", \"col\": 12}}, {\"id\": \"cgy-2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Plasma Cutting Jobs\", \"col\": 3}}, {\"id\": \"cgy-3\", \"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"id\": \"cgy-4\", \"type\": \"card\", \"data\": {\"card_name\": \"Not Started\", \"col\": 3}}, {\"id\": \"cgy-5\", \"type\": \"card\", \"data\": {\"card_name\": \"In Progress\", \"col\": 3}}, {\"id\": \"cgy-6\", \"type\": \"card\", \"data\": {\"card_name\": \"On Hold\", \"col\": 3}}, {\"id\": \"cgy-7\", \"type\": \"card\", \"data\": {\"card_name\": \"Done\", \"col\": 3}}]",
- "doctype": "Workspace",
- "shortcuts": [
-  {
-   "docstatus": 0,
-   "idx": 1,
-   "type": "DocType",
-   "link_to": "Work Order",
-   "url": null,
-   "doc_view": "List",
-   "kanban_board": null,
-   "label": "Plasma Cutting Jobs",
-   "icon": null,
-   "restrict_to_domain": null,
-   "report_ref_doctype": null,
-   "stats_filter": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"PLASMA CUTTING\", false]]",
-   "color": "Blue",
-   "format": null,
-   "doctype": "Workspace Shortcut"
-  }
- ],
+ "creation": "2026-10-21 15:03:57.893558",
  "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 1,
+ "icon": "organization",
+ "idx": 1,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "CGY Bulua Cutting",
  "links": [
   {
-   "type": "Card Break",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Not Started",
    "link_count": 1,
-   "idx": 1
+   "onboard": 0,
+   "type": "Card Break"
   },
   {
-   "type": "Link",
-   "label": "Plasma Cutting Jobs",
-   "link_type": "DocType",
-   "link_to": "Work Order",
+   "custom_card_count_color": "Red",
    "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"PLASMA CUTTING\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"Not Started\", false]]",
    "custom_card_show_count": 1,
-   "custom_card_count_color": "Red",
-   "idx": 2
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Plasma Cutting Jobs",
+   "link_count": 0,
+   "link_to": "Work Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   },
   {
-   "type": "Card Break",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "In Progress",
    "link_count": 1,
-   "idx": 3
+   "onboard": 0,
+   "type": "Card Break"
   },
   {
-   "type": "Link",
-   "label": "Plasma Cutting Jobs",
-   "link_type": "DocType",
-   "link_to": "Work Order",
+   "custom_card_count_color": "Yellow",
    "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"PLASMA CUTTING\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"In Progress\", false]]",
    "custom_card_show_count": 1,
-   "custom_card_count_color": "Yellow",
-   "idx": 4
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Plasma Cutting Jobs",
+   "link_count": 0,
+   "link_to": "Work Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   },
   {
-   "type": "Card Break",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "On Hold",
    "link_count": 1,
-   "idx": 5
+   "onboard": 0,
+   "type": "Card Break"
   },
   {
-   "type": "Link",
-   "label": "Plasma Cutting Jobs",
-   "link_type": "DocType",
-   "link_to": "Work Order",
+   "custom_card_count_color": "Orange",
    "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"PLASMA CUTTING\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"On Hold\", false]]",
    "custom_card_show_count": 1,
-   "custom_card_count_color": "Orange",
-   "idx": 6
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Plasma Cutting Jobs",
+   "link_count": 0,
+   "link_to": "Work Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   },
   {
-   "type": "Card Break",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Done",
    "link_count": 1,
-   "idx": 7
+   "onboard": 0,
+   "type": "Card Break"
   },
   {
-   "type": "Link",
-   "label": "Plasma Cutting Jobs",
-   "link_type": "DocType",
-   "link_to": "Work Order",
+   "custom_card_count_color": "Green",
    "custom_card_filters": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"PLASMA CUTTING\", false], [\"Work Order Operation\", \"custom_progress\", \"=\", \"Done\", false]]",
    "custom_card_show_count": 1,
-   "custom_card_count_color": "Green",
-   "idx": 8
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Plasma Cutting Jobs",
+   "link_count": 0,
+   "link_to": "Work Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
+ "modified": "2026-10-26 09:00:30.009302",
+ "modified_by": "Administrator",
+ "module": "Cardmasters App",
+ "name": "CGY Bulua Cutting",
  "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "CGY Hub",
+ "public": 1,
  "quick_lists": [],
  "roles": [
   {
-   "docstatus": 0,
-   "idx": 1,
-   "role": "CMv2 WL Bulua Cutting",
-   "doctype": "Has Role"
+   "role": "CMv2 WL Bulua Cutting"
   },
   {
-   "docstatus": 0,
-   "idx": 2,
-   "role": "CM Bulua Cutting Workstation Leader",
-   "doctype": "Has Role"
+   "role": "CM Bulua Cutting Workstation Leader"
   },
   {
-   "docstatus": 0,
-   "idx": 3,
-   "role": "CMv2 Production Coordinator",
-   "doctype": "Has Role"
+   "role": "CMv2 Production Coordinator"
   }
  ],
- "charts": []
+ "sequence_id": 22.0,
+ "shortcuts": [
+  {
+   "color": "Blue",
+   "doc_view": "List",
+   "label": "Plasma Cutting Jobs",
+   "link_to": "Work Order",
+   "stats_filter": "[[\"Work Order\", \"docstatus\", \"=\", \"1\", false], [\"Work Order\", \"custom_production_branch\", \"=\", \"Cagayan de Oro\", false], [\"Work Order Operation\", \"operation\", \"=\", \"PLASMA CUTTING\", false]]",
+   "type": "DocType"
+  }
+ ],
+ "title": "CGY Bulua Cutting"
 }

@@ -1,7 +1,7 @@
 {
  "charts": [],
- "content": "[{\"id\":\"wNqzQqjcDe\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"IA1FGw682h\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"PNL Stickering and Assembly Jobs\",\"col\":3}},{\"id\":\"dZczi3jpkv\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"f6XFslqstn\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"-1133z3L9T\",\"type\":\"card\",\"data\":{\"card_name\":\"Production Data\",\"col\":4}},{\"id\":\"A8v08dpY27\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}}]",
- "creation": "2025-07-18 14:01:49.296606",
+ "content": "[{\"id\":\"wNqzQqjcDe\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"sOxgxdVxwy\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"PNL Station\",\"col\":3}},{\"id\":\"dZczi3jpkv\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"f6XFslqstn\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"-1133z3L9T\",\"type\":\"card\",\"data\":{\"card_name\":\"Production Data\",\"col\":4}},{\"id\":\"A8v08dpY27\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}}]",
+ "creation": "2026-10-21 15:03:58.706669",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
@@ -14,6 +14,8 @@
  "label": "Packaging and Labels",
  "links": [
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Orders",
@@ -23,6 +25,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Sales Order",
@@ -33,6 +37,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Artist Card",
@@ -43,6 +49,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Work Order",
@@ -53,6 +61,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Job Card",
@@ -63,6 +73,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Production Data",
@@ -72,6 +84,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Operation",
@@ -82,6 +96,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Workstation",
@@ -92,6 +108,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "BOM",
@@ -102,6 +120,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Items and Stock",
@@ -111,6 +131,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Item",
@@ -121,6 +143,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Item Group",
@@ -131,6 +155,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Check Stock Availability",
@@ -142,6 +168,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Material Request",
@@ -152,7 +180,7 @@
    "type": "Link"
   }
  ],
- "modified": "2026-01-09 13:37:21.737511",
+ "modified": "2026-10-26 09:00:31.735252",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Packaging and Labels",
@@ -163,17 +191,26 @@
  "quick_lists": [],
  "roles": [
   {
-   "role": "CM WL Packaging and Labels"
+   "role": "CMv2 WL Packaging and Labels"
+  },
+  {
+   "role": "CM Packaging and Labels Workstation Leader"
+  },
+  {
+   "role": "CMv2 Production Coordinator"
+  },
+  {
+   "role": "CMv2 Office Sales"
   }
  ],
- "sequence_id": 12.0,
+ "sequence_id": 31.0,
  "shortcuts": [
   {
    "color": "Grey",
    "doc_view": "List",
-   "label": "PNL Stickering and Assembly Jobs",
+   "label": "PNL Station",
    "link_to": "Work Order",
-   "stats_filter": "[[\"CM Jobs\",\"job\",\"=\",\"PNL STICKERING AND ASSEMBLY\",false],[\"Work Order\",\"status\",\"!=\",\"Completed\",false]]",
+   "stats_filter": "[[\"Work Order Operation\",\"workstation\",\"=\",\"PNL STATION\",false],[\"Work Order\",\"status\",\"!=\",\"Completed\",false]]",
    "type": "DocType"
   }
  ],

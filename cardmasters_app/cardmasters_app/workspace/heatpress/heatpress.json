@@ -1,7 +1,7 @@
 {
  "charts": [],
- "content": "[{\"id\":\"wNqzQqjcDe\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"IA1FGw682h\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Heatpress Jobs\",\"col\":5}},{\"id\":\"4IXB1k1mxs\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"kqarl-Hsu1\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"m-StJ6H_Vb\",\"type\":\"card\",\"data\":{\"card_name\":\"Production Data\",\"col\":4}},{\"id\":\"pvPgv3Bdnx\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}}]",
- "creation": "2025-06-11 15:02:23.232761",
+ "content": "[{\"id\":\"wNqzQqjcDe\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"IA1FGw682h\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Heatpress Jobs\",\"col\":3}},{\"id\":\"6ddPUqnzDV\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Silkscreen\",\"col\":3}},{\"id\":\"b-uM9GbWuq\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"RISO\",\"col\":3}},{\"id\":\"R1FnGZulmV\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Damages and Returns\",\"col\":3}},{\"id\":\"4IXB1k1mxs\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"kqarl-Hsu1\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"m-StJ6H_Vb\",\"type\":\"card\",\"data\":{\"card_name\":\"Production Data\",\"col\":4}},{\"id\":\"pvPgv3Bdnx\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}}]",
+ "creation": "2026-10-21 15:03:59.031571",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
@@ -14,6 +14,8 @@
  "label": "Heatpress",
  "links": [
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Orders",
@@ -23,6 +25,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Sales Order",
@@ -33,6 +37,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Artist Card",
@@ -43,6 +49,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Work Order",
@@ -53,6 +61,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Job Card",
@@ -63,6 +73,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Production Data",
@@ -72,6 +84,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Operation",
@@ -82,6 +96,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Workstation",
@@ -92,6 +108,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "BOM",
@@ -102,6 +120,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Items and Stock",
@@ -111,6 +131,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Item",
@@ -121,6 +143,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Item Group",
@@ -131,6 +155,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Stock Projected Qty",
@@ -142,6 +168,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Material Request",
@@ -152,7 +180,7 @@
    "type": "Link"
   }
  ],
- "modified": "2026-01-09 13:34:28.073458",
+ "modified": "2026-10-26 09:00:30.452149",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Heatpress",
@@ -163,18 +191,46 @@
  "quick_lists": [],
  "roles": [
   {
-   "role": "CM WL Heatpress"
+   "role": "CM Heatpress Workstation Leader"
+  },
+  {
+   "role": "CMv2 WL Heatpress"
+  },
+  {
+   "role": "CMv2 Production Coordinator"
   }
  ],
- "sequence_id": 6.0,
+ "sequence_id": 25.0,
  "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "RISO",
+   "type": "URL",
+   "url": "https://erp.cardmastersph.com/app/work-order?Work+Order+Operation.operation=RISO"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Damages and Returns",
+   "link_to": "Damages and Returns",
+   "stats_filter": "[[\"Damages and Returns\",\"department\",\"=\",\"Heatpress - CM CDO\",false]]",
+   "type": "DocType"
+  },
   {
    "color": "Grey",
    "doc_view": "List",
    "label": "Heatpress Jobs",
    "link_to": "Work Order",
-   "stats_filter": "[[\"Work Order\",\"status\",\"!=\",\"Completed\",false],[\"CM Jobs\",\"job\",\"=\",\"HEATPRESS\",false]]",
+   "stats_filter": "[[\"Work Order\",\"status\",\"!=\",\"Completed\",false],[\"Work Order Operation\",\"workstation\",\"=\",\"MAIN - HEATPRESS\",false]]",
    "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Silkscreen",
+   "type": "URL",
+   "url": "https://erp.cardmastersph.com/app/work-order?status=%5B%22%21%3D%22%2C%22Completed%22%5D&Work+Order+Operation.operation=SILKSCREEN"
   }
  ],
  "title": "Heatpress"

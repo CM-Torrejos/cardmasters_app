@@ -1,7 +1,7 @@
 {
  "charts": [],
- "content": "[{\"id\":\"wNqzQqjcDe\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"IA1FGw682h\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Fabrication\",\"col\":3}},{\"id\":\"vMIDCadnTs\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Woodworks\",\"col\":3}},{\"id\":\"SOEyUpKDXJ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Woodworks Painting\",\"col\":3}},{\"id\":\"g-tLl4lDzm\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Signage Assembly\",\"col\":3}},{\"id\":\"4IXB1k1mxs\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"kqarl-Hsu1\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"m-StJ6H_Vb\",\"type\":\"card\",\"data\":{\"card_name\":\"Production Data\",\"col\":4}},{\"id\":\"WUYUZoWGug\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}}]",
- "creation": "2025-07-28 01:01:58.157686",
+ "content": "[{\"id\":\"wNqzQqjcDe\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"3SVwAv3Prh\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Installation\",\"col\":3}},{\"id\":\"7AOldSst3C\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Woodworks\",\"col\":3}},{\"id\":\"SOEyUpKDXJ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Woodworks Painting\",\"col\":3}},{\"id\":\"5jDquDKAMd\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Signage Assembly\",\"col\":3}},{\"id\":\"7TvOUbclU7\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Resin\",\"col\":3}},{\"id\":\"KHwes7F4XX\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"For Installation\",\"col\":3}},{\"id\":\"4IXB1k1mxs\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"kqarl-Hsu1\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"m-StJ6H_Vb\",\"type\":\"card\",\"data\":{\"card_name\":\"Production Data\",\"col\":4}},{\"id\":\"WUYUZoWGug\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}}]",
+ "creation": "2026-10-21 15:03:58.912778",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
@@ -14,55 +14,8 @@
  "label": "Woodshop",
  "links": [
   {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Orders",
-   "link_count": 4,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Sales Order",
-   "link_count": 0,
-   "link_to": "Sales Order",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Artist Card",
-   "link_count": 0,
-   "link_to": "Artist Card",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Work Order",
-   "link_count": 0,
-   "link_to": "Work Order",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Job Card",
-   "link_count": 0,
-   "link_to": "Job Card",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Production Data",
@@ -72,6 +25,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Operation",
@@ -82,6 +37,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Workstation",
@@ -92,6 +49,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "BOM",
@@ -102,6 +61,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Items and Stock",
@@ -111,6 +72,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Item",
@@ -121,6 +84,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Item Group",
@@ -131,6 +96,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Check Stock Availability",
@@ -142,6 +109,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Material Request",
@@ -150,9 +119,80 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Orders",
+   "link_count": 5,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Order",
+   "link_count": 0,
+   "link_to": "Sales Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Artist Card",
+   "link_count": 0,
+   "link_to": "Artist Card",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Work Order",
+   "link_count": 0,
+   "link_to": "Work Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Job Card",
+   "link_count": 0,
+   "link_to": "Job Card",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Project",
+   "link_count": 0,
+   "link_to": "Project",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2026-01-09 13:35:37.202156",
+ "modified": "2026-10-26 09:00:30.870090",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Woodshop",
@@ -163,25 +203,44 @@
  "quick_lists": [],
  "roles": [
   {
-   "role": "CM WL Woodshop"
+   "role": "CMv2 WL Woodshop"
+  },
+  {
+   "role": "CM Woodshop Workstation Leader"
+  },
+  {
+   "role": "CMv2 Production Coordinator"
   }
  ],
- "sequence_id": 8.0,
+ "sequence_id": 27.0,
  "shortcuts": [
   {
    "color": "Grey",
    "doc_view": "List",
-   "label": "Fabrication",
-   "link_to": "Work Order",
-   "stats_filter": "[[\"CM Jobs\",\"job\",\"=\",\"FABRICATION\",false],[\"Work Order\",\"status\",\"!=\",\"Completed\",false]]",
-   "type": "DocType"
+   "label": "Signage Assembly",
+   "type": "URL",
+   "url": "https://erp.cardmastersph.com/app/work-order?status=%5B%22%21%3D%22%2C%22Completed%22%5D&Work+Order+Operation.operation=SIGNAGE+ASSEMBLY"
   },
   {
    "color": "Grey",
    "doc_view": "List",
    "label": "Woodworks",
+   "type": "URL",
+   "url": "https://shorturl.at/gfi6U"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Installation",
+   "type": "URL",
+   "url": "https://shorturl.at/pggfW"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "For Installation",
    "link_to": "Work Order",
-   "stats_filter": "[[\"CM Jobs\",\"job\",\"=\",\"WOODWORKS\",false],[\"Work Order\",\"status\",\"!=\",\"Completed\",false]]",
+   "stats_filter": "[[\"Work Order\",\"custom_installation\",\"=\",\"For Installation\",false]]",
    "type": "DocType"
   },
   {
@@ -189,15 +248,15 @@
    "doc_view": "List",
    "label": "Woodworks Painting",
    "link_to": "Work Order",
-   "stats_filter": "[[\"CM Jobs\",\"job\",\"=\",\"WOODWORKS PAINTING\",false],[\"Work Order\",\"status\",\"!=\",\"Completed\",false]]",
+   "stats_filter": "[[\"Work Order Operation\",\"operation\",\"=\",\"WOODWORKS PAINTING\",false],[\"Work Order\",\"status\",\"!=\",\"Completed\",false]]",
    "type": "DocType"
   },
   {
    "color": "Grey",
    "doc_view": "List",
-   "label": "Signage Assembly",
+   "label": "Resin",
    "link_to": "Work Order",
-   "stats_filter": "[[\"CM Jobs\",\"job\",\"=\",\"SIGNAGE ASSEMBLY\",false],[\"Work Order\",\"status\",\"!=\",\"Completed\",false]]",
+   "stats_filter": "[[\"Work Order Operation\",\"operation\",\"=\",\"Resin\",false]]",
    "type": "DocType"
   }
  ],

@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"hoKr7bCodg\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"BuiXFiKdZL\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Assign Sales Order\",\"col\":3}},{\"id\":\"A7YbsZOQOH\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create MR\",\"col\":3}},{\"id\":\"WJo-d33kbR\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Calendar\",\"col\":3}},{\"id\":\"BUFmMij6GO\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"NTXfMeauZv\",\"type\":\"card\",\"data\":{\"card_name\":\"Artist Tools\",\"col\":4}},{\"id\":\"zk1FZGzrcf\",\"type\":\"card\",\"data\":{\"card_name\":\"Other Tools\",\"col\":4}},{\"id\":\"uiZp9NfZde\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}}]",
+ "content": "[{\"id\":\"TzxwryvVAG\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Sales Order Without Artist Cards\",\"col\":4}},{\"id\":\"tZAr9JSX0w\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Unfinished Artist Cards\",\"col\":4}},{\"id\":\"Gtq-DLNtOC\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Pending Client Approval Artist Cards\",\"col\":4}},{\"id\":\"hoKr7bCodg\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"BuiXFiKdZL\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Assign Sales Order\",\"col\":3}},{\"id\":\"dHhQOFp76c\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Work Order\",\"col\":3}},{\"id\":\"A7YbsZOQOH\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create MR\",\"col\":3}},{\"id\":\"WJo-d33kbR\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Calendar\",\"col\":3}},{\"id\":\"l9iDnfi2WH\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"BOM Finished, but No Work order\",\"col\":3}},{\"id\":\"spidE47XOP\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Damage Slip\",\"col\":3}},{\"id\":\"BUFmMij6GO\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"NTXfMeauZv\",\"type\":\"card\",\"data\":{\"card_name\":\"Artist Tools\",\"col\":4}},{\"id\":\"zk1FZGzrcf\",\"type\":\"card\",\"data\":{\"card_name\":\"Other Tools\",\"col\":4}},{\"id\":\"uiZp9NfZde\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}}]",
  "creation": "2025-06-11 09:32:00.916980",
  "custom_blocks": [],
  "docstatus": 0,
@@ -14,6 +14,8 @@
  "label": "Artist Department",
  "links": [
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Other Tools",
@@ -23,6 +25,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Sales Order",
@@ -33,6 +37,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Work Order",
@@ -43,6 +49,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Job Card",
@@ -53,6 +61,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Items and Stock",
@@ -62,6 +72,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Item",
@@ -72,6 +84,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Item Group",
@@ -82,6 +96,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Check Stock Availability",
@@ -93,6 +109,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Material Request",
@@ -103,6 +121,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Artist Tools",
@@ -112,6 +132,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Artist",
@@ -122,6 +144,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Artist Card",
@@ -132,6 +156,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Work Order",
@@ -142,6 +168,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Job Card",
@@ -152,30 +180,76 @@
    "type": "Link"
   }
  ],
- "modified": "2026-01-09 11:54:23.276330",
+ "modified": "2026-10-26 09:00:28.593167",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Artist Department",
- "number_cards": [],
+ "number_cards": [
+  {
+   "label": "Sales Order Without Artist Cards",
+   "number_card_name": "Sales Order Without Artist Cards"
+  },
+  {
+   "label": "Unfinished Artist Cards",
+   "number_card_name": "Unfinished Artist Cards"
+  },
+  {
+   "label": "Pending Client Approval Artist Cards",
+   "number_card_name": "Pending Client Approval Artist Cards"
+  }
+ ],
  "owner": "Administrator",
  "parent_page": "",
  "public": 1,
  "quick_lists": [],
  "roles": [
   {
+   "role": "CM Artist"
+  },
+  {
    "role": "CM Artist Head"
   },
   {
-   "role": "CM Artist"
+   "role": "CMv2 Artist Head"
+  },
+  {
+   "role": "CMv2 Artist"
+  },
+  {
+   "role": "CMv3 Artist"
   }
  ],
- "sequence_id": 3.0,
+ "sequence_id": 12.0,
  "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Damage Slip",
+   "link_to": "Damages and Returns",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
   {
    "color": "Grey",
    "doc_view": "Calendar",
    "label": "Calendar",
    "link_to": "Sales Order",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "BOM Finished, but No Work order",
+   "link_to": "Finished Layout with no Work Order",
+   "report_ref_doctype": "Sales Order",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Work Order",
+   "link_to": "Work Order",
    "stats_filter": "[]",
    "type": "DocType"
   },

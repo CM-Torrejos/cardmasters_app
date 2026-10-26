@@ -1,7 +1,7 @@
 {
  "charts": [],
  "content": "[{\"id\":\"wNqzQqjcDe\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"-1fLJGEuFO\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Work Order (All Printing Jobs)\",\"col\":3}},{\"id\":\"Iy_xezp7dm\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"cTV1dJdz0p\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Direct To Film Jobs\",\"col\":3}},{\"id\":\"jIKPySyyAm\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"UV Job Card\",\"col\":3}},{\"id\":\"oNpIBz4ZT-\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"UV Flatbed\",\"col\":3}},{\"id\":\"t0nwl8gMsm\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"UV Roll to Roll\",\"col\":3}},{\"id\":\"LOTXbE6f_w\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"UV Sticker Printing\",\"col\":3}},{\"id\":\"GedHElUQtl\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Tarpaulin Printing\",\"col\":3}},{\"id\":\"wAYcXtedu1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sublimation Printing\",\"col\":3}},{\"id\":\"mASDhsOsqu\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Large Format Printing\",\"col\":3}},{\"id\":\"DRDVghV-OK\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Foil Stamp\",\"col\":3}},{\"id\":\"hBl6D_wAFA\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Small Prints\",\"col\":3}},{\"id\":\"0VZFOyqRd9\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Cut Plot\",\"col\":3}},{\"id\":\"MWBR5sDKOI\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"cp9eqS8N0B\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"JDlVGU55fO\",\"type\":\"card\",\"data\":{\"card_name\":\"Production Data\",\"col\":4}},{\"id\":\"NdEzjohIEr\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}}]",
- "creation": "2025-06-11 09:59:49.957004",
+ "creation": "2026-10-21 15:03:59.095421",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
@@ -14,6 +14,8 @@
  "label": "Printing",
  "links": [
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Production Data",
@@ -23,6 +25,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Operation",
@@ -33,6 +37,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Workstation",
@@ -43,6 +49,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "BOM",
@@ -53,65 +61,19 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Orders",
+   "label": "Items and Stock",
    "link_count": 4,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
   },
   {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Sales Order",
-   "link_count": 0,
-   "link_to": "Sales Order",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Artist Card",
-   "link_count": 0,
-   "link_to": "Artist Card",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Job Card",
-   "link_count": 0,
-   "link_to": "Job Card",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Work Order",
-   "link_count": 0,
-   "link_to": "Work Order",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Items and Stock",
-   "link_count": 5,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "custom_card_filters": "[]",
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Item",
@@ -122,6 +84,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Item Group",
@@ -132,6 +96,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Check Stock Availability",
@@ -142,6 +108,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Material Request",
@@ -152,10 +120,58 @@
    "type": "Link"
   },
   {
-   "custom_card_filters": "[[\"Work Order\",\"custom_production_branch\",\"=\",\"Cebu\",false]]",
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
-   "label": "General Prints",
+   "label": "Orders",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Order",
+   "link_count": 0,
+   "link_to": "Sales Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Artist Card",
+   "link_count": 0,
+   "link_to": "Artist Card",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Job Card",
+   "link_count": 0,
+   "link_to": "Job Card",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Work Order",
    "link_count": 0,
    "link_to": "Work Order",
    "link_type": "DocType",
@@ -163,7 +179,7 @@
    "type": "Link"
   }
  ],
- "modified": "2026-09-28 09:35:18.866224",
+ "modified": "2026-10-26 09:00:30.280114",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Printing",
@@ -189,7 +205,7 @@
    "role": "CMv2 Production Coordinator"
   }
  ],
- "sequence_id": 5.0,
+ "sequence_id": 24.0,
  "shortcuts": [
   {
    "color": "Grey",

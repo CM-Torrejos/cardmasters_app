@@ -1,19 +1,21 @@
 {
  "charts": [],
- "content": "[{\"id\":\"wNqzQqjcDe\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"IA1FGw682h\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Embroidery Jobs\",\"col\":5}},{\"id\":\"4IXB1k1mxs\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"kqarl-Hsu1\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"m-StJ6H_Vb\",\"type\":\"card\",\"data\":{\"card_name\":\"Production Data\",\"col\":4}},{\"id\":\"I5YVxfXMfR\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}}]",
- "creation": "2025-07-28 01:18:26.561749",
+ "content": "[{\"id\":\"wNqzQqjcDe\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"W_ObH_NWdX\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Embroidery\",\"col\":3}},{\"id\":\"49rB2kmEpn\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Grando\",\"col\":3}},{\"id\":\"dBVhpUgjFK\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Artist Card\",\"col\":3}},{\"id\":\"4IXB1k1mxs\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"kqarl-Hsu1\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"m-StJ6H_Vb\",\"type\":\"card\",\"data\":{\"card_name\":\"Production Data\",\"col\":4}},{\"id\":\"I5YVxfXMfR\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}}]",
+ "creation": "2026-10-21 15:03:58.858062",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
  "for_user": "",
  "hide_custom": 1,
  "icon": "quantity-1",
- "idx": 1,
+ "idx": 2,
  "indicator_color": "",
  "is_hidden": 0,
  "label": "Embroidery",
  "links": [
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Orders",
@@ -23,6 +25,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Sales Order",
@@ -33,6 +37,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Artist Card",
@@ -43,6 +49,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Work Order",
@@ -53,6 +61,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Job Card",
@@ -63,6 +73,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Production Data",
@@ -72,6 +84,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Operation",
@@ -82,6 +96,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Workstation",
@@ -92,6 +108,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "BOM",
@@ -102,6 +120,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Items and Stock",
@@ -111,6 +131,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Item",
@@ -121,6 +143,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Item Group",
@@ -131,6 +155,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Check Stock Availability",
@@ -142,6 +168,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Material Request",
@@ -152,7 +180,7 @@
    "type": "Link"
   }
  ],
- "modified": "2026-01-09 13:36:33.010772",
+ "modified": "2026-10-26 09:00:31.077410",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Embroidery",
@@ -163,17 +191,40 @@
  "quick_lists": [],
  "roles": [
   {
-   "role": "CM WL Embroidery"
+   "role": "CMv2 WL Embroidery"
+  },
+  {
+   "role": "CM Embroidery Workstation Leader"
+  },
+  {
+   "role": "CMv2 Artist"
+  },
+  {
+   "role": "CMv2 Production Coordinator"
   }
  ],
- "sequence_id": 9.0,
+ "sequence_id": 28.0,
  "shortcuts": [
   {
    "color": "Grey",
    "doc_view": "List",
-   "label": "Embroidery Jobs",
-   "link_to": "Work Order",
-   "stats_filter": "[[\"CM Jobs\",\"job\",\"=\",\"EMBROIDERY\",false],[\"Work Order\",\"status\",\"!=\",\"Completed\",false]]",
+   "label": "Embroidery",
+   "type": "URL",
+   "url": "https://shorturl.at/CUNEL"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Grando",
+   "type": "URL",
+   "url": "https://shorturl.at/vVuWY"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Artist Card",
+   "link_to": "Artist Card",
+   "stats_filter": "[]",
    "type": "DocType"
   }
  ],

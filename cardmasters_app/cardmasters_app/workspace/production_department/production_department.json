@@ -1,7 +1,7 @@
 {
  "charts": [],
- "content": "[{\"id\":\"K71SWC1QvW\",\"type\":\"paragraph\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Quick Access</span>\",\"col\":12}},{\"id\":\"TzMQrZJtBA\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Work Order\",\"col\":3}},{\"id\":\"bpoQspyYR1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Job Card\",\"col\":3}},{\"id\":\"MH3V-AYHOf\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Damage/Returns\",\"col\":3}},{\"id\":\"udkCq6L706\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Calendar\",\"col\":3}},{\"id\":\"51QVCMXW9Q\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Need to Production Concluded\",\"col\":3}},{\"id\":\"fHoitc2IZK\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Production Tower\",\"col\":3}},{\"id\":\"D16EZx6lHG\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Projects\",\"col\":3}},{\"id\":\"u4MxwCZVD-\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Damage Slip\",\"col\":3}},{\"id\":\"LGUUkAoogU\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"WORK ORDER EXPORT IN PRODUCTION\",\"col\":3}},{\"id\":\"Viee6v4XHX\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Damages Report\",\"col\":3}},{\"id\":\"ZqbSEl7qMl\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"For Consumption Work Orders\",\"col\":3}},{\"id\":\"mdvKsOd580\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"fjeLUBBUFj\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"lhpeTR87v6\",\"type\":\"card\",\"data\":{\"card_name\":\"Production Tools\",\"col\":4}},{\"id\":\"ZvAcGkWdFt\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":3}},{\"id\":\"xTL4uiblwL\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"id\":\"gmk0N3xue9\",\"type\":\"paragraph\",\"data\":{\"text\":\"Completed SO - Not updated WO is a report that shows all sales orders where all their work orders are not properly set beyond \\\"In Production\\\".\",\"col\":12}}]",
- "creation": "2025-07-03 15:57:52.410871",
+ "content": "[{\"id\":\"K71SWC1QvW\",\"type\":\"paragraph\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Quick Access</span>\",\"col\":12}},{\"id\":\"TzMQrZJtBA\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Work Order\",\"col\":3}},{\"id\":\"bpoQspyYR1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Job Card\",\"col\":3}},{\"id\":\"MH3V-AYHOf\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Damage/Returns\",\"col\":3}},{\"id\":\"udkCq6L706\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Calendar\",\"col\":3}},{\"id\":\"51QVCMXW9Q\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Need to Production Concluded\",\"col\":3}},{\"id\":\"fHoitc2IZK\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Production Tower\",\"col\":3}},{\"id\":\"D16EZx6lHG\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Projects\",\"col\":3}},{\"id\":\"u4MxwCZVD-\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Damage Slip\",\"col\":3}},{\"id\":\"LGUUkAoogU\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"WORK ORDER EXPORT IN PRODUCTION\",\"col\":3}},{\"id\":\"Viee6v4XHX\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Damages Report\",\"col\":3}},{\"id\":\"ZqbSEl7qMl\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"For Consumption Work Orders\",\"col\":3}},{\"id\":\"mdvKsOd580\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"fjeLUBBUFj\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"lhpeTR87v6\",\"type\":\"card\",\"data\":{\"card_name\":\"Production Tools\",\"col\":4}},{\"id\":\"ZvAcGkWdFt\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}},{\"id\":\"xTL4uiblwL\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"id\":\"gmk0N3xue9\",\"type\":\"paragraph\",\"data\":{\"text\":\"Completed SO - Not updated WO is a report that shows all sales orders where all their work orders are not properly set beyond \\\"In Production\\\".\",\"col\":12}}]",
+ "creation": "2026-10-21 15:03:58.576197",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
@@ -13,6 +13,66 @@
  "is_hidden": 0,
  "label": "Production Department",
  "links": [
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Items and Stock",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Item",
+   "link_count": 0,
+   "link_to": "Item",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Item Group",
+   "link_count": 0,
+   "link_to": "Item Group",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Check Stock Availability",
+   "link_count": 0,
+   "link_to": "Stock Projected Qty",
+   "link_type": "Report",
+   "onboard": 0,
+   "report_ref_doctype": "Item",
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Material Request",
+   "link_count": 0,
+   "link_to": "Material Request",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
   {
    "custom_card_count_color": "Grey",
    "custom_card_show_count": 0,
@@ -214,71 +274,9 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
-  },
-  {
-   "custom_card_count_color": "Grey",
-   "custom_card_show_count": 0,
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Items and Stock",
-   "link_count": 4,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "custom_card_count_color": "Grey",
-   "custom_card_filters": "[]",
-   "custom_card_show_count": 0,
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Item",
-   "link_count": 0,
-   "link_to": "Item",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "custom_card_count_color": "Grey",
-   "custom_card_show_count": 0,
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Item Group",
-   "link_count": 0,
-   "link_to": "Item Group",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "custom_card_count_color": "Grey",
-   "custom_card_show_count": 0,
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Check Stock Availability",
-   "link_count": 0,
-   "link_to": "Stock Projected Qty",
-   "link_type": "Report",
-   "onboard": 0,
-   "report_ref_doctype": "Item",
-   "type": "Link"
-  },
-  {
-   "custom_card_count_color": "Orange",
-   "custom_card_filters": "[[\"Material Request\",\"custom_production_branch\",\"=\",\"Cebu\",false]]",
-   "custom_card_show_count": 1,
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Material Request",
-   "link_count": 0,
-   "link_to": "Material Request",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
   }
  ],
- "modified": "2026-09-28 09:40:37.035485",
+ "modified": "2026-10-26 09:00:30.114662",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Production Department",
@@ -316,7 +314,7 @@
    "role": "CMv2 Office Sales"
   }
  ],
- "sequence_id": 4.0,
+ "sequence_id": 23.0,
  "shortcuts": [
   {
    "color": "Grey",

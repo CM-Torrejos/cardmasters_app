@@ -1,6 +1,11 @@
 {
- "charts": [],
- "content": "[{\"id\":\"AUyLTPfUA5\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"mHSxd-xEfe\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Sales Order\",\"col\":3}},{\"id\":\"yU2X8rr2zz\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Quotation\",\"col\":3}},{\"id\":\"NNoApKScgC\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create MR\",\"col\":3}},{\"id\":\"chADzTNGmt\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Calendar\",\"col\":3}},{\"id\":\"Bfm_F9qeEM\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"VMMh1TMsHI\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"8_-LoKlvPo\",\"type\":\"card\",\"data\":{\"card_name\":\"Customer Data\",\"col\":4}},{\"id\":\"AK06-bvAXA\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}},{\"id\":\"_X6fD5-O-l\",\"type\":\"card\",\"data\":{\"card_name\":\"Sales Tools\",\"col\":4}}]",
+ "charts": [
+  {
+   "chart_name": "Sales Report (Corrected)",
+   "label": "Sales Report"
+  }
+ ],
+ "content": "[{\"id\":\"skQ3FFOoh3\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Sales Report\",\"col\":12}},{\"id\":\"AUyLTPfUA5\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"mHSxd-xEfe\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Sales Order\",\"col\":3}},{\"id\":\"yU2X8rr2zz\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Quotation\",\"col\":3}},{\"id\":\"NNoApKScgC\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create MR\",\"col\":3}},{\"id\":\"chADzTNGmt\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Calendar\",\"col\":3}},{\"id\":\"0Bd4irD1Sf\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Easy Field Sales Report\",\"col\":3}},{\"id\":\"1k4mGOmKmG\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Easy Field Saless Report Itemized\",\"col\":3}},{\"id\":\"xWifzamNL0\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Damage Slip\",\"col\":3}},{\"id\":\"NM2G1CIju8\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Finished Goods (In Claiming)\",\"col\":3}},{\"id\":\"MyQueNL9sC\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Damage Slip Export Ready\",\"col\":3}},{\"id\":\"7pn9sLnIOC\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Field Sales Monitoring\",\"col\":3}},{\"id\":\"i6HeNEruJM\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Field Sales Monthly Report\",\"col\":3}},{\"id\":\"ey3vzn4Cgv\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Insights\",\"col\":3}},{\"id\":\"De-q3KbGmp\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Damage Slip Export Ready 2.0\",\"col\":3}},{\"id\":\"9wkBlROhxD\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Order (Employees)\",\"col\":3}},{\"id\":\"Bfm_F9qeEM\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"VMMh1TMsHI\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders\",\"col\":4}},{\"id\":\"8_-LoKlvPo\",\"type\":\"card\",\"data\":{\"card_name\":\"Customer Data\",\"col\":4}},{\"id\":\"AK06-bvAXA\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}},{\"id\":\"_X6fD5-O-l\",\"type\":\"card\",\"data\":{\"card_name\":\"Sales Tools\",\"col\":4}},{\"id\":\"CmBfejI5ih\",\"type\":\"card\",\"data\":{\"card_name\":\"Relevant Reports & Monitoring\",\"col\":5}}]",
  "creation": "2025-06-11 08:25:15.639302",
  "custom_blocks": [],
  "docstatus": 0,
@@ -14,35 +19,8 @@
  "label": "Sales Department",
  "links": [
   {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Orders",
-   "link_count": 2,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Sales Order",
-   "link_count": 0,
-   "link_to": "Sales Order",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Quotation",
-   "link_count": 0,
-   "link_to": "Quotation",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Customer Data",
@@ -52,6 +30,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Customer",
@@ -62,6 +42,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Contact",
@@ -72,6 +54,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Address",
@@ -82,6 +66,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Items and Stock",
@@ -91,6 +77,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Items",
@@ -101,6 +89,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Item Groups",
@@ -111,6 +101,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Check Stock Availability",
@@ -121,6 +113,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Material Request",
@@ -131,6 +125,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Sales Tools",
@@ -140,6 +136,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Sales Partner",
@@ -150,6 +148,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Sales Partner Type",
@@ -160,6 +160,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Sales Channels",
@@ -170,6 +172,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Quotation Lost Reason",
@@ -180,6 +184,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Competitor",
@@ -190,6 +196,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Subclass",
@@ -200,6 +208,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Taxes",
@@ -208,9 +218,320 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Orders",
+   "link_count": 5,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Order",
+   "link_count": 0,
+   "link_to": "Sales Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Quotation",
+   "link_count": 0,
+   "link_to": "Quotation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Projects",
+   "link_count": 0,
+   "link_to": "Project",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Credit Memo",
+   "link_count": 0,
+   "link_to": "Credit Memo",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Work Order",
+   "link_count": 0,
+   "link_to": "Work Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Relevant Reports & Monitoring",
+   "link_count": 19,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Sales Export",
+   "link_count": 0,
+   "link_to": "Sales Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Sales Export with Cancelled",
+   "link_count": 0,
+   "link_to": "Sales Report with cancelled",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Top Customers",
+   "link_count": 0,
+   "link_to": "Top Customers (Sales Order)",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "SO Monitoring",
+   "link_count": 0,
+   "link_to": "General Monitoring",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Production Concluded Backlogs",
+   "link_count": 0,
+   "link_to": "Need to Production Concluded",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Undershipped Sales Orders",
+   "link_count": 0,
+   "link_to": "Undershipped Sales Orders",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "PC Permitted Bypass - WO Not Updated",
+   "link_count": 0,
+   "link_to": "Completed - WO Not Updated",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Finished Layout, No Work order",
+   "link_count": 0,
+   "link_to": "Finished Layout with no Work Order",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Layout Comissions (SVC102)",
+   "link_count": 0,
+   "link_to": "Layout Comissions",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Production Tower",
+   "link_count": 0,
+   "link_to": "Production Tower",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Finished Goods (In Claiming)",
+   "link_count": 0,
+   "link_to": "Batch Ageing",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Garments Monitoring (WIP)",
+   "link_count": 0,
+   "link_to": "Garments Monitoring",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Garments Delivery Note Monitoring",
+   "link_count": 0,
+   "link_to": "Garments Delivery Note Monitoring",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "PER ITEM MONITORING",
+   "link_count": 0,
+   "link_to": "PER ITEM MONITORING",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "CM MAKATI SALES ORDERS",
+   "link_count": 0,
+   "link_to": "ALL SALES ORDERS WHERE CUSTOMER:CARDMASTERS MAKATI",
+   "link_type": "Report",
+   "onboard": 0,
+   "report_ref_doctype": "Sales Order",
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Delivery Note Backlog for All Item Class",
+   "link_count": 0,
+   "link_to": "Delivery Note Backlog for All Item Class",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "FULL SUBLIMATION SUMMARY",
+   "link_count": 0,
+   "link_to": "FULL SUBLIMATION SUMMARY",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Sales Orders (doesn't need WO)",
+   "link_count": 0,
+   "link_to": "Sales Orders (doesn't need WO)",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Sales per Item Group by Customer",
+   "link_count": 0,
+   "link_to": "Sales per Item Group by Customer",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2026-01-09 11:44:00.317521",
+ "modified": "2026-10-26 09:00:28.442538",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Sales Department",
@@ -224,17 +545,42 @@
    "role": "CM Office Sales"
   },
   {
-   "role": "CM Sales Coordinator"
-  },
-  {
    "role": "CM Sales Head"
   },
   {
-   "role": "CM Field Sales"
+   "role": "CMv2 Sales Head"
+  },
+  {
+   "role": "CMv2 Sales Coordinator"
+  },
+  {
+   "role": "CMv2 Office Sales"
+  },
+  {
+   "role": "CMv2 Field Sales"
+  },
+  {
+   "role": "CMv3 Office Sales"
   }
  ],
- "sequence_id": 2.0,
+ "sequence_id": 11.0,
  "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Damage Slip",
+   "link_to": "Damages and Returns",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Field Sales Monitoring",
+   "link_to": "Field Sales Monitoring",
+   "report_ref_doctype": "Sales Order",
+   "type": "Report"
+  },
   {
    "color": "Cyan",
    "doc_view": "New",
@@ -246,10 +592,73 @@
   {
    "color": "Grey",
    "doc_view": "List",
+   "label": "Sales Order (Employees)",
+   "link_to": "Sales Order",
+   "stats_filter": "[[\"Sales Order\",\"docstatus\",\"=\",\"1\",false],[\"Sales Order\",\"customer_group\",\"=\",\"Employee\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Damage Slip Export Ready 2.0",
+   "link_to": "Damage Slip Export Ready 2.0",
+   "report_ref_doctype": "Damages and Returns",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Finished Goods (In Claiming)",
+   "link_to": "Batch Ageing",
+   "report_ref_doctype": "Batch",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Damage Slip Export Ready",
+   "link_to": "Damage Slip Export Ready",
+   "report_ref_doctype": "Damages and Returns",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Insights",
+   "link_to": "insights",
+   "type": "Page"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Field Sales Monthly Report",
+   "link_to": "Field Sales Report",
+   "report_ref_doctype": "Sales Order",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Easy Field Sales Report",
+   "link_to": "EASY FIELD SALES REPORT",
+   "report_ref_doctype": "Sales Order",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
    "label": "Create MR",
    "link_to": "Material Request",
    "stats_filter": "[]",
    "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Easy Field Saless Report Itemized",
+   "link_to": "EASY FIELD SALES REPORT ITEMIZED",
+   "report_ref_doctype": "Sales Order",
+   "type": "Report"
   },
   {
    "color": "Grey",
