@@ -114,6 +114,22 @@ jobs:
           with open(os.environ["GITHUB_ENV"], "a") as env_file:
               env_file.write(f"APP_VERSION={version}\n")
 
+      - name: Validate Python package metadata
+        working-directory: app_version_check
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv "$RUNNER_TEMP/package-validation"
+          "$RUNNER_TEMP/package-validation/bin/python" -m pip install 'flit_core>=3.4,<4'
+          "$RUNNER_TEMP/package-validation/bin/python" - <<'PY'
+          import tempfile
+          from flit_core.buildapi import prepare_metadata_for_build_editable
+
+          with tempfile.TemporaryDirectory() as metadata_dir:
+              metadata = prepare_metadata_for_build_editable(metadata_dir)
+              print(f"Validated Python package metadata: {metadata}")
+          PY
+
       - name: Checkout frappe_docker
         uses: actions/checkout@v6
         with:
