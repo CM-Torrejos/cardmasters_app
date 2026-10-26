@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"vYr0LawTHE\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Quick Reports</span>\",\"col\":12}},{\"id\":\"s4EmwSdBv5\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"SBU Revenue (Sales Order)\",\"col\":3}},{\"id\":\"gORgqneyXi\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"SBU Revenue (Cost Center)\",\"col\":3}},{\"id\":\"65Jwh2qFl7\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Subclass Revenue (Sales Order)\",\"col\":3}},{\"id\":\"QvdZVXKzJX\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Top Customers (Sales Order)\",\"col\":3}},{\"id\":\"fKiWjMNLI0\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"568_XRzjHH\",\"type\":\"card\",\"data\":{\"card_name\":\"Ledgers\",\"col\":3}},{\"id\":\"96kiJEENJk\",\"type\":\"card\",\"data\":{\"card_name\":\"Financial Statements\",\"col\":3}},{\"id\":\"ElpCM8F9mu\",\"type\":\"card\",\"data\":{\"card_name\":\"Sales\",\"col\":3}},{\"id\":\"zijOwnI3JB\",\"type\":\"card\",\"data\":{\"card_name\":\"Profitability\",\"col\":3}},{\"id\":\"f5R8PM5jW0\",\"type\":\"card\",\"data\":{\"card_name\":\"Other Reports\",\"col\":6}},{\"id\":\"rHD-JypzDa\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b></b></span>\",\"col\":12}}]",
+ "content": "[{\"id\":\"vYr0LawTHE\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Quick Reports</span>\",\"col\":12}},{\"id\":\"s4EmwSdBv5\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"SBU Revenue (Sales Order)\",\"col\":3}},{\"id\":\"gORgqneyXi\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"SBU Revenue (Cost Center)\",\"col\":3}},{\"id\":\"65Jwh2qFl7\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Subclass Revenue (Sales Order)\",\"col\":3}},{\"id\":\"QvdZVXKzJX\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Top Customers (Sales Order)\",\"col\":3}},{\"id\":\"fKiWjMNLI0\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"568_XRzjHH\",\"type\":\"card\",\"data\":{\"card_name\":\"Ledgers\",\"col\":3}},{\"id\":\"96kiJEENJk\",\"type\":\"card\",\"data\":{\"card_name\":\"Financial Statements\",\"col\":3}},{\"id\":\"ElpCM8F9mu\",\"type\":\"card\",\"data\":{\"card_name\":\"Sales\",\"col\":3}},{\"id\":\"zijOwnI3JB\",\"type\":\"card\",\"data\":{\"card_name\":\"Profitability\",\"col\":3}},{\"id\":\"f5R8PM5jW0\",\"type\":\"card\",\"data\":{\"card_name\":\"Other Reports\",\"col\":3}},{\"id\":\"L8iB23NYV4\",\"type\":\"card\",\"data\":{\"card_name\":\"Bypass Reports\",\"col\":3}},{\"id\":\"BECbxKjaaP\",\"type\":\"card\",\"data\":{\"card_name\":\"Backlog Reports\",\"col\":3}},{\"id\":\"jdZhiUCTQ8\",\"type\":\"card\",\"data\":{\"card_name\":\"Customer Reports\",\"col\":3}},{\"id\":\"rHD-JypzDa\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b></b></span>\",\"col\":12}}]",
  "creation": "2025-06-11 19:27:48.642358",
  "custom_blocks": [],
  "docstatus": 0,
@@ -14,6 +14,8 @@
  "label": "Reporting",
  "links": [
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Ledgers",
@@ -23,6 +25,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 1,
    "label": "General Ledger",
@@ -33,6 +37,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Customer Ledger",
@@ -43,6 +49,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Supplier Ledger",
@@ -53,6 +61,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Stock Ledger",
@@ -63,6 +73,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Financial Statements",
@@ -72,6 +84,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Trial Balance",
@@ -82,6 +96,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Profit and Loss Statement",
@@ -92,6 +108,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Balance Sheet",
@@ -102,6 +120,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Cash Flow",
@@ -112,6 +132,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Consolidated Financial Statement",
@@ -122,35 +144,8 @@
    "type": "Link"
   },
   {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Profitability",
-   "link_count": 2,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Gross Profit (Per Invoice)",
-   "link_count": 0,
-   "link_to": "Gross Profit",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Profitability Analysis (SBU))",
-   "link_count": 0,
-   "link_to": "Profitability Analysis",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Sales",
@@ -160,6 +155,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Sales Order Reporting",
@@ -170,6 +167,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Quick SBU Report",
@@ -180,6 +179,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Quick Subclass Report",
@@ -190,6 +191,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Top Customers",
@@ -200,6 +203,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "description": "Reports here requires you switch view of the list to report view",
    "hidden": 0,
    "is_query_report": 0,
@@ -210,6 +215,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Disbursement Report",
@@ -221,6 +228,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Cashier's Report",
@@ -229,9 +238,250 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Customer Reports",
+   "link_count": 1,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Customer Receivables",
+   "link_count": 0,
+   "link_to": "AR  with customer group",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Backlog Reports",
+   "link_count": 3,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "To submit manufacture entry",
+   "link_count": 0,
+   "link_to": "TO SUBMIT MANUFACTURE ENTRY",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Draft DNs for submisssion",
+   "link_count": 0,
+   "link_to": "Draft DNs for submission",
+   "link_type": "Report",
+   "onboard": 0,
+   "report_ref_doctype": "Delivery Note",
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Update Bypass Field",
+   "link_count": 0,
+   "link_to": "Update Bypass Field",
+   "link_type": "Report",
+   "onboard": 0,
+   "report_ref_doctype": "Work Order",
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Bypass Reports",
+   "link_count": 3,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Bypass Work Orders",
+   "link_count": 0,
+   "link_to": "Bypass Work Orders",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Bypass Consumption",
+   "link_count": 0,
+   "link_to": "Bypass Consumption",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Bypass Delivery Note",
+   "link_count": 0,
+   "link_to": "Bypass Delivery Note",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Profitability",
+   "link_count": 9,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Gross Profit (Per Invoice)",
+   "link_count": 0,
+   "link_to": "Custom Gross Profit v2",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Profitability Analysis (SBU))",
+   "link_count": 0,
+   "link_to": "Profitability Analysis",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Per SBU-Line Item",
+   "link_count": 0,
+   "link_to": "Pero SBU-Line Item",
+   "link_type": "Report",
+   "onboard": 0,
+   "report_ref_doctype": "Sales Invoice",
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Expense Report (From Invoices)",
+   "link_count": 0,
+   "link_to": "Expense Report (From Invoices)",
+   "link_type": "Report",
+   "onboard": 0,
+   "report_ref_doctype": "Purchase Invoice",
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Sales Order Monitoring",
+   "link_count": 0,
+   "link_to": "General Monitoring",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Zero Grand Total SO Report",
+   "link_count": 0,
+   "link_to": "Monitoring for Sales Order Zero Grand Total",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Zero per line item",
+   "link_count": 0,
+   "link_to": "Zero per line item report for costing",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Damages Report",
+   "link_count": 0,
+   "link_to": "Damages Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "report_ref_doctype": "Damages and Returns",
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Profit and Loss Statement",
+   "link_count": 0,
+   "link_to": "Profit and Loss Statement",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2025-11-13 14:18:25.597923",
+ "modified": "2026-10-26 09:00:32.732741",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Reporting",
@@ -240,8 +490,21 @@
  "parent_page": "Accounting Department",
  "public": 1,
  "quick_lists": [],
- "roles": [],
- "sequence_id": 19.0,
+ "roles": [
+  {
+   "role": "CM Controller"
+  },
+  {
+   "role": "CM Analyst"
+  },
+  {
+   "role": "CMv2 Accounting Controller"
+  },
+  {
+   "role": "CMv2 Financial Analyst"
+  }
+ ],
+ "sequence_id": 39.0,
  "shortcuts": [
   {
    "color": "Grey",

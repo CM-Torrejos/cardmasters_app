@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"RSH_RK0qfL\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"SByyTJiO0E\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Petty Cash Count\",\"col\":3}},{\"id\":\"0qRv3hFYi9\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Payment Entry\",\"col\":3}},{\"id\":\"-5npgfrloU\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"-kql2VUIVK\",\"type\":\"card\",\"data\":{\"card_name\":\"Purchasing Operations\",\"col\":4}},{\"id\":\"vCB16su22W\",\"type\":\"card\",\"data\":{\"card_name\":\"Supplier Data\",\"col\":4}},{\"id\":\"QNrscT8Vwl\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}}]",
+ "content": "[{\"id\":\"RSH_RK0qfL\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"c2GraUwwVa\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Payment Reconciliation\",\"col\":3}},{\"id\":\"SByyTJiO0E\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Petty Cash Count\",\"col\":3}},{\"id\":\"0qRv3hFYi9\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Payment Entry\",\"col\":3}},{\"id\":\"2ns2RKRx1l\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Journal Entry List\",\"col\":3}},{\"id\":\"mIr8rJnyed\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Journal Entry\",\"col\":3}},{\"id\":\"OSRrCGKBff\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Damages and Returns\",\"col\":3}},{\"id\":\"-5npgfrloU\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"-kql2VUIVK\",\"type\":\"card\",\"data\":{\"card_name\":\"Purchasing Operations\",\"col\":4}},{\"id\":\"vCB16su22W\",\"type\":\"card\",\"data\":{\"card_name\":\"Supplier Data\",\"col\":4}},{\"id\":\"QNrscT8Vwl\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}}]",
  "creation": "2025-06-11 17:11:51.898616",
  "custom_blocks": [],
  "docstatus": 0,
@@ -14,6 +14,8 @@
  "label": "Payable",
  "links": [
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Supplier Data",
@@ -23,6 +25,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Supplier",
@@ -33,6 +37,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Contact",
@@ -43,6 +49,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Address",
@@ -53,6 +61,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Accounts Payable",
@@ -63,6 +73,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Supplier Ledger Summary",
@@ -73,6 +85,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Items and Stock",
@@ -82,6 +96,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Item",
@@ -92,6 +108,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Item Group",
@@ -102,6 +120,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Stock Ledger",
@@ -113,6 +133,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Purchasing Operations",
@@ -122,6 +144,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Petty Cash Count",
@@ -132,6 +156,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Material Request",
@@ -142,6 +168,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Purchase Order",
@@ -152,6 +180,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Purchase Receipt",
@@ -162,6 +192,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Purchase Invoice",
@@ -172,7 +204,7 @@
    "type": "Link"
   }
  ],
- "modified": "2026-01-09 15:03:01.011369",
+ "modified": "2026-10-26 09:00:32.638803",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Payable",
@@ -183,10 +215,10 @@
  "quick_lists": [],
  "roles": [
   {
-   "role": "CM Disbursement Officer"
+   "role": "CMv2 Procurement"
   }
  ],
- "sequence_id": 17.0,
+ "sequence_id": 38.0,
  "shortcuts": [
   {
    "color": "Grey",
@@ -198,9 +230,40 @@
   },
   {
    "color": "Grey",
+   "doc_view": "List",
+   "label": "Journal Entry List",
+   "link_to": "Journal Entry",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Payment Reconciliation",
+   "link_to": "Payment Reconciliation",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Damages and Returns",
+   "link_to": "Damages and Returns",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
    "doc_view": "New",
    "label": "Create Petty Cash Count",
    "link_to": "Petty Cash Count",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "New",
+   "label": "Create Journal Entry",
+   "link_to": "Journal Entry",
    "stats_filter": "[]",
    "type": "DocType"
   }

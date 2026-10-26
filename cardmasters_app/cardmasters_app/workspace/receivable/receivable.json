@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"dpHMWpD-xB\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Quick Access</span>\",\"col\":12}},{\"id\":\"8QvxOhgqMO\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Sale Invoice\",\"col\":3}},{\"id\":\"aW21nOyK5j\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Payment Entry \",\"col\":3}},{\"id\":\"kj-CMz611k\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Journal Entry\",\"col\":3}},{\"id\":\"2-mACFcxaT\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"ZDbQIskDQy\",\"type\":\"card\",\"data\":{\"card_name\":\"Invoicing Operations\",\"col\":4}},{\"id\":\"4-ndxbjsrM\",\"type\":\"card\",\"data\":{\"card_name\":\"Customer Data\",\"col\":4}},{\"id\":\"ujQWby12bR\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}}]",
+ "content": "[{\"id\":\"dpHMWpD-xB\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Quick Access</span>\",\"col\":12}},{\"id\":\"8QvxOhgqMO\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Sale Invoice\",\"col\":3}},{\"id\":\"aW21nOyK5j\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Payment Entry \",\"col\":3}},{\"id\":\"kj-CMz611k\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Journal Entry\",\"col\":3}},{\"id\":\"eWLil7WiAi\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Damages and Returns\",\"col\":3}},{\"id\":\"5AuMgn6Dij\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Payment Reconciliation\",\"col\":3}},{\"id\":\"2-mACFcxaT\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"ZDbQIskDQy\",\"type\":\"card\",\"data\":{\"card_name\":\"Invoicing Operations\",\"col\":4}},{\"id\":\"4-ndxbjsrM\",\"type\":\"card\",\"data\":{\"card_name\":\"Customer Data\",\"col\":4}},{\"id\":\"ujQWby12bR\",\"type\":\"card\",\"data\":{\"card_name\":\"Items and Stock\",\"col\":4}},{\"id\":\"j0g4nUEqCy\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
  "creation": "2025-06-11 17:13:21.400945",
  "custom_blocks": [],
  "docstatus": 0,
@@ -14,45 +14,8 @@
  "label": "Receivable",
  "links": [
   {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Invoicing Operations",
-   "link_count": 3,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Sales Order",
-   "link_count": 0,
-   "link_to": "Sales Order",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Sales Invoice",
-   "link_count": 0,
-   "link_to": "Sales Invoice",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Delivery Note",
-   "link_count": 0,
-   "link_to": "Delivery Note",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Customer Data",
@@ -62,6 +25,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Customer",
@@ -72,6 +37,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Contact",
@@ -82,6 +49,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Address",
@@ -92,6 +61,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Accounts Receivable",
@@ -102,6 +73,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Customer Ledger Summary",
@@ -112,6 +85,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Items and Stock",
@@ -121,6 +96,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Item",
@@ -131,6 +108,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Item Group",
@@ -141,6 +120,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Stock Ledger",
@@ -149,9 +130,91 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Invoicing Operations",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Order",
+   "link_count": 0,
+   "link_to": "Sales Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Invoice",
+   "link_count": 0,
+   "link_to": "Sales Invoice",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Delivery Note",
+   "link_count": 0,
+   "link_to": "Delivery Note",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "SO Reporting",
+   "link_count": 0,
+   "link_to": "General Monitoring",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Reports",
+   "link_count": 1,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "General Monitoring",
+   "link_count": 0,
+   "link_to": "General Monitoring",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2026-01-09 15:09:14.514435",
+ "modified": "2026-10-26 09:00:32.852410",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Receivable",
@@ -165,16 +228,31 @@
    "role": "CM Cashier"
   },
   {
-   "role": "CM Revenue Accountant"
+   "role": "CMv2 Revenue Accountant"
   }
  ],
- "sequence_id": 18.0,
+ "sequence_id": 40.0,
  "shortcuts": [
   {
    "color": "Grey",
    "doc_view": "New",
    "label": "Create Sale Invoice",
    "link_to": "Sales Invoice",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Payment Reconciliation",
+   "link_to": "Payment Reconciliation",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Damages and Returns",
+   "link_to": "Damages and Returns",
    "stats_filter": "[]",
    "type": "DocType"
   },

@@ -1,12 +1,12 @@
 {
  "charts": [],
- "content": "[{\"id\":\"I7HzioZU6b\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Quick Access</span>\",\"col\":12}},{\"id\":\"y1etxHDN-K\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Employee\",\"col\":3}},{\"id\":\"g99LPPjoXp\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Payroll Entry\",\"col\":3}},{\"id\":\"Tvfwp5nZ_D\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Salary Slip\",\"col\":3}},{\"id\":\"7yTrVNN_y6\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"emXBTs-y_5\",\"type\":\"card\",\"data\":{\"card_name\":\"Employee\",\"col\":4}},{\"id\":\"Zs6Z4R1Dtb\",\"type\":\"card\",\"data\":{\"card_name\":\"Components and Structure\",\"col\":4}},{\"id\":\"TU3cBGI0GW\",\"type\":\"card\",\"data\":{\"card_name\":\"Payroll\",\"col\":4}}]",
+ "content": "[{\"id\":\"I7HzioZU6b\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Quick Access</span>\",\"col\":12}},{\"id\":\"ksE-YJQX5i\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Memorandum\",\"col\":3}},{\"id\":\"y1etxHDN-K\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Employee\",\"col\":3}},{\"id\":\"g99LPPjoXp\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Payroll Entry\",\"col\":3}},{\"id\":\"Tvfwp5nZ_D\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Salary Slip\",\"col\":3}},{\"id\":\"x_ls1LWj6W\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Quick Generate Employee Report\",\"col\":3}},{\"id\":\"7yTrVNN_y6\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"emXBTs-y_5\",\"type\":\"card\",\"data\":{\"card_name\":\"Employee\",\"col\":4}},{\"id\":\"QhB8GGK8Sb\",\"type\":\"card\",\"data\":{\"card_name\":\"Grievances, Incident Reports, Memos\",\"col\":4}},{\"id\":\"Zs6Z4R1Dtb\",\"type\":\"card\",\"data\":{\"card_name\":\"Components and Structure\",\"col\":4}},{\"id\":\"TU3cBGI0GW\",\"type\":\"card\",\"data\":{\"card_name\":\"Payroll\",\"col\":4}}]",
  "creation": "2025-08-08 13:14:48.952255",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
  "for_user": "",
- "hide_custom": 0,
+ "hide_custom": 1,
  "icon": "users",
  "idx": 0,
  "indicator_color": "green",
@@ -14,143 +14,19 @@
  "label": "HR Department",
  "links": [
   {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee",
-   "link_count": 5,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee",
-   "link_count": 0,
-   "link_to": "Employee",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Designation",
-   "link_count": 0,
-   "link_to": "Designation",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Branch",
-   "link_count": 0,
-   "link_to": "Branch",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Department",
-   "link_count": 0,
-   "link_to": "Department",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employment Type",
-   "link_count": 0,
-   "link_to": "Employment Type",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Components and Structure",
-   "link_count": 5,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Holiday List",
-   "link_count": 0,
-   "link_to": "Holiday List",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Salary Component",
-   "link_count": 0,
-   "link_to": "Salary Component",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Salary Structure",
-   "link_count": 0,
-   "link_to": "Salary Structure",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Salary Structure Assignment",
-   "link_count": 0,
-   "link_to": "Salary Structure Assignment",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Bulk Salary Structure Assignment",
-   "link_count": 0,
-   "link_to": "Bulk Salary Structure Assignment",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Payroll",
-   "link_count": 3,
+   "link_count": 2,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
   },
   {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Advance",
-   "link_count": 0,
-   "link_to": "Employee Advance",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Payroll Entry",
@@ -161,6 +37,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Salary Slip",
@@ -169,9 +47,222 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee",
+   "link_count": 5,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee",
+   "link_count": 0,
+   "link_to": "Employee",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Designation",
+   "link_count": 0,
+   "link_to": "Designation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Branch",
+   "link_count": 0,
+   "link_to": "Branch",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Department",
+   "link_count": 0,
+   "link_to": "Department",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employment Type",
+   "link_count": 0,
+   "link_to": "Employment Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Components and Structure",
+   "link_count": 5,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Holiday List",
+   "link_count": 0,
+   "link_to": "Holiday List",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Salary Component",
+   "link_count": 0,
+   "link_to": "Salary Component",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Salary Structure",
+   "link_count": 0,
+   "link_to": "Salary Structure",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Salary Structure Assignment",
+   "link_count": 0,
+   "link_to": "Salary Structure Assignment",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Bulk Salary Structure Assignment",
+   "link_count": 0,
+   "link_to": "Bulk Salary Structure Assignment",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Grievances, Incident Reports, Memos",
+   "link_count": 5,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Memorandums",
+   "link_count": 0,
+   "link_to": "Memorandum",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Incident Report",
+   "link_count": 0,
+   "link_to": "Incident Report",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Grievance",
+   "link_count": 0,
+   "link_to": "Employee Grievance",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Incident Type",
+   "link_count": 0,
+   "link_to": "Incident Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Grievance Type",
+   "link_count": 0,
+   "link_to": "Grievance Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2026-01-09 14:15:03.661782",
+ "modified": "2026-10-26 09:00:32.946686",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "HR Department",
@@ -182,13 +273,19 @@
  "quick_lists": [],
  "roles": [
   {
-   "role": "CM HR Head"
+   "role": "HR User"
   },
   {
-   "role": "CM HR Officer"
+   "role": "TEMP HR"
+  },
+  {
+   "role": "CMv2 HR Head"
+  },
+  {
+   "role": "CMv2 HR Officer"
   }
  ],
- "sequence_id": 15.0,
+ "sequence_id": 41.0,
  "shortcuts": [
   {
    "color": "Grey",
@@ -197,6 +294,22 @@
    "link_to": "Employee",
    "stats_filter": "[]",
    "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "New",
+   "label": "Create Memorandum",
+   "link_to": "Memorandum",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Quick Generate Employee Report",
+   "link_to": "Easy Employee Report",
+   "report_ref_doctype": "Employee",
+   "type": "Report"
   },
   {
    "color": "Grey",

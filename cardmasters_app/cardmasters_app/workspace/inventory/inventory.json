@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"MvSPBclQ80\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"eWpRrNoOFh\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Stock Entry\",\"col\":3}},{\"id\":\"YqNDFGtcF5\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Item\",\"col\":3}},{\"id\":\"p6XQCEJ0GJ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create DNR\",\"col\":3}},{\"id\":\"__sXHjnWvk\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"AoDjoaUKk9\",\"type\":\"card\",\"data\":{\"card_name\":\"Item Settings\",\"col\":4}},{\"id\":\"boEN4-Pod9\",\"type\":\"card\",\"data\":{\"card_name\":\"Receive, Release, and Claim\",\"col\":4}},{\"id\":\"ApNdj5N0V8\",\"type\":\"card\",\"data\":{\"card_name\":\"Stock Tools\",\"col\":4}},{\"id\":\"yUR5Uke9dD\",\"type\":\"card\",\"data\":{\"card_name\":\"Reference\",\"col\":4}},{\"id\":\"nN59YiNTTN\",\"type\":\"card\",\"data\":{\"card_name\":\"Stock Monitoring and Reports\",\"col\":4}}]",
+ "content": "[{\"id\":\"MvSPBclQ80\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"eWpRrNoOFh\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Stock Entry\",\"col\":3}},{\"id\":\"YqNDFGtcF5\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create Item\",\"col\":3}},{\"id\":\"p6XQCEJ0GJ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create DNR\",\"col\":3}},{\"id\":\"-wJUmT82WC\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"General Monitoring\",\"col\":3}},{\"id\":\"0qdXqKPEEB\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Order Stock Entries\",\"col\":3}},{\"id\":\"Joy5QCWzLa\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Damages and Returns\",\"col\":3}},{\"id\":\"__sXHjnWvk\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"AoDjoaUKk9\",\"type\":\"card\",\"data\":{\"card_name\":\"Item Settings\",\"col\":4}},{\"id\":\"boEN4-Pod9\",\"type\":\"card\",\"data\":{\"card_name\":\"Receive, Release, and Claim\",\"col\":4}},{\"id\":\"o83u73-fIu\",\"type\":\"card\",\"data\":{\"card_name\":\"Claiming\",\"col\":4}},{\"id\":\"ApNdj5N0V8\",\"type\":\"card\",\"data\":{\"card_name\":\"Stock Tools\",\"col\":4}},{\"id\":\"yUR5Uke9dD\",\"type\":\"card\",\"data\":{\"card_name\":\"Reference\",\"col\":4}},{\"id\":\"nN59YiNTTN\",\"type\":\"card\",\"data\":{\"card_name\":\"Stock Monitoring and Reports\",\"col\":4}}]",
  "creation": "2025-06-11 15:13:47.841880",
  "custom_blocks": [],
  "docstatus": 0,
@@ -14,6 +14,8 @@
  "label": "Inventory",
  "links": [
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Item Settings",
@@ -23,6 +25,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Item",
@@ -33,6 +37,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Item Group",
@@ -43,6 +49,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Warehouse",
@@ -53,6 +61,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "UOM",
@@ -63,6 +73,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "UOM (Conversion Factor)",
@@ -73,45 +85,8 @@
    "type": "Link"
   },
   {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Receive, Release, and Claim",
-   "link_count": 3,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Stock Entry",
-   "link_count": 0,
-   "link_to": "Stock Entry",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Purchase Receipt",
-   "link_count": 0,
-   "link_to": "Purchase Receipt",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Delivery Note",
-   "link_count": 0,
-   "link_to": "Delivery Note",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Stock Tools",
@@ -121,6 +96,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Batch",
@@ -131,6 +108,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Stock Reconciliation",
@@ -141,6 +120,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Reference",
@@ -150,6 +131,8 @@
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Sales Orders",
@@ -160,6 +143,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Work Order",
@@ -170,6 +155,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Purchase Order",
@@ -180,6 +167,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Purchase Invoice",
@@ -190,6 +179,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Material Request",
@@ -200,15 +191,42 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Stock Monitoring and Reports",
-   "link_count": 5,
+   "label": "Claiming",
+   "link_count": 1,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Stock Entries",
+   "link_count": 0,
+   "link_to": "Stock Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Stock Monitoring and Reports",
+   "link_count": 6,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Detailed Stock Qty",
@@ -219,6 +237,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Stock Summary",
@@ -229,6 +249,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 0,
    "label": "Warehouse Monitoring",
@@ -240,6 +262,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Stock Analytics",
@@ -250,6 +274,8 @@
    "type": "Link"
   },
   {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
    "hidden": 0,
    "is_query_report": 1,
    "label": "Recommended Reorder Level",
@@ -258,9 +284,68 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "INVENTORY STOCK BALANCE",
+   "link_count": 0,
+   "link_to": "INVENTORY STOCK BALANCE",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Receive, Release, and Claim",
+   "link_count": 3,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Stock Entry",
+   "link_count": 0,
+   "link_to": "Stock Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Purchase Receipt",
+   "link_count": 0,
+   "link_to": "Purchase Receipt",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "custom_card_count_color": "Grey",
+   "custom_card_show_count": 0,
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Delivery Note",
+   "link_count": 0,
+   "link_to": "Delivery Note",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2026-01-09 15:25:32.434415",
+ "modified": "2026-10-26 09:00:32.037466",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Inventory",
@@ -271,22 +356,52 @@
  "quick_lists": [],
  "roles": [
   {
-   "role": "CM Inventory Associate"
+   "role": "CM Inventory"
   },
   {
-   "role": "CM Inventory Claiming Associate"
+   "role": "CMv2 Inventory Coordinator"
   },
   {
-   "role": "CM Inventory Coordinator"
+   "role": "CMv2 Inventory Associate"
+  },
+  {
+   "role": "CMv2 Inventory Claiming Associate"
+  },
+  {
+   "role": "CMv3 Warehouse Associate"
   }
  ],
- "sequence_id": 14.0,
+ "sequence_id": 34.0,
  "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "General Monitoring",
+   "link_to": "General Monitoring",
+   "report_ref_doctype": "Sales Order",
+   "type": "Report"
+  },
   {
    "color": "Grey",
    "doc_view": "New",
    "label": "Create Item",
    "link_to": "Item",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Sales Order Stock Entries",
+   "link_to": "Sales Order Stock Movement Monitoring",
+   "report_ref_doctype": "Stock Entry",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Damages and Returns",
+   "link_to": "Damages and Returns",
    "stats_filter": "[]",
    "type": "DocType"
   },
