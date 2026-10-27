@@ -90,11 +90,11 @@
   {
    "allow_on_submit": 1,
    "fieldname": "error_type",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Error Type",
-   "options": "For Investigation\nFactory Defect\nHuman\nMachine\nOutsource\nN/A"
+   "options": "Damages and Returns Error Type"
   },
   {
    "allow_on_submit": 1,
@@ -298,7 +298,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-10-13 10:35:04.210734",
+ "modified": "2026-10-27 11:12:02.487614",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Damages and Returns",
