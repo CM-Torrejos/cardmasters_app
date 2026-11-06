@@ -136,6 +136,7 @@ doc_events = {
     },
     "Stock Entry": {
         "before_validate": [
+            "cardmasters_app.cardmasters_app.services.batch_handler.restore_material_request_batch_on_amendment",
             "cardmasters_app.cardmasters_app.event_handlers.stock_entry.apply_material_request_reason_account"
         ],
         "validate": [

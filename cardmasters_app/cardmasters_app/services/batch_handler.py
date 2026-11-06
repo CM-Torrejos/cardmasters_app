@@ -275,6 +275,51 @@ def resolve_material_request_batch(material_request, material_request_item, item
 	return frappe.db.get_value("Batch", batch_name, "name")
 
 
+def restore_material_request_batch_on_amendment(doc, method=None):
+	"""Repeat the request mapper's batch selection after cancellation clears it.
+
+	Run before core validation on both save and submit. Keep explicit selections
+	and warehouse choices; ERPNext validates their availability at the posting date.
+	Never let an unresolved request-linked amendment silently use FIFO.
+	"""
+	if not doc.get("amended_from"):
+		return
+	if doc.docstatus != 0 and doc.get("_action") != "submit":
+		return
+	if _get_stock_entry_type(doc) not in {"Material Issue", "Material Transfer"}:
+		return
+
+	for row in doc.items or []:
+		if not row.get("material_request") or not row.get("item_code"):
+			continue
+		if row.get("batch_no") or row.get("serial_and_batch_bundle"):
+			continue
+		if not frappe.get_cached_value("Item", row.item_code, "has_batch_no"):
+			continue
+
+		request_item = row.get("material_request_item")
+		if not request_item or not frappe.db.exists(
+			"Material Request Item",
+			{"name": request_item, "parent": row.material_request, "item_code": row.item_code},
+		):
+			frappe.throw(
+				_("Row {0}: Select a batch explicitly or restore the matching Material Request Item before saving this amendment.")
+				.format(row.idx),
+				title=_("Batch Selection Required"),
+			)
+
+		batch = resolve_material_request_batch(row.material_request, request_item, row.item_code)
+		if not batch or frappe.db.get_value("Batch", batch, "item") != row.item_code:
+			frappe.throw(
+				_("Row {0}: No matching batch could be resolved for Material Request {1}. Select the intended batch explicitly before saving this amendment.")
+				.format(row.idx, row.material_request),
+				title=_("Batch Selection Required"),
+			)
+
+		row.batch_no = batch
+		row.use_serial_batch_fields = 1
+
+
 def _get_or_create_batch(
 	batch_name: str,
 	item_code: str,
