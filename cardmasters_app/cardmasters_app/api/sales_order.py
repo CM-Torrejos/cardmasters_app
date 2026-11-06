@@ -189,7 +189,7 @@ def make_quotation_from_so(source_name):
     return target_doc
 
 @frappe.whitelist()
-def create_project_for_sales_order(project_name):
+def create_project_for_sales_order(project_name, branch=None):
     """
     Creates a Project document server-side so that all before_insert/after_insert
     hooks on Project fire correctly. Returns the new Project name.
@@ -199,6 +199,10 @@ def create_project_for_sales_order(project_name):
 
     project = frappe.new_doc("Project")
     project.project_name = project_name
+
+    if branch:
+        project.custom_branch = branch
+
     project.insert()
     return project.name
 

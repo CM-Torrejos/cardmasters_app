@@ -406,7 +406,10 @@
 									], function(values) {
 										frappe.call({
 											method: "cardmasters_app.cardmasters_app.api.sales_order.create_project_for_sales_order",
-											args: { project_name: values.project_name },
+											args: {
+												project_name: values.project_name,
+												branch: frm.doc.branch
+											},
 											callback: function(r) {
 												if (r.message) {
 													frappe.hide_progress();
@@ -1053,7 +1056,8 @@
 				frappe.call({
 					method: "cardmasters_app.cardmasters_app.api.sales_order.create_project_for_sales_order",
 					args: {
-						project_name: values.project_name
+						project_name: values.project_name,
+						branch: frm.doc.branch
 					},
 					callback: function(r) {
 						frappe.hide_progress();
