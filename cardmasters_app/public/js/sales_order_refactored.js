@@ -136,6 +136,38 @@
 		}
 	});
 
+	frappe.ui.form.on('Sales Order Item', {
+        item_code(frm, cdt, cdn) {
+            let row = locals[cdt][cdn];
+
+            // If item_code was removed/cleared, do nothing
+            if (!row.item_code) {
+                return;
+            }
+
+            // Check if particulars already has content (handles plain text & rich-text HTML)
+            let has_content = row.custom_particulars && 
+                row.custom_particulars.replace(/<[^>]*>/g, '').trim().length > 0;
+
+            // If particulars is NOT blank, protect existing text and do not overwrite
+            if (has_content) {
+                return;
+            }
+
+            // If particulars IS blank, fetch the template for the item
+            frappe.db.get_value('Item', row.item_code, 'custom_particulars_template')
+                .then(r => {
+                    let template = (r.message && r.message.custom_particulars_template) 
+                        ? r.message.custom_particulars_template 
+                        : '';
+
+                    if (template) {
+                        frappe.model.set_value(cdt, cdn, 'custom_particulars', template);
+                    }
+                });
+        }
+    });
+
 	function set_branch_from_current_user_employee(frm) {
 		if (!frm.is_new() || frm.doc.branch || frm.__setting_employee_branch) {
 			return;
