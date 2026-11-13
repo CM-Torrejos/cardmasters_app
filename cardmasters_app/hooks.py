@@ -129,9 +129,6 @@ doc_events = {
         "validate": [
             "cardmasters_app.cardmasters_app.event_handlers.work_order.validate_so_workflow_state", # Block if parent SO is 'Pending'
             "cardmasters_app.cardmasters_app.services.batch_handler.autofill_work_order_batch_source_fields" # Fill draft batch source fields
-        ],
-        "onload": [
-            "cardmasters_app.cardmasters_app.event_handlers.work_order.warn_data_mismatch" # Alert if SO Item vs WO details mismatch
         ]
     },
     "Stock Entry": {

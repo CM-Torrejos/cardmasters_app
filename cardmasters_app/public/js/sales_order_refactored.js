@@ -95,8 +95,6 @@
 			render_customer_total_unpaid(frm);
 			render_customer_sales_order_outstanding(frm);
 			
-			// Validation check (may no longer be needed since specifics and particulars cna only be updated in update items now)
-			// validate_discrepancy_against_wo(frm)
 		},
 		
 		workflow_state: function(frm) {
@@ -431,42 +429,7 @@
 							proceed_with_update();
 						};
 						
-						// PHASE 1: Execution starts here! Check WO Discrepancy first.
-						frappe.call({
-							method: "cardmasters_app.cardmasters_app.api.sales_order.check_wo_discrepancy",
-							freeze: true,
-							freeze_message: "Checking for Work Order discrepancies...",
-							args: {
-								so_name: frm.doc.name,
-								items: JSON.stringify(trans_items) 
-							},
-							callback: function(r) {
-								if (r.message) {
-									// Capture the confirmation object
-									let discrepancy_confirm = frappe.confirm(
-										r.message,
-										function() {
-											// User clicked Yes -> Proceed to Phase 2
-											check_project_and_proceed();
-										},
-										function() {
-											// User clicked No -> Do nothing
-											return;
-										}
-									);
-									
-									// 🎨 THE MAGIC LINE: Phase 1 Polish
-									discrepancy_confirm.$wrapper.css('background-color', 'rgba(30, 30, 30, 0.75)');
-									
-								} else {
-									// No discrepancy found -> Proceed to Phase 2
-									check_project_and_proceed();
-								}
-							},
-							error: function() {
-								frappe.msgprint("An error occurred while checking for discrepancies.");
-							}
-						});
+						check_project_and_proceed();
 					},
 					primary_action_label: __("Update"),
 				});
@@ -879,65 +842,6 @@
 					.append($('<span>', { text: `${__('Total Unpaid Sales Orders')}: ` }), amount_element);
 			}
 		});
-	}
-	
-	function validate_discrepancy_against_wo(frm) {
-		// This is a monkey-patch for the frm.save. Currently there is no present before update after submit hook frontend.
-		if (frm.doc.docstatus === 1 && !frm.custom_update_overridden) {
-			
-			// 1. Store a copy of Frappe's original save function
-			const original_save = frm.save.bind(frm);
-			
-			// 2. Overwrite the save function with our custom logic
-			frm.save = function(action, callback, btn, on_error) {
-				
-				// When clicking the yellow 'Update' button, the action is usually 'Update'
-				// If it is an Update, we pause and check for discrepancies
-				let is_update = action === 'Update' || (!action && frm.doc.docstatus === 1);
-				
-				if (is_update) {
-					// Return a promise so the UI loading state behaves normally
-					return new Promise((resolve, reject) => {
-						frappe.call({
-							method: "cardmasters_app.cardmasters_app.api.sales_order.check_wo_discrepancy",
-							args: {
-								so_name: frm.doc.name,
-								items: JSON.stringify(frm.doc.items)
-							},
-							callback: function(r) {
-								if (r.message) {
-									// Discrepancy found! Show the prompt.
-									frappe.confirm(
-										r.message,
-										function() {
-											// User clicked "Yes": Proceed with the original Update
-											resolve(original_save(action, callback, btn, on_error));
-										},
-										function() {
-											// User clicked "No": Cancel the Update process entirely
-											reject();
-										}
-									);
-								} else {
-									// No discrepancies found: Proceed with the Update silently
-									resolve(original_save(action, callback, btn, on_error));
-								}
-							},
-							error: function() {
-								// If the Python API fails, reject the save to be safe
-								reject();
-							}
-						});
-					});
-				} else {
-					// If it's not an update (e.g., Cancel), just run the normal save
-					return original_save(action, callback, btn, on_error);
-				}
-			};
-			
-			// Flag it so we don't accidentally override the override if refresh() runs twice
-			frm.custom_update_overridden = true;
-		}
 	}
 	
 	function validate_sales_partner(frm) {

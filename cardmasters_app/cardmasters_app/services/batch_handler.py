@@ -489,63 +489,6 @@ def set_batch_no_for_fg_on_manufacture_entry(doc, method):
 
 
 # ---------------------------------------------------------------------------
-# DATA QUALITY CHECK — decoupled from batch assignment
-# ---------------------------------------------------------------------------
-
-def validate_so_item_work_order_match(doc, method):
-	"""
-	Standalone data quality check: verifies that item_code, custom_item_specifics,
-	and custom_particulars are consistent between the Sales Order Item and the
-	Work Order referenced by a Manufacture Stock Entry.
-
-	This check is DECOUPLED from batch assignment and must not be called from
-	set_batch_no_for_fg_on_manufacture_entry.  Wire it to a separate hook if
-	the business wants it enforced at submit time, or call it on demand.
-
-	Returns a list of human-readable mismatch strings (empty = no issues).
-	Raises frappe.ValidationError if mismatches are found and raise_on_error=True.
-	"""
-	if doc.purpose != "Manufacture" or not doc.work_order:
-		return []
-
-	wo = frappe.get_doc("Work Order", doc.work_order)
-	soi_docname = wo.sales_order_item
-	if not soi_docname:
-		return []
-
-	so_item_data = frappe.db.get_value(
-		"Sales Order Item",
-		soi_docname,
-		["item_code", "custom_item_specifics", "custom_particulars"],
-		as_dict=True,
-	)
-	if not so_item_data:
-		return []
-
-	mismatches = []
-
-	if so_item_data.get("item_code") != wo.production_item:
-		mismatches.append(
-			f"<b>Item Code:</b> SO Item ({so_item_data.get('item_code')}) "
-			f"vs Work Order ({wo.production_item})"
-		)
-
-	if so_item_data.get("custom_item_specifics") != wo.custom_item_specifics:
-		mismatches.append(
-			f"<b>Item Specifics:</b> SO Item ({so_item_data.get('custom_item_specifics')}) "
-			f"vs Work Order ({wo.custom_item_specifics})"
-		)
-
-	if so_item_data.get("custom_particulars") != wo.custom_particulars:
-		mismatches.append(
-			f"<b>Particulars:</b> SO Item ({so_item_data.get('custom_particulars')}) "
-			f"vs Work Order ({wo.custom_particulars})"
-		)
-
-	return mismatches
-
-
-# ---------------------------------------------------------------------------
 # DELIVERY NOTE HOOK
 # ---------------------------------------------------------------------------
 
