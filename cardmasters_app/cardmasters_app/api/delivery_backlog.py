@@ -64,24 +64,8 @@ def _workflow_action(doc, target_status):
 
 
 def _update_order_header(order):
-    # Keep Allow on Submit off. The authorized backlog action performs only the
-    # existing whitespace cleanup, without changing metadata or saving the order.
-    cleaned_rows = []
-    for row in order.items:
-        changes = {}
-        for fieldname in ("custom_item_specifics", "custom_particulars"):
-            value = row.get(fieldname)
-            if value and str(value).strip() != value:
-                changes[fieldname] = str(value).strip()
-        if changes:
-            frappe.db.set_value("Sales Order Item", row.name, changes, update_modified=False)
-            row.update(changes)
-            cleaned_rows.append(str(row.idx))
     order.db_set({"custom_payment_method": _payment_method(order), "custom_production_branch": BRANCH})
     order.add_comment("Comment", "Updated Payment Method and Branch to enable submission of Delivery Note backlog.")
-    if cleaned_rows:
-        order.add_comment("Comment", "Trimmed surrounding whitespace from Item Specifics/Particulars on rows "
-                          + ", ".join(cleaned_rows) + " through the System Manager backlog action; Allow on Submit remains off.")
 
 
 def _advance_work_order_to_claiming(work):

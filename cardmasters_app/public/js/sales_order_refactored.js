@@ -359,18 +359,9 @@
 					},
 					
 					update_items: function () {
-						// const trans_items = this.get_values()["trans_items"].filter((item) => !!item.item_code);
-						
 						const trans_items = this.get_values()["trans_items"]
 						.filter((item) => !!item.item_code)
 						.map((item) => {
-							// Strip leading and trailing whitespace exactly like your Python script does
-							if (item.custom_item_specifics) {
-								item.custom_item_specifics = String(item.custom_item_specifics).trim();
-							}
-							if (item.custom_particulars) {
-								item.custom_particulars = String(item.custom_particulars).trim();
-							}
 							item.price_list_rate = item.rate;
 							return item;
 						});

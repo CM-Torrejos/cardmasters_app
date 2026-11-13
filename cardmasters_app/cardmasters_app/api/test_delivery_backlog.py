@@ -108,10 +108,10 @@ class TestDeliveryBacklog(TestCase):
         order.db_set.assert_called_once_with({"custom_payment_method": "Cash", "custom_production_branch": backlog.BRANCH})
         order.save.assert_not_called()
         get_meta.assert_not_called()
-        set_value.assert_called_once_with("Sales Order Item", "SOI-TEST",
-                                         {"custom_item_specifics": "Legacy specifics", "custom_particulars": "Details"},
-                                         update_modified=False)
-        self.assertEqual(order.add_comment.call_count, 2)
+        set_value.assert_not_called()
+        self.assertEqual(row.custom_item_specifics, "  Legacy specifics  ")
+        self.assertEqual(row.custom_particulars, " Details ")
+        self.assertEqual(order.add_comment.call_count, 1)
 
     def test_payment_method_preserves_existing_value(self):
         for method in ("Cash", "Credit", "Credit Memo"):
@@ -180,8 +180,7 @@ def rollback_smoke_test(sales_order, delivery_note, target_month):
     """Exercise real local ERP controllers without committing business records."""
     try:
         order = frappe.get_doc("Sales Order", sales_order)
-        descriptions = [(row.name, str(row.custom_item_specifics).strip() if row.custom_item_specifics else row.custom_item_specifics,
-                         str(row.custom_particulars).strip() if row.custom_particulars else row.custom_particulars) for row in order.items]
+        descriptions = [(row.name, row.custom_item_specifics, row.custom_particulars) for row in order.items]
         result = backlog.submit_delivery_backlog(sales_order, frappe.as_json([delivery_note]), target_month)
         assert frappe.db.get_value("Delivery Note", delivery_note, "docstatus") == 1
         order.reload()
