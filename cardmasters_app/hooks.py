@@ -198,7 +198,11 @@ doc_events = {
         "on_cancel": [
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.manage_grant_usage"
         ],
+        "before_save": [
+            "cardmasters_app.cardmasters_app.event_handlers.sales_order.strip_item_specifics_particulars_spaces"
+        ],
         "before_update_after_submit": [
+            "cardmasters_app.cardmasters_app.event_handlers.sales_order.strip_item_specifics_particulars_spaces",
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.manage_grant_update_on_submitted_doc" # Sync grant ledger updates retroactively
         ]
     },
