@@ -3,6 +3,11 @@ from frappe import _
 from frappe.utils import nowdate
 from frappe.model.workflow import apply_workflow, get_transitions
 
+from cardmasters_app.cardmasters_app.doctype.cardmasters_settings.cardmasters_settings import (
+    sales_order_workflow_automation_disabled,
+)
+
+
 def calculate_time_difference(doc, _method):
 	"""
 	Hooked into before_save of Artist Sheet.
@@ -52,6 +57,9 @@ def validate_submission(doc, _method):
 			)
 			
 def update_so_workflow_state(doc, _method):
+	if sales_order_workflow_automation_disabled():
+		return
+
 	if not doc.sales_order:
 		return
 

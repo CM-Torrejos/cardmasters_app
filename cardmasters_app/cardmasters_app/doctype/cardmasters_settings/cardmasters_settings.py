@@ -4,6 +4,7 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
+from frappe.utils import cint
 
 
 class CardmastersSettings(Document):
@@ -31,3 +32,10 @@ def validate_default_bom_company(enabled_companies, default_company):
 			),
 			title=_("Invalid Default BOM Company"),
 		)
+
+
+def sales_order_workflow_automation_disabled():
+	value = frappe.db.get_single_value(
+		"Cardmasters Settings", "enable_sales_order_workflow_automation"
+	)
+	return not bool(cint(value))

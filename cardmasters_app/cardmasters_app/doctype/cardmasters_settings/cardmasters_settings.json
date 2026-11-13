@@ -5,6 +5,8 @@
  "engine": "InnoDB",
  "field_order": [
   "sales_configurations",
+  "sales_order_workflow_automation_section",
+  "enable_sales_order_workflow_automation",
   "custom_pill_color_map",
   "workflow_state_color_matrix",
   "project_automation_section",
@@ -286,6 +288,18 @@
    "fieldtype": "Link",
    "label": "Sales Order No-layout Workflow State",
    "options": "Workflow State"
+  },
+  {
+   "fieldname": "sales_order_workflow_automation_section",
+   "fieldtype": "Section Break",
+   "label": "Sales Order Workflow Automation"
+  },
+  {
+   "default": "0",
+   "description": "When unchecked, Sales Order workflow states can only change through manual workflow actions. Work Order and Artist Card activity will not change Sales Order states. Re-enabling does not replay skipped transitions.",
+   "fieldname": "enable_sales_order_workflow_automation",
+   "fieldtype": "Check",
+   "label": "Enable Automatic Sales Order Workflow Transitions"
   }
  ],
  "grid_page_length": 50,

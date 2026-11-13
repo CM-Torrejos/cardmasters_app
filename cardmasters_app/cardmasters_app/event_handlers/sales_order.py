@@ -3,6 +3,11 @@ import frappe
 from frappe import _
 from frappe.utils import flt
 
+from cardmasters_app.cardmasters_app.doctype.cardmasters_settings.cardmasters_settings import (
+    sales_order_workflow_automation_disabled,
+)
+
+
 def get_grant_covered_amount(grant_doc, sales_order_total):
 	"""Return the portion of a Sales Order that the grant can still cover."""
 	available_balance = flt(grant_doc.available_balance)
@@ -152,6 +157,9 @@ def validate_alias_on_facebook_channel(doc, _method):
 			frappe.throw(("The selected Sales Channel requires you to input the Customer's alias in the Customer Masters"))
 
 def check_artist_status(doc, _method):
+	if sales_order_workflow_automation_disabled():
+		return
+
 	from frappe.model.workflow import apply_workflow
 	# doc IS the Sales Order — no need to re-fetch it
 	if doc.custom_artist:

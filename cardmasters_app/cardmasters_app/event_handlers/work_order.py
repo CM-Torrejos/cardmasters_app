@@ -2,6 +2,11 @@ import frappe
 from frappe.model.workflow import apply_workflow  # get_transitions no longer used
 from frappe import _
 
+from cardmasters_app.cardmasters_app.doctype.cardmasters_settings.cardmasters_settings import (
+    sales_order_workflow_automation_disabled,
+)
+
+
 def start_production_from_operation_progress(doc, method=None):
     """Advance a submitted, unstarted WO when an operation's progress changes.
 
@@ -179,6 +184,9 @@ def pull_sales_order_details(doc, method=None):
 		)
 
 def sales_order_state_transition(doc, method):
+	if sales_order_workflow_automation_disabled():
+		return
+
 	# check if work order's sales order field is not empty
 	if not doc.sales_order:
 		return
@@ -247,6 +255,9 @@ def clear_child_rows(doc, method):
 	frappe.db.delete("Artist BOM table", {"parent": doc.name})
 
 def work_order_workflow_trigger(doc, method):
+    if sales_order_workflow_automation_disabled():
+        return
+
     from frappe.model.workflow import apply_workflow, WorkflowTransitionError, get_transitions
     if not doc.sales_order:
         return
