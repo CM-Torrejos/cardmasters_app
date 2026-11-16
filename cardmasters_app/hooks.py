@@ -172,6 +172,7 @@ doc_events = {
     },
     "Sales Order": {
         "before_submit": [
+            "cardmasters_app.cardmasters_app.services.sales_order_payment_requirements.validate_payment_requirements",
             "cardmasters_app.cardmasters_app.services.sales_order_workflow.protect_sales_order_workflow"
         ],
         "before_cancel": [

@@ -16,6 +16,10 @@
 	
 	frappe.ui.form.on('Sales Order', {
 		setup: function(frm) {
+			// Desk caches forms; reset the reminder when navigating away or reopening.
+			frappe.router.on('change', () => {
+				frm.__payment_warning_order = null;
+			});
 			
 			// 1. Access the bootinfo dictionary synchronously
 			let settings = frappe.boot.cardmasters_settings;
@@ -60,6 +64,7 @@
 		},
 		
 		refresh: function(frm) {
+			show_payment_requirement_warning(frm);
 			const invalid_statuses = ['On Hold', 'Cancelled', 'Closed', 'Draft'];
 			set_branch_from_current_user_employee(frm);
 			
@@ -86,6 +91,10 @@
 				set_complaint_button(frm);
 				set_credit_memo_button(frm);
 				set_quotation_button(frm);
+			}
+			if (!frm.is_new() && frm.doc.docstatus === 0
+				&& frm.doc.custom_payment_method === 'Credit Memo') {
+				set_credit_memo_button(frm);
 			}
 			
 			// Render Outstanding balance
@@ -495,6 +504,32 @@
 		}, __('Create'));
 	}
 	
+	function show_payment_requirement_warning(frm) {
+		if (frm.doc.docstatus !== 1 || frm.__payment_warning_order === frm.doc.name) {
+			return;
+		}
+		const name = frm.doc.name;
+		frm.__payment_warning_order = name;
+		frappe.call({
+			method: 'cardmasters_app.cardmasters_app.services.sales_order_payment_requirements.get_payment_requirement_warnings',
+			args: {sales_order: name},
+			callback: function(r) {
+				const warnings = r.message || [];
+				const route = frappe.get_route();
+				if (frm.doc.name !== name || frm.doc.docstatus !== 1 || !warnings.length
+					|| route[0] !== 'Form' || route[1] !== 'Sales Order' || route[2] !== name) {
+					return;
+				}
+				frappe.msgprint({
+					title: __('Missing Payment Requirement'),
+					indicator: 'orange',
+					message: warnings.map(message => frappe.utils.escape_html(message)).join('<br>')
+						+ '<br><br>' + __('This is a reminder only. You can continue working with this submitted Sales Order.'),
+				});
+			},
+		});
+	}
+
 	function set_credit_memo_button(frm) {
 		frm.add_custom_button(__('Credit Memo'), function() {
 			// Get the address display string (or empty string if null)
