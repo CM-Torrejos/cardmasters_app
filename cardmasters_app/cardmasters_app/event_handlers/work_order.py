@@ -1,7 +1,11 @@
 import frappe
-from frappe.utils import cstr
 from frappe.model.workflow import apply_workflow  # get_transitions no longer used
 from frappe import _
+
+from cardmasters_app.cardmasters_app.doctype.cardmasters_settings.cardmasters_settings import (
+    sales_order_workflow_automation_disabled,
+)
+
 
 def start_production_from_operation_progress(doc, method=None):
     """Advance a submitted, unstarted WO when an operation's progress changes.
@@ -180,6 +184,9 @@ def pull_sales_order_details(doc, method=None):
 		)
 
 def sales_order_state_transition(doc, method):
+	if sales_order_workflow_automation_disabled():
+		return
+
 	# check if work order's sales order field is not empty
 	if not doc.sales_order:
 		return
@@ -247,62 +254,10 @@ def clear_child_rows(doc, method):
 	# Clean up child table rows for this Work Order as needed.
 	frappe.db.delete("Artist BOM table", {"parent": doc.name})
 
-def warn_data_mismatch(doc, method):
-    # Since this is an onload event for the Work Order, 'doc' is the Work Order.
-    sales_order_item_ref = doc.sales_order_item
-    
-    if not sales_order_item_ref:
-        return # Exit early if there's no linked Sales Order Item
-
-    # Fetch the SO Item data
-    so_item_data = frappe.db.get_value(
-        "Sales Order Item",       
-        sales_order_item_ref,     
-        ["item_code", "custom_item_specifics", "custom_particulars"], 
-        as_dict=True
-    )
-
-    if so_item_data:
-        # --- START VALIDATION CHECK ---
-        mismatches = []
-        
-        # Use cstr() to safely compare strings, treating None and "" as equal
-        so_item_code = cstr(so_item_data.get("item_code"))
-        wo_item_code = cstr(doc.production_item)
-        
-        so_specifics = cstr(so_item_data.get("custom_item_specifics"))
-        wo_specifics = cstr(doc.custom_item_specifics)
-        
-        so_particulars = cstr(so_item_data.get("custom_particulars"))
-        wo_particulars = cstr(doc.custom_particulars)
-
-        if so_item_code != wo_item_code:
-            mismatches.append(
-                f"<b>Item Code:</b> SO Item ({so_item_code}) vs Work Order ({wo_item_code})"
-            )
-            
-        if so_specifics != wo_specifics:
-            mismatches.append(
-                f"<b>Item Specifics:</b> SO Item ({so_specifics}) vs Work Order ({wo_specifics})"
-            )
-            
-        if so_particulars != wo_particulars:
-            mismatches.append(
-                f"<b>Particulars:</b> SO Item ({so_particulars}) vs Work Order ({wo_particulars})"
-            )
-            
-        if mismatches:
-            msg_content = frappe._("There exist fields that do not match between the Sales Order Item and Work Order.<br><br>Please contact the sales order and work order owners to reconcile the discrepancy.<br><br>{0}").format("<br>".join(mismatches))
-            
-            # Use msgprint to show a non-blocking warning modal
-            frappe.msgprint(
-                msg=msg_content, 
-                title=frappe._("Data Mismatch Warning"), 
-                indicator="orange"
-            )
-        # --- END VALIDATION CHECK ---
-
 def work_order_workflow_trigger(doc, method):
+    if sales_order_workflow_automation_disabled():
+        return
+
     from frappe.model.workflow import apply_workflow, WorkflowTransitionError, get_transitions
     if not doc.sales_order:
         return

@@ -129,9 +129,6 @@ doc_events = {
         "validate": [
             "cardmasters_app.cardmasters_app.event_handlers.work_order.validate_so_workflow_state", # Block if parent SO is 'Pending'
             "cardmasters_app.cardmasters_app.services.batch_handler.autofill_work_order_batch_source_fields" # Fill draft batch source fields
-        ],
-        "onload": [
-            "cardmasters_app.cardmasters_app.event_handlers.work_order.warn_data_mismatch" # Alert if SO Item vs WO details mismatch
         ]
     },
     "Stock Entry": {
@@ -174,6 +171,12 @@ doc_events = {
         ]
     },
     "Sales Order": {
+        "before_submit": [
+            "cardmasters_app.cardmasters_app.services.sales_order_workflow.protect_sales_order_workflow"
+        ],
+        "before_cancel": [
+            "cardmasters_app.cardmasters_app.services.sales_order_workflow.protect_sales_order_workflow"
+        ],
         "validate": [
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.set_branch_from_creator_employee",
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.sync_item_branches_with_header",
@@ -199,10 +202,11 @@ doc_events = {
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.manage_grant_usage"
         ],
         "before_save": [
+            "cardmasters_app.cardmasters_app.services.sales_order_workflow.protect_sales_order_workflow",
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.strip_item_specifics_particulars_spaces"
         ],
         "before_update_after_submit": [
-            "cardmasters_app.cardmasters_app.event_handlers.sales_order.strip_item_specifics_particulars_spaces",
+            "cardmasters_app.cardmasters_app.services.sales_order_workflow.protect_sales_order_workflow",
             "cardmasters_app.cardmasters_app.event_handlers.sales_order.manage_grant_update_on_submitted_doc" # Sync grant ledger updates retroactively
         ]
     },
@@ -257,6 +261,7 @@ doc_events = {
 }
 
 override_whitelisted_methods = {
+    "frappe.model.workflow.apply_workflow": "cardmasters_app.cardmasters_app.services.sales_order_workflow.apply_manual_workflow",
     "erpnext.accounts.doctype.process_statement_of_accounts.process_statement_of_accounts.download_statements": "cardmasters_app.cardmasters_app.services.soa_templates.download_statements",
     "erpnext.accounts.doctype.process_statement_of_accounts.process_statement_of_accounts.send_emails": "cardmasters_app.cardmasters_app.services.soa_templates.send_emails",
     "erpnext.accounts.doctype.process_statement_of_accounts.process_statement_of_accounts.send_auto_email": "cardmasters_app.cardmasters_app.services.soa_templates.send_auto_email",
