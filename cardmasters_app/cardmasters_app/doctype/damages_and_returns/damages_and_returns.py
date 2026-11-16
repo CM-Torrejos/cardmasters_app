@@ -7,22 +7,23 @@ from frappe.utils import flt
 
 class DamagesandReturns(Document):
 	def validate(self):
-		# detect if need to force recalculation
-		needs_recalc = self.needs_recalculation()
-
-		# 2. Synchronize Point Persons with Charge Employee
-		self.sync_charge_employees(needs_recalc)
-
-		# 3. Check if the error type qualifies based on Damage Point Settings
+		# 1. Check if the error type qualifies based on Damage Point Settings
 		allowed_error_types = self.get_allowed_error_types()
 		if not self.error_type or self.error_type not in allowed_error_types:
 			self.damage_points = 0.0
+			self.set("charge_employee", [])
 			return
 
-		# 4. If damage value is empty or zero, points are 0
+		# 2. Detect if need to force recalculation
+		needs_recalc = self.needs_recalculation()
+
+		# 3. If damage value is empty or zero, points are 0
 		if not self.value_of_damages or flt(self.value_of_damages) <= 0:
 			self.damage_points = 0.0
 			return
+
+		# 4. Synchronize Point Persons with Charge Employee
+		self.sync_charge_employees(needs_recalc)
 
 		# 5. Fetch points from the Damage Point Settings child table (damage_tier_rules)
 		settings = frappe.get_cached_doc("Damage Point Settings")
