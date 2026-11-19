@@ -113,12 +113,14 @@ doc_events = {
             "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_tags_from_master_on_creation" # Tag copy logic
         ],
         "before_submit" : [
+            "cardmasters_app.cardmasters_app.event_handlers.work_order.complete_operations_on_workflow_transition",
             "cardmasters_app.cardmasters_app.services.batch_handler.create_or_assign_work_order_batch", # Create/link SO Item batch on submission
             "cardmasters_app.cardmasters_app.event_handlers.work_order.sales_order_state_transition" # Transition SO state to "Begin Production" 
         ],
         "before_update_after_submit": [
             "cardmasters_app.cardmasters_app.event_handlers.work_order.start_production_from_operation_progress",
-            "cardmasters_app.cardmasters_app.event_handlers.work_order.revert_production_to_not_started"
+            "cardmasters_app.cardmasters_app.event_handlers.work_order.revert_production_to_not_started",
+            "cardmasters_app.cardmasters_app.event_handlers.work_order.complete_operations_on_workflow_transition"
         ],
         "on_update_after_submit": [
             "cardmasters_app.cardmasters_app.event_handlers.work_order.work_order_workflow_trigger" # Track completed manufacturing progress

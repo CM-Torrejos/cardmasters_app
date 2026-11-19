@@ -1,12 +1,88 @@
 from unittest import TestCase
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 import frappe
 
 from cardmasters_app.cardmasters_app.event_handlers.work_order import (
+    complete_operations_on_workflow_transition,
     start_production_from_operation_progress,
     revert_production_to_not_started,
 )
+
+
+class TestWorkflowOperationCompletion(TestCase):
+    def make_doc(self, previous_state="In Production", state="Pending Consumption", docstatus=1):
+        doc = frappe._dict(
+            docstatus=docstatus,
+            workflow_state=state,
+            operations=[frappe._dict(custom_progress=value) for value in
+                        ("Not Started", "In Progress", "On Hold", "Done", None, "")],
+        )
+        doc.get_doc_before_save = Mock(return_value=frappe._dict(workflow_state=previous_state))
+        return doc
+
+    @patch("frappe.db.get_single_value", side_effect=lambda dt, field: 1 if field == "auto_complete_operations_on_pending_consumption" else "Pending Consumption")
+    def test_entering_and_reentering_completes_every_operation(self, setting):
+        for previous_state in ("In Production", "Pending Claiming", "Not Started", "Draft"):
+            with self.subTest(previous_state=previous_state):
+                doc = self.make_doc(previous_state=previous_state)
+                complete_operations_on_workflow_transition(doc)
+                self.assertTrue(all(row.custom_progress == "Done" for row in doc.operations))
+                self.assertEqual(doc.workflow_state, "Pending Consumption")
+        setting.assert_any_call(
+            "Cardmasters Settings", "auto_complete_operations_on_pending_consumption"
+        )
+
+    @patch("frappe.db.get_single_value")
+    def test_configured_state_controls_completion(self, setting):
+        for target, state, expected in (
+            ("Pending Claiming", "Pending Claiming", "Done"),
+            ("Pending Claiming", "Pending Consumption", "Not Started"),
+            (None, "Pending Consumption", "Not Started"),
+            ("", "Pending Consumption", "Not Started"),
+        ):
+            with self.subTest(target=target, state=state):
+                setting.side_effect = lambda dt, field: (
+                    1 if field == "auto_complete_operations_on_pending_consumption" else target
+                )
+                doc = self.make_doc(state=state)
+                complete_operations_on_workflow_transition(doc)
+                self.assertEqual(doc.operations[0].custom_progress, expected)
+
+    @patch("frappe.db.get_single_value")
+    def test_disabled_or_unset_setting_preserves_progress(self, setting):
+        for value in (0, "0", None):
+            with self.subTest(value=value):
+                setting.return_value = value
+                doc = self.make_doc()
+                before = [row.custom_progress for row in doc.operations]
+                complete_operations_on_workflow_transition(doc)
+                self.assertEqual([row.custom_progress for row in doc.operations], before)
+
+    @patch("frappe.db.get_single_value", side_effect=lambda dt, field: 1 if field == "auto_complete_operations_on_pending_consumption" else "Pending Consumption")
+    def test_only_a_transition_of_a_submitted_document_triggers(self, setting):
+        for kwargs in (
+            {"previous_state": "Pending Consumption"},
+            {"docstatus": 0}, {"docstatus": 2},
+        ):
+            with self.subTest(kwargs=kwargs):
+                doc = self.make_doc(**kwargs)
+                before = [row.custom_progress for row in doc.operations]
+                complete_operations_on_workflow_transition(doc)
+                self.assertEqual([row.custom_progress for row in doc.operations], before)
+        doc = self.make_doc()
+        doc.get_doc_before_save.return_value = None
+        complete_operations_on_workflow_transition(doc)
+        self.assertEqual(doc.operations[0].custom_progress, "Not Started")
+        setting.assert_not_called()
+
+    @patch("frappe.db.get_single_value", side_effect=lambda dt, field: "1" if field == "auto_complete_operations_on_pending_consumption" else "Pending Consumption")
+    def test_no_operations_is_safe(self, setting):
+        for operations in ([], None):
+            doc = self.make_doc()
+            doc.operations = operations
+            complete_operations_on_workflow_transition(doc)
+            self.assertEqual(doc.operations, operations)
 
 
 class TestOperationProductionTransition(TestCase):

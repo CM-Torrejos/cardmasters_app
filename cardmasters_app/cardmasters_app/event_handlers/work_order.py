@@ -1,10 +1,35 @@
 import frappe
 from frappe.model.workflow import apply_workflow  # get_transitions no longer used
 from frappe import _
+from frappe.utils import cint
 
 from cardmasters_app.cardmasters_app.doctype.cardmasters_settings.cardmasters_settings import (
     sales_order_workflow_automation_disabled,
 )
+
+
+def complete_operations_on_workflow_transition(doc, method=None):
+    """Complete operation progress when a submitted WO enters the configured state."""
+    if doc.docstatus != 1:
+        return
+
+    previous = doc.get_doc_before_save()
+    if not previous or previous.get("workflow_state") == doc.get("workflow_state"):
+        return
+
+    if not cint(frappe.db.get_single_value(
+        "Cardmasters Settings", "auto_complete_operations_on_pending_consumption"
+    )):
+        return
+
+    target_state = frappe.db.get_single_value(
+        "Cardmasters Settings", "complete_operations_workflow_state"
+    )
+    if not target_state or doc.get("workflow_state") != target_state:
+        return
+
+    for row in doc.get("operations") or []:
+        row.custom_progress = "Done"
 
 
 def start_production_from_operation_progress(doc, method=None):
