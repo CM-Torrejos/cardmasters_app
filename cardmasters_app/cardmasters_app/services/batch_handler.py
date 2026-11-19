@@ -660,3 +660,51 @@ def remove_sales_order_item_reference(doc, method):
 		comment_text = f"**System Action:** Automatically unlinked from Sales Order **{doc.parent}** (Item: {doc.item_code}) because the item row was deleted."
 		
 		frappe.get_doc("Batch", batch.name).add_comment("Comment", comment_text)
+
+def create_batch_on_sales_order_submission(doc, method=None):
+	"""
+	Triggered on Sales Order submission ('before_submit').
+	Creates a Batch directly for items with 'custom_create_batch_in_sales_order' enabled on Item.
+	"""
+	for item in doc.items:
+		if not item.item_code:
+			continue
+
+		item_flags = frappe.get_cached_value(
+			"Item",
+			item.item_code,
+			["has_batch_no", "custom_create_batch_in_sales_order"],
+			as_dict=True,
+		) or {}
+
+		# Only create a batch if BOTH checkboxes are enabled on the Item master
+		if not item_flags.get("custom_create_batch_in_sales_order") or not item_flags.get("has_batch_no"):
+			continue
+
+		batch_name = f"{doc.name}_{item.name}"
+		if len(batch_name) > BATCH_NAME_MAX_LEN:
+			frappe.throw(
+				_(
+					"Cannot create batch: constructed name '{0}' is {1} characters, "
+					"which exceeds ERPNext's 100-character Batch.name limit."
+				).format(batch_name, len(batch_name)),
+				title=_("Batch Name Too Long"),
+			)
+
+		if frappe.db.exists("Batch", batch_name):
+			continue
+
+		try:
+			batch_doc = frappe.get_doc(
+				{
+					"doctype": "Batch",
+					"batch_id": batch_name,
+					"item": item.item_code,
+					"custom_sales_order": doc.name,
+					"custom_sales_order_item": item.name,
+					"custom_identity_source": IDENTITY_SOURCE_SYSTEM,
+				}
+			)
+			batch_doc.insert(ignore_permissions=True)
+		except frappe.DuplicateEntryError:
+			pass

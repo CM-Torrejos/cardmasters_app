@@ -66,7 +66,8 @@ doctype_js = {
     "Sales Invoice": "public/js/sales_invoice.js",
     "Credit Memo": "public/js/credit_memo.js",
     "Material Request": "public/js/material_request.js",
-    "Journal Entry": "public/js/journal_entry.js"
+    "Journal Entry": "public/js/journal_entry.js",
+    "Purchase Receipt": "public/js/purchase_receipt.js",
 }
 
 # Override core classes for custom calculations and accounting entry injections
@@ -175,7 +176,8 @@ doc_events = {
     "Sales Order": {
         "before_submit": [
             "cardmasters_app.cardmasters_app.services.sales_order_payment_requirements.validate_payment_requirements",
-            "cardmasters_app.cardmasters_app.services.sales_order_workflow.protect_sales_order_workflow"
+            "cardmasters_app.cardmasters_app.services.sales_order_workflow.protect_sales_order_workflow",
+            "cardmasters_app.cardmasters_app.services.batch_handler.create_batch_on_sales_order_submission"
         ],
         "before_cancel": [
             "cardmasters_app.cardmasters_app.services.sales_order_workflow.protect_sales_order_workflow"
