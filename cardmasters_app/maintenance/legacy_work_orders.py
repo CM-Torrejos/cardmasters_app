@@ -109,6 +109,9 @@ def _cancel(doctype, name, log):
     doc = frappe.get_doc(doctype, name)
     if doc.docstatus == 1:
         log(f"Cancelling {doctype} {name}")
+        if doctype == "Work Order":
+            # This cleanup closes the Sales Order after removing the entire legacy group.
+            doc.flags.legacy_work_order_cleanup = True
         doc.cancel()
 
 
