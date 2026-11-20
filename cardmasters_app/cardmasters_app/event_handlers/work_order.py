@@ -283,6 +283,9 @@ def work_order_workflow_trigger(doc, method):
     if sales_order_workflow_automation_disabled():
         return
 
+    if method == "on_cancel" and getattr(doc.flags, "legacy_work_order_cleanup", False):
+        return
+
     from frappe.model.workflow import apply_workflow, WorkflowTransitionError, get_transitions
     if not doc.sales_order:
         return
