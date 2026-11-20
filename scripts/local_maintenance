@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -eu
+bench=/workspace/development/frappe-bench
+site=ams.localhost
+job=${0##*/run_local_}
+mode=(--apply)
+limit=()
+for arg in "$@"; do
+    if [[ $arg == --preview && ${#mode[@]} -gt 0 ]]; then
+        mode=()
+    elif [[ $arg =~ ^--([1-9][0-9]*)$ && ${#limit[@]} -eq 0 ]]; then
+        limit=(--limit "${arg#--}")
+    else
+        echo "Usage: $0 [--NUMBER] [--preview] (example: --100)" >&2
+        exit 2
+    fi
+done
+case "$job" in
+    so_branch_reassignment) script=correct_sales_order_branches ;;
+    cm_correction) script=backfill_credit_memo_commercial_amount ;;
+    wo_cleanup|wo_transition) script=work_order_maintenance ;;
+    *) exit 2 ;;
+esac
+args=()
+if [[ $script == work_order_maintenance ]]; then args+=("$job"); fi
+audit="$site/private/files/${job}-$(date -u +%Y%m%dT%H%M%S%N)-$$.json"
+echo "Starting $job on local $site (${mode[*]:-preview}). Limit: ${limit[1]:-all}. Report: $bench/sites/$audit"
+exec docker exec -w "$bench/sites" devcontainer-frappe-1 "$bench/env/bin/python" -u \
+    "$bench/apps/cardmasters_app/scripts/$script.py" "${args[@]}" --site "$site" --output "$audit" "${mode[@]}" "${limit[@]}"
