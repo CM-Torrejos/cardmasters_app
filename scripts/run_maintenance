@@ -1,8 +1,24 @@
 #!/usr/bin/env bash
 set -eu
-bench=/workspace/development/frappe-bench
-site=ams.localhost
-job=${0##*/run_local_}
+launcher=${0##*/}
+case "$launcher" in
+    run_local_*)
+        environment=local
+        bench=/workspace/development/frappe-bench
+        container=devcontainer-frappe-1
+        site=ams.localhost
+        docker_cmd=(docker)
+        ;;
+    run_prod_*)
+        environment=production
+        bench=/home/frappe/frappe-bench
+        container=erpnext-one-backend-1
+        site=erp-new.cardmastersph.com
+        docker_cmd=(sudo docker)
+        ;;
+    *) echo "Invoke a run_local_* or run_prod_* launcher." >&2; exit 2 ;;
+esac
+job=${launcher#run_*_}
 mode=(--apply)
 limit=()
 for arg in "$@"; do
@@ -24,6 +40,6 @@ esac
 args=()
 if [[ $script == work_order_maintenance ]]; then args+=("$job"); fi
 audit="$site/private/files/${job}-$(date -u +%Y%m%dT%H%M%S%N)-$$.json"
-echo "Starting $job on local $site (${mode[*]:-preview}). Limit: ${limit[1]:-all}. Report: $bench/sites/$audit"
-exec docker exec -w "$bench/sites" devcontainer-frappe-1 "$bench/env/bin/python" -u \
+echo "Starting $job on $environment $site (${mode[*]:-preview}). Limit: ${limit[1]:-all}. Report: $bench/sites/$audit"
+exec "${docker_cmd[@]}" exec -w "$bench/sites" "$container" "$bench/env/bin/python" -u \
     "$bench/apps/cardmasters_app/scripts/$script.py" "${args[@]}" --site "$site" --output "$audit" "${mode[@]}" "${limit[@]}"
