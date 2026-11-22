@@ -1,7 +1,7 @@
 """Gross profit with an auditable, proportional manufacturing cost tree.
 
-Manufacturing allocations explain the selling item's valuation; they never
-change the gross profit calculated by v2. Quantities are in stock UOM.
+Manufacturing allocations explain the selling item's valuation and do not
+contribute to gross profit totals. Quantities are in stock UOM.
 """
 
 from collections import defaultdict
@@ -78,6 +78,38 @@ def get_breakdown_columns():
 
 
 class GrossProfitGenerator(v2.GrossProfitGenerator):
+	def get_stock_ledger_entries(self, item_code, warehouse):
+		if not item_code or not warehouse:
+			return []
+		key = (item_code, warehouse)
+		if key not in self.sle:
+			self.sle[key] = frappe.get_all(
+				"Stock Ledger Entry",
+				filters={
+					"company": self.filters.company,
+					"item_code": item_code,
+					"warehouse": warehouse,
+					"is_cancelled": 0,
+				},
+				fields=["voucher_type", "voucher_no", "voucher_detail_no", "stock_value_difference", "actual_qty as qty"],
+				order_by="posting_datetime desc, creation desc",
+				limit_page_length=0,
+			)
+		return self.sle[key]
+
+	def calculate_buying_amount_from_sle(self, row, my_sle, parenttype, parent, item_row, item_code):
+		for sle in my_sle:
+			if (
+				sle.voucher_type == parenttype
+				and parent == sle.voucher_no
+				and sle.voucher_detail_no == item_row
+			):
+				if sle.qty and sle.stock_value_difference is not None:
+					return flt(sle.stock_value_difference) / flt(sle.qty) * flt(row.qty)
+				return flt(row.qty) * self.get_average_buying_rate(row, item_code)
+
+		return 0.0
+
 	def get_manufacture_entries(self):
 		"""Load all readable production entries, matched by SO row and finished item."""
 		self.production = defaultdict(list)
