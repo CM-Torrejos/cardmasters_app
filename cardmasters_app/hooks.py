@@ -66,7 +66,8 @@ doctype_js = {
     "Sales Invoice": "public/js/sales_invoice.js",
     "Credit Memo": "public/js/credit_memo.js",
     "Material Request": "public/js/material_request.js",
-    "Journal Entry": "public/js/journal_entry.js"
+    "Journal Entry": "public/js/journal_entry.js",
+    "Purchase Receipt": "public/js/purchase_receipt.js",
 }
 
 # Override core classes for custom calculations and accounting entry injections
@@ -113,12 +114,14 @@ doc_events = {
             "cardmasters_app.cardmasters_app.event_handlers.tag_automation.sync_tags_from_master_on_creation" # Tag copy logic
         ],
         "before_submit" : [
+            "cardmasters_app.cardmasters_app.event_handlers.work_order.complete_operations_on_workflow_transition",
             "cardmasters_app.cardmasters_app.services.batch_handler.create_or_assign_work_order_batch", # Create/link SO Item batch on submission
             "cardmasters_app.cardmasters_app.event_handlers.work_order.sales_order_state_transition" # Transition SO state to "Begin Production" 
         ],
         "before_update_after_submit": [
             "cardmasters_app.cardmasters_app.event_handlers.work_order.start_production_from_operation_progress",
-            "cardmasters_app.cardmasters_app.event_handlers.work_order.revert_production_to_not_started"
+            "cardmasters_app.cardmasters_app.event_handlers.work_order.revert_production_to_not_started",
+            "cardmasters_app.cardmasters_app.event_handlers.work_order.complete_operations_on_workflow_transition"
         ],
         "on_update_after_submit": [
             "cardmasters_app.cardmasters_app.event_handlers.work_order.work_order_workflow_trigger" # Track completed manufacturing progress
@@ -173,7 +176,8 @@ doc_events = {
     "Sales Order": {
         "before_submit": [
             "cardmasters_app.cardmasters_app.services.sales_order_payment_requirements.validate_payment_requirements",
-            "cardmasters_app.cardmasters_app.services.sales_order_workflow.protect_sales_order_workflow"
+            "cardmasters_app.cardmasters_app.services.sales_order_workflow.protect_sales_order_workflow",
+            "cardmasters_app.cardmasters_app.services.batch_handler.create_batch_on_sales_order_submission"
         ],
         "before_cancel": [
             "cardmasters_app.cardmasters_app.services.sales_order_workflow.protect_sales_order_workflow"

@@ -22,6 +22,9 @@
   "default_bom_company",
   "job_cards_section",
   "disable_job_cards",
+  "work_order_operation_progress_section",
+  "auto_complete_operations_on_pending_consumption",
+  "complete_operations_workflow_state",
   "work_order_creation_validation_section",
   "so_workflow_action_for_pending",
   "transition_to_production_automation_section",
@@ -49,6 +52,27 @@
   "wo_in_claiming_status"
  ],
  "fields": [
+  {
+   "fieldname": "work_order_operation_progress_section",
+   "fieldtype": "Section Break",
+   "label": "Work Order Operation Progress"
+  },
+  {
+   "default": "0",
+   "description": "Set every operation's Progress to Done when a Work Order enters the selected workflow state. Enabling this does not update Work Orders already in that state.",
+   "fieldname": "auto_complete_operations_on_pending_consumption",
+   "fieldtype": "Check",
+   "label": "Automatically Complete Operations"
+  },
+  {
+   "fieldname": "complete_operations_workflow_state",
+   "fieldtype": "Link",
+   "label": "Complete Operations Workflow State",
+   "options": "Workflow State",
+   "default": "Pending Consumption",
+   "mandatory_depends_on": "eval:doc.auto_complete_operations_on_pending_consumption",
+   "description": "Work Order workflow state that triggers automatic completion of all operations."
+  },
   {
    "description": "If a sales order line item is equals or exceeds this amount: Trigger Project Automation.",
    "fieldname": "item_price_threshold",

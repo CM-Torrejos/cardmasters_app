@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+set -eu
+launcher=${0##*/}
+case "$launcher" in
+    run_local_*)
+        environment=local
+        bench=/workspace/development/frappe-bench
+        container=devcontainer-frappe-1
+        site=ams.localhost
+        docker_cmd=(docker)
+        ;;
+    run_prod_*)
+        environment=production
+        bench=/home/frappe/frappe-bench
+        container=erpnext-one-backend-1
+        site=erp-new.cardmastersph.com
+        docker_cmd=(sudo docker)
+        ;;
+    *) echo "Invoke a run_local_* or run_prod_* launcher." >&2; exit 2 ;;
+esac
+job=${launcher#run_*_}
+mode=(--apply)
+limit=()
+for arg in "$@"; do
+    if [[ $arg == --preview && ${#mode[@]} -gt 0 ]]; then
+        mode=()
+    elif [[ $arg =~ ^--([1-9][0-9]*)$ && ${#limit[@]} -eq 0 ]]; then
+        limit=(--limit "${arg#--}")
+    else
+        echo "Usage: $0 [--NUMBER] [--preview] (example: --100)" >&2
+        exit 2
+    fi
+done
+case "$job" in
+    so_branch_reassignment) script=correct_sales_order_branches ;;
+    cm_correction) script=backfill_credit_memo_commercial_amount ;;
+    wo_cleanup|wo_transition) script=work_order_maintenance ;;
+    *) exit 2 ;;
+esac
+args=()
+if [[ $script == work_order_maintenance ]]; then args+=("$job"); fi
+audit="$site/private/files/${job}-$(date -u +%Y%m%dT%H%M%S%N)-$$.json"
+echo "Starting $job on $environment $site (${mode[*]:-preview}). Limit: ${limit[1]:-all}. Report: $bench/sites/$audit"
+exec "${docker_cmd[@]}" exec -w "$bench/sites" "$container" "$bench/env/bin/python" -u \
+    "$bench/apps/cardmasters_app/scripts/$script.py" "${args[@]}" --site "$site" --output "$audit" "${mode[@]}" "${limit[@]}"
