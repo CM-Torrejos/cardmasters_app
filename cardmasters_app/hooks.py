@@ -68,6 +68,7 @@ doctype_js = {
     "Material Request": "public/js/material_request.js",
     "Journal Entry": "public/js/journal_entry.js",
     "Purchase Receipt": "public/js/purchase_receipt.js",
+    "Employee": "public/js/employee.js"
 }
 
 # Override core classes for custom calculations and accounting entry injections
