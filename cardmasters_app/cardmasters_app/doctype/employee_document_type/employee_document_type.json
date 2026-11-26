@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "field:document_type_name",
  "creation": "2026-11-24 11:54:24.908914",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -20,10 +21,11 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-11-24 11:55:29.336040",
+ "modified": "2026-11-26 15:03:19.002252",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Employee Document Type",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
