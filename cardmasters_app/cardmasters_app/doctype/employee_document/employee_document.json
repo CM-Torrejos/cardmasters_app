@@ -14,6 +14,7 @@
   "column_break_hyim",
   "issue_date",
   "expiry_date",
+  "score",
   "remarks"
  ],
  "fields": [
@@ -73,12 +74,17 @@
    "fieldname": "remarks",
    "fieldtype": "Small Text",
    "label": "Remarks"
+  },
+  {
+   "fieldname": "score",
+   "fieldtype": "Float",
+   "label": "Score"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-11-26 15:50:15.421291",
+ "modified": "2026-11-27 08:16:04.588927",
  "modified_by": "Administrator",
  "module": "Cardmasters App",
  "name": "Employee Document",
